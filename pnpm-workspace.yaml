@@ -1,0 +1,23 @@
+# Workspace-level pnpm config for Vite+
+# - Catalog maps logical names to the actual packages provided by Vite+.
+# - Overrides tell pnpm to use the catalog entries when resolving dependencies.
+# Pin versions here to guarantee reproducible installs across machines/CI.
+
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.1.21
+  vitest: npm:@voidzero-dev/vite-plus-test@0.1.21
+  vite-plus: npm:vite-plus@0.1.21
+
+overrides:
+  vite: 'catalog:'
+  vitest: 'catalog:'
+
+peerDependencyRules:
+  # Allow these tool packages to accept any peer versions to avoid
+  # installation failures from mismatched peer ranges in tooling.
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: '*'
+    vitest: '*'
