@@ -1,5 +1,7 @@
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import tailwindcss from '@tailwindcss/vite';
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite-plus';
 
@@ -10,9 +12,16 @@ export default defineConfig({
   staged: {
     '*': 'vp check --fix',
   },
-  plugins: [react()],
+  plugins: [
+    tanstackRouter({
+      target: 'react',
+      autoCodeSplitting: true,
+    }),
+    react(),
+    tailwindcss(),
+  ],
   fmt: {
-    ignorePatterns: ['dist/**', '*.min.js'],
+    ignorePatterns: ['dist/**', '*.min.js', 'src/routeTree.gen.ts'],
     sortImports: {
       newlinesBetween: false,
     },

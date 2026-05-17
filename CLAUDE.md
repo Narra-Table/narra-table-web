@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 ## Project Overview
 
@@ -24,4 +24,4 @@ TypeScript, and Tailwind CSS 4.
 ## Non-Negotiable Rules
 
 - Use TypeScript strict mode.
-- Use Tailwind CSS utility classes for styling, Do not write raw CSS or inline `style` attributes.
+- Use Tailwind CSS utility classes for styling. Do not write raw CSS or inline `style` attributes.
