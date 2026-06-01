@@ -28,6 +28,7 @@ export default defineConfig({
     singleQuote: true,
     printWidth: 100,
     semi: true,
+    tabWidth: 2,
   },
   lint: {
     options: {
@@ -35,10 +36,20 @@ export default defineConfig({
       typeCheck: true,
     },
     plugins: ['react', 'typescript'],
+    jsPlugins: [
+      {
+        name: '@tanstack/query',
+        specifier: '@tanstack/eslint-plugin-query',
+      },
+    ],
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/consistent-type-imports': 'warn',
       'no-console': 'warn',
+      '@tanstack/query/exhaustive-deps': 'error',
+      '@tanstack/query/stable-query-client': 'error',
+      '@tanstack/query/prefer-query-options': 'error',
+      '@tanstack/query/no-unstable-deps': 'error',
     },
   },
   resolve: {
