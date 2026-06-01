@@ -4,15 +4,17 @@ TRPG 协作叙事平台「故桌」的 Web 端。
 
 ## 快速开始
 
-使用 macOS / Linux 安装 vp
+安装 Vite+ CLI：
+
+macOS / Linux：
 
 ```bash
 curl -fsSL https://vite.plus | bash
 ```
 
-使用 Windows 安装 vp
+Windows：
 
-```bash
+```powershell
 irm https://vite.plus/ps1 | iex
 ```
 

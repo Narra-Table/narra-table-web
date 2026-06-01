@@ -1,27 +1,26 @@
 # CLAUDE.md
 
-## Project Overview
+## 项目概览
 
-Narra Table Web is a TRPG platform built with Vite+ 0.1.21, React 19,
-TypeScript, and Tailwind CSS 4.
+Narra Table Web 是一个 TRPG 平台，基于 Vite+ 0.1.21、React 19、TypeScript 和 Tailwind CSS 4 构建。
 
-## If applicable, refer to the following documents
+## 如有需要，请参考以下文档
 
-- Architecture decisions: `docs/ARCHITECTURE.md`
-- Code conventions: `docs/CONVENTIONS.md`
-- Design and styling rules: `docs/DESIGN.md`
-- Contribution and verification flow: `docs/CONTRIBUTING.md`
-- For more information about Vite+: local `node_modules/vite-plus/docs` or <https://viteplus.dev/guide/>
+- 架构决策：`docs/ARCHITECTURE.md`
+- 代码约定：`docs/CONVENTIONS.md`
+- 设计和样式规则：`docs/DESIGN.md`
+- 贡献和验证流程：`docs/CONTRIBUTING.md`
+- 更多 Vite+ 信息：本地 `node_modules/vite-plus/docs` 或 <https://viteplus.dev/guide/>
 
-## Development & Validation
+## 开发与验证
 
-- Install: `vp install`
-- Dev: `vp dev`
-- Format & Lint: `vp check --fix`
-- Test: `vp test`
-- Build: `vp build`
+- 安装：`vp install`
+- 开发：`vp dev`
+- 格式化与 Lint：`vp check --fix`
+- 测试：`vp test`
+- 构建：`vp build`
 
-## Non-Negotiable Rules
+## 必须遵循的规则
 
-- Use TypeScript strict mode.
-- Use Tailwind CSS utility classes for styling. Do not write raw CSS or inline `style` attributes.
+- 使用 TypeScript 严格模式。
+- 使用 Tailwind CSS utility classes 编写样式。不要编写原始 CSS 或内联 `style` 属性。
