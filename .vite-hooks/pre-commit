@@ -1,1 +1,3 @@
-vp staged
+. "$(dirname "$0")/hook-log.sh"
+
+run_hook_step "vp check" vp staged
