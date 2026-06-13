@@ -92,7 +92,7 @@ export const roomHandlers = [
 
   // PATCH /api/spaces/:spaceId/rooms/:roomId
   http.patch('*/api/spaces/:spaceId/rooms/:roomId', async ({ params, request }) => {
-    const room = rooms.find((r) => r.roomId === params.roomId);
+    const room = rooms.find((r) => r.roomId === params.roomId && r.spaceId === params.spaceId);
     if (!room) return HttpResponse.json({ error: 'Room not found' }, { status: 404 });
     const body = (await request.json()) as Partial<
       Pick<Room, 'name' | 'description' | 'sortOrder' | 'visibleMemberIds'>
@@ -103,8 +103,11 @@ export const roomHandlers = [
 
   // DELETE /api/spaces/:spaceId/rooms/:roomId
   http.delete('*/api/spaces/:spaceId/rooms/:roomId', ({ params }) => {
-    const idx = rooms.findIndex((r) => r.roomId === params.roomId);
+    const idx = rooms.findIndex((r) => r.roomId === params.roomId && r.spaceId === params.spaceId);
     if (idx !== -1) rooms.splice(idx, 1);
+    const space = spaces.find((s) => s.spaceId === params.spaceId);
+    const roomIdx = space?.rooms.findIndex((id) => id === params.roomId) ?? -1;
+    if (space && roomIdx !== -1) space.rooms.splice(roomIdx, 1);
     return new HttpResponse(null, { status: 204 });
   }),
 

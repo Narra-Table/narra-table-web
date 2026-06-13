@@ -52,8 +52,13 @@ export const characterHandlers = [
 
   // DELETE /api/masks/:maskId/cards/:cardId
   http.delete('*/api/masks/:maskId/cards/:cardId', ({ params }) => {
-    const idx = characterCards.findIndex((c) => c.id === params.cardId);
+    const idx = characterCards.findIndex(
+      (c) => c.id === params.cardId && c.maskId === params.maskId,
+    );
     if (idx !== -1) characterCards.splice(idx, 1);
+    const mask = masks.find((m) => m.maskId === params.maskId);
+    const cardIdx = mask?.characterCards.findIndex((id) => id === params.cardId) ?? -1;
+    if (mask && cardIdx !== -1) mask.characterCards.splice(cardIdx, 1);
     return new HttpResponse(null, { status: 204 });
   }),
 ];

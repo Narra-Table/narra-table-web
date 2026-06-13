@@ -10,42 +10,173 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as TableRouteImport } from './routes/_table'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppSettingsRouteImport } from './routes/_app.settings'
+import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
+import { Route as AppModulesRouteImport } from './routes/_app.modules'
+import { Route as AppCharactersRouteImport } from './routes/_app.characters'
+import { Route as AppAssetsRouteImport } from './routes/_app.assets'
+import { Route as TableTablesTableIdRouteImport } from './routes/_table.tables.$tableId'
+import { Route as AppModulesModuleIdRouteImport } from './routes/_app.modules.$moduleId'
+import { Route as AppCharactersCharacterIdRouteImport } from './routes/_app.characters.$characterId'
+import { Route as AppAssetsAssetIdRouteImport } from './routes/_app.assets.$assetId'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const TableRoute = TableRouteImport.update({
+  id: '/_table',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppModulesRoute = AppModulesRouteImport.update({
+  id: '/modules',
+  path: '/modules',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCharactersRoute = AppCharactersRouteImport.update({
+  id: '/characters',
+  path: '/characters',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAssetsRoute = AppAssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => AppRoute,
+} as any)
+const TableTablesTableIdRoute = TableTablesTableIdRouteImport.update({
+  id: '/tables/$tableId',
+  path: '/tables/$tableId',
+  getParentRoute: () => TableRoute,
+} as any)
+const AppModulesModuleIdRoute = AppModulesModuleIdRouteImport.update({
+  id: '/$moduleId',
+  path: '/$moduleId',
+  getParentRoute: () => AppModulesRoute,
+} as any)
+const AppCharactersCharacterIdRoute =
+  AppCharactersCharacterIdRouteImport.update({
+    id: '/$characterId',
+    path: '/$characterId',
+    getParentRoute: () => AppCharactersRoute,
+  } as any)
+const AppAssetsAssetIdRoute = AppAssetsAssetIdRouteImport.update({
+  id: '/$assetId',
+  path: '/$assetId',
+  getParentRoute: () => AppAssetsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AppIndexRoute
   '/about': typeof AboutRoute
+  '/assets': typeof AppAssetsRouteWithChildren
+  '/characters': typeof AppCharactersRouteWithChildren
+  '/modules': typeof AppModulesRouteWithChildren
+  '/notifications': typeof AppNotificationsRoute
+  '/settings': typeof AppSettingsRoute
+  '/assets/$assetId': typeof AppAssetsAssetIdRoute
+  '/characters/$characterId': typeof AppCharactersCharacterIdRoute
+  '/modules/$moduleId': typeof AppModulesModuleIdRoute
+  '/tables/$tableId': typeof TableTablesTableIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof AppIndexRoute
   '/about': typeof AboutRoute
+  '/assets': typeof AppAssetsRouteWithChildren
+  '/characters': typeof AppCharactersRouteWithChildren
+  '/modules': typeof AppModulesRouteWithChildren
+  '/notifications': typeof AppNotificationsRoute
+  '/settings': typeof AppSettingsRoute
+  '/assets/$assetId': typeof AppAssetsAssetIdRoute
+  '/characters/$characterId': typeof AppCharactersCharacterIdRoute
+  '/modules/$moduleId': typeof AppModulesModuleIdRoute
+  '/tables/$tableId': typeof TableTablesTableIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_table': typeof TableRouteWithChildren
   '/about': typeof AboutRoute
+  '/_app/assets': typeof AppAssetsRouteWithChildren
+  '/_app/characters': typeof AppCharactersRouteWithChildren
+  '/_app/modules': typeof AppModulesRouteWithChildren
+  '/_app/notifications': typeof AppNotificationsRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/assets/$assetId': typeof AppAssetsAssetIdRoute
+  '/_app/characters/$characterId': typeof AppCharactersCharacterIdRoute
+  '/_app/modules/$moduleId': typeof AppModulesModuleIdRoute
+  '/_table/tables/$tableId': typeof TableTablesTableIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/assets'
+    | '/characters'
+    | '/modules'
+    | '/notifications'
+    | '/settings'
+    | '/assets/$assetId'
+    | '/characters/$characterId'
+    | '/modules/$moduleId'
+    | '/tables/$tableId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/assets'
+    | '/characters'
+    | '/modules'
+    | '/notifications'
+    | '/settings'
+    | '/assets/$assetId'
+    | '/characters/$characterId'
+    | '/modules/$moduleId'
+    | '/tables/$tableId'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_table'
+    | '/about'
+    | '/_app/assets'
+    | '/_app/characters'
+    | '/_app/modules'
+    | '/_app/notifications'
+    | '/_app/settings'
+    | '/_app/'
+    | '/_app/assets/$assetId'
+    | '/_app/characters/$characterId'
+    | '/_app/modules/$moduleId'
+    | '/_table/tables/$tableId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  TableRoute: typeof TableRouteWithChildren
   AboutRoute: typeof AboutRoute
 }
 
@@ -58,18 +189,162 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_table': {
+      id: '/_table'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof TableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/modules': {
+      id: '/_app/modules'
+      path: '/modules'
+      fullPath: '/modules'
+      preLoaderRoute: typeof AppModulesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/characters': {
+      id: '/_app/characters'
+      path: '/characters'
+      fullPath: '/characters'
+      preLoaderRoute: typeof AppCharactersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/assets': {
+      id: '/_app/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AppAssetsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_table/tables/$tableId': {
+      id: '/_table/tables/$tableId'
+      path: '/tables/$tableId'
+      fullPath: '/tables/$tableId'
+      preLoaderRoute: typeof TableTablesTableIdRouteImport
+      parentRoute: typeof TableRoute
+    }
+    '/_app/modules/$moduleId': {
+      id: '/_app/modules/$moduleId'
+      path: '/$moduleId'
+      fullPath: '/modules/$moduleId'
+      preLoaderRoute: typeof AppModulesModuleIdRouteImport
+      parentRoute: typeof AppModulesRoute
+    }
+    '/_app/characters/$characterId': {
+      id: '/_app/characters/$characterId'
+      path: '/$characterId'
+      fullPath: '/characters/$characterId'
+      preLoaderRoute: typeof AppCharactersCharacterIdRouteImport
+      parentRoute: typeof AppCharactersRoute
+    }
+    '/_app/assets/$assetId': {
+      id: '/_app/assets/$assetId'
+      path: '/$assetId'
+      fullPath: '/assets/$assetId'
+      preLoaderRoute: typeof AppAssetsAssetIdRouteImport
+      parentRoute: typeof AppAssetsRoute
     }
   }
 }
 
+interface AppAssetsRouteChildren {
+  AppAssetsAssetIdRoute: typeof AppAssetsAssetIdRoute
+}
+
+const AppAssetsRouteChildren: AppAssetsRouteChildren = {
+  AppAssetsAssetIdRoute: AppAssetsAssetIdRoute,
+}
+
+const AppAssetsRouteWithChildren = AppAssetsRoute._addFileChildren(
+  AppAssetsRouteChildren,
+)
+
+interface AppCharactersRouteChildren {
+  AppCharactersCharacterIdRoute: typeof AppCharactersCharacterIdRoute
+}
+
+const AppCharactersRouteChildren: AppCharactersRouteChildren = {
+  AppCharactersCharacterIdRoute: AppCharactersCharacterIdRoute,
+}
+
+const AppCharactersRouteWithChildren = AppCharactersRoute._addFileChildren(
+  AppCharactersRouteChildren,
+)
+
+interface AppModulesRouteChildren {
+  AppModulesModuleIdRoute: typeof AppModulesModuleIdRoute
+}
+
+const AppModulesRouteChildren: AppModulesRouteChildren = {
+  AppModulesModuleIdRoute: AppModulesModuleIdRoute,
+}
+
+const AppModulesRouteWithChildren = AppModulesRoute._addFileChildren(
+  AppModulesRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppAssetsRoute: typeof AppAssetsRouteWithChildren
+  AppCharactersRoute: typeof AppCharactersRouteWithChildren
+  AppModulesRoute: typeof AppModulesRouteWithChildren
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAssetsRoute: AppAssetsRouteWithChildren,
+  AppCharactersRoute: AppCharactersRouteWithChildren,
+  AppModulesRoute: AppModulesRouteWithChildren,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
+interface TableRouteChildren {
+  TableTablesTableIdRoute: typeof TableTablesTableIdRoute
+}
+
+const TableRouteChildren: TableRouteChildren = {
+  TableTablesTableIdRoute: TableTablesTableIdRoute,
+}
+
+const TableRouteWithChildren = TableRoute._addFileChildren(TableRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  TableRoute: TableRouteWithChildren,
   AboutRoute: AboutRoute,
 }
 export const routeTree = rootRouteImport

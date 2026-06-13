@@ -48,7 +48,7 @@ export const maskHandlers = [
 
   // PATCH /api/spaces/:spaceId/masks/:maskId
   http.patch('*/api/spaces/:spaceId/masks/:maskId', async ({ params, request }) => {
-    const mask = masks.find((m) => m.maskId === params.maskId);
+    const mask = masks.find((m) => m.maskId === params.maskId && m.spaceId === params.spaceId);
     if (!mask) return HttpResponse.json({ error: 'Mask not found' }, { status: 404 });
     const body = (await request.json()) as Partial<
       Pick<Mask, 'name' | 'avatars' | 'currentAvatarId' | 'defaultAvatarId' | 'userIds'>
@@ -59,8 +59,11 @@ export const maskHandlers = [
 
   // DELETE /api/spaces/:spaceId/masks/:maskId
   http.delete('*/api/spaces/:spaceId/masks/:maskId', ({ params }) => {
-    const idx = masks.findIndex((m) => m.maskId === params.maskId);
+    const idx = masks.findIndex((m) => m.maskId === params.maskId && m.spaceId === params.spaceId);
     if (idx !== -1) masks.splice(idx, 1);
+    const space = spaces.find((s) => s.spaceId === params.spaceId);
+    const maskIdx = space?.masks.findIndex((id) => id === params.maskId) ?? -1;
+    if (space && maskIdx !== -1) space.masks.splice(maskIdx, 1);
     return new HttpResponse(null, { status: 204 });
   }),
 ];

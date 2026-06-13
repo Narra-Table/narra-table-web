@@ -59,7 +59,9 @@ export const resourceHandlers = [
 
   // DELETE /api/spaces/:spaceId/resources/:resourceId
   http.delete('*/api/spaces/:spaceId/resources/:resourceId', ({ params }) => {
-    const idx = resources.findIndex((r) => r.resourceId === params.resourceId);
+    const idx = resources.findIndex(
+      (r) => r.resourceId === params.resourceId && r.spaceId === params.spaceId,
+    );
     if (idx !== -1) resources.splice(idx, 1);
     return new HttpResponse(null, { status: 204 });
   }),
