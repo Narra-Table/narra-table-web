@@ -162,7 +162,7 @@ export const spaces: SpaceDetail[] = [
     name: '淤泥之花与空心石',
     description:
       '围绕偏远小镇的旧案与传闻展开的调查故事。调查员们将追索一段被封存在淤泥、石块与沉默证词之间的往事，在逐渐浮现的真相里判断何为怜悯，何为罪。',
-    avatar: '/space6.jpg',
+    avatar: '/space6.webp',
     ownerId: 'user_carol',
     members: [
       { userId: 'user_carol', role: 'gm', displayName: '卡罗尔', joinedAt: '2026-03-10T14:00:00Z' },
@@ -170,7 +170,6 @@ export const spaces: SpaceDetail[] = [
       { userId: 'user_bob', role: 'pl', displayName: '鲍勃', joinedAt: '2026-03-10T14:11:00Z' },
       { userId: 'user_dave', role: 'pl', displayName: '大卫', joinedAt: '2026-03-10T14:12:00Z' },
       { userId: 'user_eve', role: 'pl', displayName: '伊芙', joinedAt: '2026-03-10T14:13:00Z' },
-      { userId: 'user_bob', role: 'pl', displayName: '鲍勃B', joinedAt: '2026-03-10T14:14:00Z' },
     ],
     rooms: [],
     masks: [],
@@ -183,7 +182,7 @@ export const spaces: SpaceDetail[] = [
     spaceId: 'sp_deadcode',
     name: '乡村系列之人集市',
     description: '来，到天津咯~',
-    avatar: '/space7.jpeg',
+    avatar: '/space7.webp',
     ownerId: 'user_dave',
     members: [
       { userId: 'user_dave', role: 'gm', displayName: '大卫', joinedAt: '2026-03-01T18:00:00Z' },
