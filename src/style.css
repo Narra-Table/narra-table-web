@@ -1,1 +1,108 @@
 @import 'tailwindcss';
+
+/* ── Design tokens ────────────────────────────────────────────────────────── */
+
+@theme inline {
+  /* Font size scale
+   *  2xs  11px  mobile nav labels, ultra-compact badges
+   *  xs   12px  timestamps, meta, captions
+   *  sm   13px  secondary body text
+   *  base 14px  primary body text  ← default
+   *  lg   16px  emphasized / nav labels
+   *  xl   18px  sub-headings
+   *  2xl  22px  page headings
+   *  3xl  28px  display / hero
+   */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.125rem;
+  --text-2xl: 1.375rem;
+  --text-3xl: 1.75rem;
+
+  /* Semantic radius aliases (do not override Tailwind's numeric scale)
+   *  rounded-thumb    8px   small thumbnails, icon wrappers
+   *  rounded-control  12px  buttons, inputs, form controls
+   *  rounded-card     16px  cards, nav items, floating buttons
+   *  rounded-overlay  24px  drawers, modals, popovers
+   */
+  --radius-thumb: 0.5rem;
+  --radius-control: 0.75rem;
+  --radius-card: 1rem;
+  --radius-overlay: 1.5rem;
+
+  /* Color tokens (theme-aware, see :root / [data-theme] below) */
+  --color-app-bg: var(--theme-app-bg);
+  --color-surface: var(--theme-surface);
+  --color-surface-muted: var(--theme-surface-muted);
+  --color-text: var(--theme-text);
+  --color-text-muted: var(--theme-text-muted);
+  --color-border-subtle: var(--theme-border-subtle);
+  --color-border: var(--theme-border);
+  --color-accent: var(--theme-accent);
+  --color-accent-text: var(--theme-accent-text);
+}
+
+/* ── Theme palettes ───────────────────────────────────────────────────────── */
+
+:root,
+[data-theme='warm'] {
+  color-scheme: light;
+  --theme-app-bg: #fff6f1;
+  --theme-surface: #fff8f1;
+  --theme-surface-muted: #f3e5dc;
+  --theme-text: #15110d;
+  --theme-text-muted: #8f8580;
+  --theme-border-subtle: #eadcd2;
+  --theme-border: #d8c6bb;
+  --theme-accent: #10bfae;
+  --theme-accent-text: #ffffff;
+}
+
+[data-theme='brown'] {
+  --theme-accent: #8b5a35;
+  --theme-accent-text: #ffffff;
+}
+
+[data-theme='pink'] {
+  --theme-accent: #f28bb8;
+  --theme-accent-text: #ffffff;
+}
+
+[data-theme='black-green'] {
+  color-scheme: dark;
+  --theme-app-bg: #171717;
+  --theme-surface: #202020;
+  --theme-surface-muted: #2b2b2b;
+  --theme-text: #f7f7f7;
+  --theme-text-muted: #a3a3a3;
+  --theme-border-subtle: #303030;
+  --theme-border: #454545;
+  --theme-accent: #22c55e;
+  --theme-accent-text: #06130b;
+}
+
+[data-theme='black-blue'] {
+  color-scheme: dark;
+  --theme-app-bg: #171717;
+  --theme-surface: #202020;
+  --theme-surface-muted: #2b2b2b;
+  --theme-text: #f7f7f7;
+  --theme-text-muted: #a3a3a3;
+  --theme-border-subtle: #303030;
+  --theme-border: #454545;
+  --theme-accent: #3b82f6;
+  --theme-accent-text: #f8fbff;
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+
+.scroll-subtle-native-hidden {
+  scrollbar-width: none;
+}
+.scroll-subtle-native-hidden::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
