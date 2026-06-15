@@ -1,0 +1,20 @@
+name: Notify Feishu on Push
+
+on:
+  push:
+    branches: [ "main", "master" ]  # 同时监听 main 和 master 分支
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send to Feishu
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{
+            "msg_type": "text",
+            "content": {
+              "text": "📦 仓库 ${{ github.repository }} 有新推送\n🔗 查看详情: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+            }
+          }' \
+          ${{ secrets.FEISHU_WEBHOOK }}
