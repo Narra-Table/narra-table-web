@@ -10,8 +10,16 @@ jobs:
     steps:
       - name: Send to Feishu
         run: |
+          TIMESTAMP=$(date +%s)
+          
+          SECRET="${{ secrets.FEISHU_SECRET }}"
+          
+          SIGN=$(echo -n "$TIMESTAMP"$'\n'"$SECRET" | openssl dgst -sha256 -hmac "$SECRET" -binary | base64)
+          
           curl -X POST -H "Content-Type: application/json" \
           -d '{
+            "timestamp": "'"$TIMESTAMP"'",
+            "sign": "'"$SIGN"'",
             "msg_type": "text",
             "content": {
               "text": "📦 仓库 ${{ github.repository }} 有新推送\n🔗 查看详情: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
