@@ -1,22 +1,30 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 
 const RootLayout = () => (
-  <div className="flex min-h-screen">
-    <aside className="w-[clamp(72px,24vw,240px)] shrink-0 border-r p-4">
-      <nav className="flex flex-col gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>
-        <Link to="/about" className="[&.active]:font-bold">
-          About
-        </Link>
-      </nav>
-    </aside>
-
-    <main className="min-w-0 flex-1 p-4">
-      <Outlet />
-    </main>
+  <div className="min-h-screen bg-app-bg text-text">
+    <Outlet />
+    <div id="modal-root" />
+    <div id="toast-root" />
   </div>
 );
 
-export const Route = createRootRoute({ component: RootLayout });
+const RootPending = () => (
+  <div className="grid min-h-screen place-items-center bg-app-bg text-sm text-text-muted">
+    页面加载中...
+  </div>
+);
+
+const RootError = () => (
+  <div className="grid min-h-screen place-items-center bg-app-bg p-6 text-text">
+    <section className="rounded-lg border-2 border-black p-5">
+      <h1 className="text-xl font-semibold">页面出错</h1>
+      <p className="mt-2 text-sm text-text-muted">全局错误边界占位。</p>
+    </section>
+  </div>
+);
+
+export const Route = createRootRoute({
+  component: RootLayout,
+  errorComponent: RootError,
+  pendingComponent: RootPending,
+});

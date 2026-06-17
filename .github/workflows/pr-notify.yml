@@ -2,7 +2,7 @@ name: PR Notification to Feishu
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
     types: [opened, reopened, synchronize]
 
 jobs:
@@ -21,18 +21,18 @@ jobs:
           script: |
             const crypto = require('crypto');
             const https = require('https');
-            
+
             const webhookId = process.env.FEISHU_WEBHOOK_ID;
             const secret = process.env.FEISHU_SECRET;
             if (!webhookId || !secret) {
               throw new Error('Missing required Feishu secrets: FEISHU_WEBHOOK_ID / FEISHU_SECRET');
             }
-            
+
             // 计算签名 - 修正为飞书API要求的格式
             const timestamp = Math.floor(Date.now() / 1000);
             const stringToSign = `${timestamp}\n${secret}`;
             const sign = crypto.createHmac('sha256', stringToSign).digest('base64');
-            
+
             console.log('Preparing PR notification payload');
             const pr = context.payload.pull_request;
             const baseRepo = pr.base.repo.full_name;
@@ -45,7 +45,7 @@ jobs:
                 content,
               },
             });
-            
+
             const payload = {
               timestamp: String(timestamp), // 转为字符串
               sign: sign,
@@ -88,7 +88,7 @@ jobs:
             if (isCrossRepo) {
               payload.card.elements.splice(5, 0, buildMarkdownBlock(`**说明**: 这是跨仓库 PR，来源为 fork 仓库 \`${headRepo}\`。`));
             }
-            
+
             try {
               console.log('Sending PR notification to Feishu');
               

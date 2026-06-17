@@ -1,11 +1,15 @@
-import { http, HttpResponse } from 'msw';
+import { characterHandlers } from './handlers/characters';
+import { maskHandlers } from './handlers/masks';
+import { messageHandlers } from './handlers/messages';
+import { resourceHandlers } from './handlers/resources';
+import { roomHandlers } from './handlers/rooms';
+import { spaceHandlers } from './handlers/spaces';
 
 export const handlers = [
-  http.get('/api/spaces', () => {
-    return HttpResponse.json([
-      { id: 'table-1', name: '逃离糖果共和国', system: 'COC' },
-      { id: 'table-2', name: '棉花不谢', system: 'COC' },
-      { id: 'table-3', name: '诡桥仙', system: 'COC' },
-    ]);
-  }),
+  ...spaceHandlers,
+  ...roomHandlers,
+  ...maskHandlers,
+  ...characterHandlers,
+  ...messageHandlers,
+  ...resourceHandlers,
 ];

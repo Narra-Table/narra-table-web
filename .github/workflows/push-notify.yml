@@ -2,7 +2,7 @@ name: Push Notification to Feishu
 
 on:
   push:
-    branches: [ 'main', 'dev' ]
+    branches: ['main', 'dev']
 
 jobs:
   notify:
@@ -19,20 +19,20 @@ jobs:
           script: |
             const crypto = require('crypto');
             const https = require('https');
-            
+
             const webhookId = process.env.FEISHU_WEBHOOK_ID;
             const secret = process.env.FEISHU_SECRET;
             if (!webhookId || !secret) {
               throw new Error('Missing required Feishu secrets: FEISHU_WEBHOOK_ID / FEISHU_SECRET');
             }
-            
+
             // 计算签名 - 修正为飞书API要求的格式
             const timestamp = Math.floor(Date.now() / 1000);
             const stringToSign = `${timestamp}\n${secret}`;
             const sign = crypto.createHmac('sha256', stringToSign).digest('base64');
-            
+
             console.log('Preparing Push notification payload');
-            
+
             const branchName = context.ref.replace('refs/heads/', '');
             const repoResponse = await github.rest.repos.get({
               owner: context.repo.owner,
@@ -83,7 +83,7 @@ jobs:
                 buildMarkdownBlock(`**说明**: 当前通知来自 fork 仓库 \`${context.payload.repository.full_name}\`，不代表上游仓库已发生同名分支更新。`)
               );
             }
-            
+
             // 获取提交信息
             const commits = context.payload.commits;
             if (commits && commits.length > 0) {
@@ -103,7 +103,7 @@ jobs:
               
               payload.card.elements.push(buildMarkdownBlock(`**提交信息**:\n${commitMessages}`));
             }
-            
+
             payload.card.elements.push({
               tag: "action",
               actions: [
@@ -127,7 +127,7 @@ jobs:
                 }
               ]
             });
-            
+
             try {
               console.log('Sending Push notification to Feishu');
               
