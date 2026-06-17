@@ -71,6 +71,19 @@
   --theme-accent-text: #ffffff;
 }
 
+[data-theme='pure-white'] {
+  color-scheme: light;
+  --theme-app-bg: #ffffff;
+  --theme-surface: #ffffff;
+  --theme-surface-muted: #f3f4f6;
+  --theme-text: #111827;
+  --theme-text-muted: #6b7280;
+  --theme-border-subtle: #e5e7eb;
+  --theme-border: #d1d5db;
+  --theme-accent: #006b5c;
+  --theme-accent-text: #ffffff;
+}
+
 [data-theme='black-green'] {
   color-scheme: dark;
   --theme-app-bg: #171717;
@@ -95,6 +108,19 @@
   --theme-border: #454545;
   --theme-accent: #3b82f6;
   --theme-accent-text: #f8fbff;
+}
+
+[data-theme='ink-gold'] {
+  color-scheme: dark;
+  --theme-app-bg: #131a1b;
+  --theme-surface: #192223;
+  --theme-surface-muted: #233033;
+  --theme-text: #f1eddf;
+  --theme-text-muted: #aaa594;
+  --theme-border-subtle: #263335;
+  --theme-border: #3b4848;
+  --theme-accent: #d9d2b0;
+  --theme-accent-text: #131a1b;
 }
 
 /* ── Utilities ────────────────────────────────────────────────────────────── */

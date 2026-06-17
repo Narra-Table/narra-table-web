@@ -43,7 +43,15 @@ const AppLayout = () => {
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('narra-theme');
-    const supportedThemes = ['warm', 'brown', 'pink', 'black-green', 'black-blue'];
+    const supportedThemes = [
+      'warm',
+      'brown',
+      'pink',
+      'pure-white',
+      'black-green',
+      'black-blue',
+      'ink-gold',
+    ];
     const nextTheme = storedTheme && supportedThemes.includes(storedTheme) ? storedTheme : 'warm';
     document.documentElement.dataset.theme = nextTheme;
   }, []);

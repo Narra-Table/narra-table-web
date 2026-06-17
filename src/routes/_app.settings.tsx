@@ -3,10 +3,12 @@ import { Check, Palette } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const themeOptions = [
-  { backgroundTheme: 'warm', id: 'brown', label: '棕色高亮' },
-  { backgroundTheme: 'warm', id: 'pink', label: '浅粉高亮' },
+  { backgroundTheme: 'pure-white', id: 'pure-white', label: '纯白主题' },
+  { backgroundTheme: 'warm', id: 'brown', label: '暖棕主题' },
+  { backgroundTheme: 'warm', id: 'pink', label: '桃粉主题' },
   { backgroundTheme: 'black-green', id: 'black-green', label: '黑绿主题' },
   { backgroundTheme: 'black-blue', id: 'black-blue', label: '黑蓝主题' },
+  { backgroundTheme: 'ink-gold', id: 'ink-gold', label: '墨金主题' },
 ] as const;
 
 type AppTheme = 'warm' | (typeof themeOptions)[number]['id'];
@@ -68,7 +70,7 @@ function SettingsSurface({
         </header>
 
         <div className="scroll-subtle-native-hidden min-h-0 flex-1 overflow-auto">
-          <div className="mx-auto max-w-4xl px-4 py-8 lg:px-8">
+          <div className="mx-auto max-w-4xl px-8 py-8 lg:px-20">
             <AppearanceSettings theme={theme} onThemeChange={onThemeChange} />
           </div>
         </div>
@@ -86,8 +88,8 @@ function AppearanceSettings({
 }) {
   return (
     <section>
-      <h2 className="text-2xl font-semibold">外观</h2>
-      <p className="mt-2 text-sm text-text-muted">主题和界面偏好。</p>
+      <h2 className="text-2xl font-medium mb-8">主题</h2>
+      <p className="mt-2 text-base font-semibold mb-6">默认主题</p>
       <div className="mt-5 flex flex-wrap gap-3">
         {themeOptions.map((option) => (
           <ThemeOption
@@ -122,8 +124,8 @@ function ThemeOption({
       type="button"
       aria-label={label}
       className={[
-        'relative size-14 overflow-hidden rounded-lg border-2 bg-app-bg transition',
-        active ? 'border-accent' : 'border-border',
+        'relative size-12 overflow-hidden rounded-lg bg-app-bg transition',
+        active ? 'border-2 border-accent' : 'border border-border-subtle hover:border-border',
       ].join(' ')}
       data-theme={theme}
       onClick={onClick}
@@ -132,15 +134,15 @@ function ThemeOption({
       <span className="absolute inset-0 bg-app-bg" data-theme={backgroundTheme} />
       <span
         className={[
-          'absolute right-0 top-0 size-7 origin-top-right bg-accent transition-[transform] duration-200 ease-out [clip-path:polygon(0_0,100%_0,100%_100%)]',
+          'absolute right-0 top-0 size-6 origin-top-right bg-accent transition-[transform] duration-200 ease-out [clip-path:polygon(0_0,100%_0,100%_100%)]',
           active ? 'scale-100' : 'scale-95',
         ].join(' ')}
         data-theme={theme}
       />
-      <span className="absolute right-0 top-0 grid size-7 place-items-start justify-items-end p-0.5">
+      <span className="absolute right-0 top-0 grid size-6 place-items-start justify-items-end p-0.5">
         <Check
           className={[
-            'size-3.5 text-accent-text transition duration-200 ease-out',
+            'size-3 text-accent-text transition duration-200 ease-out',
             active ? 'scale-100 opacity-100' : 'scale-50 opacity-0',
           ].join(' ')}
           strokeWidth={3}
