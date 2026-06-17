@@ -13,6 +13,7 @@ jobs:
       - name: Send Feishu Notification
         env:
           FEISHU_WEBHOOK_ID: ${{ secrets.FEISHU_WEBHOOK_ID }}
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
           FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
         uses: actions/github-script@v6
         with:
@@ -20,11 +21,26 @@ jobs:
             const crypto = require('crypto');
             const https = require('https');
 
-            const webhookId = process.env.FEISHU_WEBHOOK_ID;
+            const webhook = process.env.FEISHU_WEBHOOK_URL || process.env.FEISHU_WEBHOOK_ID;
             const secret = process.env.FEISHU_SECRET;
-            if (!webhookId || !secret) {
-              throw new Error('Missing required Feishu secrets: FEISHU_WEBHOOK_ID / FEISHU_SECRET');
+            if (!webhook || !secret) {
+              throw new Error('Missing required Feishu secrets: FEISHU_WEBHOOK_URL or FEISHU_WEBHOOK_ID / FEISHU_SECRET');
             }
+            const resolveWebhookTarget = (value) => {
+              const trimmed = value.trim();
+              if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+                const url = new URL(trimmed);
+                return {
+                  hostname: url.hostname,
+                  path: `${url.pathname}${url.search}`,
+                };
+              }
+              return {
+                hostname: 'open.feishu.cn',
+                path: `/open-apis/bot/v2/hook/${trimmed}`,
+              };
+            };
+            const webhookTarget = resolveWebhookTarget(webhook);
 
             // 计算签名 - 修正为飞书API要求的格式
             const timestamp = Math.floor(Date.now() / 1000);
@@ -136,9 +152,9 @@ jobs:
               
               return new Promise((resolve, reject) => {
                 const req = https.request({
-                  hostname: 'open.feishu.cn',
+                  hostname: webhookTarget.hostname,
                   port: 443,
-                  path: `/open-apis/bot/v2/hook/${webhookId}`,
+                  path: webhookTarget.path,
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
