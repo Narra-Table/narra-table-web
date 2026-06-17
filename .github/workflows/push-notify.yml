@@ -1,16 +1,14 @@
-name: PR Notification to Feishu
+name: Push Notification to Feishu
 
 on:
-  pull_request:
-    branches: [ main ]
-    types: [opened, reopened, synchronize]
+  push:
+    branches: [ 'main', 'dev' ]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
     steps:
       - name: Send Feishu Notification
         env:
@@ -33,11 +31,19 @@ jobs:
             const stringToSign = `${timestamp}\n${secret}`;
             const sign = crypto.createHmac('sha256', stringToSign).digest('base64');
             
-            console.log('Preparing PR notification payload');
-            const pr = context.payload.pull_request;
-            const baseRepo = pr.base.repo.full_name;
-            const headRepo = pr.head.repo.full_name;
-            const isCrossRepo = baseRepo !== headRepo;
+            console.log('Preparing Push notification payload');
+            
+            const branchName = context.ref.replace('refs/heads/', '');
+            const repoResponse = await github.rest.repos.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            const repoInfo = repoResponse.data;
+            const upstreamFullName = repoInfo.fork && repoInfo.parent ? repoInfo.parent.full_name : null;
+            const shortBefore = context.payload.before?.substring(0, 7) || 'unknown';
+            const shortAfter = context.payload.after?.substring(0, 7) || 'unknown';
+            const compareUrl = context.payload.compare || `${context.payload.repository.html_url}/compare/${context.payload.before}...${context.payload.after}`;
+            const actorName = context.actor || context.payload.sender?.login || context.payload.pusher?.name || 'unknown';
             const buildMarkdownBlock = (content) => ({
               tag: "div",
               text: {
@@ -45,7 +51,8 @@ jobs:
                 content,
               },
             });
-            
+            const firstLine = (message) => (message || '').split(/\r?\n/, 1)[0].trim();
+
             const payload = {
               timestamp: String(timestamp), // 转为字符串
               sign: sign,
@@ -57,40 +64,72 @@ jobs:
                 header: {
                   title: {
                     tag: "plain_text",
-                    content: "🔔 收到新的PR请求"
+                    content: `🚀 ${branchName}分支有新的Push`
                   },
-                  template: "blue"
+                  template: "green"
                 },
                 elements: [
-                  buildMarkdownBlock(`**PR标题**: ${pr.title}`),
-                  buildMarkdownBlock(`**创建者**: ${pr.user.login}`),
-                  buildMarkdownBlock(`**目标仓库/分支**: ${baseRepo}@${pr.base.ref}`),
-                  buildMarkdownBlock(`**源仓库/分支**: ${headRepo}@${pr.head.ref}`),
-                  buildMarkdownBlock(`**状态**: ${pr.state}`),
-                  {
-                    tag: "action",
-                    actions: [
-                      {
-                        tag: "button",
-                        text: {
-                          tag: "plain_text",
-                          content: "查看PR详情"
-                        },
-                        url: context.payload.pull_request.html_url,
-                        type: "primary"
-                      }
-                    ]
-                  }
+                  buildMarkdownBlock(`**仓库**: ${context.payload.repository.full_name}`),
+                  buildMarkdownBlock(`**触发账号**: ${actorName}`),
+                  buildMarkdownBlock(`**分支**: ${branchName}`),
+                  buildMarkdownBlock(`**比较范围**: ${shortBefore} -> ${shortAfter}`),
                 ]
               }
             };
 
-            if (isCrossRepo) {
-              payload.card.elements.splice(5, 0, buildMarkdownBlock(`**说明**: 这是跨仓库 PR，来源为 fork 仓库 \`${headRepo}\`。`));
+            if (upstreamFullName) {
+              payload.card.elements.push(
+                buildMarkdownBlock(`**上游仓库**: ${upstreamFullName}`),
+                buildMarkdownBlock(`**说明**: 当前通知来自 fork 仓库 \`${context.payload.repository.full_name}\`，不代表上游仓库已发生同名分支更新。`)
+              );
             }
             
+            // 获取提交信息
+            const commits = context.payload.commits;
+            if (commits && commits.length > 0) {
+              let commitMessages = '';
+              const maxCommits = Math.min(5, commits.length);
+              
+              for (let i = 0; i < maxCommits; i++) {
+                const commit = commits[i];
+                const title = firstLine(commit.message) || '(no title)';
+                const author = commit.author?.name || commit.committer?.name || 'unknown';
+                commitMessages += `• ${title} - ${author} (${commit.id.substring(0, 7)})\n`;
+              }
+              
+              if (commits.length > maxCommits) {
+                commitMessages += `...以及其他 ${commits.length - maxCommits} 个提交\n`;
+              }
+              
+              payload.card.elements.push(buildMarkdownBlock(`**提交信息**:\n${commitMessages}`));
+            }
+            
+            payload.card.elements.push({
+              tag: "action",
+              actions: [
+                {
+                  tag: "button",
+                  text: {
+                    tag: "plain_text",
+                    content: "查看比较"
+                  },
+                  url: compareUrl,
+                  type: "primary"
+                },
+                {
+                  tag: "button",
+                  text: {
+                    tag: "plain_text",
+                    content: "查看末次提交"
+                  },
+                  url: `${context.payload.repository.html_url}/commit/${context.payload.after}`,
+                  type: "default"
+                }
+              ]
+            });
+            
             try {
-              console.log('Sending PR notification to Feishu');
+              console.log('Sending Push notification to Feishu');
               
               // 修正请求方式，按照示例代码
               const postData = JSON.stringify(payload);
