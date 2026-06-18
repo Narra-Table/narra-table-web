@@ -5,14 +5,13 @@ import {
   ChevronRight,
   Home,
   Images,
-  LogOut,
   MessageCircle,
   Settings,
   UserRound,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { ComponentType } from 'react';
-import { createPortal } from 'react-dom';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
 type AppNavLink = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
@@ -35,7 +34,6 @@ const mobileLinks = navLinks.filter(({ to }) =>
 
 const AppLayout = () => {
   const pathname = useLocation({ select: (location) => location.pathname });
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const currentPageTitle =
     navLinks.find((link) => pathname === link.to || pathname.startsWith(`${link.to}/`))?.label ??
@@ -85,10 +83,7 @@ const AppLayout = () => {
             ))}
           </nav>
 
-          <RailIdentity
-            compact={isCollapsed}
-            onClick={() => setIsProfileOpen((isOpen) => !isOpen)}
-          />
+          <RailIdentity compact={isCollapsed} />
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
@@ -96,7 +91,9 @@ const AppLayout = () => {
             <div>
               <p className="text-sm font-medium">{currentPageTitle}</p>
             </div>
-            <img src="/avatar.webp" alt="用户头像" className="size-9 rounded-full object-cover" />
+            <Avatar className="size-9">
+              <AvatarImage src="/avatar.webp" alt="用户头像" />
+            </Avatar>
           </header>
 
           <main className="min-w-0 flex-1 overflow-auto">
@@ -113,30 +110,26 @@ const AppLayout = () => {
           </nav>
         </div>
       </div>
-      {isProfileOpen && <ProfilePopover onClose={() => setIsProfileOpen(false)} />}
     </div>
   );
 };
 
-function RailIdentity({ compact, onClick }: { compact: boolean; onClick: () => void }) {
+function RailIdentity({ compact }: { compact: boolean }) {
   return (
-    <button
-      type="button"
+    <Link
+      to="/settings"
       className={[
         'mt-4 grid h-12 cursor-pointer items-center overflow-hidden rounded-card transition-[width] duration-300 ease-out hover:bg-surface-muted',
         compact ? 'w-11' : 'w-full',
         compact ? 'grid-cols-[44px_0px]' : 'grid-cols-[44px_minmax(0,1fr)] gap-3',
       ].join(' ')}
-      aria-label="打开用户菜单"
-      title="打开用户菜单"
-      onClick={onClick}
+      aria-label="前往设置"
+      title="前往设置"
     >
       <span className="grid size-11 place-items-center">
-        <img
-          src="/avatar.webp"
-          alt="用户头像"
-          className="size-9 rounded-full border border-border object-cover"
-        />
+        <Avatar className="size-9 border border-border">
+          <AvatarImage src="/avatar.webp" alt="用户头像" />
+        </Avatar>
       </span>
       <span
         className={[
@@ -147,7 +140,7 @@ function RailIdentity({ compact, onClick }: { compact: boolean; onClick: () => v
         <span className="block truncate text-sm font-medium">滩间铁_半拍</span>
         <span className="block truncate text-xs text-text-muted">@hanpai</span>
       </span>
-    </button>
+    </Link>
   );
 }
 
@@ -190,41 +183,6 @@ function MobileLink({ icon: Icon, label, to }: AppNavLink) {
       <span className="max-w-full truncate">{label}</span>
     </Link>
   );
-}
-
-function ProfilePopover({ onClose }: { onClose: () => void }) {
-  const modalRoot = typeof document === 'undefined' ? null : document.getElementById('modal-root');
-  const content = (
-    <div className="fixed inset-0 z-50" onClick={onClose}>
-      <div
-        className="absolute bottom-6 left-3 w-64 rounded-overlay border border-border bg-surface p-4 shadow-xl"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="flex items-center gap-4">
-          <img
-            src="/avatar.webp"
-            alt="用户头像"
-            className="size-11 shrink-0 rounded-full border border-border object-cover"
-          />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold">滩间铁_半拍</p>
-            <p className="mt-0.5 truncate text-xs text-text-muted">@hanpai</p>
-          </div>
-        </div>
-        <div className="mt-4 grid gap-2">
-          <button className="rounded-card border border-border px-3 py-2 text-left text-sm hover:bg-surface-muted">
-            个人中心
-          </button>
-          <button className="flex items-center gap-2 rounded-card border border-border px-3 py-2 text-left text-sm text-text-muted hover:bg-surface-muted">
-            <LogOut className="size-4" aria-hidden="true" />
-            登出
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  return modalRoot ? createPortal(content, modalRoot) : content;
 }
 
 export const Route = createFileRoute('/_app')({
