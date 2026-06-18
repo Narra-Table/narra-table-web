@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { ChevronRight, MoreHorizontal, Plus, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { useSpacesQuery } from '@/features/spaces/queries';
 import type { SpaceSummary } from '@/types/protocol';
 
@@ -96,15 +97,17 @@ function SpaceCard({ space }: { space: SpaceSummary }) {
 
         {/* Footer */}
         <div className="mt-auto flex items-center gap-2 pt-1">
-          <div className="flex">
-            {Array.from({ length: Math.min(4, space.memberCount) }).map((_, i) => (
-              <img
-                key={i}
-                src={picsum(`${space.spaceId}_m${i}`, 24)}
-                alt=""
-                className="-ml-1.5 size-6 rounded-full border-2 border-surface first:ml-0"
-              />
+          <div className="flex -space-x-1.5">
+            {Array.from({ length: Math.min(4, space.memberCount) }, (_, i) => (
+              <Avatar key={i} className="size-6 ring-2 ring-surface">
+                <AvatarImage src={picsum(`${space.spaceId}_m${i}`, 24)} />
+              </Avatar>
             ))}
+            {space.memberCount > 4 && (
+              <div className="flex size-6 items-center justify-center rounded-full bg-surface-muted text-2xs font-medium text-text-muted ring-2 ring-surface">
+                +{space.memberCount - 4}
+              </div>
+            )}
           </div>
           <span className="text-xs text-text-muted">
             {space.memberCount}/{Math.max(6, space.memberCount)}
@@ -144,11 +147,9 @@ function RecentCharacters() {
       <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
         {RECENT_CHARACTERS.slice(0, visibleCount).map((char) => (
           <li key={char.id} className="flex items-center gap-3">
-            <img
-              src={picsum(char.seed, 80)}
-              alt={char.name}
-              className="size-10 shrink-0 rounded-full object-cover ring-1 ring-border"
-            />
+            <Avatar className="size-10 shrink-0 ring-1 ring-border">
+              <AvatarImage src={picsum(char.seed, 80)} alt={char.name} />
+            </Avatar>
             <p className="min-w-0 flex-1 truncate text-sm font-medium text-text">{char.name}</p>
           </li>
         ))}
@@ -165,11 +166,9 @@ function RecentAssets() {
       <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
         {RECENT_ASSETS.slice(0, visibleCount).map((asset) => (
           <li key={asset.id} className="flex items-center gap-3">
-            <img
-              src={picsum(asset.seed, 80)}
-              alt={asset.name}
-              className="size-10 shrink-0 rounded-thumb object-cover ring-1 ring-border"
-            />
+            <Avatar className="size-10 shrink-0 rounded-thumb ring-1 ring-border">
+              <AvatarImage src={picsum(asset.seed, 80)} alt={asset.name} />
+            </Avatar>
             <p className="min-w-0 flex-1 truncate text-sm text-text">{asset.name}</p>
           </li>
         ))}
@@ -184,11 +183,9 @@ function MyDiceBots() {
       <div className="flex flex-wrap gap-5">
         {DICE_BOTS.slice(0, 3).map((bot) => (
           <div key={bot.id} className="flex flex-col items-center gap-1.5">
-            <img
-              src={picsum(bot.seed, 120)}
-              alt={bot.name}
-              className="size-12 rounded-full object-cover ring-2 ring-accent/30 transition-all hover:ring-accent/60"
-            />
+            <Avatar className="size-12 ring-2 ring-accent/30 transition-all hover:ring-accent/60">
+              <AvatarImage src={picsum(bot.seed, 120)} alt={bot.name} />
+            </Avatar>
             <span className="text-xs font-medium text-text">{bot.name}</span>
           </div>
         ))}

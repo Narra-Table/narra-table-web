@@ -1,4 +1,80 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* ── shadcn/tailwind.css (inlined) ───────────────────────────────────────── */
+
+@theme inline {
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height, var(--accordion-panel-height, auto));
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height, var(--accordion-panel-height, auto));
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+@custom-variant data-open {
+  &:where([data-state='open']),
+  &:where([data-open]:not([data-open='false'])) {
+    @slot;
+  }
+}
+@custom-variant data-closed {
+  &:where([data-state='closed']),
+  &:where([data-closed]:not([data-closed='false'])) {
+    @slot;
+  }
+}
+@custom-variant data-checked {
+  &:where([data-state='checked']),
+  &:where([data-checked]:not([data-checked='false'])) {
+    @slot;
+  }
+}
+@custom-variant data-unchecked {
+  &:where([data-state='unchecked']),
+  &:where([data-unchecked]:not([data-unchecked='false'])) {
+    @slot;
+  }
+}
+@custom-variant data-selected {
+  &:where([data-selected='true']) {
+    @slot;
+  }
+}
+@custom-variant data-disabled {
+  &:where([data-disabled='true']),
+  &:where([data-disabled]:not([data-disabled='false'])) {
+    @slot;
+  }
+}
+@custom-variant data-active {
+  &:where([data-state='active']),
+  &:where([data-active]:not([data-active='false'])) {
+    @slot;
+  }
+}
+@custom-variant data-horizontal {
+  &:where([data-orientation='horizontal']) {
+    @slot;
+  }
+}
+@custom-variant data-vertical {
+  &:where([data-orientation='vertical']) {
+    @slot;
+  }
+}
+
+@custom-variant dark (&:is(.dark *));
 
 /* ── Design tokens ────────────────────────────────────────────────────────── */
 
@@ -43,6 +119,35 @@
   --color-border: var(--theme-border);
   --color-accent: var(--theme-accent);
   --color-accent-text: var(--theme-accent-text);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
 }
 
 /* ── Theme palettes ───────────────────────────────────────────────────────── */
@@ -131,4 +236,47 @@
 .scroll-subtle-native-hidden::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+/* ── shadcn token bridge ──────────────────────────────────────────────────── */
+/* Maps shadcn's CSS variables to the project's --theme-* system so that      */
+/* shadcn components automatically follow the active data-theme.               */
+
+:root {
+  --background: var(--theme-app-bg);
+  --foreground: var(--theme-text);
+  --card: var(--theme-surface);
+  --card-foreground: var(--theme-text);
+  --popover: var(--theme-surface);
+  --popover-foreground: var(--theme-text);
+  --primary: var(--theme-accent);
+  --primary-foreground: var(--theme-accent-text);
+  --secondary: var(--theme-surface-muted);
+  --secondary-foreground: var(--theme-text);
+  --muted: var(--theme-surface-muted);
+  --muted-foreground: var(--theme-text-muted);
+  --accent: var(--theme-surface-muted);
+  --accent-foreground: var(--theme-text);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--theme-border);
+  --input: var(--theme-border);
+  --ring: var(--theme-accent);
+  --radius: 0.625rem;
+  --sidebar: var(--theme-surface);
+  --sidebar-foreground: var(--theme-text);
+  --sidebar-primary: var(--theme-accent);
+  --sidebar-primary-foreground: var(--theme-accent-text);
+  --sidebar-accent: var(--theme-surface-muted);
+  --sidebar-accent-foreground: var(--theme-text);
+  --sidebar-border: var(--theme-border-subtle);
+  --sidebar-ring: var(--theme-accent);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-app-bg text-text;
+  }
 }
