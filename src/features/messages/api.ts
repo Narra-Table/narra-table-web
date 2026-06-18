@@ -1,5 +1,10 @@
+import type {
+  Message,
+  PaginatedMessages,
+  MessageBlock,
+  VeilVisibility,
+} from '@narratable/protocol';
 import { apiFetch } from '@/lib/client';
-import type { Message, PaginatedMessages, MessageBlock, VeilVisibility } from '@/types/protocol';
 
 export interface MessagesQueryParams {
   cursor?: string | null;

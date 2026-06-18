@@ -1,6 +1,6 @@
+import type { SpaceDetail, SpaceMember } from '@narratable/protocol';
 import { queryOptions, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { messageKeys } from '@/features/messages/queries';
-import type { SpaceDetail, SpaceMember } from '@/types/protocol';
 import { spaceApi } from './api';
 
 export const spaceKeys = {

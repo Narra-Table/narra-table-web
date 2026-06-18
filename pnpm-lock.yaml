@@ -12,6 +12,9 @@ importers:
 
   .:
     dependencies:
+      '@narratable/protocol':
+        specifier: github:Narra-Table/protocol
+        version: https://codeload.github.com/Narra-Table/protocol/tar.gz/6751751737075761b0dbc897d74f800c2a22735c
       '@radix-ui/react-avatar':
         specifier: ^1.2.0
         version: 1.2.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -359,6 +362,10 @@ packages:
   '@mswjs/interceptors@0.41.9':
     resolution: {integrity: sha512-VVPPgHyQ6ShqnrmDWuxjmUIsO9gWyOZFmuOfLd9LfBGQJwZfy0gvv9pbHSJuoFNIYC7ZDX9aoFwowjcdSC4E8w==}
     engines: {node: '>=18'}
+
+  '@narratable/protocol@https://codeload.github.com/Narra-Table/protocol/tar.gz/6751751737075761b0dbc897d74f800c2a22735c':
+    resolution: {gitHosted: true, integrity: sha512-jxY3Gp7hKkitlHtl/8uyDIFwqQNiYfV8yAZLZso6iBBusEA2qotXnSMyDWi1efIBmnGpB4PPzfyuAmTzmKq2Kg==, tarball: https://codeload.github.com/Narra-Table/protocol/tar.gz/6751751737075761b0dbc897d74f800c2a22735c}
+    version: 1.0.0
 
   '@open-draft/deferred-promise@2.2.0':
     resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
@@ -2435,6 +2442,8 @@ snapshots:
       is-node-process: 1.2.0
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
+
+  '@narratable/protocol@https://codeload.github.com/Narra-Table/protocol/tar.gz/6751751737075761b0dbc897d74f800c2a22735c': {}
 
   '@open-draft/deferred-promise@2.2.0': {}
 

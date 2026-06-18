@@ -1,5 +1,5 @@
+import type { CharacterCard } from '@narratable/protocol';
 import { http, HttpResponse } from 'msw';
-import type { CharacterCard } from '@/types/protocol';
 import { characterCards, masks } from '../db';
 
 export const characterHandlers = [

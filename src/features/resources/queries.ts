@@ -1,5 +1,5 @@
+import type { ResourceKind } from '@narratable/protocol';
 import { queryOptions, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { ResourceKind } from '@/types/protocol';
 import { resourceApi } from './api';
 
 type ResourceFilters = { roomId?: string; kind?: ResourceKind };

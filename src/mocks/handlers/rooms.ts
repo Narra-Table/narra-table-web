@@ -1,5 +1,5 @@
+import type { Room, RoomSummary } from '@narratable/protocol';
 import { http, HttpResponse } from 'msw';
-import type { Room, RoomSummary } from '@/types/protocol';
 import { rooms, messages, spaces } from '../db';
 
 function toSummary(room: Room): RoomSummary {

@@ -1,6 +1,6 @@
+import type { CharacterCard } from '@narratable/protocol';
 import { queryOptions, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { maskKeys } from '@/features/masks/queries';
-import type { CharacterCard } from '@/types/protocol';
 import { characterApi } from './api';
 
 export const characterCardKeys = {

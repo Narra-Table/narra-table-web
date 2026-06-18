@@ -1,6 +1,6 @@
+import type { Room } from '@narratable/protocol';
 import { queryOptions, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { spaceDetailQueryOptions } from '@/features/spaces/queries';
-import type { Room } from '@/types/protocol';
 import { roomApi } from './api';
 
 export const roomKeys = {

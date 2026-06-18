@@ -1,5 +1,10 @@
+import type {
+  SpaceSummary,
+  SpaceDetail,
+  SpacesListResponse,
+  SpaceMember,
+} from '@narratable/protocol';
 import { apiFetch } from '@/lib/client';
-import type { SpaceSummary, SpaceDetail, SpacesListResponse, SpaceMember } from '@/types/protocol';
 
 export const spaceApi = {
   list: () => apiFetch<SpacesListResponse>('/api/spaces').then((r) => r.spaces),

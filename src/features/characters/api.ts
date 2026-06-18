@@ -1,5 +1,5 @@
+import type { CharacterCard, CharacterCardListResponse } from '@narratable/protocol';
 import { apiFetch } from '@/lib/client';
-import type { CharacterCard, CharacterCardListResponse } from '@/types/protocol';
 
 export const characterApi = {
   list: (maskId: string) =>

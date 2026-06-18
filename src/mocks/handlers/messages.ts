@@ -1,5 +1,5 @@
+import type { Message, MessageBlock, Veil, VeilVisibility } from '@narratable/protocol';
 import { http, HttpResponse } from 'msw';
-import type { Message, MessageBlock, Veil, VeilVisibility } from '@/types/protocol';
 import { messages } from '../db';
 
 export const messageHandlers = [

@@ -41,7 +41,7 @@ narra-table-web/
 │   ├── main.tsx               # 应用入口
 │   ├── routeTree.gen.ts       # 自动生成的路由树（不要手动编辑）
 │   ├── types/
-│   │   └── protocol.ts        # 前后端协议类型
+│   │   └── narratable-protocol-compat.d.ts # @narratable/protocol 兼容类型声明
 │   └── style.css              # Tailwind v4 主题 token 和少量全局样式
 ├── AGENTS.md
 ├── CLAUDE.md

@@ -11,7 +11,7 @@ import type {
   CharacterCard,
   Message,
   Resource,
-} from '@/types/protocol';
+} from '@narratable/protocol';
 
 // ── Current session user ──────────────────────────────────────────────────────
 export const CURRENT_USER_ID = 'user_alice';

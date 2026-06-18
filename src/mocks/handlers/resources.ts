@@ -1,5 +1,5 @@
+import type { Resource } from '@narratable/protocol';
 import { http, HttpResponse } from 'msw';
-import type { Resource } from '@/types/protocol';
 import { resources } from '../db';
 
 export const resourceHandlers = [

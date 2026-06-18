@@ -1,5 +1,5 @@
+import type { Mask } from '@narratable/protocol';
 import { http, HttpResponse } from 'msw';
-import type { Mask } from '@/types/protocol';
 import { masks, spaces } from '../db';
 
 export const maskHandlers = [

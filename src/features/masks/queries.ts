@@ -1,6 +1,6 @@
+import type { Mask } from '@narratable/protocol';
 import { queryOptions, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { spaceDetailQueryOptions } from '@/features/spaces/queries';
-import type { Mask } from '@/types/protocol';
 import { maskApi } from './api';
 
 export const maskKeys = {

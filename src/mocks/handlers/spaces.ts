@@ -1,5 +1,5 @@
+import type { SpaceSummary, SpaceDetail, SpaceMember } from '@narratable/protocol';
 import { http, HttpResponse } from 'msw';
-import type { SpaceSummary, SpaceDetail, SpaceMember } from '@/types/protocol';
 import { CURRENT_USER_ID, spaces, rooms, messages } from '../db';
 
 function toSummary(space: SpaceDetail): SpaceSummary {

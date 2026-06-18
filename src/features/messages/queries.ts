@@ -1,3 +1,4 @@
+import type { Message, MessageBlock, VeilVisibility } from '@narratable/protocol';
 import {
   queryOptions,
   useQuery,
@@ -6,7 +7,6 @@ import {
   useQueryClient,
   infiniteQueryOptions,
 } from '@tanstack/react-query';
-import type { Message, MessageBlock, VeilVisibility } from '@/types/protocol';
 import { messageApi, type MessagesQueryParams } from './api';
 
 export const messageKeys = {

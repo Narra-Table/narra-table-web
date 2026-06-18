@@ -1,5 +1,5 @@
+import type { Mask, MaskListResponse } from '@narratable/protocol';
 import { apiFetch } from '@/lib/client';
-import type { Mask, MaskListResponse } from '@/types/protocol';
 
 export const maskApi = {
   list: (spaceId: string) =>

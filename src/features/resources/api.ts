@@ -1,5 +1,5 @@
+import type { Resource, ResourceListResponse, ResourceKind } from '@narratable/protocol';
 import { apiFetch } from '@/lib/client';
-import type { Resource, ResourceListResponse, ResourceKind } from '@/types/protocol';
 
 export const resourceApi = {
   list: (spaceId: string, filters?: { roomId?: string; kind?: ResourceKind }) => {

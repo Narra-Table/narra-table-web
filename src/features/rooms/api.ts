@@ -1,5 +1,5 @@
+import type { Room, RoomsListResponse } from '@narratable/protocol';
 import { apiFetch } from '@/lib/client';
-import type { Room, RoomsListResponse } from '@/types/protocol';
 
 export const roomApi = {
   list: (spaceId: string) =>

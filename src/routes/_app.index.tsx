@@ -1,9 +1,9 @@
+import type { SpaceSummary } from '@narratable/protocol';
 import { createFileRoute } from '@tanstack/react-router';
 import { ChevronRight, MoreHorizontal, Plus, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { useSpacesQuery } from '@/features/spaces/queries';
-import type { SpaceSummary } from '@/types/protocol';
 
 // ── Static right-panel data ───────────────────────────────────────────────────
 
