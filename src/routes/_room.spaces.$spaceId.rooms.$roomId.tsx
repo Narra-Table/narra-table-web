@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_table/tables/$tableId')({
-  component: TableWorkspacePage,
+export const Route = createFileRoute('/_room/spaces/$spaceId/rooms/$roomId')({
+  component: RoomWorkspacePage,
   validateSearch: (search: Record<string, unknown>) => ({
     focus: typeof search.focus === 'string' ? search.focus : 'chat',
     panel: typeof search.panel === 'string' ? search.panel : 'chat',
@@ -10,6 +10,6 @@ export const Route = createFileRoute('/_table/tables/$tableId')({
   }),
 });
 
-function TableWorkspacePage() {
+function RoomWorkspacePage() {
   return null;
 }

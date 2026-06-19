@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as TableRouteImport } from './routes/_table'
+import { Route as RoomRouteImport } from './routes/_room'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
@@ -18,18 +18,18 @@ import { Route as AppNotificationsRouteImport } from './routes/_app.notification
 import { Route as AppModulesRouteImport } from './routes/_app.modules'
 import { Route as AppCharactersRouteImport } from './routes/_app.characters'
 import { Route as AppAssetsRouteImport } from './routes/_app.assets'
-import { Route as TableTablesTableIdRouteImport } from './routes/_table.tables.$tableId'
 import { Route as AppModulesModuleIdRouteImport } from './routes/_app.modules.$moduleId'
 import { Route as AppCharactersCharacterIdRouteImport } from './routes/_app.characters.$characterId'
 import { Route as AppAssetsAssetIdRouteImport } from './routes/_app.assets.$assetId'
+import { Route as RoomSpacesSpaceIdRoomsRoomIdRouteImport } from './routes/_room.spaces.$spaceId.rooms.$roomId'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TableRoute = TableRouteImport.update({
-  id: '/_table',
+const RoomRoute = RoomRouteImport.update({
+  id: '/_room',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -66,11 +66,6 @@ const AppAssetsRoute = AppAssetsRouteImport.update({
   path: '/assets',
   getParentRoute: () => AppRoute,
 } as any)
-const TableTablesTableIdRoute = TableTablesTableIdRouteImport.update({
-  id: '/tables/$tableId',
-  path: '/tables/$tableId',
-  getParentRoute: () => TableRoute,
-} as any)
 const AppModulesModuleIdRoute = AppModulesModuleIdRouteImport.update({
   id: '/$moduleId',
   path: '/$moduleId',
@@ -87,6 +82,12 @@ const AppAssetsAssetIdRoute = AppAssetsAssetIdRouteImport.update({
   path: '/$assetId',
   getParentRoute: () => AppAssetsRoute,
 } as any)
+const RoomSpacesSpaceIdRoomsRoomIdRoute =
+  RoomSpacesSpaceIdRoomsRoomIdRouteImport.update({
+    id: '/spaces/$spaceId/rooms/$roomId',
+    path: '/spaces/$spaceId/rooms/$roomId',
+    getParentRoute: () => RoomRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
@@ -99,7 +100,7 @@ export interface FileRoutesByFullPath {
   '/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/characters/$characterId': typeof AppCharactersCharacterIdRoute
   '/modules/$moduleId': typeof AppModulesModuleIdRoute
-  '/tables/$tableId': typeof TableTablesTableIdRoute
+  '/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
@@ -112,12 +113,12 @@ export interface FileRoutesByTo {
   '/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/characters/$characterId': typeof AppCharactersCharacterIdRoute
   '/modules/$moduleId': typeof AppModulesModuleIdRoute
-  '/tables/$tableId': typeof TableTablesTableIdRoute
+  '/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
-  '/_table': typeof TableRouteWithChildren
+  '/_room': typeof RoomRouteWithChildren
   '/about': typeof AboutRoute
   '/_app/assets': typeof AppAssetsRouteWithChildren
   '/_app/characters': typeof AppCharactersRouteWithChildren
@@ -128,7 +129,7 @@ export interface FileRoutesById {
   '/_app/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/_app/characters/$characterId': typeof AppCharactersCharacterIdRoute
   '/_app/modules/$moduleId': typeof AppModulesModuleIdRoute
-  '/_table/tables/$tableId': typeof TableTablesTableIdRoute
+  '/_room/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -143,7 +144,7 @@ export interface FileRouteTypes {
     | '/assets/$assetId'
     | '/characters/$characterId'
     | '/modules/$moduleId'
-    | '/tables/$tableId'
+    | '/spaces/$spaceId/rooms/$roomId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -156,11 +157,11 @@ export interface FileRouteTypes {
     | '/assets/$assetId'
     | '/characters/$characterId'
     | '/modules/$moduleId'
-    | '/tables/$tableId'
+    | '/spaces/$spaceId/rooms/$roomId'
   id:
     | '__root__'
     | '/_app'
-    | '/_table'
+    | '/_room'
     | '/about'
     | '/_app/assets'
     | '/_app/characters'
@@ -171,12 +172,12 @@ export interface FileRouteTypes {
     | '/_app/assets/$assetId'
     | '/_app/characters/$characterId'
     | '/_app/modules/$moduleId'
-    | '/_table/tables/$tableId'
+    | '/_room/spaces/$spaceId/rooms/$roomId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
-  TableRoute: typeof TableRouteWithChildren
+  RoomRoute: typeof RoomRouteWithChildren
   AboutRoute: typeof AboutRoute
 }
 
@@ -189,11 +190,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_table': {
-      id: '/_table'
+    '/_room': {
+      id: '/_room'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof TableRouteImport
+      preLoaderRoute: typeof RoomRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -245,13 +246,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssetsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_table/tables/$tableId': {
-      id: '/_table/tables/$tableId'
-      path: '/tables/$tableId'
-      fullPath: '/tables/$tableId'
-      preLoaderRoute: typeof TableTablesTableIdRouteImport
-      parentRoute: typeof TableRoute
-    }
     '/_app/modules/$moduleId': {
       id: '/_app/modules/$moduleId'
       path: '/$moduleId'
@@ -272,6 +266,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/assets/$assetId'
       preLoaderRoute: typeof AppAssetsAssetIdRouteImport
       parentRoute: typeof AppAssetsRoute
+    }
+    '/_room/spaces/$spaceId/rooms/$roomId': {
+      id: '/_room/spaces/$spaceId/rooms/$roomId'
+      path: '/spaces/$spaceId/rooms/$roomId'
+      fullPath: '/spaces/$spaceId/rooms/$roomId'
+      preLoaderRoute: typeof RoomSpacesSpaceIdRoomsRoomIdRouteImport
+      parentRoute: typeof RoomRoute
     }
   }
 }
@@ -332,19 +333,19 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
-interface TableRouteChildren {
-  TableTablesTableIdRoute: typeof TableTablesTableIdRoute
+interface RoomRouteChildren {
+  RoomSpacesSpaceIdRoomsRoomIdRoute: typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 
-const TableRouteChildren: TableRouteChildren = {
-  TableTablesTableIdRoute: TableTablesTableIdRoute,
+const RoomRouteChildren: RoomRouteChildren = {
+  RoomSpacesSpaceIdRoomsRoomIdRoute: RoomSpacesSpaceIdRoomsRoomIdRoute,
 }
 
-const TableRouteWithChildren = TableRoute._addFileChildren(TableRouteChildren)
+const RoomRouteWithChildren = RoomRoute._addFileChildren(RoomRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
-  TableRoute: TableRouteWithChildren,
+  RoomRoute: RoomRouteWithChildren,
   AboutRoute: AboutRoute,
 }
 export const routeTree = rootRouteImport
