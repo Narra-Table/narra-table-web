@@ -137,8 +137,8 @@ function RailIdentity({ compact }: { compact: boolean }) {
           compact ? 'opacity-0 w-0' : 'opacity-100 delay-150 w-auto',
         ].join(' ')}
       >
-        <span className="block truncate text-sm font-medium">滩间铁_半拍</span>
-        <span className="block truncate text-xs text-text-muted">@hanpai</span>
+        <span className="block truncate text-sm font-medium">一只故桌娘</span>
+        <span className="block truncate text-xs text-text-muted">@guzhuoniang</span>
       </span>
     </Link>
   );

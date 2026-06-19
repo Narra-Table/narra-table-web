@@ -138,8 +138,8 @@ function ProfileSettings() {
           <AvatarImage src="/avatar.webp" alt="用户头像" />
         </Avatar>
         <div>
-          <p className="text-base font-semibold">滩间铁_半拍</p>
-          <p className="mt-0.5 text-sm text-text-muted">@hanpai</p>
+          <p className="text-base font-semibold">一只故桌娘</p>
+          <p className="mt-0.5 text-sm text-text-muted">@guzhuoniang</p>
         </div>
       </div>
       <div>
