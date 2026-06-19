@@ -48,7 +48,6 @@ function useVisiblePanelItems(itemCount: number) {
 
 function SpaceCard({ space }: { space: SpaceSummary }) {
   const memberCount = space.memberCount ?? 0;
-  const capacity = Math.max(6, memberCount);
 
   return (
     <article className="group flex min-h-[138px] cursor-pointer overflow-hidden rounded-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted">
@@ -96,10 +95,7 @@ function SpaceCard({ space }: { space: SpaceSummary }) {
               </div>
             )}
           </div>
-          <span className="text-xs text-text-muted">
-            {memberCount}/{capacity}
-            {memberCount >= 6 && <span className="ml-1 opacity-60">（已满）</span>}
-          </span>
+          <span className="text-xs text-text-muted">{memberCount} 人</span>
         </div>
       </div>
     </article>
@@ -159,8 +155,8 @@ function RecentCharacters() {
         <p className="text-center text-xs text-text-muted">还没有任何角色</p>
       ) : (
         <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
-          {masks.slice(0, visibleCount).map((mask) => (
-            <li key={mask.maskId} className="flex items-center gap-3">
+          {masks.slice(0, visibleCount).map((mask, i) => (
+            <li key={mask.maskId ?? i} className="flex items-center gap-3">
               <Avatar className="size-10 shrink-0 ring-1 ring-border">
                 <AvatarImage src={picsum(mask.maskId ?? 'mask', 80)} alt={mask.name} />
               </Avatar>
@@ -199,8 +195,8 @@ function RecentAssets() {
         <p className="text-center text-xs text-text-muted">还没有任何素材</p>
       ) : (
         <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
-          {resources.slice(0, visibleCount).map((resource) => (
-            <li key={resource.resourceId} className="flex items-center gap-3">
+          {resources.slice(0, visibleCount).map((resource, i) => (
+            <li key={resource.resourceId ?? i} className="flex items-center gap-3">
               <Avatar className="size-10 shrink-0 rounded-thumb ring-1 ring-border">
                 <AvatarImage src={picsum(resource.resourceId ?? 'res', 80)} alt={resource.name} />
               </Avatar>
@@ -239,8 +235,8 @@ function MyDiceBots() {
         <p className="text-center text-xs text-text-muted">还没有任何骰娘</p>
       ) : (
         <div className="flex flex-wrap gap-5">
-          {bots.map((bot) => (
-            <div key={bot.maskId} className="flex flex-col items-center gap-1.5">
+          {bots.map((bot, i) => (
+            <div key={bot.maskId ?? i} className="flex flex-col items-center gap-1.5">
               <Avatar className="size-12 ring-2 ring-accent/30 transition-all hover:ring-accent/60">
                 <AvatarImage src={picsum(bot.maskId ?? 'bot', 120)} alt={bot.name} />
               </Avatar>

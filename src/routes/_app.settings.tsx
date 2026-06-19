@@ -36,7 +36,7 @@ type SettingsSection = 'appearance' | 'profile';
 
 function SettingsPage() {
   const [theme, setTheme] = useState<AppTheme>(getStoredTheme);
-  const [section, setSection] = useState<SettingsSection>('appearance');
+  const [section, setSection] = useState<SettingsSection>('profile');
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
