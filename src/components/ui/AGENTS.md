@@ -1,7 +1,8 @@
 # src/components/ui
 
 shadcn 组件目录。通过 `pnpm dlx shadcn@latest add <组件名>` 复制进来，源码归项目所有。
-样式必须使用项目 token，**禁止**使用 `dark:` variant 或硬编码颜色。
+
+颜色、字号、圆角使用 `docs/DESIGN.md` 语义 token，禁止任意值和 `dark:` variant。
 
 需要新组件或当前组件不满足需求时，参考官网：
 

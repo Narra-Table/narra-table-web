@@ -53,19 +53,35 @@ MiSans
 
 **禁止**使用 `dark:` variant。项目通过 `data-theme` 属性切换主题，所有颜色已通过 `--theme-*` 变量自动跟随主题变化，无需也不应手动区分明暗模式。
 
+### 主题列表
+
+在根元素上设置 `data-theme` 属性即可切换主题：
+
+| `data-theme`  | 色调        | 强调色         |
+| ------------- | ----------- | -------------- |
+| `kraft-teal`  | 浅色·暖米色 | 青绿 `#0da898` |
+| `kraft-brown` | 浅色·暖米色 | 棕褐 `#8b5a35` |
+| `kraft-pink`  | 浅色·暖米色 | 粉红 `#f28bb8` |
+| `pure-white`  | 浅色·黑白   | 近黑 `#0f0f0f` |
+| `black-green` | 深色·纯黑   | 翠绿 `#22c55e` |
+| `black-blue`  | 深色·纯黑   | 蓝色 `#3b82f6` |
+| `ink-gold`    | 深色·墨绿   | 金色 `#d9d2b0` |
+
+基础暖米色调色板定义在 `:root`，三个 kraft 变体仅覆盖 `--theme-accent`。
+
 ## 圆角（`--radius-*`）
 
 使用**语义别名**，不使用数字级别名（`rounded-xl / 2xl / 3xl`）：
 
-| 工具类            | 大小  | 用途                                     |
-| ----------------- | ----- | ---------------------------------------- |
-| `rounded-sm`      | 2 px  | 内联 Badge、极小 Chip（Tailwind 内置）   |
-| `rounded`         | 4 px  | 最小圆角（Tailwind 内置）                |
-| `rounded-lg`      | 8 px  | 图标按钮悬停区域、缩略图、侧边栏导航条目 |
-| `rounded-control` | 12 px | **按钮、输入框、表单控件**               |
-| `rounded-card`    | 16 px | **卡片、导航条目、悬浮按钮（FAB）**      |
-| `rounded-overlay` | 24 px | **遮罩层、抽屉、弹窗、气泡**             |
-| `rounded-full`    | ∞     | 头像、圆形图标                           |
+| 工具类            | 大小  | 用途                                   |
+| ----------------- | ----- | -------------------------------------- |
+| `rounded-sm`      | 2 px  | 内联 Badge、极小 Chip（Tailwind 内置） |
+| `rounded`         | 4 px  | 最小圆角（Tailwind 内置）              |
+| `rounded-thumb`   | 8 px  | 小缩略图、图标容器                     |
+| `rounded-control` | 12 px | **按钮、输入框、表单控件**             |
+| `rounded-card`    | 16 px | **卡片、导航条目、悬浮按钮（FAB）**    |
+| `rounded-overlay` | 24 px | **遮罩层、抽屉、弹窗、气泡**           |
+| `rounded-full`    | ∞     | 头像、圆形图标                         |
 
 **规则**：同一语义元素在全局只选一个圆角值，不允许不同页面对同类控件使用不同圆角。
 
@@ -94,3 +110,31 @@ MiSans
 | 组件内元素       | `gap-4`   |
 | 区块分隔         | `gap-6`   |
 | 页面级区块       | `gap-8`   |
+
+---
+
+## 自定义 Tailwind Variant
+
+针对 Radix UI 的 `data-state` / `data-*` 属性，项目注册了以下 variant，可直接用于 className：
+
+| Variant            | 匹配条件                                                 |
+| ------------------ | -------------------------------------------------------- |
+| `data-open:`       | `data-state="open"` 或 `data-open`（非 false）           |
+| `data-closed:`     | `data-state="closed"` 或 `data-closed`（非 false）       |
+| `data-checked:`    | `data-state="checked"` 或 `data-checked`（非 false）     |
+| `data-unchecked:`  | `data-state="unchecked"` 或 `data-unchecked`（非 false） |
+| `data-selected:`   | `data-selected="true"`                                   |
+| `data-disabled:`   | `data-disabled="true"` 或 `data-disabled`（非 false）    |
+| `data-active:`     | `data-state="active"` 或 `data-active`（非 false）       |
+| `data-horizontal:` | `data-orientation="horizontal"`                          |
+| `data-vertical:`   | `data-orientation="vertical"`                            |
+
+示例：`data-open:opacity-100 data-closed:opacity-0`
+
+---
+
+## 工具类
+
+| 类名                          | 说明                                      |
+| ----------------------------- | ----------------------------------------- |
+| `scroll-subtle-native-hidden` | 隐藏原生滚动条（`scrollbar-width: none`） |

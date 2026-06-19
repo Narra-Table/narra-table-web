@@ -24,3 +24,9 @@ Narra Table Web 是一个 TRPG 平台，基于 Vite+ 0.1.21、React 19、TypeScr
 
 - 使用 TypeScript 严格模式。
 - 使用 Tailwind CSS utility classes 编写样式。不要编写原始 CSS 或内联 `style` 属性。
+
+### 样式系统约束
+
+颜色、字号、圆角必须使用 `docs/DESIGN.md` 中的语义 token。禁止对这三类使用任意值。禁止 `dark:` variant，项目通过 `data-theme` 切换主题。
+
+> **⚠️ Tailwind 内置颜色类（`text-red-500` 等）和字号类（`text-sm` 默认值等）在本项目中不生效——`src/style.css` 已将其清空并替换为语义 token。**
