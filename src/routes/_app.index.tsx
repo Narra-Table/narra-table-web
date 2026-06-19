@@ -1,34 +1,17 @@
+import type { SpaceSummary } from '@narratable/protocol';
 import { createFileRoute } from '@tanstack/react-router';
 import { ChevronRight, MoreHorizontal, Plus, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useSpacesQuery } from '@/features/spaces/queries';
-import type { SpaceSummary } from '@/types/protocol';
+import {
+  useGetApiSpaces,
+  useGetApiSpacesSpaceIdMasks,
+  useGetApiSpacesSpaceIdResources,
+} from '@/api';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
-// ── Static right-panel data ───────────────────────────────────────────────────
-
-const RECENT_CHARACTERS = [
-  { id: '1', name: '铃木·空', seed: 'suzuki' },
-  { id: '2', name: '艾琳娜·夜蒿', seed: 'airina' },
-  { id: '3', name: '陆离', seed: 'luli' },
-  { id: '4', name: '卡尔', seed: 'karl' },
-  { id: '5', name: '林小满', seed: 'linxm' },
-] as const;
-
-const RECENT_ASSETS = [
-  { id: '1', name: '旧图书馆地图', date: '2026.3.19', seed: 'library_map' },
-  { id: '2', name: '神秘符文纹理', date: '2026.3.18', seed: 'rune_texture' },
-  { id: '3', name: '复古信纸套装', date: '2026.3.17', seed: 'vintage_paper' },
-  { id: '4', name: '怪物图鉴：下层生物', date: '2026.3.16', seed: 'monster_book' },
-  { id: '5', name: '蒸汽朋克UI组件', date: '2026.3.14', seed: 'steampunk_ui' },
-] as const;
-
-const DICE_BOTS = [
-  { id: '1', name: '小骰', seed: 'dicebot1' },
-  { id: '2', name: '艾莉丝', seed: 'dicebot2' },
-  { id: '3', name: '雷娜', seed: 'dicebot3' },
-  { id: '4', name: '绫音', seed: 'dicebot4' },
-  { id: '5', name: '星野梦', seed: 'dicebot5' },
-] as const;
+// ── Right-panel mock space ID ─────────────────────────────────────────────────
+// No cross-space endpoint exists yet; any spaceId is valid in mock mode.
+const MOCK_SPACE_ID = '__dashboard__';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -64,6 +47,9 @@ function useVisiblePanelItems(itemCount: number) {
 // ── SpaceCard ─────────────────────────────────────────────────────────────────
 
 function SpaceCard({ space }: { space: SpaceSummary }) {
+  const memberCount = space.memberCount ?? 0;
+  const capacity = Math.max(6, memberCount);
+
   return (
     <article className="group flex min-h-[138px] cursor-pointer overflow-hidden rounded-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted">
       {/* Cover */}
@@ -79,7 +65,9 @@ function SpaceCard({ space }: { space: SpaceSummary }) {
       <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-3 py-2">
         {/* Title row */}
         <div className="flex items-center gap-1.5">
-          <span className="min-w-0 truncate text-lg font-semibold text-text">{space.name}</span>
+          <span className="min-w-0 truncate text-lg font-semibold text-text">
+            {space.name ?? '未命名空间'}
+          </span>
           <button
             type="button"
             className="ml-auto shrink-0 rounded-thumb p-0.5 text-text-muted opacity-0 transition-opacity group-hover:opacity-100 hover:text-text"
@@ -96,19 +84,21 @@ function SpaceCard({ space }: { space: SpaceSummary }) {
 
         {/* Footer */}
         <div className="mt-auto flex items-center gap-2 pt-1">
-          <div className="flex">
-            {Array.from({ length: Math.min(4, space.memberCount) }).map((_, i) => (
-              <img
-                key={i}
-                src={picsum(`${space.spaceId}_m${i}`, 24)}
-                alt=""
-                className="-ml-1.5 size-6 rounded-full border-2 border-surface first:ml-0"
-              />
+          <div className="flex -space-x-1.5">
+            {Array.from({ length: Math.min(4, memberCount) }, (_, i) => (
+              <Avatar key={i} className="size-6 ring-2 ring-surface">
+                <AvatarImage src={picsum(`${space.spaceId}_m${i}`, 24)} />
+              </Avatar>
             ))}
+            {memberCount > 4 && (
+              <div className="flex size-6 items-center justify-center rounded-full bg-surface-muted text-2xs font-medium text-text-muted ring-2 ring-surface">
+                +{memberCount - 4}
+              </div>
+            )}
           </div>
           <span className="text-xs text-text-muted">
-            {space.memberCount}/{Math.max(6, space.memberCount)}
-            {space.memberCount >= 6 && <span className="ml-1 opacity-60">（已满）</span>}
+            {memberCount}/{capacity}
+            {memberCount >= 6 && <span className="ml-1 opacity-60">（已满）</span>}
           </span>
         </div>
       </div>
@@ -118,7 +108,15 @@ function SpaceCard({ space }: { space: SpaceSummary }) {
 
 // ── Right-panel sections ──────────────────────────────────────────────────────
 
-function PanelSection({ title, children }: { title: string; children: React.ReactNode }) {
+function PanelSection({
+  title,
+  actionLabel = '查看全部',
+  children,
+}: {
+  title: string;
+  actionLabel?: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex h-full flex-col">
       <div className="mb-5 flex items-center justify-between">
@@ -127,7 +125,7 @@ function PanelSection({ title, children }: { title: string; children: React.Reac
           type="button"
           className="flex items-center gap-0.5 text-xs text-accent hover:opacity-80"
         >
-          查看全部
+          {actionLabel}
           <ChevronRight className="size-3.5" />
         </button>
       </div>
@@ -137,62 +135,122 @@ function PanelSection({ title, children }: { title: string; children: React.Reac
 }
 
 function RecentCharacters() {
-  const { listRef, visibleCount } = useVisiblePanelItems(RECENT_CHARACTERS.length);
+  const { listRef, visibleCount } = useVisiblePanelItems(5);
+  const { data: masks = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
+    query: {
+      select: (res) => {
+        const list =
+          (
+            res.data as {
+              masks?: { maskId?: string; name?: string; type?: string; updatedAt?: string }[];
+            }
+          )?.masks ?? [];
+        return list
+          .filter((m) => m.type !== 'system')
+          .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
+          .slice(0, 5);
+      },
+    },
+  });
 
   return (
-    <PanelSection title="最近编辑的角色">
-      <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
-        {RECENT_CHARACTERS.slice(0, visibleCount).map((char) => (
-          <li key={char.id} className="flex items-center gap-3">
-            <img
-              src={picsum(char.seed, 80)}
-              alt={char.name}
-              className="size-10 shrink-0 rounded-full object-cover ring-1 ring-border"
-            />
-            <p className="min-w-0 flex-1 truncate text-sm font-medium text-text">{char.name}</p>
-          </li>
-        ))}
-      </ul>
+    <PanelSection title="最近编辑的角色" actionLabel={masks.length === 0 ? '去创建' : '查看全部'}>
+      {masks.length === 0 ? (
+        <p className="text-center text-xs text-text-muted">还没有任何角色</p>
+      ) : (
+        <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
+          {masks.slice(0, visibleCount).map((mask) => (
+            <li key={mask.maskId} className="flex items-center gap-3">
+              <Avatar className="size-10 shrink-0 ring-1 ring-border">
+                <AvatarImage src={picsum(mask.maskId ?? 'mask', 80)} alt={mask.name} />
+              </Avatar>
+              <p className="min-w-0 flex-1 truncate text-sm font-medium text-text">
+                {mask.name ?? '未命名角色'}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </PanelSection>
   );
 }
 
 function RecentAssets() {
-  const { listRef, visibleCount } = useVisiblePanelItems(RECENT_ASSETS.length);
+  const { listRef, visibleCount } = useVisiblePanelItems(5);
+  const { data: resources = [] } = useGetApiSpacesSpaceIdResources(MOCK_SPACE_ID, {
+    query: {
+      select: (res) => {
+        const list =
+          (res.data as { resources?: { resourceId?: string; name?: string; createdAt?: string }[] })
+            ?.resources ?? [];
+        return list
+          .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''))
+          .slice(0, 5);
+      },
+    },
+  });
 
   return (
-    <PanelSection title="最新上传的素材">
-      <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
-        {RECENT_ASSETS.slice(0, visibleCount).map((asset) => (
-          <li key={asset.id} className="flex items-center gap-3">
-            <img
-              src={picsum(asset.seed, 80)}
-              alt={asset.name}
-              className="size-10 shrink-0 rounded-thumb object-cover ring-1 ring-border"
-            />
-            <p className="min-w-0 flex-1 truncate text-sm text-text">{asset.name}</p>
-          </li>
-        ))}
-      </ul>
+    <PanelSection
+      title="最新上传的素材"
+      actionLabel={resources.length === 0 ? '去上传' : '查看全部'}
+    >
+      {resources.length === 0 ? (
+        <p className="text-center text-xs text-text-muted">还没有任何素材</p>
+      ) : (
+        <ul ref={listRef} className="flex flex-1 flex-col gap-3 overflow-hidden">
+          {resources.slice(0, visibleCount).map((resource) => (
+            <li key={resource.resourceId} className="flex items-center gap-3">
+              <Avatar className="size-10 shrink-0 rounded-thumb ring-1 ring-border">
+                <AvatarImage src={picsum(resource.resourceId ?? 'res', 80)} alt={resource.name} />
+              </Avatar>
+              <p className="min-w-0 flex-1 truncate text-sm text-text">
+                {resource.name ?? '未命名素材'}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </PanelSection>
   );
 }
 
 function MyDiceBots() {
+  const { data: bots = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
+    query: {
+      select: (res) => {
+        const list =
+          (
+            res.data as {
+              masks?: { maskId?: string; name?: string; type?: string; updatedAt?: string }[];
+            }
+          )?.masks ?? [];
+        return list
+          .filter((m) => m.type === 'system')
+          .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
+          .slice(0, 3);
+      },
+    },
+  });
+
   return (
-    <PanelSection title="我的骰娘">
-      <div className="flex flex-wrap gap-5">
-        {DICE_BOTS.slice(0, 3).map((bot) => (
-          <div key={bot.id} className="flex flex-col items-center gap-1.5">
-            <img
-              src={picsum(bot.seed, 120)}
-              alt={bot.name}
-              className="size-12 rounded-full object-cover ring-2 ring-accent/30 transition-all hover:ring-accent/60"
-            />
-            <span className="text-xs font-medium text-text">{bot.name}</span>
-          </div>
-        ))}
-      </div>
+    <PanelSection title="我的骰娘" actionLabel={bots.length === 0 ? '去添加' : '查看全部'}>
+      {bots.length === 0 ? (
+        <p className="text-center text-xs text-text-muted">还没有任何骰娘</p>
+      ) : (
+        <div className="flex flex-wrap gap-5">
+          {bots.map((bot) => (
+            <div key={bot.maskId} className="flex flex-col items-center gap-1.5">
+              <Avatar className="size-12 ring-2 ring-accent/30 transition-all hover:ring-accent/60">
+                <AvatarImage src={picsum(bot.maskId ?? 'bot', 120)} alt={bot.name} />
+              </Avatar>
+              <span className="w-12 truncate text-center text-xs font-medium text-text">
+                {bot.name ?? '未命名'}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </PanelSection>
   );
 }
@@ -200,7 +258,11 @@ function MyDiceBots() {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function DashboardPage() {
-  const { data: spaces = [], isLoading } = useSpacesQuery();
+  const { data: spaces = [], isLoading } = useGetApiSpaces({
+    query: {
+      select: (res) => (res.data as unknown as { spaces: SpaceSummary[] })?.spaces ?? [],
+    },
+  });
 
   return (
     <div className="flex h-full bg-app-bg">
@@ -232,8 +294,8 @@ function DashboardPage() {
           <SpacesGridSkeleton />
         ) : (
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-            {spaces.map((space) => (
-              <SpaceCard key={space.spaceId} space={space} />
+            {spaces.map((space, i) => (
+              <SpaceCard key={space.spaceId ?? i} space={space} />
             ))}
           </div>
         )}
