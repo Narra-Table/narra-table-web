@@ -6,6 +6,10 @@ import {
   useGetApiSpacesSpaceIdMasks,
   useGetApiSpacesSpaceIdResources,
 } from '@/api';
+import type {
+  getApiSpacesSpaceIdMasksResponseSuccess,
+  getApiSpacesSpaceIdResourcesResponseSuccess,
+} from '@/api';
 import type { InternalHandlerSpaceSummary } from '@/api/model';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
@@ -141,7 +145,7 @@ function RecentCharacters() {
   const { data: masks = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
     query: {
       select: (res) => {
-        const list = res.status === 200 ? (res.data.masks ?? []) : [];
+        const list = (res as getApiSpacesSpaceIdMasksResponseSuccess).data.masks ?? [];
         return list
           .filter((m) => m.type !== 'system')
           .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
@@ -177,7 +181,7 @@ function RecentAssets() {
   const { data: resources = [] } = useGetApiSpacesSpaceIdResources(MOCK_SPACE_ID, {
     query: {
       select: (res) => {
-        const list = res.status === 200 ? (res.data.resources ?? []) : [];
+        const list = (res as getApiSpacesSpaceIdResourcesResponseSuccess).data.resources ?? [];
         return list
           .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''))
           .slice(0, 5);
@@ -214,7 +218,7 @@ function MyDiceBots() {
   const { data: bots = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
     query: {
       select: (res) => {
-        const list = res.status === 200 ? (res.data.masks ?? []) : [];
+        const list = (res as getApiSpacesSpaceIdMasksResponseSuccess).data.masks ?? [];
         return list
           .filter((m) => m.type === 'system')
           .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
