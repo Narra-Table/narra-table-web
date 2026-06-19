@@ -1,4 +1,3 @@
-import type { SpaceSummary } from '@narratable/protocol';
 import { createFileRoute } from '@tanstack/react-router';
 import { ChevronRight, MoreHorizontal, Plus, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -7,7 +6,14 @@ import {
   useGetApiSpacesSpaceIdMasks,
   useGetApiSpacesSpaceIdResources,
 } from '@/api';
+import type { InternalHandlerSpaceSummary } from '@/api/model';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+
+// API 生成类型尚未包含 avatar/description，在此扩展
+type SpaceListItem = InternalHandlerSpaceSummary & {
+  avatar?: string;
+  description?: string;
+};
 
 // ── Right-panel mock space ID ─────────────────────────────────────────────────
 // No cross-space endpoint exists yet; any spaceId is valid in mock mode.
@@ -46,7 +52,7 @@ function useVisiblePanelItems(itemCount: number) {
 
 // ── SpaceCard ─────────────────────────────────────────────────────────────────
 
-function SpaceCard({ space }: { space: SpaceSummary }) {
+function SpaceCard({ space }: { space: SpaceListItem }) {
   const memberCount = space.memberCount ?? 0;
 
   return (
@@ -54,7 +60,7 @@ function SpaceCard({ space }: { space: SpaceSummary }) {
       {/* Cover */}
       <div className="relative w-[138px] shrink-0 self-stretch overflow-hidden bg-surface-muted">
         <img
-          src={space.avatar ?? picsum(space.spaceId, 200)}
+          src={space.avatar ?? picsum(space.spaceId ?? 'space', 200)}
           alt={space.name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
@@ -135,12 +141,7 @@ function RecentCharacters() {
   const { data: masks = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
     query: {
       select: (res) => {
-        const list =
-          (
-            res.data as {
-              masks?: { maskId?: string; name?: string; type?: string; updatedAt?: string }[];
-            }
-          )?.masks ?? [];
+        const list = res.status === 200 ? (res.data.masks ?? []) : [];
         return list
           .filter((m) => m.type !== 'system')
           .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
@@ -176,9 +177,7 @@ function RecentAssets() {
   const { data: resources = [] } = useGetApiSpacesSpaceIdResources(MOCK_SPACE_ID, {
     query: {
       select: (res) => {
-        const list =
-          (res.data as { resources?: { resourceId?: string; name?: string; createdAt?: string }[] })
-            ?.resources ?? [];
+        const list = res.status === 200 ? (res.data.resources ?? []) : [];
         return list
           .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''))
           .slice(0, 5);
@@ -215,12 +214,7 @@ function MyDiceBots() {
   const { data: bots = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
     query: {
       select: (res) => {
-        const list =
-          (
-            res.data as {
-              masks?: { maskId?: string; name?: string; type?: string; updatedAt?: string }[];
-            }
-          )?.masks ?? [];
+        const list = res.status === 200 ? (res.data.masks ?? []) : [];
         return list
           .filter((m) => m.type === 'system')
           .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
@@ -256,7 +250,7 @@ function MyDiceBots() {
 function DashboardPage() {
   const { data: spaces = [], isLoading } = useGetApiSpaces({
     query: {
-      select: (res) => (res.data as unknown as { spaces: SpaceSummary[] })?.spaces ?? [],
+      select: (res) => (res.data.spaces ?? []) as SpaceListItem[],
     },
   });
 
