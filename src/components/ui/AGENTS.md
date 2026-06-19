@@ -76,3 +76,53 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
   )}
 </div>
 ```
+
+---
+
+## Tooltip
+
+`tooltip.tsx` — 底层 `@radix-ui/react-tooltip`
+
+### 子组件
+
+| 子组件            | 说明                                                       |
+| ----------------- | ---------------------------------------------------------- |
+| `TooltipProvider` | 根 Provider，通常放在应用顶层，控制全局 `delayDuration` 等 |
+| `Tooltip`         | 单个 Tooltip 的根容器                                      |
+| `TooltipTrigger`  | 触发元素，悬停时显示内容                                   |
+| `TooltipContent`  | 浮层内容，默认 `sideOffset=6`，带淡入/缩放动画和小箭头     |
+
+### 用法
+
+```tsx
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+```
+
+**基础**
+
+```tsx
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <button>悬停我</button>
+    </TooltipTrigger>
+    <TooltipContent>提示文本</TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+```
+
+**调整弹出方向**
+
+```tsx
+<TooltipContent side="bottom">提示文本</TooltipContent>
+```
+
+**包裹不可交互元素**（需要 `asChild` + `span` 包裹）
+
+```tsx
+<TooltipTrigger asChild>
+  <span>
+    <button disabled>禁用按钮</button>
+  </span>
+</TooltipTrigger>
+```
