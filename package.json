@@ -14,6 +14,7 @@
   "dependencies": {
     "@narratable/protocol": "github:Narra-Table/protocol",
     "@radix-ui/react-avatar": "^1.2.0",
+    "@radix-ui/react-tooltip": "^1.2.10",
     "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-query": "^5.100.14",
     "@tanstack/react-router": "^1.169.2",

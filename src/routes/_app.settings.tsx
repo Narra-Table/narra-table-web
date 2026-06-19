@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { LogOut, Palette, UserRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const themeOptions = [
   { backgroundTheme: 'pure-white', id: 'pure-white', label: '纯白主题' },
@@ -166,18 +167,20 @@ function AppearanceSettings({
     <section>
       <h2 className="text-xl font-semibold mb-6">主题</h2>
       <p className="mt-2 text-sm text-text-muted mb-6">选择界面配色</p>
-      <div className="mt-5 flex flex-wrap gap-3">
-        {themeOptions.map((option) => (
-          <ThemeOption
-            active={theme === option.id}
-            backgroundTheme={option.backgroundTheme}
-            key={option.id}
-            label={option.label}
-            onClick={() => onThemeChange(option.id)}
-            theme={option.id}
-          />
-        ))}
-      </div>
+      <TooltipProvider delayDuration={300}>
+        <div className="mt-5 flex flex-wrap gap-3">
+          {themeOptions.map((option) => (
+            <ThemeOption
+              active={theme === option.id}
+              backgroundTheme={option.backgroundTheme}
+              key={option.id}
+              label={option.label}
+              onClick={() => onThemeChange(option.id)}
+              theme={option.id}
+            />
+          ))}
+        </div>
+      </TooltipProvider>
     </section>
   );
 }
@@ -196,21 +199,25 @@ function ThemeOption({
   theme: AppTheme;
 }) {
   return (
-    <button
-      type="button"
-      aria-label={label}
-      data-theme={theme}
-      onClick={onClick}
-      className={[
-        'flex w-16 cursor-pointer flex-col overflow-hidden rounded-xl border-2 transition duration-200',
-        active ? 'border-accent' : 'border-border-subtle hover:border-border',
-      ].join(' ')}
-    >
-      {/* 色彩预览区 */}
-      <div className="relative h-14 overflow-hidden">
-        <div className="absolute inset-0 bg-app-bg" data-theme={backgroundTheme} />
-        <div className="absolute bottom-2 left-2.5 right-2.5 h-1.5 rounded-full bg-accent" />
-      </div>
-    </button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          aria-label={label}
+          data-theme={theme}
+          onClick={onClick}
+          className={[
+            'flex w-18 cursor-pointer flex-col overflow-hidden rounded-xl border-2 transition duration-200',
+            active ? 'border-accent' : 'border-border-subtle hover:border-border',
+          ].join(' ')}
+        >
+          <div className="relative h-14 overflow-hidden">
+            <div className="absolute inset-0 bg-app-bg" data-theme={backgroundTheme} />
+            <div className="absolute bottom-2 left-2.5 right-2.5 h-1.5 rounded-full bg-accent" />
+          </div>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
   );
 }
