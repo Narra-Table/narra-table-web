@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Check, LogOut, Palette, UserRound } from 'lucide-react';
+import { LogOut, Palette, UserRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
@@ -165,7 +165,7 @@ function AppearanceSettings({
   return (
     <section>
       <h2 className="text-xl font-semibold mb-6">主题</h2>
-      <p className="mt-2 text-sm text-text-muted mb-6">默认主题</p>
+      <p className="mt-2 text-sm text-text-muted mb-6">选择界面配色</p>
       <div className="mt-5 flex flex-wrap gap-3">
         {themeOptions.map((option) => (
           <ThemeOption
@@ -199,32 +199,18 @@ function ThemeOption({
     <button
       type="button"
       aria-label={label}
-      className={[
-        'relative size-12 overflow-hidden rounded-lg bg-app-bg transition',
-        active ? 'border-2 border-accent' : 'border border-border-subtle hover:border-border',
-      ].join(' ')}
       data-theme={theme}
       onClick={onClick}
-      title={label}
+      className={[
+        'flex w-16 cursor-pointer flex-col overflow-hidden rounded-xl border-2 transition duration-200',
+        active ? 'border-accent' : 'border-border-subtle hover:border-border',
+      ].join(' ')}
     >
-      <span className="absolute inset-0 bg-app-bg" data-theme={backgroundTheme} />
-      <span
-        className={[
-          'absolute right-0 top-0 size-6 origin-top-right bg-accent transition-[transform] duration-200 ease-out [clip-path:polygon(0_0,100%_0,100%_100%)]',
-          active ? 'scale-100' : 'scale-95',
-        ].join(' ')}
-        data-theme={theme}
-      />
-      <span className="absolute right-0 top-0 grid size-6 place-items-start justify-items-end p-0.5">
-        <Check
-          className={[
-            'size-3 text-accent-text transition duration-200 ease-out',
-            active ? 'scale-100 opacity-100' : 'scale-50 opacity-0',
-          ].join(' ')}
-          strokeWidth={3}
-          aria-hidden="true"
-        />
-      </span>
+      {/* 色彩预览区 */}
+      <div className="relative h-14 overflow-hidden">
+        <div className="absolute inset-0 bg-app-bg" data-theme={backgroundTheme} />
+        <div className="absolute bottom-2 left-2.5 right-2.5 h-1.5 rounded-full bg-accent" />
+      </div>
     </button>
   );
 }
