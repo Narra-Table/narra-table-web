@@ -21,7 +21,13 @@ export default defineConfig({
     tailwindcss(),
   ],
   fmt: {
-    ignorePatterns: ['dist/**', '*.min.js', 'src/routeTree.gen.ts'],
+    ignorePatterns: [
+      'dist/**',
+      '*.min.js',
+      'src/routeTree.gen.ts',
+      'src/api/**',
+      'src/mocks/index.msw.ts',
+    ],
     sortImports: {
       newlinesBetween: false,
     },
@@ -31,6 +37,7 @@ export default defineConfig({
     tabWidth: 2,
   },
   lint: {
+    ignorePatterns: ['src/api/**', 'src/mocks/index.msw.ts'],
     options: {
       typeAware: true,
       typeCheck: true,

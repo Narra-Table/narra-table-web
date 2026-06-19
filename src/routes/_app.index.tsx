@@ -2,8 +2,8 @@ import type { SpaceSummary } from '@narratable/protocol';
 import { createFileRoute } from '@tanstack/react-router';
 import { ChevronRight, MoreHorizontal, Plus, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useGetApiSpaces } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { useSpacesQuery } from '@/features/spaces/queries';
 
 // ── Static right-panel data ───────────────────────────────────────────────────
 
@@ -197,7 +197,11 @@ function MyDiceBots() {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function DashboardPage() {
-  const { data: spaces = [], isLoading } = useSpacesQuery();
+  const { data: spaces = [], isLoading } = useGetApiSpaces({
+    query: {
+      select: (res) => (res.data as unknown as { spaces: SpaceSummary[] })?.spaces ?? [],
+    },
+  });
 
   return (
     <div className="flex h-full bg-app-bg">

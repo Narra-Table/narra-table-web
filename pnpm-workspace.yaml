@@ -4,6 +4,7 @@
 # Pin versions here to guarantee reproducible installs across machines/CI.
 
 allowBuilds:
+  esbuild: true
   msw: false
 
 catalog:
