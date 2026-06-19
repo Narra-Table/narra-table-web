@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from 'react';
 import type { ComponentType } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { initTheme } from '@/lib/theme';
 
 type AppNavLink = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
@@ -40,18 +41,7 @@ const AppLayout = () => {
     'Narra Table';
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('narra-theme');
-    const supportedThemes = [
-      'warm',
-      'brown',
-      'pink',
-      'pure-white',
-      'black-green',
-      'black-blue',
-      'ink-gold',
-    ];
-    const nextTheme = storedTheme && supportedThemes.includes(storedTheme) ? storedTheme : 'warm';
-    document.documentElement.dataset.theme = nextTheme;
+    initTheme();
   }, []);
 
   return (
@@ -66,7 +56,7 @@ const AppLayout = () => {
           <button
             type="button"
             onClick={() => setIsCollapsed((c) => !c)}
-            className="mb-3 grid size-11 shrink-0 place-items-center rounded-2xl transition-colors duration-200 hover:bg-surface-muted"
+            className="mb-3 grid size-11 shrink-0 place-items-center rounded-card transition-colors duration-200 hover:bg-surface-muted"
             aria-label={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
             title={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
           >
@@ -150,7 +140,7 @@ function RailLink({ compact = false, icon: Icon, label, to }: AppNavLink & { com
       to={to}
       preload="intent"
       className={[
-        'group grid h-10 items-center overflow-hidden rounded-2xl text-base font-normal tracking-normal text-text transition-colors duration-200 hover:bg-surface-muted hover:text-accent [&.active]:bg-surface-muted [&.active]:font-semibold [&.active]:text-accent',
+        'group grid h-10 items-center overflow-hidden rounded-card text-base font-normal tracking-normal text-text transition-colors duration-200 hover:bg-surface-muted hover:text-accent [&.active]:bg-surface-muted [&.active]:font-semibold [&.active]:text-accent',
         compact ? 'w-10 grid-cols-[40px_0px]' : 'w-full grid-cols-[40px_minmax(0,1fr)]',
       ].join(' ')}
       aria-label={label}

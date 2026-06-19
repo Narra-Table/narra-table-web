@@ -1,36 +1,23 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { LogOut, Palette, UserRoundKey } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { type AppTheme, getStoredTheme, saveTheme } from '@/lib/theme';
 
 const themeOptions = [
-  { backgroundTheme: 'pure-white', id: 'pure-white', label: '纯白主题' },
-  { backgroundTheme: 'warm', id: 'brown', label: '暖棕主题' },
-  { backgroundTheme: 'warm', id: 'pink', label: '桃粉主题' },
+  { backgroundTheme: 'kraft-teal', id: 'kraft-teal', label: '青绿主题' },
+  { backgroundTheme: 'kraft-teal', id: 'kraft-brown', label: '暖棕主题' },
+  { backgroundTheme: 'kraft-teal', id: 'kraft-pink', label: '桃粉主题' },
+  { backgroundTheme: 'pure-white', id: 'pure-white', label: '黑白主题' },
   { backgroundTheme: 'black-green', id: 'black-green', label: '黑绿主题' },
   { backgroundTheme: 'black-blue', id: 'black-blue', label: '黑蓝主题' },
   { backgroundTheme: 'ink-gold', id: 'ink-gold', label: '墨金主题' },
 ] as const;
 
-type AppTheme = 'warm' | (typeof themeOptions)[number]['id'];
-
-const THEME_STORAGE_KEY = 'narra-theme';
-
 export const Route = createFileRoute('/_app/settings')({
   component: SettingsPage,
 });
-
-function getStoredTheme(): AppTheme {
-  if (typeof window === 'undefined') return 'warm';
-
-  const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  return isAppTheme(storedTheme) ? storedTheme : 'warm';
-}
-
-function isAppTheme(theme: string | null): theme is AppTheme {
-  return theme === 'warm' || themeOptions.some((option) => option.id === theme);
-}
 
 type SettingsSection = 'appearance' | 'profile';
 
@@ -38,15 +25,15 @@ function SettingsPage() {
   const [theme, setTheme] = useState<AppTheme>(getStoredTheme);
   const [section, setSection] = useState<SettingsSection>('profile');
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }, [theme]);
+  function handleThemeChange(next: AppTheme) {
+    saveTheme(next);
+    setTheme(next);
+  }
 
   return (
     <SettingsSurface
       theme={theme}
-      onThemeChange={setTheme}
+      onThemeChange={handleThemeChange}
       section={section}
       onSectionChange={setSection}
     />
@@ -98,7 +85,7 @@ function SettingsSurface({
                 onClick={() => onSectionChange(id)}
                 aria-current={section === id ? 'page' : undefined}
                 className={[
-                  'group grid h-10 w-full cursor-pointer grid-cols-[40px_minmax(0,1fr)] items-center overflow-hidden rounded-2xl text-left text-base font-normal tracking-normal transition-colors duration-200 hover:bg-surface-muted hover:text-accent',
+                  'group grid h-10 w-full cursor-pointer grid-cols-[40px_minmax(0,1fr)] items-center overflow-hidden rounded-card text-left text-base font-normal tracking-normal transition-colors duration-200 hover:bg-surface-muted hover:text-accent',
                   section === id ? 'bg-surface-muted font-semibold text-accent' : 'text-text',
                 ].join(' ')}
               >
@@ -207,7 +194,7 @@ function ThemeOption({
           data-theme={theme}
           onClick={onClick}
           className={[
-            'flex w-18 cursor-pointer flex-col overflow-hidden rounded-xl border-2 transition duration-200',
+            'flex w-18 cursor-pointer flex-col overflow-hidden rounded-control border-2 transition duration-200',
             active ? 'border-accent' : 'border-border-subtle hover:border-border',
           ].join(' ')}
         >

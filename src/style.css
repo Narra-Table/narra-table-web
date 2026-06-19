@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* ── shadcn/tailwind.css (inlined) ───────────────────────────────────────── */
+/* ── shadcn/tailwind.css（内联）─────────────────────────────────────────── */
 
 @theme inline {
   @keyframes accordion-down {
@@ -76,18 +76,24 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ── Design tokens ────────────────────────────────────────────────────────── */
+/* ── 设计 token ───────────────────────────────────────────────────────────── */
+
+/* 先清空 Tailwind 内置的颜色、字号默认值，只保留项目语义 token */
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+}
 
 @theme inline {
-  /* Font size scale
-   *  2xs  11px  mobile nav labels, ultra-compact badges
-   *  xs   12px  timestamps, meta, captions
-   *  sm   13px  secondary body text
-   *  base 14px  primary body text  ← default
-   *  lg   16px  emphasized / nav labels
-   *  xl   18px  sub-headings
-   *  2xl  22px  page headings
-   *  3xl  28px  display / hero
+  /* 字号 scale
+   *  2xs  11px  移动端底部导航标签、极紧凑 badge
+   *  xs   12px  时间戳、元信息、说明文字
+   *  sm   13px  次级正文
+   *  base 14px  主体正文  ← 默认
+   *  lg   16px  强调文本、导航标签
+   *  xl   18px  子标题
+   *  2xl  22px  页面级标题
+   *  3xl  28px  展示型大标题
    */
   --text-2xs: 0.6875rem;
   --text-xs: 0.75rem;
@@ -98,18 +104,18 @@
   --text-2xl: 1.375rem;
   --text-3xl: 1.75rem;
 
-  /* Semantic radius aliases (do not override Tailwind's numeric scale)
-   *  rounded-thumb    8px   small thumbnails, icon wrappers
-   *  rounded-control  12px  buttons, inputs, form controls
-   *  rounded-card     16px  cards, nav items, floating buttons
-   *  rounded-overlay  24px  drawers, modals, popovers
+  /* 语义圆角别名（不覆盖 Tailwind 内置数字 scale）
+   *  rounded-thumb    8px   小缩略图、图标容器
+   *  rounded-control  12px  按钮、输入框、表单控件
+   *  rounded-card     16px  卡片、导航条目、悬浮按钮
+   *  rounded-overlay  24px  抽屉、弹窗、气泡
    */
   --radius-thumb: 0.5rem;
   --radius-control: 0.75rem;
   --radius-card: 1rem;
   --radius-overlay: 1.5rem;
 
-  /* Color tokens (theme-aware, see :root / [data-theme] below) */
+  /* 颜色 token（随主题变化，参见下方 :root / [data-theme]） */
   --color-app-bg: var(--theme-app-bg);
   --color-surface: var(--theme-surface);
   --color-surface-muted: var(--theme-surface-muted);
@@ -150,10 +156,9 @@
   --color-background: var(--background);
 }
 
-/* ── Theme palettes ───────────────────────────────────────────────────────── */
+/* ── 主题调色板 ───────────────────────────────────────────────────────────── */
 
-:root,
-[data-theme='warm'] {
+:root {
   color-scheme: light;
   --theme-app-bg: #fff6f1;
   --theme-surface: #fff8f1;
@@ -162,30 +167,41 @@
   --theme-text-muted: #8f8580;
   --theme-border-subtle: #eadcd2;
   --theme-border: #d8c6bb;
-  --theme-accent: #10bfae;
+  --theme-accent: #0da898;
   --theme-accent-text: #ffffff;
 }
 
-[data-theme='brown'] {
+[data-theme='kraft-teal'] {
+  color-scheme: light;
+  --theme-app-bg: #fff6f1;
+  --theme-surface: #fff8f1;
+  --theme-surface-muted: #f3e5dc;
+  --theme-text: #15110d;
+  --theme-text-muted: #8f8580;
+  --theme-border-subtle: #eadcd2;
+  --theme-border: #d8c6bb;
+  --theme-accent: #0da898;
+  --theme-accent-text: #ffffff;
+}
+
+[data-theme='kraft-brown'] {
   --theme-accent: #8b5a35;
-  --theme-accent-text: #ffffff;
 }
 
-[data-theme='pink'] {
+[data-theme='kraft-pink'] {
   --theme-accent: #f28bb8;
-  --theme-accent-text: #ffffff;
 }
 
 [data-theme='pure-white'] {
   color-scheme: light;
   --theme-app-bg: #ffffff;
   --theme-surface: #ffffff;
-  --theme-surface-muted: #f3f4f6;
-  --theme-text: #111827;
-  --theme-text-muted: #6b7280;
-  --theme-border-subtle: #e5e7eb;
-  --theme-border: #d1d5db;
-  --theme-accent: #006b5c;
+  --theme-surface-muted: #f0f0f0;
+  --theme-text: #0f0f0f;
+  --theme-text-muted: #737373;
+  --theme-border-subtle: #e2e2e2;
+  --theme-border: #c5c5c5;
+  --theme-accent: #0f0f0f;
   --theme-accent-text: #ffffff;
 }
 
@@ -228,7 +244,7 @@
   --theme-accent-text: #131a1b;
 }
 
-/* ── Utilities ────────────────────────────────────────────────────────────── */
+/* ── 工具类 ───────────────────────────────────────────────────────────────── */
 
 .scroll-subtle-native-hidden {
   scrollbar-width: none;
@@ -238,9 +254,9 @@
   height: 0;
 }
 
-/* ── shadcn token bridge ──────────────────────────────────────────────────── */
-/* Maps shadcn's CSS variables to the project's --theme-* system so that      */
-/* shadcn components automatically follow the active data-theme.               */
+/* ── shadcn token 桥接 ────────────────────────────────────────────────────── */
+/* 将 shadcn 的 CSS 变量映射到项目的 --theme-* 体系，                          */
+/* 使 shadcn 组件自动跟随当前 data-theme 变化。                                */
 
 :root {
   --background: var(--theme-app-bg);

@@ -1,21 +1,10 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
 import { useEffect } from 'react';
-
-const SUPPORTED_THEMES = [
-  'warm',
-  'brown',
-  'pink',
-  'pure-white',
-  'black-green',
-  'black-blue',
-  'ink-gold',
-];
+import { initTheme } from '@/lib/theme';
 
 const RoomLayout = () => {
   useEffect(() => {
-    const stored = localStorage.getItem('narra-theme');
-    document.documentElement.dataset.theme =
-      stored && SUPPORTED_THEMES.includes(stored) ? stored : 'warm';
+    initTheme();
   }, []);
 
   return (
