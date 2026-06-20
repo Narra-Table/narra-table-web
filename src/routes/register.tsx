@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePostAuthRegister, usePostAuthSendCode } from '@/api';
 import type { postAuthRegisterResponseSuccess } from '@/api';
 import { getAccessToken, setAccessToken } from '@/lib/auth';
+import { initTheme } from '@/lib/theme';
 
 export const Route = createFileRoute('/register')({
   beforeLoad: () => {
@@ -21,6 +22,10 @@ function RegisterPage() {
   const [error, setError] = useState('');
   const [countdown, setCountdown] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    initTheme();
+  }, []);
 
   useEffect(() => {
     return () => {

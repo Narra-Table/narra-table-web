@@ -1,8 +1,9 @@
 import { createFileRoute, Link, redirect, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePostAuthLogin } from '@/api';
 import type { postAuthLoginResponseSuccess } from '@/api';
 import { getAccessToken, setAccessToken } from '@/lib/auth';
+import { initTheme } from '@/lib/theme';
 
 export const Route = createFileRoute('/login')({
   beforeLoad: () => {
@@ -16,6 +17,10 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    initTheme();
+  }, []);
 
   const { mutate: login, isPending } = usePostAuthLogin({
     mutation: {
