@@ -8,9 +8,9 @@ allowBuilds:
   msw: false
 
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@0.1.21
-  vitest: npm:@voidzero-dev/vite-plus-test@0.1.21
-  vite-plus: npm:vite-plus@0.1.21
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.1
+  vitest: '4.1.9'
+  vite-plus: npm:vite-plus@0.2.1
 
 overrides:
   vite: 'catalog:'
@@ -21,7 +21,5 @@ peerDependencyRules:
   # installation failures from mismatched peer ranges in tooling.
   allowAny:
     - vite
-    - vitest
   allowedVersions:
     vite: '*'
-    vitest: '*'
