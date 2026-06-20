@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router';
+import { createFileRoute, Link, Outlet, redirect, useLocation } from '@tanstack/react-router';
 import {
   BookOpen,
   ChevronLeft,
@@ -14,6 +14,7 @@ import type { ComponentType } from 'react';
 import { useGetApiMe } from '@/api';
 import type { getApiMeResponseSuccess } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { getAccessToken } from '@/lib/auth';
 import { initTheme } from '@/lib/theme';
 
 type AppNavLink = {
@@ -87,7 +88,7 @@ const AppLayout = () => {
               <p className="text-sm font-medium">{currentPageTitle}</p>
             </div>
             <Avatar className="size-9">
-              <AvatarImage src={user?.avatar ?? '/avatar.webp'} alt="用户头像" />
+              <AvatarImage src={user?.avatar || '/avatar.webp'} alt="用户头像" />
             </Avatar>
           </header>
 
@@ -119,6 +120,7 @@ function RailIdentity({
   return (
     <Link
       to="/settings"
+      search={{ section: 'profile' }}
       className={[
         'mt-4 grid h-12 cursor-pointer items-center overflow-hidden rounded-card transition-[width] duration-300 ease-out hover:bg-surface-muted',
         compact ? 'w-11' : 'w-full',
@@ -129,7 +131,7 @@ function RailIdentity({
     >
       <span className="grid size-11 place-items-center">
         <Avatar className="size-9 border border-border">
-          <AvatarImage src={user?.avatar ?? '/avatar.webp'} alt="用户头像" />
+          <AvatarImage src={user?.avatar || '/avatar.webp'} alt="用户头像" />
         </Avatar>
       </span>
       <span
@@ -187,5 +189,8 @@ function MobileLink({ icon: Icon, label, to }: AppNavLink) {
 }
 
 export const Route = createFileRoute('/_app')({
+  beforeLoad: () => {
+    if (!getAccessToken()) throw redirect({ to: '/login' });
+  },
   component: AppLayout,
 });

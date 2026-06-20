@@ -1,5 +1,6 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
+import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
+import { getAccessToken } from '@/lib/auth';
 import { initTheme } from '@/lib/theme';
 
 const RoomLayout = () => {
@@ -30,5 +31,8 @@ const RoomLayout = () => {
 };
 
 export const Route = createFileRoute('/_room')({
+  beforeLoad: () => {
+    if (!getAccessToken()) throw redirect({ to: '/login' });
+  },
   component: RoomLayout,
 });
