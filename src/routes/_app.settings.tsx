@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { LogOut, Palette, UserRoundKey } from 'lucide-react';
 import { useState } from 'react';
+import { useGetApiMe } from '@/api';
+import type { getApiMeResponseSuccess } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { type AppTheme, getStoredTheme, saveTheme } from '@/lib/theme';
@@ -119,15 +121,19 @@ function SettingsSurface({
 }
 
 function ProfileSettings() {
+  const { data: user } = useGetApiMe({
+    query: { select: (res) => (res as getApiMeResponseSuccess).data },
+  });
+
   return (
     <section className="grid gap-8">
       <div className="flex items-center gap-4">
         <Avatar className="size-16 border border-border">
-          <AvatarImage src="/avatar.webp" alt="用户头像" />
+          <AvatarImage src={user?.avatar ?? '/avatar.webp'} alt="用户头像" />
         </Avatar>
         <div>
-          <p className="text-base font-semibold">一只故桌娘</p>
-          <p className="mt-0.5 text-sm text-text-muted">@guzhuoniang</p>
+          <p className="text-base font-semibold">{user?.nickname}</p>
+          <p className="mt-0.5 text-sm text-text-muted">@{user?.username}</p>
         </div>
       </div>
       <div>

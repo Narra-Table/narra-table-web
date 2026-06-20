@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { ComponentType } from 'react';
+import { useGetApiMe } from '@/api';
+import type { getApiMeResponseSuccess } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { initTheme } from '@/lib/theme';
 
@@ -39,6 +41,9 @@ const AppLayout = () => {
   const currentPageTitle =
     navLinks.find((link) => pathname === link.to || pathname.startsWith(`${link.to}/`))?.label ??
     'Narra Table';
+  const { data: user } = useGetApiMe({
+    query: { select: (res) => (res as getApiMeResponseSuccess).data },
+  });
 
   useEffect(() => {
     initTheme();
@@ -73,7 +78,7 @@ const AppLayout = () => {
             ))}
           </nav>
 
-          <RailIdentity compact={isCollapsed} />
+          <RailIdentity compact={isCollapsed} user={user} />
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
@@ -82,7 +87,7 @@ const AppLayout = () => {
               <p className="text-sm font-medium">{currentPageTitle}</p>
             </div>
             <Avatar className="size-9">
-              <AvatarImage src="/avatar.webp" alt="用户头像" />
+              <AvatarImage src={user?.avatar ?? '/avatar.webp'} alt="用户头像" />
             </Avatar>
           </header>
 
@@ -104,7 +109,13 @@ const AppLayout = () => {
   );
 };
 
-function RailIdentity({ compact }: { compact: boolean }) {
+function RailIdentity({
+  compact,
+  user,
+}: {
+  compact: boolean;
+  user?: { nickname?: string; username?: string; avatar?: string };
+}) {
   return (
     <Link
       to="/settings"
@@ -118,7 +129,7 @@ function RailIdentity({ compact }: { compact: boolean }) {
     >
       <span className="grid size-11 place-items-center">
         <Avatar className="size-9 border border-border">
-          <AvatarImage src="/avatar.webp" alt="用户头像" />
+          <AvatarImage src={user?.avatar ?? '/avatar.webp'} alt="用户头像" />
         </Avatar>
       </span>
       <span
@@ -127,8 +138,8 @@ function RailIdentity({ compact }: { compact: boolean }) {
           compact ? 'opacity-0 w-0' : 'opacity-100 delay-150 w-auto',
         ].join(' ')}
       >
-        <span className="block truncate text-sm font-medium">一只故桌娘</span>
-        <span className="block truncate text-xs text-text-muted">@guzhuoniang</span>
+        <span className="block truncate text-sm font-medium">{user?.nickname}</span>
+        <span className="block truncate text-xs text-text-muted">@{user?.username}</span>
       </span>
     </Link>
   );
