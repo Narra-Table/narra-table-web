@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as RoomRouteImport } from './routes/_room'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
@@ -22,6 +24,16 @@ import { Route as AppCharactersCharacterIdRouteImport } from './routes/_app.char
 import { Route as AppAssetsAssetIdRouteImport } from './routes/_app.assets.$assetId'
 import { Route as RoomSpacesSpaceIdRoomsRoomIdRouteImport } from './routes/_room.spaces.$spaceId.rooms.$roomId'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoomRoute = RoomRouteImport.update({
   id: '/_room',
   getParentRoute: () => rootRouteImport,
@@ -85,6 +97,8 @@ const RoomSpacesSpaceIdRoomsRoomIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/assets': typeof AppAssetsRouteWithChildren
   '/characters': typeof AppCharactersRouteWithChildren
   '/modules': typeof AppModulesRouteWithChildren
@@ -97,6 +111,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/assets': typeof AppAssetsRouteWithChildren
   '/characters': typeof AppCharactersRouteWithChildren
   '/modules': typeof AppModulesRouteWithChildren
@@ -111,6 +127,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/_room': typeof RoomRouteWithChildren
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/_app/assets': typeof AppAssetsRouteWithChildren
   '/_app/characters': typeof AppCharactersRouteWithChildren
   '/_app/modules': typeof AppModulesRouteWithChildren
@@ -126,6 +144,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
+    | '/register'
     | '/assets'
     | '/characters'
     | '/modules'
@@ -138,6 +158,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
+    | '/register'
     | '/assets'
     | '/characters'
     | '/modules'
@@ -151,6 +173,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/_room'
+    | '/login'
+    | '/register'
     | '/_app/assets'
     | '/_app/characters'
     | '/_app/modules'
@@ -166,10 +190,26 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   RoomRoute: typeof RoomRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_room': {
       id: '/_room'
       path: ''
@@ -326,6 +366,8 @@ const RoomRouteWithChildren = RoomRoute._addFileChildren(RoomRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   RoomRoute: RoomRouteWithChildren,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
