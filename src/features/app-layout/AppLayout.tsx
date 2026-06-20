@@ -19,7 +19,7 @@ import { initTheme } from '@/lib/theme';
 type AppNavLink = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
   label: string;
-  to: '/' | '/characters' | '/modules' | '/assets' | '/notifications' | '/settings';
+  to: '/' | '/characters' | '/modules' | '/assets' | '/message' | '/settings';
 };
 
 const navLinks: AppNavLink[] = [
@@ -27,7 +27,7 @@ const navLinks: AppNavLink[] = [
   { icon: BookOpen, label: '我的模组', to: '/modules' },
   { icon: UserRound, label: '我的角色', to: '/characters' },
   { icon: Images, label: '我的素材', to: '/assets' },
-  { icon: MessageCircle, label: '消息', to: '/notifications' },
+  { icon: MessageCircle, label: '消息', to: '/message' },
   { icon: Settings, label: '设置', to: '/settings' },
 ];
 
