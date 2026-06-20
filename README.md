@@ -42,6 +42,14 @@ cd narra-table-web
 vp install
 ```
 
+配置环境变量
+
+```bash
+cp .env.example .env.development
+```
+
+默认使用 MSW mock 数据。
+
 启动开发服务器
 
 ```bash
