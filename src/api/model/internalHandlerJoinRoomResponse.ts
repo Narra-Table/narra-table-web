@@ -7,7 +7,11 @@
  */
 
 export interface InternalHandlerJoinRoomResponse {
-  joinedAt?: string;
-  memberCount?: number;
-  roomId?: string;
+  joinedAt: string;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  memberCount: number;
+  roomId: string;
 }

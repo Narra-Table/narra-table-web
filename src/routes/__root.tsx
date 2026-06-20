@@ -16,7 +16,7 @@ const RootPending = () => (
 
 const RootError = () => (
   <div className="grid min-h-screen place-items-center bg-app-bg p-6 text-text">
-    <section className="rounded-lg border-2 border-black p-5">
+    <section className="rounded-lg border border-border p-5">
       <h1 className="text-xl font-semibold">页面出错</h1>
       <p className="mt-2 text-sm text-text-muted">全局错误边界占位。</p>
     </section>

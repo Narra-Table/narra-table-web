@@ -23,31 +23,28 @@ narra-table-web/
 │   ├── CONTRIBUTING.md        # 贡献和验证流程
 │   ├── CONVENTIONS.md         # 代码约定
 │   └── DESIGN.md              # 设计和样式规则
-├── public/                    # 静态资源
+├── public/
 │   └── mockServiceWorker.js   # MSW 浏览器端 Service Worker
-├── components.json            # shadcn CLI 配置
 ├── src/
+│   ├── api/                   # orval 自动生成的 API（不要手动编辑）
 │   ├── components/
-│   │   └── ui/                # shadcn 复制来的基础组件
-│   ├── features/              # 按业务功能组织的模块
-│   ├── lib/
-│   │   ├── client.ts          # Fetch 封装与 ApiError
-│   │   ├── client.test.ts     # Fetch 封装单元测试
-│   │   ├── queryClient.ts     # TanStack Query client 实例
-│   │   └── utils.ts           # cn() 等通用工具函数
+│   │   └── ui/                # shadcn 复制来的 UI 组件
+│   ├── features/              # 功能模块
+│   ├── lib/                   # 基础设施与工具
 │   ├── mocks/                 # MSW mock 数据和请求处理器
 │   ├── routes/                # TanStack Router 文件路由
 │   │   └── __root.tsx         # 根布局路由
-│   ├── main.tsx               # 应用入口
-│   ├── routeTree.gen.ts       # 自动生成的路由树（不要手动编辑）
 │   ├── types/
 │   │   └── narratable-protocol-compat.d.ts # @narratable/protocol 兼容类型声明
-│   └── style.css              # Tailwind v4 主题 token 和少量全局样式
+│   ├── main.tsx               # 应用入口
+│   ├── routeTree.gen.ts       # 自动生成的路由树（不要手动编辑）
+│   └── style.css
 ├── AGENTS.md
 ├── CLAUDE.md
-├── index.html                 # HTML 入口
-├── package.json               # 包信息和脚本
-├── pnpm-workspace.yaml        # pnpm workspace 与 catalog 配置
+├── components.json            # shadcn CLI 配置
+├── index.html
+├── package.json
+├── pnpm-workspace.yaml
 ├── tsconfig.json              # TypeScript 配置
 ├── vite.config.ts             # Vite+ 配置
 └── vitest.config.ts           # Vitest 配置

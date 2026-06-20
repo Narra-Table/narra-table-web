@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router';
+import { createFileRoute, Link, Outlet, redirect, useLocation } from '@tanstack/react-router';
 import {
   BookOpen,
   ChevronLeft,
@@ -11,7 +11,11 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { ComponentType } from 'react';
+import { useGetApiMe } from '@/api';
+import type { getApiMeResponseSuccess } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { getAccessToken } from '@/lib/auth';
+import { initTheme } from '@/lib/theme';
 
 type AppNavLink = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
@@ -38,20 +42,12 @@ const AppLayout = () => {
   const currentPageTitle =
     navLinks.find((link) => pathname === link.to || pathname.startsWith(`${link.to}/`))?.label ??
     'Narra Table';
+  const { data: user } = useGetApiMe({
+    query: { select: (res) => (res as getApiMeResponseSuccess).data },
+  });
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('narra-theme');
-    const supportedThemes = [
-      'warm',
-      'brown',
-      'pink',
-      'pure-white',
-      'black-green',
-      'black-blue',
-      'ink-gold',
-    ];
-    const nextTheme = storedTheme && supportedThemes.includes(storedTheme) ? storedTheme : 'warm';
-    document.documentElement.dataset.theme = nextTheme;
+    initTheme();
   }, []);
 
   return (
@@ -66,7 +62,7 @@ const AppLayout = () => {
           <button
             type="button"
             onClick={() => setIsCollapsed((c) => !c)}
-            className="mb-3 grid size-11 shrink-0 place-items-center rounded-2xl transition-colors duration-200 hover:bg-surface-muted"
+            className="mb-3 grid size-11 shrink-0 place-items-center rounded-card transition-colors duration-200 hover:bg-surface-muted"
             aria-label={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
             title={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
           >
@@ -83,7 +79,7 @@ const AppLayout = () => {
             ))}
           </nav>
 
-          <RailIdentity compact={isCollapsed} />
+          <RailIdentity compact={isCollapsed} user={user} />
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
@@ -92,7 +88,7 @@ const AppLayout = () => {
               <p className="text-sm font-medium">{currentPageTitle}</p>
             </div>
             <Avatar className="size-9">
-              <AvatarImage src="/avatar.webp" alt="用户头像" />
+              <AvatarImage src={user?.avatar || '/avatar.webp'} alt="用户头像" />
             </Avatar>
           </header>
 
@@ -114,10 +110,17 @@ const AppLayout = () => {
   );
 };
 
-function RailIdentity({ compact }: { compact: boolean }) {
+function RailIdentity({
+  compact,
+  user,
+}: {
+  compact: boolean;
+  user?: { nickname?: string; username?: string; avatar?: string };
+}) {
   return (
     <Link
       to="/settings"
+      search={{ section: 'profile' }}
       className={[
         'mt-4 grid h-12 cursor-pointer items-center overflow-hidden rounded-card transition-[width] duration-300 ease-out hover:bg-surface-muted',
         compact ? 'w-11' : 'w-full',
@@ -128,7 +131,7 @@ function RailIdentity({ compact }: { compact: boolean }) {
     >
       <span className="grid size-11 place-items-center">
         <Avatar className="size-9 border border-border">
-          <AvatarImage src="/avatar.webp" alt="用户头像" />
+          <AvatarImage src={user?.avatar || '/avatar.webp'} alt="用户头像" />
         </Avatar>
       </span>
       <span
@@ -137,8 +140,8 @@ function RailIdentity({ compact }: { compact: boolean }) {
           compact ? 'opacity-0 w-0' : 'opacity-100 delay-150 w-auto',
         ].join(' ')}
       >
-        <span className="block truncate text-sm font-medium">一只故桌娘</span>
-        <span className="block truncate text-xs text-text-muted">@guzhuoniang</span>
+        <span className="block truncate text-sm font-medium">{user?.nickname}</span>
+        <span className="block truncate text-xs text-text-muted">@{user?.username}</span>
       </span>
     </Link>
   );
@@ -150,7 +153,7 @@ function RailLink({ compact = false, icon: Icon, label, to }: AppNavLink & { com
       to={to}
       preload="intent"
       className={[
-        'group grid h-10 items-center overflow-hidden rounded-2xl text-base font-normal tracking-normal text-text transition-colors duration-200 hover:bg-surface-muted hover:text-accent [&.active]:bg-surface-muted [&.active]:font-semibold [&.active]:text-accent',
+        'group grid h-10 items-center overflow-hidden rounded-card text-base font-normal tracking-normal text-text transition-colors duration-200 hover:bg-surface-muted hover:text-accent [&.active]:bg-surface-muted [&.active]:font-semibold [&.active]:text-accent',
         compact ? 'w-10 grid-cols-[40px_0px]' : 'w-full grid-cols-[40px_minmax(0,1fr)]',
       ].join(' ')}
       aria-label={label}
@@ -186,5 +189,8 @@ function MobileLink({ icon: Icon, label, to }: AppNavLink) {
 }
 
 export const Route = createFileRoute('/_app')({
+  beforeLoad: () => {
+    if (!getAccessToken()) throw redirect({ to: '/login' });
+  },
   component: AppLayout,
 });

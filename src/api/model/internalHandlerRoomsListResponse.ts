@@ -8,5 +8,5 @@
 import type { InternalHandlerRoomSummary } from './internalHandlerRoomSummary.ts';
 
 export interface InternalHandlerRoomsListResponse {
-  rooms?: InternalHandlerRoomSummary[];
+  rooms: InternalHandlerRoomSummary[];
 }

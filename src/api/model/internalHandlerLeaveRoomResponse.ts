@@ -7,6 +7,10 @@
  */
 
 export interface InternalHandlerLeaveRoomResponse {
-  memberCount?: number;
-  roomId?: string;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  memberCount: number;
+  roomId: string;
 }
