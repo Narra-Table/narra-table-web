@@ -8,12 +8,16 @@
 import type { GithubComNarraTableBackendPkgProtocolMemberRole } from './githubComNarraTableBackendPkgProtocolMemberRole.ts';
 
 export interface InternalHandlerSpaceSummary {
-  createdAt?: string;
-  lastActiveAt?: string;
-  memberCount?: number;
+  createdAt: string;
+  lastActiveAt: string;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  memberCount: number;
   myRole?: GithubComNarraTableBackendPkgProtocolMemberRole;
-  name?: string;
-  ownerId?: string;
-  spaceId?: string;
-  status?: string;
+  name: string;
+  ownerId: string;
+  spaceId: string;
+  status: string;
 }

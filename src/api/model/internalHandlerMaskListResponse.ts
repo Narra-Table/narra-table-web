@@ -8,5 +8,5 @@
 import type { GithubComNarraTableBackendPkgProtocolMask } from './githubComNarraTableBackendPkgProtocolMask.ts';
 
 export interface InternalHandlerMaskListResponse {
-  masks?: GithubComNarraTableBackendPkgProtocolMask[];
+  masks: GithubComNarraTableBackendPkgProtocolMask[];
 }

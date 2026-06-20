@@ -5,16 +5,24 @@
  * 故桌（Narratable）实时跑团平台的后台 API
  * OpenAPI spec version: 1.0
  */
-import type { GithubComNarraTableBackendPkgProtocolRoomType } from './githubComNarraTableBackendPkgProtocolRoomType.ts';
+import type { InternalHandlerRoomSummaryType } from './internalHandlerRoomSummaryType.ts';
 
 export interface InternalHandlerRoomSummary {
   hasJoinCode?: boolean;
   isArchived?: boolean;
-  lastActiveAt?: string;
-  memberCount?: number;
-  name?: string;
-  roomId?: string;
-  sortOrder?: number;
-  spaceId?: string;
-  type?: GithubComNarraTableBackendPkgProtocolRoomType;
+  lastActiveAt: string;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  memberCount: number;
+  name: string;
+  roomId: string;
+  /**
+     * @minimum 0
+     * @maximum 9999
+     */
+  sortOrder: number;
+  spaceId: string;
+  type: InternalHandlerRoomSummaryType;
 }

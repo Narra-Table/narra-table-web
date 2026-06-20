@@ -6,21 +6,21 @@
  * OpenAPI spec version: 1.0
  */
 import type { GithubComNarraTableBackendPkgProtocolMaskAvatars } from './githubComNarraTableBackendPkgProtocolMaskAvatars.ts';
-import type { GithubComNarraTableBackendPkgProtocolMaskType } from './githubComNarraTableBackendPkgProtocolMaskType.ts';
+import type { GithubComNarraTableBackendPkgProtocolMaskTypeProperty } from './githubComNarraTableBackendPkgProtocolMaskTypeProperty.ts';
 
 export interface GithubComNarraTableBackendPkgProtocolMask {
   avatars?: GithubComNarraTableBackendPkgProtocolMaskAvatars;
   characterCards?: string[];
-  createdAt?: string;
+  createdAt: string;
   currentAvatarId?: string;
   defaultAvatarId?: string;
   /** 是否为默认面具 */
   isDefault?: boolean;
-  maskId?: string;
-  name?: string;
-  spaceId?: string;
-  type?: GithubComNarraTableBackendPkgProtocolMaskType;
-  updatedAt?: string;
+  maskId: string;
+  name: string;
+  spaceId: string;
+  type: GithubComNarraTableBackendPkgProtocolMaskTypeProperty;
+  updatedAt: string;
   /** 可使用此面具的用户列表 */
   userIds?: string[];
 }

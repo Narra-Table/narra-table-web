@@ -8,5 +8,5 @@
 import type { GithubComNarraTableBackendPkgProtocolResource } from './githubComNarraTableBackendPkgProtocolResource.ts';
 
 export interface InternalHandlerResourceListResponse {
-  resources?: GithubComNarraTableBackendPkgProtocolResource[];
+  resources: GithubComNarraTableBackendPkgProtocolResource[];
 }

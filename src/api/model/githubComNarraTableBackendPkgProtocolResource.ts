@@ -10,17 +10,21 @@ import type { GithubComNarraTableBackendPkgProtocolResourceMetadata } from './gi
 
 export interface GithubComNarraTableBackendPkgProtocolResource {
   checksum?: string;
-  createdAt?: string;
+  createdAt: string;
   kind?: GithubComNarraTableBackendPkgProtocolResourceKind;
   messageId?: string;
   metadata?: GithubComNarraTableBackendPkgProtocolResourceMetadata;
   mimeType?: string;
-  name?: string;
-  resourceId?: string;
+  name: string;
+  resourceId: string;
   roomId?: string;
-  sizeBytes?: number;
-  spaceId?: string;
-  updatedAt?: string;
-  uploadedBy?: string;
+  /**
+     * @minimum 0
+     * @maximum 104857600
+     */
+  sizeBytes: number;
+  spaceId: string;
+  updatedAt: string;
+  uploadedBy: string;
   uri?: string;
 }

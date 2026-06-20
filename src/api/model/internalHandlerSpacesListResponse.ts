@@ -8,5 +8,5 @@
 import type { InternalHandlerSpaceSummary } from './internalHandlerSpaceSummary.ts';
 
 export interface InternalHandlerSpacesListResponse {
-  spaces?: InternalHandlerSpaceSummary[];
+  spaces: InternalHandlerSpaceSummary[];
 }

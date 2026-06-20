@@ -7,6 +7,10 @@
  */
 
 export interface InternalHandlerRevealAllVeilsResponse {
-  count?: number;
+  /**
+     * @minimum 0
+     * @maximum 999
+     */
+  count: number;
   messageIds?: string[];
 }
