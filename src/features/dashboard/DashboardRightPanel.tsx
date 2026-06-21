@@ -1,4 +1,5 @@
 import { ChevronRight } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { useGetApiSpacesSpaceIdMasks, useGetApiSpacesSpaceIdResources } from '@/api';
 import type {
   getApiSpacesSpaceIdMasksResponseSuccess,
@@ -21,7 +22,7 @@ function PanelSection({
 }: {
   title: string;
   actionLabel?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <section className="flex h-full flex-col">
