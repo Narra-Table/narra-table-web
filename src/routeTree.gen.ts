@@ -15,8 +15,8 @@ import { Route as RoomRouteImport } from './routes/_room'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
-import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
 import { Route as AppModulesRouteImport } from './routes/_app.modules'
+import { Route as AppMessageRouteImport } from './routes/_app.message'
 import { Route as AppCharactersRouteImport } from './routes/_app.characters'
 import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppModulesModuleIdRouteImport } from './routes/_app.modules.$moduleId'
@@ -52,14 +52,14 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
-const AppNotificationsRoute = AppNotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppModulesRoute = AppModulesRouteImport.update({
   id: '/modules',
   path: '/modules',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessageRoute = AppMessageRouteImport.update({
+  id: '/message',
+  path: '/message',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCharactersRoute = AppCharactersRouteImport.update({
@@ -101,8 +101,8 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/assets': typeof AppAssetsRouteWithChildren
   '/characters': typeof AppCharactersRouteWithChildren
+  '/message': typeof AppMessageRoute
   '/modules': typeof AppModulesRouteWithChildren
-  '/notifications': typeof AppNotificationsRoute
   '/settings': typeof AppSettingsRoute
   '/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/characters/$characterId': typeof AppCharactersCharacterIdRoute
@@ -115,8 +115,8 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/assets': typeof AppAssetsRouteWithChildren
   '/characters': typeof AppCharactersRouteWithChildren
+  '/message': typeof AppMessageRoute
   '/modules': typeof AppModulesRouteWithChildren
-  '/notifications': typeof AppNotificationsRoute
   '/settings': typeof AppSettingsRoute
   '/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/characters/$characterId': typeof AppCharactersCharacterIdRoute
@@ -131,8 +131,8 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/_app/assets': typeof AppAssetsRouteWithChildren
   '/_app/characters': typeof AppCharactersRouteWithChildren
+  '/_app/message': typeof AppMessageRoute
   '/_app/modules': typeof AppModulesRouteWithChildren
-  '/_app/notifications': typeof AppNotificationsRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/': typeof AppIndexRoute
   '/_app/assets/$assetId': typeof AppAssetsAssetIdRoute
@@ -148,8 +148,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/assets'
     | '/characters'
+    | '/message'
     | '/modules'
-    | '/notifications'
     | '/settings'
     | '/assets/$assetId'
     | '/characters/$characterId'
@@ -162,8 +162,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/assets'
     | '/characters'
+    | '/message'
     | '/modules'
-    | '/notifications'
     | '/settings'
     | '/assets/$assetId'
     | '/characters/$characterId'
@@ -177,8 +177,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/_app/assets'
     | '/_app/characters'
+    | '/_app/message'
     | '/_app/modules'
-    | '/_app/notifications'
     | '/_app/settings'
     | '/_app/'
     | '/_app/assets/$assetId'
@@ -238,18 +238,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/notifications': {
-      id: '/_app/notifications'
-      path: '/notifications'
-      fullPath: '/notifications'
-      preLoaderRoute: typeof AppNotificationsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/modules': {
       id: '/_app/modules'
       path: '/modules'
       fullPath: '/modules'
       preLoaderRoute: typeof AppModulesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/message': {
+      id: '/_app/message'
+      path: '/message'
+      fullPath: '/message'
+      preLoaderRoute: typeof AppMessageRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/characters': {
@@ -336,8 +336,8 @@ const AppModulesRouteWithChildren = AppModulesRoute._addFileChildren(
 interface AppRouteChildren {
   AppAssetsRoute: typeof AppAssetsRouteWithChildren
   AppCharactersRoute: typeof AppCharactersRouteWithChildren
+  AppMessageRoute: typeof AppMessageRoute
   AppModulesRoute: typeof AppModulesRouteWithChildren
-  AppNotificationsRoute: typeof AppNotificationsRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
@@ -345,8 +345,8 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppAssetsRoute: AppAssetsRouteWithChildren,
   AppCharactersRoute: AppCharactersRouteWithChildren,
+  AppMessageRoute: AppMessageRoute,
   AppModulesRoute: AppModulesRouteWithChildren,
-  AppNotificationsRoute: AppNotificationsRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppIndexRoute: AppIndexRoute,
 }
