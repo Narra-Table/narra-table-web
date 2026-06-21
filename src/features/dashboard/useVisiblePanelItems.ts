@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export function useVisiblePanelItems(itemCount: number) {
-  const listRef = useRef<HTMLUListElement>(null);
   const [listEl, setListEl] = useState<HTMLUListElement | null>(null);
   const [visibleCount, setVisibleCount] = useState(itemCount);
 
-  useEffect(() => {
-    if (listRef.current && listRef.current !== listEl) setListEl(listRef.current);
-  }, [listEl]);
+  const listRef = useCallback((node: HTMLUListElement | null) => {
+    setListEl(node);
+  }, []);
 
   useEffect(() => {
     if (!listEl) return;
