@@ -52,7 +52,7 @@ export function SpaceCard({ space }: { space: SpaceListItem }) {
           <div className="flex -space-x-1.5">
             {Array.from({ length: Math.min(4, memberCount) }, (_, i) => (
               <Avatar key={i} className="size-6 ring-2 ring-surface">
-                <AvatarImage src={picsum(`${space.spaceId}_m${i}`, 24)} />
+                <AvatarImage src={picsum(`${space.spaceId}_m${i}`, 24)} alt="" />
               </Avatar>
             ))}
             {memberCount > 4 && (
