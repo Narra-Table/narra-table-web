@@ -136,7 +136,7 @@ function MyDiceBots() {
           {bots.map((bot, i) => (
             <div key={bot.maskId ?? i} className="flex flex-col items-center gap-1.5">
               <Avatar className="size-12 ring-2 ring-accent/30 transition-all hover:ring-accent/60">
-                <AvatarImage src={picsum(bot.maskId ?? 'bot', 120)} alt={bot.name} />
+                <AvatarImage src={picsum(bot.maskId ?? 'bot', 120)} alt="" />
               </Avatar>
               <span className="w-12 truncate text-center text-xs font-medium text-text">
                 {bot.name ?? '未命名'}
