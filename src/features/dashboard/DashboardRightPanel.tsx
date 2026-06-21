@@ -63,7 +63,7 @@ function RecentCharacters() {
           {masks.slice(0, visibleCount).map((mask, i) => (
             <li key={mask.maskId ?? i} className="flex items-center gap-3">
               <Avatar className="size-10 shrink-0 ring-1 ring-border">
-                <AvatarImage src={picsum(mask.maskId ?? 'mask', 80)} alt={mask.name} />
+                <AvatarImage src={picsum(mask.maskId ?? 'mask', 80)} alt="" />
               </Avatar>
               <p className="min-w-0 flex-1 truncate text-sm font-medium text-text">
                 {mask.name ?? '未命名角色'}
