@@ -21,7 +21,7 @@ export function SpaceCard({ space }: { space: SpaceListItem }) {
       <div className="relative w-[138px] shrink-0 self-stretch overflow-hidden bg-surface-muted">
         <img
           src={space.avatar ?? picsum(space.spaceId ?? 'space', 200)}
-          alt={space.name}
+          alt={space.name ?? '空间封面'}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
