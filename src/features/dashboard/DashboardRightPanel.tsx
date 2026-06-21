@@ -101,7 +101,7 @@ function RecentAssets() {
           {resources.slice(0, visibleCount).map((resource, i) => (
             <li key={resource.resourceId ?? i} className="flex items-center gap-3">
               <Avatar className="size-10 shrink-0 rounded-thumb ring-1 ring-border">
-                <AvatarImage src={picsum(resource.resourceId ?? 'res', 80)} alt={resource.name} />
+                <AvatarImage src={picsum(resource.resourceId ?? 'res', 80)} alt="" />
               </Avatar>
               <p className="min-w-0 flex-1 truncate text-sm text-text">
                 {resource.name ?? '未命名素材'}
