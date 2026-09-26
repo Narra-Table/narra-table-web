@@ -8,12 +8,8 @@
 import type { InternalHandlerUserResponse } from './internalHandlerUserResponse.ts';
 
 export interface InternalHandlerAuthResponse {
-  accessToken: string;
-  /**
-     * @minimum 0
-     * @maximum 86400
-     */
-  expiresIn: number;
-  refreshToken: string;
-  user: InternalHandlerUserResponse;
+  accessToken?: string;
+  expiresIn?: number;
+  refreshToken?: string;
+  user?: InternalHandlerUserResponse;
 }

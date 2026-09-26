@@ -6,9 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface InternalHandlerRegisterRequest {
-  code?: string;
-  email?: string;
-  password: string;
-  username: string;
-}
+export type PostAuthSendCode429 = {[key: string]: string};

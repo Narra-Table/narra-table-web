@@ -8,7 +8,6 @@
 import type { InternalHandlerRoomSummaryType } from './internalHandlerRoomSummaryType.ts';
 
 export interface InternalHandlerRoomSummary {
-  hasJoinCode?: boolean;
   isArchived?: boolean;
   lastActiveAt: string;
   /**

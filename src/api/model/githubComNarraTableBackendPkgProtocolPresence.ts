@@ -6,9 +6,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface InternalHandlerRegisterRequest {
-  code?: string;
-  email?: string;
-  password: string;
-  username: string;
+export interface GithubComNarraTableBackendPkgProtocolPresence {
+  connectionId?: string;
+  occurredAt?: string;
+  roomId?: string;
+  userId?: string;
 }

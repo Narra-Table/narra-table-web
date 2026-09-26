@@ -2,12 +2,13 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { usePostAuthRegister, usePostAuthSendCode } from '@/api';
 import type { postAuthRegisterResponseSuccess } from '@/api';
-import { setAccessToken } from '@/lib/auth';
+import { setAuthSession } from '@/lib/auth';
 
 const COOLDOWN = 60;
 
 export function RegisterForm() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
@@ -45,7 +46,7 @@ export function RegisterForm() {
   const { mutate: register, isPending } = usePostAuthRegister({
     mutation: {
       onSuccess: (res) => {
-        setAccessToken((res as postAuthRegisterResponseSuccess).data.accessToken);
+        setAuthSession((res as postAuthRegisterResponseSuccess).data);
         void navigate({ to: '/' });
       },
       onError: (err: { status?: number }) => {
@@ -64,13 +65,13 @@ export function RegisterForm() {
       return;
     }
     setError('');
-    sendCode({ data: { email } });
+    sendCode({ data: { email, purpose: 'registration' } });
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    register({ data: { email, password, code } });
+    register({ data: { username, email, password, code } });
   }
 
   return (
@@ -78,6 +79,19 @@ export function RegisterForm() {
       <div className="w-full max-w-sm rounded-card border border-border-subtle bg-surface px-8 py-10">
         <h1 className="mb-8 text-2xl font-bold text-text">注册故桌</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-text">用户名</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="rounded-control border border-border bg-app-bg px-4 py-2 text-sm text-text outline-none transition-colors focus:border-accent"
+              placeholder="3-32 位小写字母、数字、下划线或短横线"
+              autoComplete="username"
+              pattern="[a-z0-9_-]{3,32}"
+              required
+            />
+          </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-text">邮箱</label>
             <input

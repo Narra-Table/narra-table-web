@@ -1,4 +1,4 @@
-import { getAccessToken } from './auth';
+import { clearAuth, getAccessToken, refreshAccessToken } from './auth';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
@@ -15,16 +15,23 @@ export class ApiError extends Error {
 }
 
 export const orvalFetch = async <T>(url: string, options: RequestInit): Promise<T> => {
-  const headers = new Headers(options?.headers);
+  const request = async (token: string | null) => {
+    const headers = new Headers(options?.headers);
 
-  if (typeof options?.body === 'string' && !headers.has('Content-Type')) {
-    headers.set('Content-Type', 'application/json');
+    if (typeof options?.body === 'string' && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+
+    if (token) headers.set('Authorization', `Bearer ${token}`);
+    return fetch(`${API_BASE_URL}${url}`, { ...options, headers });
+  };
+
+  let response = await request(getAccessToken());
+  if (response.status === 401 && !url.startsWith('/auth/')) {
+    const refreshed = await refreshAccessToken();
+    if (refreshed) response = await request(refreshed);
+    else clearAuth();
   }
-
-  const token = getAccessToken();
-  if (token) headers.set('Authorization', `Bearer ${token}`);
-
-  const response = await fetch(`${API_BASE_URL}${url}`, { ...options, headers });
 
   if (response.status === 204 || response.status === 205) {
     return { data: undefined, status: response.status, headers: response.headers } as T;

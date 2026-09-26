@@ -5,12 +5,16 @@
  * 故桌（Narratable）实时跑团平台的后台 API
  * OpenAPI spec version: 1.0
  */
+import type { GithubComNarraTableBackendInternalModelUserStatus } from './githubComNarraTableBackendInternalModelUserStatus.ts';
 
-export interface InternalHandlerUserResponse {
+export interface InternalHandlerAdminUserResponse {
   avatar?: string;
+  createdAt?: string;
   email?: string;
   id?: string;
   mustChangePassword?: boolean;
   nickname?: string;
+  status?: GithubComNarraTableBackendInternalModelUserStatus;
+  updatedAt?: string;
   username?: string;
 }

@@ -1,4 +1,5 @@
 import { MoreHorizontal } from 'lucide-react';
+import { useGetApiSpacesSpaceIdRooms } from '@/api';
 import type { InternalHandlerSpaceSummary } from '@/api/model';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
@@ -14,6 +15,9 @@ function picsum(seed: string, size = 40) {
 
 export function SpaceCard({ space }: { space: SpaceListItem }) {
   const memberCount = space.memberCount ?? 0;
+  const { data: rooms = [] } = useGetApiSpacesSpaceIdRooms(space.spaceId, {
+    query: { select: (response) => response.data.rooms ?? [] },
+  });
 
   return (
     <article className="group flex min-h-[138px] cursor-pointer overflow-hidden rounded-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted">
@@ -46,6 +50,23 @@ export function SpaceCard({ space }: { space: SpaceListItem }) {
         <p className="line-clamp-3 text-sm leading-snug text-text-muted">
           {space.description ?? '暂无简介'}
         </p>
+
+        {rooms.length > 0 ? (
+          <div className="mt-1 flex min-w-0 flex-wrap gap-1.5">
+            {rooms.slice(0, 3).map((room) => (
+              <a
+                key={room.roomId}
+                href={`/spaces/${space.spaceId}/rooms/${room.roomId}`}
+                className="max-w-full truncate rounded-control bg-surface-muted px-2 py-1 text-xs text-text-muted transition-colors hover:text-accent"
+              >
+                {room.name}
+              </a>
+            ))}
+            {rooms.length > 3 ? (
+              <span className="px-1 py-1 text-xs text-text-muted">+{rooms.length - 3}</span>
+            ) : null}
+          </div>
+        ) : null}
 
         {/* Footer */}
         <div className="mt-auto flex items-center gap-2 pt-1">

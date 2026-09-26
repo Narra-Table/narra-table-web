@@ -8,6 +8,5 @@
 import type { GithubComNarraTableBackendPkgProtocolRoom } from './githubComNarraTableBackendPkgProtocolRoom.ts';
 
 export interface InternalHandlerCreateRoomResponse {
-  joinCode?: string;
   room?: GithubComNarraTableBackendPkgProtocolRoom;
 }

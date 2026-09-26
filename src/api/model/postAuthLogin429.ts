@@ -6,6 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface InternalHandlerRegenerateCodeResponse {
-  joinCode?: string;
-}
+export type PostAuthLogin429 = {[key: string]: string};

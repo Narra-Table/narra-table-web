@@ -8,9 +8,6 @@ import type {
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { useVisiblePanelItems } from './useVisiblePanelItems';
 
-// No cross-space endpoint exists yet; any spaceId is valid in mock mode.
-const MOCK_SPACE_ID = '__dashboard__';
-
 function picsum(seed: string, size = 40) {
   return `https://picsum.photos/seed/${seed}/${size}`;
 }
@@ -41,10 +38,11 @@ function PanelSection({
   );
 }
 
-function RecentCharacters() {
+function RecentCharacters({ spaceId }: { spaceId?: string }) {
   const { listRef, visibleCount } = useVisiblePanelItems(5);
-  const { data: masks = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
+  const { data: masks = [] } = useGetApiSpacesSpaceIdMasks(spaceId ?? '', {
     query: {
+      enabled: Boolean(spaceId),
       select: (res) => {
         const list = (res as getApiSpacesSpaceIdMasksResponseSuccess).data.masks ?? [];
         return list
@@ -77,10 +75,11 @@ function RecentCharacters() {
   );
 }
 
-function RecentAssets() {
+function RecentAssets({ spaceId }: { spaceId?: string }) {
   const { listRef, visibleCount } = useVisiblePanelItems(5);
-  const { data: resources = [] } = useGetApiSpacesSpaceIdResources(MOCK_SPACE_ID, {
+  const { data: resources = [] } = useGetApiSpacesSpaceIdResources(spaceId ?? '', {
     query: {
+      enabled: Boolean(spaceId),
       select: (res) => {
         const list = (res as getApiSpacesSpaceIdResourcesResponseSuccess).data.resources ?? [];
         return list
@@ -115,9 +114,10 @@ function RecentAssets() {
   );
 }
 
-function MyDiceBots() {
-  const { data: bots = [] } = useGetApiSpacesSpaceIdMasks(MOCK_SPACE_ID, {
+function MyDiceBots({ spaceId }: { spaceId?: string }) {
+  const { data: bots = [] } = useGetApiSpacesSpaceIdMasks(spaceId ?? '', {
     query: {
+      enabled: Boolean(spaceId),
       select: (res) => {
         const list = (res as getApiSpacesSpaceIdMasksResponseSuccess).data.masks ?? [];
         return list
@@ -150,17 +150,17 @@ function MyDiceBots() {
   );
 }
 
-export function DashboardRightPanel() {
+export function DashboardRightPanel({ spaceId }: { spaceId?: string }) {
   return (
     <aside className="hidden w-[240px] shrink-0 border-l border-border-subtle bg-surface lg:flex lg:flex-col">
       <div className="flex flex-1 flex-col overflow-hidden border-b border-border-subtle px-6 py-4">
-        <RecentCharacters />
+        <RecentCharacters spaceId={spaceId} />
       </div>
       <div className="flex flex-1 flex-col overflow-hidden border-b border-border-subtle px-6 py-4">
-        <RecentAssets />
+        <RecentAssets spaceId={spaceId} />
       </div>
       <div className="flex shrink-0 flex-col px-6 py-5">
-        <MyDiceBots />
+        <MyDiceBots spaceId={spaceId} />
       </div>
     </aside>
   );

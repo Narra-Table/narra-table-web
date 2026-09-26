@@ -5,7 +5,9 @@
  * 故桌（Narratable）实时跑团平台的后台 API
  * OpenAPI spec version: 1.0
  */
+import type { GithubComNarraTableBackendPkgVerifyPurpose } from './githubComNarraTableBackendPkgVerifyPurpose.ts';
 
 export interface InternalHandlerSendCodeRequest {
   email: string;
+  purpose: GithubComNarraTableBackendPkgVerifyPurpose;
 }

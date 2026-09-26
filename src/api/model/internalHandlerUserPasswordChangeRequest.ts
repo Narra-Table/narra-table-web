@@ -6,9 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface InternalHandlerRegisterRequest {
-  code?: string;
-  email?: string;
-  password: string;
-  username: string;
+export interface InternalHandlerUserPasswordChangeRequest {
+  currentPassword: string;
+  newPassword: string;
 }

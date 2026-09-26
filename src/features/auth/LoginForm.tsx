@@ -2,7 +2,7 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { usePostAuthLogin } from '@/api';
 import type { postAuthLoginResponseSuccess } from '@/api';
-import { setAccessToken } from '@/lib/auth';
+import { setAuthSession } from '@/lib/auth';
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export function LoginForm() {
   const { mutate: login, isPending } = usePostAuthLogin({
     mutation: {
       onSuccess: (res) => {
-        setAccessToken((res as postAuthLoginResponseSuccess).data.accessToken);
+        setAuthSession((res as postAuthLoginResponseSuccess).data);
         void navigate({ to: '/' });
       },
       onError: () => {

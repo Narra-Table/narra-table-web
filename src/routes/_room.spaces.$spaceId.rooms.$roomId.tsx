@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { RoomWorkspace } from '@/features/room/RoomWorkspace';
 
 export const Route = createFileRoute('/_room/spaces/$spaceId/rooms/$roomId')({
   component: RoomWorkspacePage,
@@ -11,5 +12,6 @@ export const Route = createFileRoute('/_room/spaces/$spaceId/rooms/$roomId')({
 });
 
 function RoomWorkspacePage() {
-  return null;
+  const { spaceId, roomId } = Route.useParams();
+  return <RoomWorkspace roomId={roomId} spaceId={spaceId} />;
 }
