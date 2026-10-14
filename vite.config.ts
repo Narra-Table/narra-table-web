@@ -64,4 +64,19 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/api': { target: 'http://127.0.0.1:5297', changeOrigin: true },
+      '/admin': {
+        target: 'http://127.0.0.1:5297',
+        changeOrigin: true,
+        bypass(req) {
+          if (req.headers.accept?.includes('text/html')) return '/index.html';
+        },
+      },
+      '/auth': { target: 'http://127.0.0.1:5297', changeOrigin: true },
+      '/health': { target: 'http://127.0.0.1:5297', changeOrigin: true },
+      '/ws': { target: 'ws://127.0.0.1:5297', ws: true },
+    },
+  },
 });

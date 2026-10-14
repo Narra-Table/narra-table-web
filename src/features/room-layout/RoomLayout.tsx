@@ -2,8 +2,8 @@ import { Link, Outlet } from '@tanstack/react-router';
 
 export function RoomLayout() {
   return (
-    <div className="flex min-h-screen flex-col bg-app-bg text-text">
-      <header className="flex h-14 items-center border-b border-border-subtle bg-surface px-4">
+    <div className="flex h-dvh flex-col overflow-hidden bg-app-bg text-text">
+      <header className="flex h-14 shrink-0 items-center border-b border-border-subtle bg-surface px-4">
         <div className="flex min-w-0 items-center gap-4">
           <Link
             to="/"
@@ -16,7 +16,7 @@ export function RoomLayout() {
         </div>
       </header>
 
-      <main className="min-h-0 flex-1">
+      <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <Outlet />
       </main>
     </div>

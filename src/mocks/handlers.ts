@@ -1,3 +1,4 @@
+import { adminHandlers } from './admin';
 import {
   getNarratableAPIMock,
   getGetApiMeMockHandler,
@@ -20,6 +21,7 @@ const MOCK_AUTH_RESPONSE = {
 };
 
 export const handlers = [
+  ...adminHandlers,
   getPostAuthLoginMockHandler(MOCK_AUTH_RESPONSE),
   getPostAuthRegisterMockHandler(MOCK_AUTH_RESPONSE),
   getPostAuthSendCodeMockHandler(),

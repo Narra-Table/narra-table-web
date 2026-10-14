@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { RoomWorkspace } from '@/features/room/RoomWorkspace';
+import { RoomChat } from '@/features/room-chat/RoomChat';
 
 export const Route = createFileRoute('/_room/spaces/$spaceId/rooms/$roomId')({
   component: RoomWorkspacePage,
@@ -13,5 +13,19 @@ export const Route = createFileRoute('/_room/spaces/$spaceId/rooms/$roomId')({
 
 function RoomWorkspacePage() {
   const { spaceId, roomId } = Route.useParams();
-  return <RoomWorkspace roomId={roomId} spaceId={spaceId} />;
+  const { scene } = Route.useSearch();
+  const navigate = Route.useNavigate();
+  return (
+    <RoomChat
+      spaceId={spaceId}
+      roomId={roomId}
+      scene={scene}
+      onSceneChange={(next) => {
+        void navigate({
+          search: (prev) => ({ ...prev, scene: next }),
+          replace: true,
+        });
+      }}
+    />
+  );
 }
