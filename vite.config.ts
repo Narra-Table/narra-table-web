@@ -75,6 +75,7 @@ export default defineConfig({
         },
       },
       '/auth': { target: 'http://127.0.0.1:5297', changeOrigin: true },
+      '/capabilities': { target: 'http://127.0.0.1:5297', changeOrigin: true },
       '/health': { target: 'http://127.0.0.1:5297', changeOrigin: true },
       '/ws': { target: 'ws://127.0.0.1:5297', ws: true },
     },
