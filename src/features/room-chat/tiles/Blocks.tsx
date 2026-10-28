@@ -1,7 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { paintCustomColor } from '../model/contrast';
+import { paintCustomColor, readableTextColor } from '../model/contrast';
 import {
+  THEME_BG_CLASS,
   THEME_TEXT_CLASS,
   isThemeColor,
   normalizeColor,
@@ -9,7 +10,7 @@ import {
 } from '../model/richText';
 import { sceneId, sceneLabel } from '../model/sceneIndex';
 import type { RoomBlock } from '../model/types';
-import { useAppBackground } from './useAppBackground';
+import { useThemePalette, type ThemePalette } from '../useThemePalette';
 import { useResourceUrl } from './useResourceUrl';
 
 function directUrl(value: string | undefined): boolean {
@@ -93,7 +94,7 @@ export function MediaAudio({
   );
 }
 
-function InlineRun({ child, background }: { child: StyledInline; background: string }) {
+function InlineRun({ child, palette }: { child: StyledInline; palette: ThemePalette }) {
   if (child.type === 'mention') {
     return <span className="text-accent">{child.displayText || '提及'}</span>;
   }
@@ -101,8 +102,19 @@ function InlineRun({ child, background }: { child: StyledInline; background: str
     return <span className="text-text-muted">{child.faceId || '表情'}</span>;
   }
   const color = normalizeColor(child.color);
+  const fill = normalizeColor(child.background);
   const named = color && isThemeColor(color) ? THEME_TEXT_CLASS[color] : undefined;
-  const painted = color && !named ? paintCustomColor(color, background) : undefined;
+  const namedFill = fill && isThemeColor(fill) ? THEME_BG_CLASS[fill] : undefined;
+  const fillHex = fill ? (isThemeColor(fill) ? palette[fill] : fill) : undefined;
+  const textHex = color ? (isThemeColor(color) ? palette[color] : color) : undefined;
+  // 有底色时，正文色和主题色也按底色重新取对比度；没有底色时保持原来的渲染。
+  const painted = fillHex
+    ? textHex
+      ? paintCustomColor(textHex, fillHex)
+      : readableTextColor(fillHex)
+    : color && !named
+      ? paintCustomColor(color, palette.appBg)
+      : undefined;
   const body = (
     <span
       className={cn(
@@ -111,8 +123,13 @@ function InlineRun({ child, background }: { child: StyledInline; background: str
         child.underline && 'underline',
         child.strikethrough && 'line-through',
         named,
+        namedFill,
+        fill && 'rounded-sm px-0.5',
       )}
-      style={painted ? { color: painted } : undefined}
+      style={{
+        ...(painted ? { color: painted } : undefined),
+        ...(fill && !namedFill ? { backgroundColor: fill } : undefined),
+      }}
     >
       {child.text}
     </span>
@@ -127,11 +144,11 @@ function InlineRun({ child, background }: { child: StyledInline; background: str
 }
 
 export function ParagraphText({ runs }: { runs: StyledInline[] | undefined }) {
-  const background = useAppBackground();
+  const palette = useThemePalette();
   return (
     <>
       {(runs ?? []).map((child, index) => (
-        <InlineRun key={index} child={child} background={background} />
+        <InlineRun key={index} child={child} palette={palette} />
       ))}
     </>
   );

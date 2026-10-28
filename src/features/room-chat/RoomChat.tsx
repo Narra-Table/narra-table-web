@@ -1,4 +1,6 @@
+import { Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import type { GithubComNarraTableBackendPkgProtocolRoom } from '@/api/model/githubComNarraTableBackendPkgProtocolRoom';
 import { ApiError } from '@/lib/orvalClient';
 import { Composer } from './Composer';
 import { groupMessages, streamEntries } from './model/groupMessages';
@@ -25,12 +27,20 @@ function waitFrames(count: number): Promise<void> {
 export function RoomChat({
   spaceId,
   roomId,
+  rooms,
   scene,
+  query = '',
+  onRoomChange,
+  onQueryChange,
   onSceneChange,
 }: {
   spaceId: string;
   roomId: string;
+  rooms: GithubComNarraTableBackendPkgProtocolRoom[];
   scene?: string;
+  query?: string;
+  onRoomChange: (roomId: string) => void;
+  onQueryChange: (value: string) => void;
   onSceneChange: (sceneId: string) => void;
 }) {
   const session = useRoomChatSession(spaceId, roomId);
@@ -164,7 +174,9 @@ export function RoomChat({
     });
   }
 
-  const groups = groupMessages(streamEntries(session.messages, session.pendings));
+  const groups = groupMessages(
+    streamEntries(visibleMessages(session.messages, session.maskNames, query), session.pendings),
+  );
   const scenes = collectScenes(session.messages);
   const connectionLabel =
     session.connection === 'reconnecting'
@@ -175,8 +187,51 @@ export function RoomChat({
           ? '正在连接'
           : null;
 
+  const roomName = rooms.find((item) => item.roomId === roomId)?.name;
+
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-app-bg">
+    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-app-bg">
+      <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-border-subtle bg-surface px-3 py-1.5">
+        <label className="flex min-w-0 items-center gap-1.5">
+          <span className="shrink-0 text-xs text-text-muted">房间</span>
+          {rooms.length > 1 ? (
+            <select
+              aria-label="切换房间"
+              value={roomId}
+              onChange={(event) => onRoomChange(event.target.value)}
+              className="max-w-40 min-w-0 truncate rounded-control border border-border bg-surface-muted px-2 py-1 text-sm font-medium text-text outline-none focus:border-accent"
+            >
+              {rooms.map((item) => (
+                <option key={item.roomId} value={item.roomId}>
+                  {item.name || '未命名房间'}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <span className="truncate text-sm font-medium text-text">{roomName || '房间'}</span>
+          )}
+        </label>
+        <label className="relative min-w-0 flex-1 basis-44">
+          <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-text-muted" />
+          <input
+            value={query}
+            onChange={(event) => onQueryChange(event.target.value)}
+            placeholder="搜索已加载的发言"
+            aria-label="搜索已加载的发言"
+            className="w-full rounded-control border border-border bg-surface-muted py-1 pr-7 pl-7 text-sm text-text outline-none focus:border-accent"
+          />
+          {query ? (
+            <button
+              type="button"
+              aria-label="清除搜索"
+              onClick={() => onQueryChange('')}
+              className="absolute top-1/2 right-2 -translate-y-1/2 text-text-muted"
+            >
+              <X className="size-3.5" />
+            </button>
+          ) : null}
+        </label>
+      </div>
       <PinStrip pins={session.pinned} onJump={jumpToMessage} />
       <SceneMenu
         scenes={scenes}
@@ -209,6 +264,13 @@ export function RoomChat({
             session.messages.length === 0 &&
             session.pendings.length === 0 ? (
               <p className="text-sm text-text-muted">这里还没有发言</p>
+            ) : null}
+            {!session.loading &&
+            !session.error &&
+            query.trim() &&
+            groups.length === 0 &&
+            session.messages.length > 0 ? (
+              <p className="text-sm text-text-muted">没有和「{query.trim()}」有关的发言</p>
             ) : null}
             {!session.loading && !session.error ? (
               <ReadingGroups
@@ -259,6 +321,7 @@ export function RoomChat({
       ) : null}
       {notice ? <p className="px-4 text-center text-xs text-danger">{notice}</p> : null}
       <Composer
+        spaceId={spaceId}
         masks={session.usableMasks}
         maskId={session.maskId}
         onMaskId={session.setMaskId}
@@ -287,6 +350,19 @@ export function RoomChat({
       />
     </div>
   );
+}
+
+function visibleMessages(
+  messages: RoomMessage[],
+  maskNames: ReadonlyMap<string, string>,
+  query: string,
+): RoomMessage[] {
+  const needle = query.trim();
+  if (!needle) return messages;
+  return messages.filter((message) => {
+    const name = maskLabel(maskNames, message.sender?.maskId);
+    return `${name}\n${messageExcerpt(message)}`.includes(needle);
+  });
 }
 
 function HistorySkeleton() {

@@ -7,7 +7,7 @@ import Paragraph from '@tiptap/extension-paragraph';
 import Strike from '@tiptap/extension-strike';
 import Text from '@tiptap/extension-text';
 import Underline from '@tiptap/extension-underline';
-import { RubyMark, TextColor } from './marks';
+import { RubyMark, TextBackground, TextColor } from './marks';
 
 let submitOnEnter: (() => boolean) | null = null;
 
@@ -45,6 +45,8 @@ export const composerExtensions = [
   Italic,
   Underline,
   StrikeShortcut,
+  // TextBackground 先注册，文字颜色的 mark 会落在它内层，显式颜色才能覆盖底色给的默认可读色。
+  TextBackground,
   TextColor,
   RubyMark,
   SubmitOnEnter,
