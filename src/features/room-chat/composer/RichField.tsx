@@ -5,6 +5,7 @@ import {
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -13,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { exportComposerDoc, textNodesToDoc, type ComposerExport } from '../model/richText';
 import type { TextRun } from '../model/types';
 import { ColorMenu } from './ColorMenu';
-import { bindSubmitOnEnter, composerExtensions } from './schema';
+import { createComposerExtensions } from './schema';
 
 export interface RichFieldHandle {
   submit: () => void;
@@ -48,13 +49,15 @@ export const RichField = forwardRef<
   const editingRef = useRef(editing);
   editingRef.current = editing;
   const selectionRef = useRef<{ from: number; to: number } | null>(null);
+  const submitRef = useRef<() => boolean>(() => false);
   const rubyFocus = useRef(false);
   const rubyComposing = useRef(false);
   const [ruby, setRuby] = useState('');
   const [anchor, setAnchor] = useState<{ top: number; left: number; below: boolean } | null>(null);
+  const extensions = useMemo(() => createComposerExtensions(() => submitRef.current()), []);
 
   const editor = useEditor({
-    extensions: composerExtensions,
+    extensions,
     content: '',
     enableInputRules: false,
     enablePasteRules: false,
@@ -91,13 +94,13 @@ export const RichField = forwardRef<
     },
   });
 
-  const submitRef = useRef(() => {});
   submitRef.current = () => {
-    if (!liveEditor(editor) || disabled) return;
+    if (!liveEditor(editor) || disabled) return false;
     const exported = exportComposerDoc(editor.getJSON());
-    if (!exported.plain) return;
+    if (!exported.plain) return false;
     onSubmitRef.current(exported);
     if (!editingRef.current) editor.commands.clearContent();
+    return true;
   };
   const editorRef = useRef(editor);
   editorRef.current = editor;
@@ -114,14 +117,6 @@ export const RichField = forwardRef<
     }),
     [],
   );
-
-  useEffect(() => {
-    bindSubmitOnEnter(() => {
-      submitRef.current();
-      return true;
-    });
-    return () => bindSubmitOnEnter(null);
-  }, [editor]);
 
   useEffect(() => {
     if (!liveEditor(editor)) return;

@@ -9,19 +9,16 @@ import Text from '@tiptap/extension-text';
 import Underline from '@tiptap/extension-underline';
 import { RubyMark, TextBackground, TextColor } from './marks';
 
-let submitOnEnter: (() => boolean) | null = null;
-
-export function bindSubmitOnEnter(handler: (() => boolean) | null) {
-  submitOnEnter = handler;
-}
-
-const SubmitOnEnter = Extension.create({
+const SubmitOnEnter = Extension.create<{ onSubmit: () => boolean }>({
   name: 'submitOnEnter',
+  addOptions() {
+    return { onSubmit: () => false };
+  },
   addKeyboardShortcuts() {
     return {
       Enter: () => {
         if (this.editor.view.composing) return false;
-        return submitOnEnter?.() ?? false;
+        return this.options.onSubmit();
       },
     };
   },
@@ -36,18 +33,22 @@ const StrikeShortcut = Strike.extend({
   },
 });
 
-export const composerExtensions = [
-  Document.extend({ content: 'paragraph' }),
-  Paragraph,
-  Text,
-  HardBreak,
-  Bold,
-  Italic,
-  Underline,
-  StrikeShortcut,
-  // TextBackground 先注册，文字颜色的 mark 会落在它内层，显式颜色才能覆盖底色给的默认可读色。
-  TextBackground,
-  TextColor,
-  RubyMark,
-  SubmitOnEnter,
-];
+export function createComposerExtensions(onSubmit: () => boolean = () => false) {
+  return [
+    Document.extend({ content: 'paragraph' }),
+    Paragraph,
+    Text,
+    HardBreak,
+    Bold,
+    Italic,
+    Underline,
+    StrikeShortcut,
+    // TextBackground 先注册，文字颜色的 mark 会落在它内层，显式颜色才能覆盖底色给的默认可读色。
+    TextBackground,
+    TextColor,
+    RubyMark,
+    SubmitOnEnter.configure({ onSubmit }),
+  ];
+}
+
+export const composerExtensions = createComposerExtensions();
