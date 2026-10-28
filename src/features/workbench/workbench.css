@@ -1,0 +1,25 @@
+/* Map NarraTable theme tokens onto the WM's public surface. */
+.narra-workbench {
+  --wm-gap: 8px;
+  --wm-toolbar-height: 48px;
+  --wm-taskbar-height: 48px;
+  --wm-radius: 0;
+  --wm-surface: var(--theme-surface);
+  --wm-surface-muted: var(--theme-surface-muted);
+  --wm-text: var(--theme-text);
+  --wm-text-muted: var(--theme-text-muted);
+  --wm-border: var(--theme-border);
+  --wm-border-subtle: var(--theme-border-subtle);
+  --wm-accent: var(--theme-accent);
+  --wm-accent-text: var(--theme-accent-text);
+  --wm-danger: var(--theme-danger);
+  --wm-focus-ring-width: 2px;
+
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.narra-workbench .wm-root {
+  height: 100%;
+}
