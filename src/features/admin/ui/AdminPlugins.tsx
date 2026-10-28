@@ -1,5 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Dialog } from '@/components/ui/dialog';
+import { FieldError } from '@/components/ui/field';
 import {
   createAdminPlugin,
   deleteAdminPlugin,
@@ -12,7 +15,6 @@ import {
 } from '../api/adminClient';
 import { adminPluginsQuery } from '../api/adminQueries';
 import { adminErrorMessage } from '../model/copy';
-import { DangerButton, Dialog, ErrorText, GhostButton, PrimaryButton } from './primitives';
 
 export function AdminPlugins() {
   const queryClient = useQueryClient();
@@ -117,7 +119,7 @@ export function AdminPlugins() {
             选择一个 .ntp 插件包即可试加载。内置插件只读，自定义插件可以替换包、停用和删除。
           </p>
         </div>
-        <PrimaryButton
+        <Button
           onClick={() => {
             createFile.current = null;
             setCreateFileName('');
@@ -127,11 +129,11 @@ export function AdminPlugins() {
           }}
         >
           新建插件
-        </PrimaryButton>
+        </Button>
       </div>
-      {error && !creating && !selected && <ErrorText>{error}</ErrorText>}
+      {error && !creating && !selected && <FieldError>{error}</FieldError>}
       {plugins.isPending && <p className="text-sm text-text-muted">正在读取插件...</p>}
-      {plugins.isError && <ErrorText>{adminErrorMessage(plugins.error)}</ErrorText>}
+      {plugins.isError && <FieldError>{adminErrorMessage(plugins.error)}</FieldError>}
       {plugins.data && plugins.data.length === 0 && (
         <p className="rounded-card border border-border-subtle bg-surface p-4 text-sm text-text-muted">
           还没有插件。
@@ -171,7 +173,8 @@ export function AdminPlugins() {
               )}
             </div>
             <div className="flex flex-wrap gap-2">
-              <GhostButton
+              <Button
+                variant="secondary"
                 onClick={() => {
                   replaceFile.current = null;
                   setReplaceFileName('');
@@ -181,11 +184,15 @@ export function AdminPlugins() {
                 }}
               >
                 {plugin.builtIn ? '查看' : '编辑'}
-              </GhostButton>
+              </Button>
               {!plugin.builtIn && (
-                <GhostButton disabled={toggle.isPending} onClick={() => toggle.mutate(plugin)}>
+                <Button
+                  variant="secondary"
+                  disabled={toggle.isPending}
+                  onClick={() => toggle.mutate(plugin)}
+                >
                   {plugin.enabled ? '停用' : '启用'}
-                </GhostButton>
+                </Button>
               )}
             </div>
           </article>
@@ -211,16 +218,16 @@ export function AdminPlugins() {
             {validate.isPending && createFile.current && (
               <p className="text-sm text-text-muted">正在试加载...</p>
             )}
-            {error && <ErrorText>{error}</ErrorText>}
+            {error && <FieldError>{error}</FieldError>}
             {preview && (
               <>
                 <PackageFacts info={preview.plugin} />
                 <p className="text-sm text-success">{commandSummary(preview)}</p>
               </>
             )}
-            <PrimaryButton type="submit" disabled={create.isPending || !preview}>
+            <Button type="submit" disabled={create.isPending || !preview}>
               创建
-            </PrimaryButton>
+            </Button>
           </form>
         </Dialog>
       )}
@@ -244,11 +251,11 @@ export function AdminPlugins() {
             {validate.isPending && replaceFile.current && (
               <p className="text-sm text-text-muted">正在试加载...</p>
             )}
-            {error && <ErrorText>{error}</ErrorText>}
+            {error && <FieldError>{error}</FieldError>}
             {replacePreview && replaceNameMismatch && (
-              <ErrorText>
+              <FieldError>
                 这个包的名称是 {replacePreview.plugin.name}，不能替换 {selected.name}。
-              </ErrorText>
+              </FieldError>
             )}
             {replacePreview && !replaceNameMismatch && (
               <>
@@ -258,7 +265,7 @@ export function AdminPlugins() {
             )}
             {!selected.builtIn && (
               <div className="flex flex-wrap gap-3">
-                <PrimaryButton
+                <Button
                   disabled={
                     replace.isPending ||
                     !replacePreview ||
@@ -270,8 +277,9 @@ export function AdminPlugins() {
                   }}
                 >
                   替换
-                </PrimaryButton>
-                <DangerButton
+                </Button>
+                <Button
+                  variant="destructive"
                   disabled={remove.isPending}
                   onClick={() => {
                     if (
@@ -284,7 +292,7 @@ export function AdminPlugins() {
                   }}
                 >
                   删除
-                </DangerButton>
+                </Button>
               </div>
             )}
           </div>

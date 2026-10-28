@@ -1,10 +1,11 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { FieldError, TextField } from '@/components/ui/field';
 import { clearAdminSession, getAdminSession } from '@/lib/adminSession';
 import { queryClient } from '@/lib/queryClient';
 import { adminChangePassword } from '../api/adminClient';
 import { adminErrorMessage } from '../model/copy';
-import { ErrorText, PrimaryButton, TextField } from './primitives';
 
 export function AdminPassword() {
   const navigate = useNavigate();
@@ -60,10 +61,10 @@ export function AdminPassword() {
           maxLength={72}
           required
         />
-        {error && <ErrorText>{error}</ErrorText>}
-        <PrimaryButton type="submit" disabled={pending}>
+        {error && <FieldError>{error}</FieldError>}
+        <Button type="submit" disabled={pending}>
           {pending ? '提交中...' : '更新密码'}
-        </PrimaryButton>
+        </Button>
       </form>
     </section>
   );

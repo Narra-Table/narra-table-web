@@ -1,9 +1,10 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { FieldError, TextField } from '@/components/ui/field';
 import { setAdminSession } from '@/lib/adminSession';
 import { adminLogin } from '../api/adminClient';
 import { adminErrorMessage } from '../model/copy';
-import { ErrorText, PrimaryButton, TextField } from './primitives';
 
 export function AdminLogin() {
   const navigate = useNavigate();
@@ -54,10 +55,10 @@ export function AdminLogin() {
             autoComplete="current-password"
             required
           />
-          {error && <ErrorText>{error}</ErrorText>}
-          <PrimaryButton type="submit" disabled={pending} className="mt-2">
+          {error && <FieldError>{error}</FieldError>}
+          <Button type="submit" disabled={pending} className="mt-2">
             {pending ? '登录中...' : '登录'}
-          </PrimaryButton>
+          </Button>
         </form>
         {import.meta.env.VITE_MOCK === 'true' && (
           <p className="mt-6 text-sm text-text-muted">

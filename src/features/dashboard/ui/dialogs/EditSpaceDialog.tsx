@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState, type FormEvent } from 'react';
 import { getApiSpacesSpaceId, getGetApiSpacesQueryKey, patchApiSpacesSpaceId } from '@/api';
+import { Button } from '@/components/ui/button';
 import type { SpaceListItem } from '../../model/types';
 import { actionError, DialogShell, SpaceFields } from './shared';
 
@@ -72,21 +73,12 @@ export function EditSpaceDialog({ space, onClose }: { space: SpaceListItem; onCl
           </p>
         ) : null}
         <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={pending}
-            className="rounded-control border border-border px-4 py-2 text-sm text-text disabled:opacity-50"
-          >
+          <Button variant="secondary" onClick={onClose} disabled={pending}>
             取消
-          </button>
-          <button
-            type="submit"
-            disabled={!ready || pending}
-            className="rounded-control bg-accent px-4 py-2 text-sm font-semibold text-accent-text disabled:opacity-50"
-          >
+          </Button>
+          <Button type="submit" disabled={!ready || pending}>
             {pending ? '保存中...' : '保存'}
-          </button>
+          </Button>
         </div>
       </form>
     </DialogShell>

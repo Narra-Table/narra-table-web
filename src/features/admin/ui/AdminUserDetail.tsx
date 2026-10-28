@@ -1,6 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useParams } from '@tanstack/react-router';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Dialog } from '@/components/ui/dialog';
+import { FieldError, TextField } from '@/components/ui/field';
 import {
   anonymizeAdminUser,
   disableAdminUser,
@@ -14,16 +17,8 @@ import {
   defaultUserSearch,
 } from '../api/adminQueries';
 import { adminErrorMessage, availableUserActions } from '../model/copy';
-import {
-  DangerButton,
-  Dialog,
-  ErrorText,
-  GhostButton,
-  PrimaryButton,
-  StatusBadge,
-  TextField,
-  formatTime,
-} from './primitives';
+import { formatAdminTime } from '../model/formatAdminTime';
+import { AdminStatusBadge } from './AdminStatusBadge';
 
 export function AdminUserDetail() {
   const { userId } = useParams({ from: '/admin/users/$userId' });
@@ -88,19 +83,19 @@ export function AdminUserDetail() {
         返回用户列表
       </Link>
       {user.isPending && <p className="text-sm text-text-muted">正在读取用户...</p>}
-      {user.isError && <ErrorText>{adminErrorMessage(user.error)}</ErrorText>}
+      {user.isError && <FieldError>{adminErrorMessage(user.error)}</FieldError>}
       {user.data && (
         <div className="flex flex-col gap-4 rounded-card border border-border-subtle bg-surface p-4">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold">{user.data.nickname || user.data.username}</h1>
-            <StatusBadge status={user.data.status} />
+            <AdminStatusBadge status={user.data.status} />
           </div>
           <dl className="grid gap-3 text-sm sm:grid-cols-2">
             <Info label="用户名" value={`@${user.data.username}`} />
             <Info label="邮箱" value={user.data.email || '未绑定'} />
             <Info label="必须改密" value={user.data.mustChangePassword ? '是' : '否'} />
-            <Info label="创建时间" value={formatTime(user.data.createdAt)} />
-            <Info label="更新时间" value={formatTime(user.data.updatedAt)} />
+            <Info label="创建时间" value={formatAdminTime(user.data.createdAt)} />
+            <Info label="更新时间" value={formatAdminTime(user.data.updatedAt)} />
             <Info label="用户 ID" value={user.data.id} />
           </dl>
           {user.data.status === 'deleted' && (
@@ -109,27 +104,35 @@ export function AdminUserDetail() {
               ID，但身份、凭证和成员关系已经清除，不能再登录。
             </p>
           )}
-          {error && <ErrorText>{error}</ErrorText>}
+          {error && <FieldError>{error}</FieldError>}
           <div className="flex flex-wrap gap-3">
             {actions.includes('disable') && (
-              <DangerButton disabled={pending} onClick={() => setConfirm('disable')}>
+              <Button
+                variant="destructive"
+                disabled={pending}
+                onClick={() => setConfirm('disable')}
+              >
                 禁用
-              </DangerButton>
+              </Button>
             )}
             {actions.includes('restore') && (
-              <PrimaryButton disabled={pending} onClick={() => setConfirm('restore')}>
+              <Button disabled={pending} onClick={() => setConfirm('restore')}>
                 恢复
-              </PrimaryButton>
+              </Button>
             )}
             {actions.includes('temporaryPassword') && (
-              <GhostButton disabled={pending} onClick={() => resetPassword.mutate()}>
+              <Button variant="secondary" disabled={pending} onClick={() => resetPassword.mutate()}>
                 发放临时密码
-              </GhostButton>
+              </Button>
             )}
             {actions.includes('anonymize') && (
-              <DangerButton disabled={pending} onClick={() => setConfirm('anonymize')}>
+              <Button
+                variant="destructive"
+                disabled={pending}
+                onClick={() => setConfirm('anonymize')}
+              >
                 匿名化
-              </DangerButton>
+              </Button>
             )}
           </div>
         </div>
@@ -141,10 +144,12 @@ export function AdminUserDetail() {
             会立刻撤销会话并断开连接。恢复后可以重新登录，旧会话不会回来。
           </p>
           <div className="mt-4 flex gap-3">
-            <DangerButton disabled={pending} onClick={() => disable.mutate()}>
+            <Button variant="destructive" disabled={pending} onClick={() => disable.mutate()}>
               确认禁用
-            </DangerButton>
-            <GhostButton onClick={() => setConfirm(null)}>取消</GhostButton>
+            </Button>
+            <Button variant="secondary" onClick={() => setConfirm(null)}>
+              取消
+            </Button>
           </div>
         </Dialog>
       )}
@@ -155,10 +160,12 @@ export function AdminUserDetail() {
             只重新开放登录。被撤销的会话、被移出的关系和面具权限都不会自动回来。
           </p>
           <div className="mt-4 flex gap-3">
-            <PrimaryButton disabled={pending} onClick={() => restore.mutate()}>
+            <Button disabled={pending} onClick={() => restore.mutate()}>
               确认恢复
-            </PrimaryButton>
-            <GhostButton onClick={() => setConfirm(null)}>取消</GhostButton>
+            </Button>
+            <Button variant="secondary" onClick={() => setConfirm(null)}>
+              取消
+            </Button>
           </div>
         </Dialog>
       )}
@@ -184,20 +191,22 @@ export function AdminUserDetail() {
             />
           </div>
           <div className="mt-4 flex gap-3">
-            <DangerButton
+            <Button
+              variant="destructive"
               disabled={pending || typedName !== user.data.username}
               onClick={() => anonymize.mutate()}
             >
               确认匿名化
-            </DangerButton>
-            <GhostButton
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => {
                 setConfirm(null);
                 setTypedName('');
               }}
             >
               取消
-            </GhostButton>
+            </Button>
           </div>
         </Dialog>
       )}
@@ -210,14 +219,16 @@ export function AdminUserDetail() {
             {temporaryPassword}
           </p>
           <div className="mt-4 flex gap-3">
-            <PrimaryButton
+            <Button
               onClick={() => {
                 void navigator.clipboard.writeText(temporaryPassword);
               }}
             >
               复制
-            </PrimaryButton>
-            <GhostButton onClick={() => setTemporaryPassword(null)}>我已记下</GhostButton>
+            </Button>
+            <Button variant="secondary" onClick={() => setTemporaryPassword(null)}>
+              我已记下
+            </Button>
           </div>
         </Dialog>
       )}
