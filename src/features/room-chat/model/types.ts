@@ -21,6 +21,7 @@ export interface TextRun {
   underline?: boolean;
   strikethrough?: boolean;
   color?: string;
+  background?: string;
   ruby?: string;
 }
 

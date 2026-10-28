@@ -3,7 +3,7 @@ import type { RoomBlock, TextRun } from './types';
 
 export interface ComposerMark {
   type: string;
-  attrs?: { color?: string; ruby?: string };
+  attrs?: { color?: string; background?: string; ruby?: string };
 }
 
 export interface ComposerNode {
@@ -25,6 +25,14 @@ export const THEME_TEXT_CLASS: Record<ThemeColor, string> = {
   info: 'text-info',
 };
 
+export const THEME_BG_CLASS: Record<ThemeColor, string> = {
+  accent: 'bg-accent',
+  danger: 'bg-danger',
+  warning: 'bg-warning',
+  success: 'bg-success',
+  info: 'bg-info',
+};
+
 export function isThemeColor(value: string): value is ThemeColor {
   return (THEME_COLORS as readonly string[]).includes(value);
 }
@@ -38,10 +46,7 @@ export function normalizeColor(value: string | undefined | null): string | undef
   return `#${match[1].toLowerCase()}`;
 }
 
-export type StyledInline = GithubComNarraTableBackendPkgProtocolInline & {
-  color?: string;
-  ruby?: string;
-};
+export type StyledInline = GithubComNarraTableBackendPkgProtocolInline;
 
 function sameStyle(left: TextRun, right: TextRun): boolean {
   return (
@@ -49,7 +54,8 @@ function sameStyle(left: TextRun, right: TextRun): boolean {
     Boolean(left.italic) === Boolean(right.italic) &&
     Boolean(left.underline) === Boolean(right.underline) &&
     Boolean(left.strikethrough) === Boolean(right.strikethrough) &&
-    (left.color ?? '') === (right.color ?? '')
+    (left.color ?? '') === (right.color ?? '') &&
+    (left.background ?? '') === (right.background ?? '')
   );
 }
 
@@ -60,6 +66,7 @@ function copyRun(node: TextRun): TextRun {
   if (node.underline) next.underline = true;
   if (node.strikethrough) next.strikethrough = true;
   if (node.color) next.color = node.color;
+  if (node.background) next.background = node.background;
   if (node.ruby) next.ruby = node.ruby;
   return next;
 }
@@ -102,6 +109,12 @@ function marksOf(node: ComposerNode): Partial<TextRun> {
         typeof mark.attrs?.color === 'string' ? mark.attrs.color : undefined,
       );
       if (color) marks.color = color;
+    }
+    if (mark.type === 'textBackground') {
+      const background = normalizeColor(
+        typeof mark.attrs?.background === 'string' ? mark.attrs.background : undefined,
+      );
+      if (background) marks.background = background;
     }
     if (mark.type === 'ruby') {
       const ruby = typeof mark.attrs?.ruby === 'string' ? mark.attrs.ruby.trim() : '';
@@ -156,6 +169,8 @@ function marksFor(node: TextRun): ComposerMark[] | undefined {
   if (node.underline) marks.push({ type: 'underline' });
   if (node.strikethrough) marks.push({ type: 'strike' });
   if (node.color) marks.push({ type: 'textColor', attrs: { color: node.color } });
+  if (node.background)
+    marks.push({ type: 'textBackground', attrs: { background: node.background } });
   if (node.ruby) marks.push({ type: 'ruby', attrs: { ruby: node.ruby } });
   return marks.length ? marks : undefined;
 }
@@ -186,6 +201,7 @@ export function textNodesFromBlocks(blocks: RoomBlock[] | undefined): TextRun[] 
       const styled = child as StyledInline;
       if (styled.type !== 'text') continue;
       const color = normalizeColor(styled.color);
+      const background = normalizeColor(styled.background);
       const ruby = styled.ruby?.trim();
       nodes.push(
         copyRun({
@@ -196,6 +212,7 @@ export function textNodesFromBlocks(blocks: RoomBlock[] | undefined): TextRun[] 
           underline: styled.underline,
           strikethrough: styled.strikethrough,
           color,
+          background,
           ruby: ruby || undefined,
         }),
       );
@@ -211,6 +228,7 @@ export function serializeRun(node: TextRun): Record<string, unknown> {
   if (node.underline) out.underline = true;
   if (node.strikethrough) out.strikethrough = true;
   if (node.color) out.color = node.color;
+  if (node.background) out.background = node.background;
   if (node.ruby) out.ruby = node.ruby;
   return out;
 }

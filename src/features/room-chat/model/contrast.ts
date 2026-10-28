@@ -124,3 +124,16 @@ export function hueDistance(left: number, right: number): number {
   const distance = Math.abs(left - right) % 360;
   return Math.min(distance, 360 - distance);
 }
+
+const DARK_TEXT = '#15110d';
+const LIGHT_TEXT = '#f7f7f7';
+
+/**
+ * 为一处底色挑一个可读的正文色。浅色高亮配深字，深色底配浅字；
+ * 只用于没有显式文字颜色的段落。存储的消息不会被改写。
+ */
+export function readableTextColor(background: string): string {
+  return contrastRatio(DARK_TEXT, background) >= contrastRatio(LIGHT_TEXT, background)
+    ? DARK_TEXT
+    : LIGHT_TEXT;
+}

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { contrastRatio, hueDistance, oklchOf, paintCustomColor } from './contrast';
+import {
+  contrastRatio,
+  hueDistance,
+  oklchOf,
+  paintCustomColor,
+  readableTextColor,
+} from './contrast';
 
 describe('paintCustomColor', () => {
   it('leaves a readable color unchanged', () => {
@@ -29,5 +35,26 @@ describe('paintCustomColor', () => {
     const stored = '#fff6f1';
     paintCustomColor(stored, '#fff6f1');
     expect(stored).toBe('#fff6f1');
+  });
+});
+
+describe('readableTextColor', () => {
+  it('uses dark text on light highlights', () => {
+    expect(readableTextColor('#fef08a')).toBe('#15110d');
+    expect(contrastRatio(readableTextColor('#fef08a'), '#fef08a')).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('uses light text on a dark fill', () => {
+    expect(readableTextColor('#1f2937')).toBe('#f7f7f7');
+    expect(contrastRatio(readableTextColor('#1f2937'), '#1f2937')).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('picks the better of the two candidates on mid tones', () => {
+    const background = '#767676';
+    const chosen = readableTextColor(background);
+    const other = chosen === '#15110d' ? '#f7f7f7' : '#15110d';
+    expect(contrastRatio(chosen, background)).toBeGreaterThanOrEqual(
+      contrastRatio(other, background),
+    );
   });
 });

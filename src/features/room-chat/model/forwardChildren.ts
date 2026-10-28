@@ -1,15 +1,6 @@
-import type { GithubComNarraTableBackendPkgProtocolClueContent } from '@/api/model/githubComNarraTableBackendPkgProtocolClueContent';
 import type { GithubComNarraTableBackendPkgProtocolForwardedMessage } from '@/api/model/githubComNarraTableBackendPkgProtocolForwardedMessage';
-import type { GithubComNarraTableBackendPkgProtocolVeil } from '@/api/model/githubComNarraTableBackendPkgProtocolVeil';
 
-export type ForwardChild = GithubComNarraTableBackendPkgProtocolForwardedMessage & {
-  seq?: number;
-  messageId?: string;
-  clue?: GithubComNarraTableBackendPkgProtocolClueContent;
-  raw?: string;
-  veil?: GithubComNarraTableBackendPkgProtocolVeil;
-  result?: { error?: string | null };
-};
+export type ForwardChild = GithubComNarraTableBackendPkgProtocolForwardedMessage;
 
 export type ForwardChildView = 'body' | 'omitted' | 'sender-only';
 
@@ -28,7 +19,7 @@ export function orderForwardChildren(children: readonly ForwardChild[]): Forward
     .map((item) => item.child);
 }
 
-function hasClueBody(clue: GithubComNarraTableBackendPkgProtocolClueContent | undefined): boolean {
+function hasClueBody(clue: ForwardChild['clue']): boolean {
   if (!clue) return false;
   return Boolean(
     clue.title?.trim() || clue.description?.trim() || clue.imageUrl || clue.tags?.length,

@@ -1,31 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { RoomChat } from '@/features/room-chat/RoomChat';
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { primeWorkbenchRoom } from '@/features/workbench/persistence';
 
+// 兼容旧房间链接：把指定房间写入工作台偏好，再跳到空间工作台。
 export const Route = createFileRoute('/_room/spaces/$spaceId/rooms/$roomId')({
-  component: RoomWorkspacePage,
-  validateSearch: (search: Record<string, unknown>) => ({
-    focus: typeof search.focus === 'string' ? search.focus : 'chat',
-    panel: typeof search.panel === 'string' ? search.panel : 'chat',
-    right: typeof search.right === 'string' ? search.right : 'characters',
-    scene: typeof search.scene === 'string' ? search.scene : undefined,
-  }),
+  beforeLoad: ({ params }) => {
+    primeWorkbenchRoom(params.spaceId, params.roomId);
+    throw redirect({ to: '/spaces/$spaceId', params: { spaceId: params.spaceId } });
+  },
 });
-
-function RoomWorkspacePage() {
-  const { spaceId, roomId } = Route.useParams();
-  const { scene } = Route.useSearch();
-  const navigate = Route.useNavigate();
-  return (
-    <RoomChat
-      spaceId={spaceId}
-      roomId={roomId}
-      scene={scene}
-      onSceneChange={(next) => {
-        void navigate({
-          search: (prev) => ({ ...prev, scene: next }),
-          replace: true,
-        });
-      }}
-    />
-  );
-}

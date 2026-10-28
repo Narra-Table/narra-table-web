@@ -2,7 +2,7 @@
 
 ## 项目概览
 
-Narra Table Web 是一个 TRPG 平台，基于 Vite+ 0.2.1、React 19、TypeScript 和 Tailwind CSS 4 构建。
+NarraTable Web 是一个 TRPG 平台，基于 Vite+ 0.2.1、React 19、TypeScript 和 Tailwind CSS 4 构建。
 
 ## 参考文档
 
@@ -35,7 +35,7 @@ Narra Table Web 是一个 TRPG 平台，基于 Vite+ 0.2.1、React 19、TypeScri
 ## 编码规则
 
 - 使用 TypeScript 严格模式。
-- 使用 Tailwind CSS utility classes 编写样式。不要编写原始 CSS 或内联 `style` 属性。
+- 使用 Tailwind CSS utility classes 编写样式，不要编写原始 CSS 或内联 `style` 属性。
 
 ### 样式系统约束
 

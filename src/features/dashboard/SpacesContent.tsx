@@ -1,15 +1,26 @@
 import { Plus, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 import { useGetApiSpaces } from '@/api';
+import { sortSpacesByPin, togglePinnedSpace, usePinnedSpaceIds } from './pinnedSpaces';
 import { SpaceCard } from './SpaceCard';
 import type { SpaceListItem } from './SpaceCard';
+import { ArchiveSpaceDialog, CreateSpaceDialog, EditSpaceDialog } from './SpaceDialogs';
 import { SpacesGridSkeleton } from './SpacesGridSkeleton';
 
 export function SpacesContent() {
+  const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState<SpaceListItem | null>(null);
+  const [archiving, setArchiving] = useState<SpaceListItem | null>(null);
+  const pinnedIds = usePinnedSpaceIds();
   const { data: spaces = [], isLoading } = useGetApiSpaces({
     query: {
       select: (res) => (res.data.spaces ?? []) as SpaceListItem[],
     },
   });
+  const visibleSpaces = sortSpacesByPin(
+    spaces.filter((space) => space.status !== 'archived'),
+    pinnedIds,
+  );
 
   return (
     <div className="scroll-subtle-native-hidden flex-1 overflow-y-auto px-8 py-8">
@@ -25,6 +36,7 @@ export function SpacesContent() {
         <div className="flex items-center gap-3">
           <button
             type="button"
+            onClick={() => setCreating(true)}
             className="flex cursor-pointer items-center gap-1.5 rounded-card bg-accent px-5 py-2.5 text-sm font-semibold text-accent-text shadow-lg transition-all hover:opacity-90 active:scale-95"
           >
             <Plus className="size-4" strokeWidth={2.5} />
@@ -37,24 +49,38 @@ export function SpacesContent() {
         <SpacesGridSkeleton />
       ) : (
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-          {spaces.map((space, i) => (
-            <SpaceCard key={space.spaceId ?? i} space={space} />
+          {visibleSpaces.map((space, i) => (
+            <SpaceCard
+              key={space.spaceId ?? i}
+              space={space}
+              pinned={Boolean(space.spaceId && pinnedIds.includes(space.spaceId))}
+              onTogglePin={() => {
+                if (space.spaceId) togglePinnedSpace(space.spaceId);
+              }}
+              onEdit={() => setEditing(space)}
+              onArchive={() => setArchiving(space)}
+            />
           ))}
         </div>
       )}
 
-      {!isLoading && spaces.length > 0 && (
+      {!isLoading && visibleSpaces.length > 0 && (
         <div className="mt-12 flex items-center justify-center text-text-muted">
           <p className="text-sm">没有更多了～</p>
         </div>
       )}
 
-      {!isLoading && spaces.length === 0 && (
+      {!isLoading && visibleSpaces.length === 0 && (
         <div className="mt-20 flex flex-col items-center justify-center text-text-muted">
           <p className="text-base">还没有任何空间</p>
           <p className="text-sm">点击「创建空间」开始你的第一次跑团吧！</p>
         </div>
       )}
+      {creating ? <CreateSpaceDialog onClose={() => setCreating(false)} /> : null}
+      {editing ? <EditSpaceDialog space={editing} onClose={() => setEditing(null)} /> : null}
+      {archiving ? (
+        <ArchiveSpaceDialog space={archiving} onClose={() => setArchiving(null)} />
+      ) : null}
     </div>
   );
 }

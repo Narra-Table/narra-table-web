@@ -282,6 +282,14 @@
   height: 0;
 }
 
+.composer-ruby {
+  @apply inline-flex flex-col items-center align-bottom;
+}
+.composer-ruby::before {
+  content: attr(data-ruby);
+  @apply pointer-events-none text-center text-2xs leading-none whitespace-pre text-text-muted;
+}
+
 /* ── shadcn token 桥接 ────────────────────────────────────────────────────── */
 /* 将 shadcn 的 CSS 变量映射到项目的 --theme-* 体系，                          */
 /* 使 shadcn 组件自动跟随当前 data-theme 变化。                                */
@@ -320,7 +328,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply overflow-x-hidden;
+  }
   body {
-    @apply bg-app-bg text-text;
+    @apply overflow-x-hidden bg-app-bg text-text;
   }
 }

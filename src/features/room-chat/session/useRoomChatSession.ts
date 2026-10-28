@@ -97,6 +97,8 @@ export function useRoomChatSession(spaceId: string, roomId: string): RoomChatSes
   const stateRef = useRef(state);
   stateRef.current = state;
   const loadingOlderRef = useRef(false);
+  const roomGenerationRef = useRef(0);
+  const roomControllerRef = useRef<AbortController | null>(null);
   const socketRef = useRef<RoomSocket | null>(null);
   const maskIdRef = useRef(maskId);
   maskIdRef.current = maskId;
@@ -137,14 +139,23 @@ export function useRoomChatSession(spaceId: string, roomId: string): RoomChatSes
     const current = stateRef.current;
     const cursor = current.messages[0]?.messageId;
     if (loadingOlderRef.current || !current.hasMore || !cursor) return;
+    const generation = roomGenerationRef.current;
+    const signal = roomControllerRef.current?.signal;
+    if (signal?.aborted) return;
     loadingOlderRef.current = true;
     setLoadingOlder(true);
     try {
-      const page = await fetchRoomMessages(spaceId, roomId, {
-        cursor,
-        sort: 'desc',
-        limit: PAGE_SIZE,
-      });
+      const page = await fetchRoomMessages(
+        spaceId,
+        roomId,
+        {
+          cursor,
+          sort: 'desc',
+          limit: PAGE_SIZE,
+        },
+        signal,
+      );
+      if (roomGenerationRef.current !== generation || signal?.aborted) return;
       dispatch({
         type: 'history',
         mode: 'prepend',
@@ -152,13 +163,18 @@ export function useRoomChatSession(spaceId: string, roomId: string): RoomChatSes
         hasMore: Boolean(page.hasMore),
       });
     } finally {
-      loadingOlderRef.current = false;
-      setLoadingOlder(false);
+      if (roomGenerationRef.current === generation) {
+        loadingOlderRef.current = false;
+        setLoadingOlder(false);
+      }
     }
   }, [dispatch, roomId, spaceId]);
 
   useEffect(() => {
+    const generation = roomGenerationRef.current + 1;
+    roomGenerationRef.current = generation;
     const controller = new AbortController();
+    roomControllerRef.current = controller;
     const socket = new RoomSocket({
       url: roomSocketUrl(),
       token: getAccessToken,
@@ -250,6 +266,11 @@ export function useRoomChatSession(spaceId: string, roomId: string): RoomChatSes
     return () => {
       controller.abort();
       socket.stop();
+      if (roomControllerRef.current === controller) roomControllerRef.current = null;
+      if (roomGenerationRef.current === generation) {
+        loadingOlderRef.current = false;
+        setLoadingOlder(false);
+      }
       if (socketRef.current === socket) socketRef.current = null;
     };
   }, [attempt, dispatch, roomId, spaceId]);

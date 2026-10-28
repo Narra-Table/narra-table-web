@@ -35,10 +35,23 @@ describe('mergeTextNodes', () => {
       ]),
     ).toEqual([{ type: 'text', text: '推门', bold: true, color: 'info' }]);
   });
+
+  it('keeps a different background in its own node', () => {
+    expect(
+      mergeTextNodes([
+        { type: 'text', text: '甲', background: 'warning' },
+        { type: 'text', text: '乙', background: 'danger' },
+        { type: 'text', text: '丙', background: 'danger' },
+      ]),
+    ).toEqual([
+      { type: 'text', text: '甲', background: 'warning' },
+      { type: 'text', text: '乙丙', background: 'danger' },
+    ]);
+  });
 });
 
 describe('exportComposerDoc', () => {
-  it('exports one paragraph with bold, lowercase color, and ruby', () => {
+  it('exports one paragraph with bold, lowercase color, background, and ruby', () => {
     const exported = exportComposerDoc({
       type: 'doc',
       content: [
@@ -51,6 +64,7 @@ describe('exportComposerDoc', () => {
               marks: [
                 { type: 'bold' },
                 { type: 'textColor', attrs: { color: '#9A3412' } },
+                { type: 'textBackground', attrs: { background: '#FEF3C7' } },
                 { type: 'ruby', attrs: { ruby: 'Cthulhu' } },
               ],
             },
@@ -60,7 +74,14 @@ describe('exportComposerDoc', () => {
     });
     expect(exported.command).toBe(false);
     expect(exported.nodes).toEqual([
-      { type: 'text', text: '克苏鲁', bold: true, color: '#9a3412', ruby: 'Cthulhu' },
+      {
+        type: 'text',
+        text: '克苏鲁',
+        bold: true,
+        color: '#9a3412',
+        background: '#fef3c7',
+        ruby: 'Cthulhu',
+      },
     ]);
   });
 
