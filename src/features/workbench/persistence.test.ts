@@ -1,9 +1,19 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { readChatState } from './chat-state';
 import {
+  createSequentialIdFactory,
+  createWorkbenchStore,
+  selectFocusedWindow,
+  validateWorkspace,
+} from './core';
+import {
+  createWorkbenchStoreForSpace,
   defaultRoomId,
+  openKind,
   primeWorkbenchRoom,
   readWorkbenchRoomId,
   resolveRoomId,
+  writeWorkbenchSnapshot,
 } from './persistence';
 
 const rooms = [
@@ -54,5 +64,68 @@ describe('room preference', () => {
     values.set('narratable.workspace.space-a', '{');
 
     expect(readWorkbenchRoomId('space-a')).toBe('');
+  });
+
+  it('selects the requested room in a saved chat without changing other chat windows', () => {
+    const store = createWorkbenchStoreForSpace('space-a');
+    const chat = selectFocusedWindow(store.getState())!;
+    store.actions.setWindowState(chat.instanceId, {
+      roomId: 'room-a',
+      scene: 'old-scene',
+      query: 'old search',
+    });
+    const otherId = openKind(store, 'chat', { state: { roomId: 'room-c', query: 'keep' } })!;
+    store.actions.focus(chat.instanceId);
+    writeWorkbenchSnapshot('space-a', store);
+
+    primeWorkbenchRoom('space-a', 'room-b');
+    const restored = createWorkbenchStoreForSpace('space-a');
+
+    expect(readChatState(selectFocusedWindow(restored.getState()))).toEqual({
+      roomId: 'room-b',
+      query: '',
+    });
+    expect(readChatState(restored.getState().windows[otherId])).toEqual({
+      roomId: 'room-c',
+      query: 'keep',
+    });
+    expect(restored.getState().containers).toEqual(store.getState().containers);
+  });
+
+  it('opens a chat for a room shortcut when every chat was closed', () => {
+    const store = createWorkbenchStoreForSpace('space-a');
+    for (const window of Object.values(store.getState().windows)) {
+      if (window.windowTypeId === 'chat') store.actions.close(window.instanceId);
+    }
+    writeWorkbenchSnapshot('space-a', store);
+
+    primeWorkbenchRoom('space-a', 'room-b');
+    const restored = createWorkbenchStoreForSpace('space-a');
+    const focused = selectFocusedWindow(restored.getState());
+
+    expect(focused?.windowTypeId).toBe('chat');
+    expect(readChatState(focused).roomId).toBe('room-b');
+  });
+
+  it('opens new windows after restoring a layout without reusing window or container IDs', () => {
+    const store = createWorkbenchStore({ createId: createSequentialIdFactory() });
+    openKind(store, 'chat');
+    openKind(store, 'characters');
+    for (let index = 0; index < 5; index += 1) {
+      store.actions.open({
+        appId: 'narratable',
+        windowTypeId: 'chat',
+        title: '聊天',
+        intoContainerId: store.getState().containers[0]!.id,
+      });
+    }
+    writeWorkbenchSnapshot('space-a', store);
+    const restored = createWorkbenchStoreForSpace('space-a');
+    const before = Object.keys(restored.getState().windows);
+    const opened = Array.from({ length: 4 }, () => openKind(restored, 'chat'));
+
+    expect(new Set([...before, ...opened]).size).toBe(before.length + opened.length);
+    expect(Object.keys(restored.getState().windows)).toHaveLength(before.length + opened.length);
+    expect(validateWorkspace(restored.getState())).toEqual({ ok: true, errors: [] });
   });
 });

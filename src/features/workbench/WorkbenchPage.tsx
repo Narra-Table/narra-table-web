@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router';
+import { ArrowLeft } from 'lucide-react';
 import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useGetApiSpacesSpaceId, useGetApiSpacesSpaceIdRooms } from '@/api';
 import { selectFocusedWindow, type WindowInstance } from '@/features/workbench/core';
@@ -9,6 +11,16 @@ import {
 } from '@/features/workbench/react';
 import '@/features/workbench/styles/index.css';
 import './workbench.css';
+import { mergeChatState, readChatState, type ChatWindowState } from './chat-state';
+import {
+  createWorkbenchStoreForSpace,
+  openKind,
+  readWorkbenchRoomId,
+  resolveRoomId,
+  writeWorkbenchRoomId,
+  writeWorkbenchSnapshot,
+} from './persistence';
+import { isWorkbenchWindowKind, WORKBENCH_REGISTRY } from './registry';
 
 const WindowContent = lazy(() =>
   import('@/features/workbench/apps/WindowContent').then((module) => ({
@@ -23,16 +35,6 @@ function WindowFallback() {
 function SuspendedWindow({ children }: { children: ReactNode }) {
   return <Suspense fallback={<WindowFallback />}>{children}</Suspense>;
 }
-import { mergeChatState, readChatState, type ChatWindowState } from './chat-state';
-import {
-  createWorkbenchStoreForSpace,
-  openKind,
-  readWorkbenchRoomId,
-  resolveRoomId,
-  writeWorkbenchRoomId,
-  writeWorkbenchSnapshot,
-} from './persistence';
-import { isWorkbenchWindowKind, WORKBENCH_REGISTRY } from './registry';
 
 const MESSAGES: Partial<WorkbenchMessages> = {
   workspaceLabel: '工作区',
@@ -66,7 +68,15 @@ const MESSAGES: Partial<WorkbenchMessages> = {
 
 function WorkbenchToolbar({ spaceName }: { spaceName: string }) {
   return (
-    <div className="flex min-w-0 flex-1 items-center">
+    <div className="flex min-w-0 flex-1 items-center gap-3">
+      <Link
+        to="/"
+        aria-label="返回空间列表"
+        title="返回空间列表"
+        className="grid size-8 shrink-0 place-items-center rounded-control text-text-muted hover:bg-surface-muted hover:text-text"
+      >
+        <ArrowLeft className="size-4" />
+      </Link>
       <h1 className="min-w-0 truncate text-sm font-semibold text-text">{spaceName}</h1>
     </div>
   );
@@ -181,13 +191,14 @@ export function WorkbenchPage({ spaceId }: { spaceId: string }) {
             rooms={roomList}
             scene={chat.scene}
             query={chat.query ?? ''}
-            onRoomChange={(next) =>
+            onRoomChange={(next) => {
+              setRoomId(next);
               updateChatState(window.instanceId, {
                 roomId: next,
                 scene: undefined,
                 query: '',
-              })
-            }
+              });
+            }}
             onQueryChange={(value) => updateChatState(window.instanceId, { query: value })}
             onSceneChange={(value) => updateChatState(window.instanceId, { scene: value })}
             onSeek={seek}

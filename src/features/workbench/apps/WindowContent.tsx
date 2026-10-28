@@ -39,6 +39,7 @@ export function WindowContent({
     case 'chat':
       return roomId ? (
         <RoomChat
+          key={roomId}
           spaceId={spaceId}
           roomId={roomId}
           rooms={rooms}

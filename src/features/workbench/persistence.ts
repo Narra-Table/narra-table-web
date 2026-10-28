@@ -1,6 +1,7 @@
 import type { WorkbenchStore } from '@/features/workbench/core';
-import { createSequentialIdFactory, createWorkbenchStore } from '@/features/workbench/core';
+import { createWorkbenchStore, selectFocusedWindow } from '@/features/workbench/core';
 import type { WindowKind } from './apps/windows';
+import { mergeChatState, readChatState } from './chat-state';
 import {
   isWorkbenchWindowKind,
   WORKBENCH_APP_ID,
@@ -77,7 +78,25 @@ function readLegacyRoomId(spaceId: string): string {
 }
 
 export function primeWorkbenchRoom(spaceId: string, roomId: string): void {
-  if (roomId) writeWorkbenchRoomId(spaceId, roomId);
+  if (!roomId) return;
+  writeWorkbenchRoomId(spaceId, roomId);
+  if (!readWorkbenchSnapshot(spaceId)) return;
+
+  const store = createWorkbenchStoreForSpace(spaceId);
+  const state = store.getState();
+  const focused = selectFocusedWindow(state);
+  const chats = Object.values(state.windows).filter((window) => window.windowTypeId === 'chat');
+  const chat =
+    chats.find((window) => readChatState(window).roomId === roomId) ??
+    (focused?.windowTypeId === 'chat' ? focused : chats[0]);
+  const nextState = { roomId, scene: undefined, query: '' };
+  if (chat) {
+    store.actions.setWindowState(chat.instanceId, mergeChatState(chat, nextState));
+    store.actions.focus(chat.instanceId);
+  } else {
+    openKind(store, 'chat', { state: nextState });
+  }
+  writeWorkbenchSnapshot(spaceId, store);
 }
 
 export function defaultRoomId(rooms: readonly RoomLike[]): string {
@@ -121,14 +140,13 @@ function seedDefaultLayout(store: WorkbenchStore, roomId: string): void {
 }
 
 export function createWorkbenchStoreForSpace(spaceId: string): WorkbenchStore {
-  const store = createWorkbenchStore({
-    createId: createSequentialIdFactory(),
-  });
+  const store = createWorkbenchStore();
   const snapshot = readWorkbenchSnapshot(spaceId);
   if (
     snapshot &&
     store.restore(snapshot, {
-      isWindowTypeAvailable: (window) => isWorkbenchWindowKind(window.windowTypeId),
+      isWindowTypeAvailable: (window) =>
+        window.appId === WORKBENCH_APP_ID && isWorkbenchWindowKind(window.windowTypeId),
     })
   ) {
     return store;
