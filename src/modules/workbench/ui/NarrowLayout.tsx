@@ -4,8 +4,8 @@ import {
   selectColumns,
   selectContainerState,
   selectFloating,
-} from '../core/selectors';
-import type { WorkspaceState } from '../core/types';
+} from '../model/selectors';
+import type { WorkspaceState } from '../model/types';
 import { ColumnView } from './ColumnView';
 import { useWorkbenchContext } from './context';
 import { EmptyWorkspace } from './EmptyWorkspace';

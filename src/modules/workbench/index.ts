@@ -6,7 +6,7 @@ export {
   validateWorkspace,
   type WindowInstance,
   type WorkbenchStore,
-} from './core';
+} from './model';
 
 export {
   createAppRegistry,
@@ -15,4 +15,4 @@ export {
   WorkbenchProvider,
   type RegisteredWindow,
   type WorkbenchMessages,
-} from './react';
+} from './ui';

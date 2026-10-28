@@ -45,7 +45,7 @@ narra-table-web/
 │   │   └── useMediaQuery.ts   # 跨 Feature 的媒体查询 Hook
 │   ├── mocks/                 # MSW mock 数据和请求处理器
 │   ├── modules/               # 可复用的应用级技术模块
-│   │   └── workbench/         # WM 核心、React 适配和结构样式
+│   │   └── workbench/         # WM 状态模型、交互 UI 和结构样式
 │   ├── routes/                # TanStack Router 文件路由
 │   │   └── __root.tsx         # 根布局路由
 │   ├── types/

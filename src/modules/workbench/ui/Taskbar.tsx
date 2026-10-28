@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { selectTaskbarGroups } from '../core/selectors';
+import { selectTaskbarGroups } from '../model/selectors';
 import { useWorkbenchContext, useWorkbenchState } from './context';
 import { WindowIcon } from './WindowFrame';
 

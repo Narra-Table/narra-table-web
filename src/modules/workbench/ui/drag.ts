@@ -1,5 +1,5 @@
-import { selectColumns, selectContainerForWindow } from '../core/selectors';
-import type { WorkbenchStore } from '../core/store';
+import { selectColumns, selectContainerForWindow } from '../model/selectors';
+import type { WorkbenchStore } from '../model/store';
 
 export type DragPayload =
   | { kind: 'window'; instanceId: string; containerId: string }

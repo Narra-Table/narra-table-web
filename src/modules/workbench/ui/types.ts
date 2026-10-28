@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { DEFAULT_COLUMN_WIDTH, DEFAULT_FLOATING_BOX, WIDTH_PRESETS } from '../core/geometry';
+import { DEFAULT_COLUMN_WIDTH, DEFAULT_FLOATING_BOX, WIDTH_PRESETS } from '../model/geometry';
 import type {
   Container,
   FloatingBox,
@@ -8,7 +8,7 @@ import type {
   WindowInstanceId,
   WindowTypeDescriptor,
   WorkspaceState,
-} from '../core/types';
+} from '../model/types';
 
 /** One entry in a host-declared window menu. The chrome does not invent items. */
 export interface WindowMenuItem {

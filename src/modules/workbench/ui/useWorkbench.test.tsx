@@ -1,9 +1,9 @@
 /** @vitest-environment jsdom */
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { createSequentialIdFactory } from '../core/ids';
-import { selectColumns } from '../core/selectors';
-import { createWorkbenchStore } from '../core/store';
+import { createSequentialIdFactory } from '../model/ids';
+import { selectColumns } from '../model/selectors';
+import { createWorkbenchStore } from '../model/store';
 import { useWorkbenchActions, useWorkbenchSelector, useWorkbenchStore } from './useWorkbench';
 
 function createStore() {

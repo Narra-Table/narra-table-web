@@ -4,8 +4,8 @@ import {
   type DragEvent as ReactDragEvent,
   type MouseEvent as ReactMouseEvent,
 } from 'react';
-import { selectActiveWindowId, selectContainerState } from '../core/selectors';
-import type { ColumnContainer, WindowInstance, WorkspaceState } from '../core/types';
+import { selectActiveWindowId, selectContainerState } from '../model/selectors';
+import type { ColumnContainer, WindowInstance, WorkspaceState } from '../model/types';
 import { useWorkbenchContext } from './context';
 import { applyWorkbenchDrop } from './drag';
 import { useWorkbenchDrag } from './drag-context';

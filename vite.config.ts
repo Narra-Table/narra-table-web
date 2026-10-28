@@ -116,8 +116,8 @@ export default defineConfig({
             return 'editor';
           }
           if (
-            path.includes('/src/modules/workbench/core/') ||
-            path.includes('/src/modules/workbench/react/')
+            path.includes('/src/modules/workbench/model/') ||
+            path.includes('/src/modules/workbench/ui/')
           ) {
             return 'workbench-wm';
           }

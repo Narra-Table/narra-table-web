@@ -16,8 +16,8 @@
 
 ```text
 src/modules/workbench/
-├─ core/           # 状态、action、selector、快照、store
-├─ react/          # Provider、列/悬浮/任务栏/启动台/键盘/拖拽
+├─ model/          # 状态、action、selector、快照、store
+├─ ui/             # Provider、列/悬浮/任务栏/启动台/键盘/拖拽
 └─ styles.css      # --wm-* 结构样式
 
 src/features/workbench/

@@ -1,15 +1,15 @@
 import { useEffect, type RefObject } from 'react';
-import { equalHeights } from '../core/geometry';
+import { equalHeights } from '../model/geometry';
 import {
   selectActiveWindowId,
   selectAdjacentColumn,
   selectColumns,
   selectContainerForWindow,
   selectFocusedWindow,
-} from '../core/selectors';
-import { isColumnContainer } from '../core/state';
-import type { WorkbenchStore } from '../core/store';
-import type { Direction } from '../core/types';
+} from '../model/selectors';
+import { isColumnContainer } from '../model/state';
+import type { WorkbenchStore } from '../model/store';
+import type { Direction } from '../model/types';
 
 export interface WorkbenchKeyboardOptions {
   enabled?: boolean;

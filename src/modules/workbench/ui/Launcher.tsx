@@ -9,7 +9,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from 'react';
-import { selectTaskbarGroups } from '../core/selectors';
+import { selectTaskbarGroups } from '../model/selectors';
 import { useWorkbenchContext } from './context';
 import type { RegisteredWindow } from './types';
 import { useWorkbenchStore } from './useWorkbench';
