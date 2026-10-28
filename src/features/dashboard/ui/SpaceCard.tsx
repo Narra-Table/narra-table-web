@@ -67,10 +67,10 @@ export function SpaceCard({
           enter();
         }
       }}
-      className="group flex min-h-[138px] cursor-pointer rounded-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted"
+      className="group flex min-h-34.5 cursor-pointer rounded-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted"
     >
       {/* Cover */}
-      <div className="relative w-[138px] shrink-0 self-stretch overflow-hidden bg-surface-muted">
+      <div className="relative w-34.5 shrink-0 self-stretch overflow-hidden bg-surface-muted">
         <img
           src={space.avatar ?? picsum(space.spaceId ?? 'space', 200)}
           alt={space.name ?? '空间封面'}

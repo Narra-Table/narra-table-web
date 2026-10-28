@@ -152,7 +152,7 @@ function MyDiceBots({ spaceId }: { spaceId?: string }) {
 
 export function DashboardRightPanel({ spaceId }: { spaceId?: string }) {
   return (
-    <aside className="hidden w-[240px] shrink-0 border-l border-border-subtle bg-surface lg:flex lg:flex-col">
+    <aside className="hidden w-60 shrink-0 border-l border-border-subtle bg-surface lg:flex lg:flex-col">
       <div className="flex flex-1 flex-col overflow-hidden border-b border-border-subtle px-6 py-4">
         <RecentCharacters spaceId={spaceId} />
       </div>
