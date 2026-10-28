@@ -1,16 +1,12 @@
 import { clearAuth, getAccessToken, refreshAccessToken } from './authSession';
+import { HttpError } from './httpError';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
-export class ApiError extends Error {
-  status: number;
-  body: unknown;
-
+export class ApiError extends HttpError {
   constructor(message: string, status: number, body?: unknown) {
-    super(message);
+    super(message, status, body, 'user');
     this.name = 'ApiError';
-    this.status = status;
-    this.body = body;
   }
 }
 

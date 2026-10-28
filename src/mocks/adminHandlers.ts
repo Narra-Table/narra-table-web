@@ -1,10 +1,45 @@
 import { http, HttpResponse } from 'msw';
-import type {
-  AdminPlugin,
-  AdminPluginPackageInfo,
-  AdminUser,
-  AdminUserStatus,
-} from '@/features/admin';
+
+type AdminUserStatus = 'active' | 'disabled' | 'deleted';
+
+interface AdminUser {
+  id: string;
+  username: string;
+  email?: string;
+  nickname: string;
+  avatar: string;
+  status: AdminUserStatus;
+  mustChangePassword: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface PluginWindow {
+  id: string;
+  title: string;
+  visibility?: string;
+  entry: string;
+}
+
+interface AdminPluginPackageInfo {
+  name: string;
+  displayName: string;
+  version: string;
+  description: string;
+  author: string;
+  characterDataType?: string;
+  depends?: string[];
+  windows?: PluginWindow[];
+}
+
+interface AdminPlugin extends AdminPluginPackageInfo {
+  pluginId: string;
+  source: string;
+  builtIn: boolean;
+  enabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
 type StoredUser = AdminUser;
 

@@ -1,15 +1,14 @@
 import { getAdminSession } from '@/lib/adminSession';
+import { HttpError } from '@/lib/httpError';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
-export class AdminApiError extends Error {
-  status: number;
-  code: string;
+export class AdminApiError extends HttpError {
+  readonly code: string;
 
-  constructor(message: string, status: number, code = '') {
-    super(message);
+  constructor(message: string, status: number, code = '', body?: unknown) {
+    super(message, status, body, 'admin');
     this.name = 'AdminApiError';
-    this.status = status;
     this.code = code;
   }
 }
@@ -115,7 +114,7 @@ async function adminFetch<T>(path: string, init?: RequestInit): Promise<T> {
       typeof body === 'object' && body !== null && 'code' in body && typeof body.code === 'string'
         ? body.code
         : '';
-    throw new AdminApiError(message, response.status, code);
+    throw new AdminApiError(message, response.status, code, body);
   }
 
   return body as T;
