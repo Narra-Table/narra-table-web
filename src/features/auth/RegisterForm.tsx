@@ -38,10 +38,13 @@ export function RegisterForm() {
   const [error, setError] = useState('');
   const [countdown, setCountdown] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const { data: capabilities, isPending: isCapabilitiesPending, isError: isCapabilitiesError } =
-    useGetCapabilities({
-      query: { select: (response) => response.data },
-    });
+  const {
+    data: capabilities,
+    isPending: isCapabilitiesPending,
+    isError: isCapabilitiesError,
+  } = useGetCapabilities({
+    query: { select: (response) => response.data },
+  });
   const emailRequired = capabilities?.emailVerification === true;
   const registrationOpen = capabilities?.registration !== false;
 

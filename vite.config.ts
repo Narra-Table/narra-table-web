@@ -8,6 +8,13 @@ import { defineConfig } from 'vite-plus';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Local dev backend. Override when the API runs on another port:
+// VITE_PROXY_TARGET=http://127.0.0.1:5298 pnpm dev
+const apiOrigin = process.env.VITE_PROXY_TARGET?.trim() || 'http://127.0.0.1:5297';
+const wsOrigin = apiOrigin.replace(/^http/, 'ws');
+// 宿主机的 inotify 监听器耗尽时用轮询启动：VITE_WATCH_POLL=1 vp dev
+const watch = process.env.VITE_WATCH_POLL === '1' ? { usePolling: true, interval: 500 } : undefined;
+
 export default defineConfig({
   staged: {
     '*': 'vp check --fix',
@@ -64,20 +71,46 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const path = id.replaceAll('\\', '/');
+          if (
+            path.includes('/node_modules/@tiptap/') ||
+            path.includes('/node_modules/prosemirror')
+          ) {
+            return 'editor';
+          }
+          if (
+            path.includes('/src/features/workbench/core/') ||
+            path.includes('/src/features/workbench/react/')
+          ) {
+            return 'workbench-wm';
+          }
+          if (path.includes('/src/features/workbench/')) {
+            return 'workbench';
+          }
+          return undefined;
+        },
+      },
+    },
+  },
   server: {
+    watch,
     proxy: {
-      '/api': { target: 'http://127.0.0.1:5297', changeOrigin: true },
+      '/api': { target: apiOrigin, changeOrigin: true },
       '/admin': {
-        target: 'http://127.0.0.1:5297',
+        target: apiOrigin,
         changeOrigin: true,
         bypass(req) {
           if (req.headers.accept?.includes('text/html')) return '/index.html';
         },
       },
-      '/auth': { target: 'http://127.0.0.1:5297', changeOrigin: true },
-      '/capabilities': { target: 'http://127.0.0.1:5297', changeOrigin: true },
-      '/health': { target: 'http://127.0.0.1:5297', changeOrigin: true },
-      '/ws': { target: 'ws://127.0.0.1:5297', ws: true },
+      '/auth': { target: apiOrigin, changeOrigin: true },
+      '/capabilities': { target: apiOrigin, changeOrigin: true },
+      '/health': { target: apiOrigin, changeOrigin: true },
+      '/ws': { target: wsOrigin, ws: true },
     },
   },
 });

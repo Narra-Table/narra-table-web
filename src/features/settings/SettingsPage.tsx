@@ -7,16 +7,20 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { clearAuth } from '@/lib/auth';
 import { queryClient } from '@/lib/queryClient';
-import { type AppTheme, getStoredTheme, saveTheme } from '@/lib/theme';
+import { THEME_LABELS, type AppTheme, getStoredTheme, saveTheme } from '@/lib/theme';
 
 const themeOptions = [
-  { backgroundTheme: 'kraft-teal', id: 'kraft-teal', label: '青绿主题' },
-  { backgroundTheme: 'kraft-teal', id: 'kraft-brown', label: '暖棕主题' },
-  { backgroundTheme: 'kraft-teal', id: 'kraft-pink', label: '桃粉主题' },
-  { backgroundTheme: 'pure-white', id: 'pure-white', label: '黑白主题' },
-  { backgroundTheme: 'black-green', id: 'black-green', label: '黑绿主题' },
-  { backgroundTheme: 'black-blue', id: 'black-blue', label: '黑蓝主题' },
-  { backgroundTheme: 'ink-gold', id: 'ink-gold', label: '墨金主题' },
+  { backgroundTheme: 'kraft-teal', id: 'kraft-teal', label: `${THEME_LABELS['kraft-teal']}主题` },
+  { backgroundTheme: 'kraft-teal', id: 'kraft-brown', label: `${THEME_LABELS['kraft-brown']}主题` },
+  { backgroundTheme: 'kraft-teal', id: 'kraft-pink', label: `${THEME_LABELS['kraft-pink']}主题` },
+  { backgroundTheme: 'pure-white', id: 'pure-white', label: `${THEME_LABELS['pure-white']}主题` },
+  {
+    backgroundTheme: 'black-green',
+    id: 'black-green',
+    label: `${THEME_LABELS['black-green']}主题`,
+  },
+  { backgroundTheme: 'black-blue', id: 'black-blue', label: `${THEME_LABELS['black-blue']}主题` },
+  { backgroundTheme: 'ink-gold', id: 'ink-gold', label: `${THEME_LABELS['ink-gold']}主题` },
 ] as const;
 
 type SettingsSection = 'appearance' | 'profile';

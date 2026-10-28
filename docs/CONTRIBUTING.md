@@ -23,6 +23,12 @@ vp install
 vp dev
 ```
 
+宿主机的 inotify 监听器不足时，用轮询启动：
+
+```bash
+VITE_WATCH_POLL=1 vp dev
+```
+
 ## 提交前检查
 
 提交前至少执行：

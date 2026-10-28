@@ -1,6 +1,6 @@
-# Narra Table Web
+# NarraTable Web
 
-TRPG 协作叙事平台「故桌」的 Web 端。
+TRPG 协作叙事平台「故桌（NarraTable）」的 Web 端。
 
 ## 快速开始
 

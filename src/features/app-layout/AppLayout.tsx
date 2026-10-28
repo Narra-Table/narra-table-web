@@ -40,7 +40,7 @@ export function AppLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const currentPageTitle =
     navLinks.find((link) => pathname === link.to || pathname.startsWith(`${link.to}/`))?.label ??
-    'Narra Table';
+    'NarraTable';
   const { data: user } = useGetApiMe({
     query: { select: (res) => (res as getApiMeResponseSuccess).data },
   });
@@ -91,7 +91,7 @@ export function AppLayout() {
             </Avatar>
           </header>
 
-          <main className="min-w-0 flex-1 overflow-auto">
+          <main className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden">
             <Outlet />
           </main>
 

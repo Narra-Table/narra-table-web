@@ -13,7 +13,7 @@ const mockPackage: AdminPluginPackageInfo = {
   displayName: '示例插件',
   version: '0.1.0',
   description: '一条示例指令。',
-  author: 'Narratable',
+  author: 'NarraTable',
   depends: ['dice'],
   windows: [{ id: 'panel', title: '示例', entry: 'windows/panel.html' }],
 };
