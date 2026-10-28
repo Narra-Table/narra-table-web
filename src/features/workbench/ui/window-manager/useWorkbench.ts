@@ -1,6 +1,6 @@
 import { useMemo, useSyncExternalStore } from 'react';
-import type { WorkbenchStore } from '../model/store';
-import type { WorkspaceState } from '../model/types';
+import type { WorkbenchStore } from '../../model/window-manager/store';
+import type { WorkspaceState } from '../../model/window-manager/types';
 
 /** Subscribe a component to the whole workspace state. */
 export function useWorkbenchStore(store: WorkbenchStore): WorkspaceState {

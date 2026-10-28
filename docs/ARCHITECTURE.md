@@ -34,7 +34,7 @@ narra-table-web/
 │   │   └── ui/                # shadcn 复制来的 UI 组件
 │   ├── features/              # 功能模块
 │   │   ├── resources/         # 资源访问能力
-│   │   └── workbench/         # 空间工作台宿主和业务窗口
+│   │   └── workbench/         # 空间工作台、窗口模型和业务窗口
 │   ├── lib/                   # 平铺的跨 Feature 基础设施与工具
 │   │   ├── apiClient.ts       # 生成 API 使用的请求客户端
 │   │   ├── authSession.ts     # 普通用户会话
@@ -44,8 +44,6 @@ narra-table-web/
 │   │   ├── classNames.ts      # 样式类名合并工具
 │   │   └── useMediaQuery.ts   # 跨 Feature 的媒体查询 Hook
 │   ├── mocks/                 # MSW mock 数据和请求处理器
-│   ├── modules/               # 可复用的应用级技术模块
-│   │   └── workbench/         # WM 状态模型、交互 UI 和结构样式
 │   ├── routes/                # TanStack Router 文件路由
 │   │   └── __root.tsx         # 根布局路由
 │   ├── types/
@@ -72,22 +70,19 @@ narra-table-web/
 - `views` 放路由级页面骨架和多个 Feature 的组合视图；只有布局、导航或页面编排，不作为业务 Feature。
 - 路由和其他 Feature 只能从 `@/features/<name>` 导入，不得深层引用 Feature 内部文件。
 - Feature 内部按复杂度渐进拆分；小模块保持扁平，大模块使用 `ui`、`model`、`api`、`hooks`、`lib` 等职责目录，不创建空目录占位。
-- `modules/<name>` 放可复用的应用级技术模块，不包含具体业务数据和路由。
 - `lib` 放无业务所有权的基础设施和工具，使用明确文件名平铺组织，例如 `apiClient.ts`、`authSession.ts` 和 `useMediaQuery.ts`。
 - `lib` 不使用只有单个实现文件的分类子目录；同类文件使用共同前缀或明确职责名。
-- Hook 默认与所属 Feature 或模块共置，只有跨 Feature 复用且不含业务语义时才进入 `lib`。
+- Hook 默认与所属 Feature 共置，只有跨 Feature 复用且不含业务语义时才进入 `lib`。
 - 测试与被测模块共置，跨 Feature 集成测试放在负责组合这些 Feature 的宿主模块中。
 
 依赖方向：
 
 ```text
-routes -> features -> modules -> lib
-   |        \-----------> lib
-   +-> views -> features / modules / lib
+routes -> features -> lib
+   +-> views -> features / lib
 ```
 
-- `lib` 不依赖 `modules` 或 `features`。
-- `modules` 不依赖具体 `features`。
+- `lib` 不依赖 `features`。
 - Feature 之间通过公共 API 协作，不共享内部状态实现。
 
 Feature 目录模板：

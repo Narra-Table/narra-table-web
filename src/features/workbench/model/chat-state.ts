@@ -1,4 +1,4 @@
-import type { WindowInstance } from '@/modules/workbench';
+import type { WindowInstance } from './window-manager';
 
 export interface ChatWindowState {
   roomId?: string;

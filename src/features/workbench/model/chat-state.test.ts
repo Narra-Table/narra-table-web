@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { WindowInstance } from '@/modules/workbench';
 import { findChatWindowForRoom, mergeChatState, readChatState } from './chat-state';
+import type { WindowInstance } from './window-manager';
 
 function windowFixture(state?: unknown): WindowInstance {
   return {

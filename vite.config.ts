@@ -115,12 +115,6 @@ export default defineConfig({
           ) {
             return 'editor';
           }
-          if (
-            path.includes('/src/modules/workbench/model/') ||
-            path.includes('/src/modules/workbench/ui/')
-          ) {
-            return 'workbench-wm';
-          }
           if (path.includes('/src/features/workbench/')) {
             return 'workbench';
           }

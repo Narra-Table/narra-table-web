@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { createSequentialIdFactory } from '../../model/ids';
-import { selectColumns } from '../../model/selectors';
-import { createWorkbenchStore } from '../../model/store';
+import { createSequentialIdFactory } from '../../../model/window-manager/ids';
+import { selectColumns } from '../../../model/window-manager/selectors';
+import { createWorkbenchStore } from '../../../model/window-manager/store';
 import { applyWorkbenchDrop } from '../drag';
 
 function createStore() {

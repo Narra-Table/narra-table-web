@@ -4,7 +4,7 @@ import {
   selectColumns,
   selectFloating,
   selectFocusedContainer,
-} from '../model/selectors';
+} from '../../model/window-manager/selectors';
 import { ColumnView } from './ColumnView';
 import { useWorkbenchContext, useWorkbenchState } from './context';
 import { applyWorkbenchDrop } from './drag';

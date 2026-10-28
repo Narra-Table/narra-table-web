@@ -6,8 +6,8 @@ import {
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from 'react';
-import { findContainerForWindow } from '../model/state';
-import type { WindowInstance, WorkspaceState } from '../model/types';
+import { findContainerForWindow } from '../../model/window-manager/state';
+import type { WindowInstance, WorkspaceState } from '../../model/window-manager/types';
 import { useWorkbenchContext } from './context';
 import { TrafficLights, WorkbenchContextMenu, WorkbenchMenu, WorkbenchMenuItem } from './Menu';
 import type { RegisteredWindow, WindowRenderContext } from './types';

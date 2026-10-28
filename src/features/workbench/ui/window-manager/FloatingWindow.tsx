@@ -1,4 +1,4 @@
-import type { FloatingContainer, WorkspaceState } from '../model/types';
+import type { FloatingContainer, WorkspaceState } from '../../model/window-manager/types';
 import { WindowSlot } from './WindowSlot';
 
 export function FloatingWindow({

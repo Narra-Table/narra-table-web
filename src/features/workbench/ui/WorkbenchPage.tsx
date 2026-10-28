@@ -2,17 +2,9 @@ import { Link } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useGetApiSpacesSpaceId, useGetApiSpacesSpaceIdRooms } from '@/api';
-import {
-  selectFocusedWindow,
-  useWorkbenchStore,
-  Workbench,
-  WorkbenchProvider,
-  type WindowInstance,
-  type WorkbenchMessages,
-} from '@/modules/workbench';
-import '@/modules/workbench/styles.css';
-import './workbench.css';
 import { useWorkbenchPersistence } from '../hooks/useWorkbenchPersistence';
+import './window-manager/window-manager.css';
+import './workbench.css';
 import {
   createWorkbenchStoreForSpace,
   openKind,
@@ -26,6 +18,13 @@ import {
   readChatState,
   type ChatWindowState,
 } from '../model/chat-state';
+import { selectFocusedWindow, type WindowInstance } from '../model/window-manager';
+import {
+  useWorkbenchStore,
+  Workbench,
+  WorkbenchProvider,
+  type WorkbenchMessages,
+} from './window-manager';
 import { isWorkbenchWindowKind, WORKBENCH_REGISTRY } from './windows/registry';
 import type { WindowSeekRequest } from './windows/WindowContent';
 

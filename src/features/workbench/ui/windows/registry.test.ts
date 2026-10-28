@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
+import { openKind } from '../../lib/persistence';
 import {
   createSequentialIdFactory,
   createWorkbenchStore,
   selectColumns,
-} from '@/modules/workbench';
-import { openKind } from '../../lib/persistence';
+} from '../../model/window-manager';
 import { isWorkbenchWindowKind, WORKBENCH_APP_ID, WORKBENCH_REGISTRY } from './registry';
 import { WINDOW_KINDS } from './windows';
 

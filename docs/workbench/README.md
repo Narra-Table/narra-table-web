@@ -1,6 +1,6 @@
 # 空间工作台
 
-> 目标设计见 [WINDOW-MANAGER.md](WINDOW-MANAGER.md)。通用 WM 位于 `src/modules/workbench`，业务宿主位于 `src/features/workbench`。
+> 目标设计见 [WINDOW-MANAGER.md](WINDOW-MANAGER.md)。窗口管理是 NarraTable 工作台的内部能力，统一位于 `src/features/workbench`。
 
 ## 路由
 
@@ -15,22 +15,20 @@
 ## 结构
 
 ```text
-src/modules/workbench/
-├─ model/          # 状态、action、selector、快照、store
-├─ ui/             # Provider、列/悬浮/任务栏/启动台/键盘/拖拽
-└─ styles.css      # --wm-* 结构样式
-
 src/features/workbench/
 ├─ hooks/          # 宿主生命周期和副作用 Hook
 ├─ lib/            # 本地持久化和兼容迁移
-├─ model/          # 业务窗口状态
+├─ model/
+│  ├─ chat-state.ts       # 业务窗口状态
+│  └─ window-manager/     # 工作区状态、action、selector、快照、store
 ├─ ui/
+│  ├─ window-manager/     # Provider、列、悬浮、任务栏、启动台和拖拽
 │  ├─ windows/     # 内置业务窗口内容、类型和标题
 │  └─ WorkbenchPage.tsx
 └─ index.ts        # Feature 公共 API
 ```
 
-空间路由懒加载 `WorkbenchPage`；构建再拆分 WM、窗口内容和 TipTap 编辑器代码。
+空间路由懒加载 `WorkbenchPage`；构建拆分工作台和 TipTap 编辑器代码。
 
 ## 数据流
 

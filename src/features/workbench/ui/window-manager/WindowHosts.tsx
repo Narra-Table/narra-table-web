@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useState, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
-import type { WorkspaceState } from '../model/types';
+import type { WorkspaceState } from '../../model/window-manager/types';
 import { WindowFrame } from './WindowFrame';
 
 function WindowHost({

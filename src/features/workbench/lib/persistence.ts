@@ -1,9 +1,9 @@
+import { mergeChatState, readChatState } from '../model/chat-state';
 import {
   createWorkbenchStore,
   selectFocusedWindow,
   type WorkbenchStore,
-} from '@/modules/workbench';
-import { mergeChatState, readChatState } from '../model/chat-state';
+} from '../model/window-manager';
 import {
   isWorkbenchWindowKind,
   WORKBENCH_APP_ID,

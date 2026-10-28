@@ -1,4 +1,4 @@
-import { createAppRegistry, type RegisteredWindow } from '@/modules/workbench';
+import { createAppRegistry, type RegisteredWindow } from '../window-manager';
 import { WINDOW_INFO, WINDOW_KINDS, type WindowKind } from './windows';
 
 export const WORKBENCH_APP_ID = 'narratable';

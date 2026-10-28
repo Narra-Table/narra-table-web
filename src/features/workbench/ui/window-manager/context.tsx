@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, type ReactNode } from 'react';
-import { clampColumnWidth } from '../model/geometry';
-import type { WorkbenchStore } from '../model/store';
-import type { WorkspaceState } from '../model/types';
+import { clampColumnWidth } from '../../model/window-manager/geometry';
+import type { WorkbenchStore } from '../../model/window-manager/store';
+import type { WorkspaceState } from '../../model/window-manager/types';
 import {
   DEFAULT_MESSAGES,
   DEFAULT_WORKBENCH_CONFIG,

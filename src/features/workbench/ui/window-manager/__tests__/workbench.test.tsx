@@ -2,10 +2,10 @@
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createSequentialIdFactory } from '../../model/ids';
-import { selectColumns } from '../../model/selectors';
-import { createWorkbenchStore } from '../../model/store';
-import type { WindowInstance } from '../../model/types';
+import { createSequentialIdFactory } from '../../../model/window-manager/ids';
+import { selectColumns } from '../../../model/window-manager/selectors';
+import { createWorkbenchStore } from '../../../model/window-manager/store';
+import type { WindowInstance } from '../../../model/window-manager/types';
 import { WorkbenchProvider, useOpenWindow } from '../context';
 import { createAppRegistry } from '../types';
 import { Workbench } from '../Workbench';
