@@ -50,5 +50,3 @@ export function createComposerExtensions(onSubmit: () => boolean = () => false) 
     SubmitOnEnter.configure({ onSubmit }),
   ];
 }
-
-export const composerExtensions = createComposerExtensions();

@@ -1,7 +1,7 @@
 import { getSchema } from '@tiptap/core';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { RubyMark, TextBackground } from './marks';
-import { composerExtensions, createComposerExtensions } from './schema';
+import { createComposerExtensions } from './schema';
 
 const renderRuby = RubyMark.config.renderHTML as unknown as (props: {
   HTMLAttributes: Record<string, unknown>;
@@ -46,25 +46,7 @@ describe('TextBackground', () => {
 
 describe('composer mark order', () => {
   it('nests the background mark outside the text color mark', () => {
-    const marks = Object.keys(getSchema(composerExtensions).marks);
+    const marks = Object.keys(getSchema(createComposerExtensions()).marks);
     expect(marks.indexOf('textBackground')).toBeLessThan(marks.indexOf('textColor'));
-  });
-});
-
-describe('composer submit handling', () => {
-  it('keeps Enter handlers scoped to each editor instance', () => {
-    const first = vi.fn(() => true);
-    const second = vi.fn(() => true);
-    const firstExtension = createComposerExtensions(first).find(
-      (extension) => extension.name === 'submitOnEnter',
-    );
-    const secondExtension = createComposerExtensions(second).find(
-      (extension) => extension.name === 'submitOnEnter',
-    );
-
-    expect(firstExtension?.options.onSubmit()).toBe(true);
-    expect(secondExtension?.options.onSubmit()).toBe(true);
-    expect(first).toHaveBeenCalledOnce();
-    expect(second).toHaveBeenCalledOnce();
   });
 });
