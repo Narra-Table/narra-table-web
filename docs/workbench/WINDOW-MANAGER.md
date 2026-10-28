@@ -2,7 +2,7 @@
 
 > 状态：设计稿 · 待审核
 
-本文是空间工作台的目标设计：容器、窗口、焦点、布局、任务栏、启动台、持久化和独立 WM 包。当前实现见 [WORKSPACE.md](WORKSPACE.md)；应用、规则和角色卡见 [app-rule-model.md](../../backend/docs/features/app-rule-model.md)。本文不与它们重复同一层的细节。
+本文是空间工作台的目标设计：容器、窗口、焦点、布局、任务栏、启动台、持久化和独立 WM 包。当前实现见 [README.md](README.md)；应用、规则和角色卡见 [app-rule-model.md](../../../backend/docs/features/app-rule-model.md)。本文不与它们重复同一层的细节。
 
 参考：[niri Tabs](https://niri-wm.github.io/niri/Tabs.html)、[niri Layout](https://niri-wm.github.io/niri/Configuration%3A-Layout.html)、[niri Floating Windows](https://niri-wm.github.io/niri/Floating-Windows.html)。
 
@@ -402,7 +402,7 @@ IconRenderer       图标
 
 ## 十三、迁移
 
-- 当前 [WORKSPACE.md](WORKSPACE.md) 描述已接入的内置工作台。
+- 当前 [README.md](README.md) 描述已接入的内置工作台。
 - 移除工作区的全局 `roomId` / `scene`；聊天应用自己持有。
 - 内置应用按 App Registry 注册；不要求所有平台页面窗口化。
 - 服务端增加工作区快照接口；客户端保留本地缓存。

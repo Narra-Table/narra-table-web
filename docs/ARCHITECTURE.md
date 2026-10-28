@@ -23,8 +23,9 @@ narra-table-web/
 │   ├── CONTRIBUTING.md        # 贡献和验证流程
 │   ├── CONVENTIONS.md         # 代码约定
 │   ├── DESIGN.md              # 设计和样式规则
-│   ├── WORKSPACE.md           # 空间工作台和窗口管理器的当前实现
-│   └── WORKSPACE-WM.md        # 工作区容器与 WM 的目标设计
+│   └── workbench/
+│       ├── README.md          # 空间工作台的当前实现
+│       └── WINDOW-MANAGER.md  # 工作区容器与 WM 的目标设计
 ├── public/
 │   └── mockServiceWorker.js   # MSW 浏览器端 Service Worker
 ├── src/

@@ -1,6 +1,6 @@
 # 空间工作台
 
-> 目标设计见 [WORKSPACE-WM.md](WORKSPACE-WM.md)。通用 WM 位于 `src/modules/workbench`，业务宿主位于 `src/features/workbench`。
+> 目标设计见 [WINDOW-MANAGER.md](WINDOW-MANAGER.md)。通用 WM 位于 `src/modules/workbench`，业务宿主位于 `src/features/workbench`。
 
 ## 路由
 
