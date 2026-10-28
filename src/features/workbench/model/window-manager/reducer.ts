@@ -1,20 +1,15 @@
 import {
   closeWindow,
   dissolveContainer,
-  dockFloating,
   equalizeRows,
-  floatWindow,
   focusDirection,
   focusLayer,
   focusWindow,
   mergeContainers,
   moveContainer,
-  moveFloating,
   moveWindowToColumn,
   moveWindowToNewColumn,
   openWindow,
-  raiseFloating,
-  resizeFloating,
   setAttention,
   setColumnDisplay,
   setColumnWidth,
@@ -25,6 +20,13 @@ import {
   updateWindow,
 } from './actions';
 import type { ReduceOptions, WorkbenchAction } from './actionTypes';
+import {
+  dockFloating,
+  floatWindow,
+  moveFloating,
+  raiseFloating,
+  resizeFloating,
+} from './floatingActions';
 import { createId as defaultCreateId } from './ids';
 import { normalizeWorkspace } from './state';
 import type { WorkspaceState } from './types';

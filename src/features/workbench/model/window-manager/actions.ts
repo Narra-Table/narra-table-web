@@ -1,14 +1,23 @@
 import {
+  clampIndex,
+  columnById,
+  commit,
+  insertIntoColumn,
+  maxZOrder,
+  removeFromColumn,
+  replaceContainer,
+  uniqueContainerId,
+  withColumns,
+} from './actionState';
+import {
   clampColumnWidth,
   clampFloatingBox,
   clampScrollOffset,
   DEFAULT_COLUMN_WIDTH,
   equalHeights,
   insertRowHeights,
-  isFiniteNumber,
   normalizeHeights,
   normalizeNonFullWidth,
-  removeRowHeights,
 } from './geometry';
 import { createId as defaultCreateId, type IdFactory } from './ids';
 import {
@@ -17,7 +26,7 @@ import {
   selectColumns,
   selectFloating,
 } from './selectors';
-import { findContainerForWindow, isFloatingContainer, normalizeWorkspace } from './state';
+import { findContainerForWindow } from './state';
 import type {
   AttentionLevel,
   ColumnContainer,
@@ -33,47 +42,6 @@ import type {
   WindowPatch,
   WorkspaceState,
 } from './types';
-
-function maxZOrder(state: WorkspaceState): number {
-  let max = 0;
-  for (const container of state.containers) {
-    if (container.kind === 'floating' && container.zOrder > max) max = container.zOrder;
-  }
-  return max;
-}
-
-function clampIndex(index: number | undefined, max: number, fallback: number): number {
-  if (index === undefined || !isFiniteNumber(index)) return fallback;
-  return Math.min(max, Math.max(0, Math.trunc(index)));
-}
-
-function columnById(state: WorkspaceState, containerId: string): ColumnContainer | undefined {
-  const container = state.containers.find((candidate) => candidate.id === containerId);
-  return container && container.kind === 'column' ? container : undefined;
-}
-
-function floatingById(state: WorkspaceState, containerId: string): FloatingContainer | undefined {
-  const container = state.containers.find((candidate) => candidate.id === containerId);
-  return container && container.kind === 'floating' ? container : undefined;
-}
-
-function replaceContainer(state: WorkspaceState, container: Container): WorkspaceState {
-  return {
-    ...state,
-    containers: state.containers.map((candidate) =>
-      candidate.id === container.id ? container : candidate,
-    ),
-  };
-}
-
-function withColumns(state: WorkspaceState, columns: ColumnContainer[]): WorkspaceState {
-  const floats = state.containers.filter(isFloatingContainer);
-  return { ...state, containers: [...columns, ...floats] };
-}
-
-function commit(state: WorkspaceState): WorkspaceState {
-  return normalizeWorkspace(state);
-}
 
 /**
  * Focus a window and raise its float. Clears transient attention by default.
@@ -134,95 +102,6 @@ export function focusWindow(
         container.kind === 'column' ? container.id : state.focus.lastTiledContainerId,
     },
   };
-}
-
-interface InsertIntoColumnResult {
-  state: WorkspaceState;
-  container: ColumnContainer;
-}
-
-function insertIntoColumn(
-  state: WorkspaceState,
-  container: ColumnContainer,
-  instanceId: WindowInstanceId,
-  index?: number,
-): InsertIntoColumnResult {
-  const oldCount = container.windows.length;
-  const activeId = selectActiveWindowId(state, container);
-  const activeIndex = activeId ? container.windows.indexOf(activeId) : -1;
-  const insertion = clampIndex(index, oldCount, activeIndex >= 0 ? activeIndex + 1 : oldCount);
-
-  let heights: number[] | undefined;
-  if (oldCount >= 2) {
-    const base = container.heights ?? equalHeights(oldCount);
-    const splitIndex = insertion === 0 ? 0 : insertion - 1;
-    heights = insertRowHeights(base, oldCount, splitIndex);
-  } else if (oldCount === 1) {
-    heights = equalHeights(2);
-  }
-
-  const windows = [
-    ...container.windows.slice(0, insertion),
-    instanceId,
-    ...container.windows.slice(insertion),
-  ];
-  const nextContainer: ColumnContainer = {
-    ...container,
-    windows,
-    ...(heights ? { heights } : { heights: undefined }),
-  };
-  return {
-    state: replaceContainer(state, nextContainer),
-    container: nextContainer,
-  };
-}
-
-interface RemoveFromColumnResult {
-  state: WorkspaceState;
-  container?: ColumnContainer;
-  index: number;
-}
-
-function removeFromColumn(
-  state: WorkspaceState,
-  container: ColumnContainer,
-  instanceId: WindowInstanceId,
-): RemoveFromColumnResult {
-  const index = container.windows.indexOf(instanceId);
-  if (index < 0) return { state, container, index: -1 };
-
-  if (container.windows.length === 1) {
-    return {
-      state: {
-        ...state,
-        containers: state.containers.filter((candidate) => candidate.id !== container.id),
-      },
-      index,
-    };
-  }
-
-  const windows = container.windows.filter((id) => id !== instanceId);
-  const heights = removeRowHeights(container.heights, container.windows.length, index);
-  const nextContainer: ColumnContainer = {
-    ...container,
-    windows,
-    ...(heights.length > 0 ? { heights } : { heights: undefined }),
-  };
-  return {
-    state: replaceContainer(state, nextContainer),
-    container: nextContainer,
-    index,
-  };
-}
-
-function uniqueContainerId(state: WorkspaceState, base: string): string {
-  let candidate = base;
-  let suffix = 1;
-  while (state.containers.some((container) => container.id === candidate)) {
-    suffix += 1;
-    candidate = `${base}-${suffix}`;
-  }
-  return candidate;
 }
 
 /**
@@ -780,120 +659,6 @@ export function equalizeRows(state: WorkspaceState, containerId: string): Worksp
     ...column,
     heights: equalHeights(column.windows.length),
   });
-}
-
-export function floatWindow(state: WorkspaceState, instanceId: WindowInstanceId): WorkspaceState {
-  const container = findContainerForWindow(state, instanceId);
-  if (!container || container.kind === 'floating') return state;
-  const window = state.windows[instanceId];
-  if (!window) return state;
-
-  let next = state;
-  if (container.windows.length === 1) {
-    next = {
-      ...state,
-      containers: state.containers.filter((candidate) => candidate.id !== container.id),
-    };
-  } else {
-    next = removeFromColumn(state, container, instanceId).state;
-  }
-
-  const floating: FloatingContainer = {
-    id: uniqueContainerId(next, `float-${instanceId}`),
-    kind: 'floating',
-    window: instanceId,
-    ...clampFloatingBox(undefined),
-    zOrder: maxZOrder(state) + 1,
-  };
-
-  next = {
-    ...next,
-    windows: {
-      ...next.windows,
-      [instanceId]: {
-        ...window,
-        lastTiledWidth: clampColumnWidth(container.width),
-      },
-    },
-    containers: [...next.containers, floating],
-  };
-
-  return commit(focusWindow(next, instanceId));
-}
-
-export function dockFloating(
-  state: WorkspaceState,
-  containerId: string,
-  index?: number,
-): WorkspaceState {
-  const floating = floatingById(state, containerId);
-  if (!floating) return state;
-  const window = state.windows[floating.window];
-  if (!window) return state;
-
-  const columns = selectColumns(state);
-  const lastTiledIndex = state.focus.lastTiledContainerId
-    ? columns.findIndex((candidate) => candidate.id === state.focus.lastTiledContainerId)
-    : -1;
-  const insertion = clampIndex(index, columns.length, lastTiledIndex >= 0 ? lastTiledIndex + 1 : 0);
-
-  const width = clampColumnWidth(window.lastTiledWidth ?? DEFAULT_COLUMN_WIDTH);
-  const column: ColumnContainer = {
-    id: uniqueContainerId(state, `col-${floating.window}`),
-    kind: 'column',
-    display: 'normal',
-    width,
-    lastNonFullWidth: normalizeNonFullWidth(
-      width < 1 ? width : DEFAULT_COLUMN_WIDTH,
-      DEFAULT_COLUMN_WIDTH,
-    ),
-    windows: [floating.window],
-  };
-  columns.splice(insertion, 0, column);
-
-  const nextState = withColumns(
-    {
-      ...state,
-      containers: state.containers.filter((candidate) => candidate.id !== containerId),
-    },
-    columns,
-  );
-  return commit(focusWindow(nextState, floating.window));
-}
-
-export function moveFloating(
-  state: WorkspaceState,
-  containerId: string,
-  x: number,
-  y: number,
-): WorkspaceState {
-  const floating = floatingById(state, containerId);
-  if (!floating || !isFiniteNumber(x) || !isFiniteNumber(y)) return state;
-  const nextX = Math.max(0, x);
-  const nextY = Math.max(0, y);
-  if (nextX === floating.x && nextY === floating.y) return state;
-  return replaceContainer(state, { ...floating, x: nextX, y: nextY });
-}
-
-export function resizeFloating(
-  state: WorkspaceState,
-  containerId: string,
-  width: number,
-  height: number,
-): WorkspaceState {
-  const floating = floatingById(state, containerId);
-  if (!floating) return state;
-  const box = clampFloatingBox({ ...floating, width, height });
-  if (box.width === floating.width && box.height === floating.height) return state;
-  return replaceContainer(state, { ...floating, width: box.width, height: box.height });
-}
-
-export function raiseFloating(state: WorkspaceState, containerId: string): WorkspaceState {
-  const floating = floatingById(state, containerId);
-  if (!floating) return state;
-  const max = maxZOrder(state);
-  if (floating.zOrder === max) return state;
-  return replaceContainer(state, { ...floating, zOrder: max + 1 });
 }
 
 export function setScrollOffset(state: WorkspaceState, offset: number): WorkspaceState {

@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest';
+import { focusWindow, openWindow } from '../actions';
 import {
   dockFloating,
   floatWindow,
-  focusWindow,
   moveFloating,
-  openWindow,
   raiseFloating,
   resizeFloating,
-} from '../actions';
+} from '../floatingActions';
 import { selectColumns, selectFloating } from '../selectors';
 import { createEmptyWorkspace, validateWorkspace } from '../state';
 import type { WorkspaceState } from '../types';

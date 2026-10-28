@@ -5,6 +5,7 @@ export * from './state';
 export * from './selectors';
 export * from './actionTypes';
 export * from './actions';
+export * from './floatingActions';
 export * from './reducer';
 export * from './snapshot';
 export * from './store';
