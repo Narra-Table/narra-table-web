@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import tailwindcss from '@tailwindcss/vite';
@@ -7,6 +8,26 @@ import { defineConfig } from 'vite-plus';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const localEnvFiles = ['.env', '.env.local', '.env.development', '.env.development.local'];
+const hasLocalEnv = localEnvFiles.some((file) => existsSync(resolve(__dirname, file)));
+
+const localEnvHint = {
+  name: 'narratable-local-env-hint',
+  configureServer(server: { config: { logger: { warn: (message: string) => void } } }) {
+    if (hasLocalEnv) return;
+    server.config.logger.warn(
+      [
+        '',
+        '⚠ 未检测到本地环境变量文件，MSW Mock 不会自动启用。',
+        '  如果没有启动后端，请先执行：',
+        '  cp .env.example .env.development',
+        '  然后重新运行 vp dev。',
+        '',
+      ].join('\n'),
+    );
+  },
+};
 
 // Local dev backend. Override when the API runs on another port:
 // VITE_PROXY_TARGET=http://127.0.0.1:5298 pnpm dev
@@ -20,6 +41,7 @@ export default defineConfig({
     '*': 'vp check --fix',
   },
   plugins: [
+    localEnvHint,
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
