@@ -1,7 +1,14 @@
-export { AdminDashboard } from './AdminDashboard';
-export { AdminLogin } from './AdminLogin';
-export { AdminPassword } from './AdminPassword';
-export { AdminPlugins } from './AdminPlugins';
-export { AdminShell } from './AdminShell';
-export { AdminUserDetail } from './AdminUserDetail';
-export { AdminUsers } from './AdminUsers';
+export { AdminDashboard } from './ui/AdminDashboard';
+export { AdminLogin } from './ui/AdminLogin';
+export { AdminPassword } from './ui/AdminPassword';
+export { AdminPlugins } from './ui/AdminPlugins';
+export { AdminShell } from './ui/AdminShell';
+export { AdminUserDetail } from './ui/AdminUserDetail';
+export { AdminUsers } from './ui/AdminUsers';
+export { clearAdminSession, getAdminSession, setAdminSession } from '@/lib/adminAuth';
+export type {
+  AdminPlugin,
+  AdminPluginPackageInfo,
+  AdminUser,
+  AdminUserStatus,
+} from './api/adminClient';

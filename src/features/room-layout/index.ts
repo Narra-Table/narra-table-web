@@ -1,1 +1,1 @@
-export { RoomLayout } from './RoomLayout';
+export { RoomLayout } from './ui/RoomLayout';

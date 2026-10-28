@@ -22,10 +22,11 @@ src/modules/workbench/
 
 src/features/workbench/
 ├─ hooks/          # 宿主生命周期和副作用 Hook
-├─ infrastructure/ # 本地持久化和兼容迁移
+├─ lib/            # 本地持久化和兼容迁移
 ├─ model/          # 业务窗口状态
-├─ windows/        # 内置业务窗口内容、类型和标题
-├─ WorkbenchPage.tsx
+├─ ui/
+│  ├─ windows/     # 内置业务窗口内容、类型和标题
+│  └─ WorkbenchPage.tsx
 └─ index.ts        # Feature 公共 API
 ```
 
@@ -33,11 +34,11 @@ src/features/workbench/
 
 ## 数据流
 
-- `windows/windows.ts`：内置窗口类型和标题。
-- `windows/registry.ts`：把窗口类型映射成 App Registry 声明，`appId` 固定为 `narratable`。
-- `WorkbenchPage.tsx`：组合 Provider、工作台和窗口内容。
+- `ui/windows/windows.ts`：内置窗口类型和标题。
+- `ui/windows/registry.ts`：把窗口类型映射成 App Registry 声明，`appId` 固定为 `narratable`。
+- `ui/WorkbenchPage.tsx`：组合 Provider、工作台和窗口内容。
 - `model/chat-state.ts`：聊天房间、场景和搜索存在每个窗口的 `window.state`；多个聊天窗口互相独立。
-- `infrastructure/persistence.ts`：工作区快照与房间偏好存入 `localStorage`。
+- `lib/persistence.ts`：工作区快照与房间偏好存入 `localStorage`。
 - `hooks/useWorkbenchPersistence.ts`：合并高频状态更新，页面离开时立即刷新快照。
 - 首次进入没有快照时，创建 2/3 聊天列和 1/2 角色列，并聚焦聊天。
 - 「加入焦点容器」会把新窗口插入当前列：普通列变堆叠，分页列增加标签。

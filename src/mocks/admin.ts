@@ -4,7 +4,7 @@ import type {
   AdminPluginPackageInfo,
   AdminUser,
   AdminUserStatus,
-} from '@/lib/adminClient';
+} from '@/features/admin';
 
 type StoredUser = AdminUser;
 

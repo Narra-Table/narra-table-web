@@ -1,5 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
-import { AdminLogin } from '@/features/admin';
+import { createFileRoute, lazyRouteComponent, redirect } from '@tanstack/react-router';
 import { getAdminSession } from '@/lib/adminAuth';
 import { initTheme } from '@/lib/theme';
 
@@ -14,5 +13,5 @@ export const Route = createFileRoute('/admin_/login')({
     if (session.forceChangePassword) throw redirect({ to: '/admin/password' });
     throw redirect({ to: '/admin' });
   },
-  component: AdminLogin,
+  component: lazyRouteComponent(() => import('@/features/admin'), 'AdminLogin'),
 });

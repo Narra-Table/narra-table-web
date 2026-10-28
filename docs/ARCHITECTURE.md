@@ -77,3 +77,19 @@ routes -> features -> modules -> lib
 - `lib` 不依赖 `modules` 或 `features`。
 - `modules` 不依赖具体 `features`。
 - Feature 之间通过公共 API 协作，不共享内部状态实现。
+
+Feature 目录模板：
+
+```text
+features/<feature>/
+├── index.ts          # 对外公开 API
+├── ui/               # 页面、组件和 UI 子模块
+├── model/            # 状态、类型和业务规则
+├── api/              # 请求、Socket 和 Query 定义
+├── hooks/            # 仅该 Feature 使用的复合 Hook
+└── lib/              # Feature 内部基础设施和工具
+```
+
+- 目录按需创建，不为保持外观一致创建空目录。
+- 一个文件包含多个可独立命名、测试或复用的组件时，拆入同一职责目录的子文件夹。
+- 页面文件只负责组合；数据访问放 `api`，复杂状态操作放 `model` 或 `hooks`。

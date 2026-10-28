@@ -1,2 +1,2 @@
-export { WorkbenchPage } from './WorkbenchPage';
-export { primeWorkbenchRoom } from './infrastructure/persistence';
+export { WorkbenchPage } from './ui/WorkbenchPage';
+export { primeWorkbenchRoom } from './lib/persistence';

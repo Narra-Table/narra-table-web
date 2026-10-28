@@ -1,1 +1,1 @@
-export { RoomChat } from './RoomChat';
+export { RoomChat } from './ui/RoomChat';

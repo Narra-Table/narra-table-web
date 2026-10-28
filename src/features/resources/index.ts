@@ -1,1 +1,1 @@
-export { useResourceUrl } from './useResourceUrl';
+export { useResourceUrl } from './hooks/useResourceUrl';

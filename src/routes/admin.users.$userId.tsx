@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { AdminUserDetail } from '@/features/admin';
+import { createFileRoute, lazyRouteComponent } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/admin/users/$userId')({
-  component: AdminUserDetail,
+  component: lazyRouteComponent(() => import('@/features/admin'), 'AdminUserDetail'),
 });

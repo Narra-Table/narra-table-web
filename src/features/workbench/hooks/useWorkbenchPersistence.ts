@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { WorkbenchStore } from '@/modules/workbench';
-import { writeWorkbenchSnapshot } from '../infrastructure/persistence';
+import { writeWorkbenchSnapshot } from '../lib/persistence';
 
 const SAVE_DELAY_MS = 120;
 
