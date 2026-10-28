@@ -1,5 +1,7 @@
-import { openWindow, reduce, type WorkbenchAction } from './actions';
+import { openWindow } from './actions';
+import type { WorkbenchAction } from './actionTypes';
 import { createId as defaultCreateId, type IdFactory } from './ids';
+import { reduce } from './reducer';
 import {
   parseWorkspace,
   parseWorkspaceJson,

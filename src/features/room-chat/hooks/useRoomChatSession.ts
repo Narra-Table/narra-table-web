@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   getApiMe,
   getApiSpacesSpaceId,
@@ -16,7 +16,6 @@ import {
   type RoomConnection,
   type RoomSocketEvent,
 } from '../api/roomSocket';
-import { initialRoomChatState, reduceRoomChat, type RoomChatState } from '../model/reduceRoomChat';
 import type { ComposerExport } from '../model/richText';
 import type {
   OutgoingVeil,
@@ -27,6 +26,8 @@ import type {
   VeilDraft,
 } from '../model/types';
 import { useMessageActions } from './useMessageActions';
+import { useRoomChatProfile } from './useRoomChatProfile';
+import { useRoomHistory } from './useRoomHistory';
 
 const PAGE_SIZE = 50;
 
@@ -73,100 +74,33 @@ export interface RoomChatSession {
 }
 
 export function useRoomChatSession(spaceId: string, roomId: string): RoomChatSession {
-  const [state, setState] = useState<RoomChatState>(initialRoomChatState);
-  const [masks, setMasks] = useState<GithubComNarraTableBackendPkgProtocolMask[]>([]);
-  const [members, setMembers] = useState<GithubComNarraTableBackendPkgProtocolMember[]>([]);
-  const [role, setRole] = useState<GithubComNarraTableBackendPkgProtocolMemberRole | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [maskId, setMaskId] = useState('');
-  const [veil, setVeilState] = useState<OutgoingVeil>('all');
+  const { state, stateRef, dispatch, loadingOlder, loadOlder, beginRoomLoad, endRoomLoad } =
+    useRoomHistory(spaceId, roomId);
+  const {
+    masks,
+    members,
+    role,
+    userId,
+    maskId,
+    maskIdRef,
+    setMaskId,
+    veil,
+    setVeil,
+    canSend,
+    canUseGmVeil,
+    usableMasks,
+    maskNames,
+    applyProfile,
+  } = useRoomChatProfile();
   const [connection, setConnection] = useState<RoomConnection>('connecting');
   const [loading, setLoading] = useState(true);
-  const [loadingOlder, setLoadingOlder] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
-
-  const stateRef = useRef(state);
-  stateRef.current = state;
-  const loadingOlderRef = useRef(false);
-  const roomGenerationRef = useRef(0);
-  const roomControllerRef = useRef<AbortController | null>(null);
   const socketRef = useRef<RoomSocket | null>(null);
-  const maskIdRef = useRef(maskId);
-  maskIdRef.current = maskId;
-
-  const dispatch = useCallback((action: Parameters<typeof reduceRoomChat>[1]) => {
-    setState((current) => reduceRoomChat(current, action));
-  }, []);
-
-  const canUseGmVeil = role === 'gm' || role === 'agm';
-  const canSend = role === 'gm' || role === 'agm' || role === 'pl';
-
-  const setVeil = useCallback(
-    (next: OutgoingVeil) => {
-      if (next === 'gm_only' && !(role === 'gm' || role === 'agm')) return;
-      setVeilState(next);
-    },
-    [role],
-  );
 
   useEffect(() => {
-    if (role === 'gm' || role === 'agm') return;
-    setVeilState('all');
-  }, [role]);
-
-  const usableMasks = useMemo(
-    () => masks.filter((mask) => userId !== null && (mask.userIds ?? []).includes(userId)),
-    [masks, userId],
-  );
-
-  useEffect(() => {
-    if (usableMasks.some((mask) => mask.maskId === maskId)) return;
-    setMaskId(usableMasks[0]?.maskId ?? '');
-  }, [usableMasks, maskId]);
-
-  const maskNames = useMemo(() => new Map(masks.map((mask) => [mask.maskId, mask.name])), [masks]);
-
-  const loadOlder = useCallback(async () => {
-    const current = stateRef.current;
-    const cursor = current.messages[0]?.messageId;
-    if (loadingOlderRef.current || !current.hasMore || !cursor) return;
-    const generation = roomGenerationRef.current;
-    const signal = roomControllerRef.current?.signal;
-    if (signal?.aborted) return;
-    loadingOlderRef.current = true;
-    setLoadingOlder(true);
-    try {
-      const page = await fetchRoomMessages(
-        spaceId,
-        roomId,
-        {
-          cursor,
-          sort: 'desc',
-          limit: PAGE_SIZE,
-        },
-        signal,
-      );
-      if (roomGenerationRef.current !== generation || signal?.aborted) return;
-      dispatch({
-        type: 'history',
-        mode: 'prepend',
-        messages: page.messages ?? [],
-        hasMore: Boolean(page.hasMore),
-      });
-    } finally {
-      if (roomGenerationRef.current === generation) {
-        loadingOlderRef.current = false;
-        setLoadingOlder(false);
-      }
-    }
-  }, [dispatch, roomId, spaceId]);
-
-  useEffect(() => {
-    const generation = roomGenerationRef.current + 1;
-    roomGenerationRef.current = generation;
-    const controller = new AbortController();
-    roomControllerRef.current = controller;
+    const roomLoad = beginRoomLoad();
+    const { controller } = roomLoad;
     const socket = new RoomSocket({
       url: roomSocketUrl(),
       token: getAccessToken,
@@ -225,20 +159,9 @@ export function useRoomChatSession(spaceId: string, roomId: string): RoomChatSes
         ]);
         if (controller.signal.aborted) return;
         const id = me.data.id ?? '';
-        setUserId(id);
-        const member = (space.data.members ?? []).find((item) => item.userId === id);
-        setRole(member?.role ?? null);
-        setMembers(space.data.members ?? []);
         if (maskList.status !== 200) throw new Error('面具没有加载出来');
         const allMasks = maskList.data.masks ?? [];
-        setMasks(allMasks);
-        const usable = allMasks.filter((mask) => (mask.userIds ?? []).includes(id));
-        const preferred =
-          usable.find((mask) => mask.maskId === member?.maskId) ??
-          usable.find((mask) => mask.isDefault) ??
-          usable[0];
-        if (preferred && !maskIdRef.current) maskIdRef.current = preferred.maskId;
-        setMaskId((current) => current || preferred?.maskId || '');
+        applyProfile(id, space.data.members ?? [], allMasks);
         dispatch({
           type: 'history',
           mode: 'replace',
@@ -256,16 +179,11 @@ export function useRoomChatSession(spaceId: string, roomId: string): RoomChatSes
     })();
 
     return () => {
-      controller.abort();
       socket.stop();
-      if (roomControllerRef.current === controller) roomControllerRef.current = null;
-      if (roomGenerationRef.current === generation) {
-        loadingOlderRef.current = false;
-        setLoadingOlder(false);
-      }
+      endRoomLoad(roomLoad);
       if (socketRef.current === socket) socketRef.current = null;
     };
-  }, [attempt, dispatch, roomId, spaceId]);
+  }, [applyProfile, attempt, beginRoomLoad, dispatch, endRoomLoad, maskIdRef, roomId, spaceId]);
 
   const actions = useMessageActions({
     roomId,

@@ -101,3 +101,12 @@ features/<feature>/
 - 一个文件包含多个可独立命名、测试或复用的组件时，拆入同一职责目录的子文件夹。
 - 大型 Feature 在职责目录内继续按子能力分包，例如 `room-chat/ui/chat`、`ui/composer`、`ui/messages`；不把只能共同工作的内部组件伪装成多个顶层 Feature。
 - 页面文件只负责组合；数据访问放 `api`，复杂状态操作放 `model` 或 `hooks`。
+
+## 状态与对象边界
+
+- 页面、消息、窗口和工作区状态使用 Plain Object、纯函数和 reducer，保持单向数据流。
+- `model` 放不依赖 React 的状态转换、业务规则和数据结构；不得用 class 包装纯业务数据。
+- Hook 负责 React 生命周期、副作用和状态组合；可复用业务规则优先下沉为 `model` 纯函数。
+- TanStack Query 管理服务端状态；Feature 内 reducer 或局部 state 管理高频交互状态，不把所有状态集中到全局 Store。
+- WebSocket、音频、渲染器和跨进程桥接等持有外部资源与生命周期的能力可以使用 class。
+- Context/Provider 只注入稳定能力或状态入口，不建立相互注入的可变 Service 对象网络。
