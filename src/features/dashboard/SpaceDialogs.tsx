@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { useEffect, useId, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import {
   getApiSpacesSpaceIdMasks,
   getApiSpacesSpaceIdRooms,
@@ -36,7 +36,9 @@ async function ensureDefaultSpaceContent(spaceId: string): Promise<void> {
   if (!masks.some((mask) => mask.type === 'gm')) {
     setup.push(postApiSpacesSpaceIdMasks(spaceId, { name: '主持人', type: 'gm' }));
   }
-  await Promise.all(setup);
+  const results = await Promise.allSettled(setup);
+  const failure = results.find((result) => result.status === 'rejected');
+  if (failure?.status === 'rejected') throw failure.reason;
 }
 
 function DialogShell({
@@ -50,9 +52,44 @@ function DialogShell({
   onClose: () => void;
   children: ReactNode;
 }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const [opener] = useState(() => document.activeElement);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (dialog && !dialog.contains(document.activeElement)) dialog.focus();
+    return () => {
+      if (opener instanceof HTMLElement && opener.isConnected) opener.focus();
+    };
+  }, [opener]);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape' && !pending) onClose();
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (!pending) onClose();
+      }
+      if (event.key !== 'Tab') return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const controls = dialog.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (!first) {
+        event.preventDefault();
+        dialog.focus();
+      } else if (!dialog.contains(document.activeElement) || document.activeElement === dialog) {
+        event.preventDefault();
+        (event.shiftKey ? last : first)?.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
@@ -67,7 +104,9 @@ function DialogShell({
       role="presentation"
     >
       <div
+        ref={dialogRef}
         role="dialog"
+        tabIndex={-1}
         aria-modal="true"
         aria-label={label}
         className="w-full max-w-sm rounded-overlay border border-border-subtle bg-surface px-6 py-6"
@@ -139,14 +178,17 @@ export function CreateSpaceDialog({ onClose }: { onClose: () => void }) {
   const [createdSpaceId, setCreatedSpaceId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
+  const inFlight = useRef(false);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (inFlight.current) return;
     const trimmed = name.trim();
     if (!trimmed) {
       setError('请填写空间名称');
       return;
     }
+    inFlight.current = true;
     setPending(true);
     setError('');
     let createdDuringAttempt = false;
@@ -170,6 +212,9 @@ export function CreateSpaceDialog({ onClose }: { onClose: () => void }) {
       onClose();
       await navigate({ to: '/spaces/$spaceId', params: { spaceId } });
     } catch (caught) {
+      if (createdSpaceId || createdDuringAttempt) {
+        await queryClient.invalidateQueries({ queryKey: getGetApiSpacesQueryKey() });
+      }
       setError(
         createdSpaceId || createdDuringAttempt
           ? caught instanceof ApiError
@@ -180,6 +225,7 @@ export function CreateSpaceDialog({ onClose }: { onClose: () => void }) {
             : '创建空间失败，请稍后重试',
       );
     } finally {
+      inFlight.current = false;
       setPending(false);
     }
   }
@@ -203,7 +249,11 @@ export function CreateSpaceDialog({ onClose }: { onClose: () => void }) {
           disabled={pending || Boolean(createdSpaceId)}
           autoFocus
         />
-        {error ? <p className="text-sm text-danger">{error}</p> : null}
+        {error ? (
+          <p role="alert" className="text-sm text-danger">
+            {error}
+          </p>
+        ) : null}
         <div className="flex justify-end gap-2">
           <button
             type="button"
@@ -288,7 +338,11 @@ export function EditSpaceDialog({ space, onClose }: { space: SpaceListItem; onCl
           disabled={!ready || pending}
           autoFocus
         />
-        {error ? <p className="text-sm text-danger">{error}</p> : null}
+        {error ? (
+          <p role="alert" className="text-sm text-danger">
+            {error}
+          </p>
+        ) : null}
         <div className="flex justify-end gap-2">
           <button
             type="button"
@@ -345,7 +399,11 @@ export function ArchiveSpaceDialog({
       <p className="mt-3 text-sm leading-snug text-text-muted">
         归档后，「{name}」会从主页列表里消失。
       </p>
-      {error ? <p className="mt-3 text-sm text-danger">{error}</p> : null}
+      {error ? (
+        <p role="alert" className="mt-3 text-sm text-danger">
+          {error}
+        </p>
+      ) : null}
       <div className="mt-6 flex justify-end gap-2">
         <button
           type="button"
