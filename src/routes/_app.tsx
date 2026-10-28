@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { AppLayout } from '@/features/app-layout';
 import { getAccessToken } from '@/lib/auth';
+import { AppLayout } from '@/views/layouts/AppLayout';
 
 export const Route = createFileRoute('/_app')({
   beforeLoad: () => {

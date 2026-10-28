@@ -43,6 +43,8 @@ narra-table-web/
 │   │   └── __root.tsx         # 根布局路由
 │   ├── types/
 │   │   └── narratable-protocol-compat.d.ts # @narratable/protocol 兼容类型声明
+│   ├── views/                 # 路由级页面骨架和 Feature 组合视图
+│   │   └── layouts/           # App、Room 等路由 Layout
 │   ├── main.tsx               # 应用入口
 │   ├── routeTree.gen.ts       # 自动生成的路由树（不要手动编辑）
 │   └── style.css
@@ -60,6 +62,7 @@ narra-table-web/
 ## 模块边界
 
 - `features/<name>` 按业务能力划分，每个 Feature 使用 `index.ts` 声明公共 API。
+- `views` 放路由级页面骨架和多个 Feature 的组合视图；只有布局、导航或页面编排，不作为业务 Feature。
 - 路由和其他 Feature 只能从 `@/features/<name>` 导入，不得深层引用 Feature 内部文件。
 - Feature 内部按复杂度渐进拆分；小模块保持扁平，大模块使用 `ui`、`model`、`api`、`hooks`、`lib` 等职责目录，不创建空目录占位。
 - `modules/<name>` 放可复用的应用级技术模块，不包含具体业务数据和路由。
@@ -71,7 +74,8 @@ narra-table-web/
 
 ```text
 routes -> features -> modules -> lib
-              \-----------> lib
+   |        \-----------> lib
+   +-> views -> features / modules / lib
 ```
 
 - `lib` 不依赖 `modules` 或 `features`。
@@ -92,4 +96,5 @@ features/<feature>/
 
 - 目录按需创建，不为保持外观一致创建空目录。
 - 一个文件包含多个可独立命名、测试或复用的组件时，拆入同一职责目录的子文件夹。
+- 大型 Feature 在职责目录内继续按子能力分包，例如 `room-chat/ui/chat`、`ui/composer`、`ui/messages`；不把只能共同工作的内部组件伪装成多个顶层 Feature。
 - 页面文件只负责组合；数据访问放 `api`，复杂状态操作放 `model` 或 `hooks`。

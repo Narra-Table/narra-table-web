@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { SceneAnchor } from '../model/types';
+import type { SceneAnchor } from '../../model/types';
 
 export function SceneMenu({
   scenes,

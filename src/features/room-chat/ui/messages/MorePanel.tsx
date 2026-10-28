@@ -2,22 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { GithubComNarraTableBackendPkgProtocolMember } from '@/api/model/githubComNarraTableBackendPkgProtocolMember';
 import type { GithubComNarraTableBackendPkgProtocolMemberRole } from '@/api/model/githubComNarraTableBackendPkgProtocolMemberRole';
-import type { GithubComNarraTableBackendPkgProtocolVisibility } from '@/api/model/githubComNarraTableBackendPkgProtocolVisibility';
 import { useMediaQuery } from '@/lib/react';
 import { cn } from '@/lib/utils';
 import { messagePlainText } from '../../model/copyText';
 import { newestEditRecords, readPreviousRaw } from '../../model/editHistory';
 import { moreActions } from '../../model/moreActions';
 import { formatSendTime } from '../../model/text';
-import type { RoomMessage } from '../../model/types';
+import type { RoomMessage, VeilDraft } from '../../model/types';
 import { BlockList } from './Blocks';
 import { ClueCardView } from './ClueCard';
-
-export interface VeilDraft {
-  visibility: GithubComNarraTableBackendPkgProtocolVisibility;
-  visibleTo: string[];
-  revealOnSpaceClose: boolean;
-}
 
 const VEIL_OPTIONS: { value: VeilDraft['visibility']; label: string }[] = [
   { value: 'all', label: '全员' },

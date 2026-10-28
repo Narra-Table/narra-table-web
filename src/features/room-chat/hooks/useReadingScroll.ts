@@ -10,6 +10,8 @@ interface ReadingScrollInput {
   loadOlder: () => Promise<void>;
 }
 
+export type ReadingScrollController = ReturnType<typeof useReadingScroll>;
+
 export function useReadingScroll({
   messages,
   pendings,

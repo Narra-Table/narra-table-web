@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { firstLine, messageExcerpt } from '../model/text';
-import type { RoomMessage } from '../model/types';
+import { firstLine, messageExcerpt } from '../../model/text';
+import type { RoomMessage } from '../../model/types';
 
 export function PinStrip({
   pins,

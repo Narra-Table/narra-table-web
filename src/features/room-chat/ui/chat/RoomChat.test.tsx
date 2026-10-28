@@ -2,9 +2,9 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getApiMe, getApiSpacesSpaceId, getApiSpacesSpaceIdMasks } from '@/api';
-import { fetchRoomMessages } from '../api/history';
-import { RoomSocket } from '../api/roomSocket';
-import type { RoomMessage } from '../model/types';
+import { fetchRoomMessages } from '../../api/history';
+import { RoomSocket } from '../../api/roomSocket';
+import type { RoomMessage } from '../../model/types';
 import { RoomChat } from './RoomChat';
 
 vi.mock('@/api', async (importOriginal) => {
@@ -16,7 +16,7 @@ vi.mock('@/api', async (importOriginal) => {
     getApiSpacesSpaceIdMasks: vi.fn(),
   };
 });
-vi.mock('../api/history', async (importOriginal) => {
+vi.mock('../../api/history', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return { ...actual, fetchRoomMessages: vi.fn() };
 });

@@ -1,28 +1,19 @@
-import { Search, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { GithubComNarraTableBackendPkgProtocolRoom } from '@/api/model/githubComNarraTableBackendPkgProtocolRoom';
 import { ApiError } from '@/lib/orvalClient';
-import { useReadingScroll } from '../hooks/useReadingScroll';
-import { useRoomChatSession } from '../hooks/useRoomChatSession';
-import { groupMessages, streamEntries } from '../model/groupMessages';
-import { textNodesFromBlocks } from '../model/richText';
-import { collectScenes, findScene } from '../model/sceneIndex';
-import { maskLabel, messageExcerpt } from '../model/text';
-import type { RoomMessage, StagedReply, TextRun } from '../model/types';
-import { Composer } from './Composer';
+import { useMessageLocator } from '../../hooks/useMessageLocator';
+import { useReadingScroll } from '../../hooks/useReadingScroll';
+import { useRoomChatSession } from '../../hooks/useRoomChatSession';
+import { groupMessages, streamEntries } from '../../model/groupMessages';
+import { textNodesFromBlocks } from '../../model/richText';
+import { collectScenes, findScene } from '../../model/sceneIndex';
+import { maskLabel, messageExcerpt } from '../../model/text';
+import type { RoomMessage, StagedReply, TextRun } from '../../model/types';
+import { Composer } from '../composer/Composer';
+import { ReadingGroups } from '../messages/ReadingGroups';
+import { ChatToolbar } from './ChatToolbar';
 import { PinStrip } from './PinStrip';
 import { SceneMenu } from './SceneMenu';
-import { ReadingGroups } from './tiles/ReadingGroups';
-
-function waitFrames(count: number): Promise<void> {
-  return new Promise((resolve) => {
-    const step = (left: number) => {
-      if (left <= 0) resolve();
-      else requestAnimationFrame(() => step(left - 1));
-    };
-    step(count);
-  });
-}
 
 export function RoomChat({
   spaceId,
@@ -54,65 +45,17 @@ export function RoomChat({
   const [reply, setReply] = useState<StagedReply | null>(null);
   const [editing, setEditing] = useState<{ messageId: string; nodes: TextRun[] } | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const [searching, setSearching] = useState(false);
-  const [locateNote, setLocateNote] = useState<string | null>(null);
-  const [highlightId, setHighlightId] = useState<string | null>(null);
-  const jumpToken = useRef(0);
-  const messagesRef = useRef(session.messages);
-  messagesRef.current = session.messages;
-  const hasMoreRef = useRef(session.hasMore);
-  hasMoreRef.current = session.hasMore;
-
-  async function locate(options: {
-    ready: (messages: RoomMessage[]) => boolean;
-    selector: string;
-    highlight: string;
-    missing: string;
-  }) {
-    const token = jumpToken.current + 1;
-    jumpToken.current = token;
-    scroll.holdJump();
-    setSearching(true);
-    setLocateNote(null);
-    const finish = (found: boolean) => {
-      if (jumpToken.current !== token) return;
-      setSearching(false);
-      setLocateNote(found ? null : options.missing);
-      setHighlightId(found ? options.highlight : null);
-      if (found) {
-        window.setTimeout(() => {
-          if (jumpToken.current === token)
-            setHighlightId((current) => (current === options.highlight ? null : current));
-        }, 1600);
-      }
-      window.setTimeout(() => {
-        if (jumpToken.current === token) scroll.releaseJump();
-      }, 500);
-    };
-
-    for (let step = 0; step < 40; step += 1) {
-      if (jumpToken.current !== token) return;
-      if (options.ready(messagesRef.current)) {
-        await waitFrames(2);
-        if (jumpToken.current !== token) return;
-        const target = scroll.scrollerRef.current?.querySelector(options.selector);
-        if (target) {
-          target.scrollIntoView({ block: 'center', inline: 'nearest' });
-          finish(true);
-          return;
-        }
-      }
-      if (!hasMoreRef.current) break;
-      const before = messagesRef.current[0]?.messageId;
-      await scroll.loadOlderPreserving();
-      await waitFrames(2);
-      if (messagesRef.current[0]?.messageId === before) break;
-    }
-    finish(false);
-  }
-
-  const locateRef = useRef(locate);
-  locateRef.current = locate;
+  const {
+    searching,
+    note: locateNote,
+    highlightId,
+    locate,
+    cancel: cancelLocate,
+  } = useMessageLocator({
+    messages: session.messages,
+    hasMore: session.hasMore,
+    scroll,
+  });
 
   useEffect(() => {
     setEditing(null);
@@ -121,16 +64,14 @@ export function RoomChat({
 
   useEffect(() => {
     if (!scene || session.loading) return;
-    void locateRef.current({
+    void locate({
       ready: (messages) => findScene(collectScenes(messages), scene) !== undefined,
       selector: `[data-scene="${CSS.escape(scene)}"]`,
       highlight: scene,
       missing: '找不到这个幕标',
     });
-    return () => {
-      jumpToken.current += 1;
-    };
-  }, [scene, session.loading]);
+    return cancelLocate;
+  }, [cancelLocate, locate, scene, session.loading]);
 
   function chooseScene(sceneId: string) {
     if (sceneId !== scene) onSceneChange(sceneId);
@@ -187,51 +128,15 @@ export function RoomChat({
           ? '正在连接'
           : null;
 
-  const roomName = rooms.find((item) => item.roomId === roomId)?.name;
-
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-app-bg">
-      <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-border-subtle bg-surface px-3 py-1.5">
-        <label className="flex min-w-0 items-center gap-1.5">
-          <span className="shrink-0 text-xs text-text-muted">房间</span>
-          {rooms.length > 1 ? (
-            <select
-              aria-label="切换房间"
-              value={roomId}
-              onChange={(event) => onRoomChange(event.target.value)}
-              className="max-w-40 min-w-0 truncate rounded-control border border-border bg-surface-muted px-2 py-1 text-sm font-medium text-text outline-none focus:border-accent"
-            >
-              {rooms.map((item) => (
-                <option key={item.roomId} value={item.roomId}>
-                  {item.name || '未命名房间'}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <span className="truncate text-sm font-medium text-text">{roomName || '房间'}</span>
-          )}
-        </label>
-        <label className="relative min-w-0 flex-1 basis-44">
-          <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-text-muted" />
-          <input
-            value={query}
-            onChange={(event) => onQueryChange(event.target.value)}
-            placeholder="搜索已加载的发言"
-            aria-label="搜索已加载的发言"
-            className="w-full rounded-control border border-border bg-surface-muted py-1 pr-7 pl-7 text-sm text-text outline-none focus:border-accent"
-          />
-          {query ? (
-            <button
-              type="button"
-              aria-label="清除搜索"
-              onClick={() => onQueryChange('')}
-              className="absolute top-1/2 right-2 -translate-y-1/2 text-text-muted"
-            >
-              <X className="size-3.5" />
-            </button>
-          ) : null}
-        </label>
-      </div>
+      <ChatToolbar
+        rooms={rooms}
+        roomId={roomId}
+        query={query}
+        onRoomChange={onRoomChange}
+        onQueryChange={onQueryChange}
+      />
       <PinStrip pins={session.pinned} onJump={jumpToMessage} />
       <SceneMenu
         scenes={scenes}
