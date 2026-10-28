@@ -6,7 +6,7 @@ import {
   type getApiSpacesSpaceIdMasksResponseSuccess,
 } from '@/api';
 import type { GithubComNarraTableBackendPkgProtocolMask } from '@/api/model/githubComNarraTableBackendPkgProtocolMask';
-import { useResourceUrl } from '@/features/room-chat/tiles/useResourceUrl';
+import { useResourceUrl } from '@/features/resources';
 import { cn } from '@/lib/utils';
 import { MASK_SECTIONS, ROLE_LABEL } from './labels';
 

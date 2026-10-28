@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { LoginForm } from '@/features/auth/LoginForm';
+import { LoginForm } from '@/features/auth';
 import { getAccessToken } from '@/lib/auth';
 import { initTheme } from '@/lib/theme';
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function useNarrow(breakpoint = 1024): boolean {
-  const query = `(max-width: ${breakpoint - 1}px)`;
+export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return false;
     return window.matchMedia(query).matches;

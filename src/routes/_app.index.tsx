@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useGetApiSpaces } from '@/api';
-import { DashboardRightPanel } from '@/features/dashboard/DashboardRightPanel';
-import { SpacesContent } from '@/features/dashboard/SpacesContent';
+import { DashboardRightPanel, SpacesContent } from '@/features/dashboard';
 
 function DashboardPage() {
   const { data: spaces = [] } = useGetApiSpaces({

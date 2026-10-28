@@ -1,0 +1,1 @@
+export { useResourceUrl } from './useResourceUrl';

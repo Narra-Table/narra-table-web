@@ -64,6 +64,17 @@ export default defineConfig({
       '@tanstack/query/stable-query-client': 'error',
       '@tanstack/query/prefer-query-options': 'error',
       '@tanstack/query/no-unstable-deps': 'error',
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/features/*/*'],
+              message: '跨模块请从 Feature 的 index.ts 公共入口导入。',
+            },
+          ],
+        },
+      ],
     },
   },
   resolve: {
@@ -83,8 +94,8 @@ export default defineConfig({
             return 'editor';
           }
           if (
-            path.includes('/src/features/workbench/core/') ||
-            path.includes('/src/features/workbench/react/')
+            path.includes('/src/modules/workbench/core/') ||
+            path.includes('/src/modules/workbench/react/')
           ) {
             return 'workbench-wm';
           }

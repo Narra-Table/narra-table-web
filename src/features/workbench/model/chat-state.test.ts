@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { WindowInstance } from '@/features/workbench/core';
-import { mergeChatState, readChatState } from './chat-state';
+import type { WindowInstance } from '@/modules/workbench';
+import { findChatWindowForRoom, mergeChatState, readChatState } from './chat-state';
 
 function windowFixture(state?: unknown): WindowInstance {
   return {
@@ -35,5 +35,18 @@ describe('chat window state', () => {
         query: '地图',
       }),
     ).toEqual({ roomId: 'r2', extra: { keep: true }, query: '地图' });
+  });
+
+  it('selects the chat instance that owns the requested room', () => {
+    const first = windowFixture({ roomId: 'r1' });
+    const second = { ...windowFixture({ roomId: 'r2' }), instanceId: 'win-2' };
+    const panel = {
+      ...windowFixture({ roomId: 'r2' }),
+      instanceId: 'win-3',
+      windowTypeId: 'clues',
+    };
+
+    expect(findChatWindowForRoom([first, panel, second], 'r2')?.instanceId).toBe('win-2');
+    expect(findChatWindowForRoom([first, second], 'missing')).toBeUndefined();
   });
 });

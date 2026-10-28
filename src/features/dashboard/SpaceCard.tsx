@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useGetApiSpacesSpaceIdRooms } from '@/api';
 import type { InternalHandlerSpaceSummary } from '@/api/model';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { primeWorkbenchRoom } from '@/features/workbench/persistence';
+import { primeWorkbenchRoom } from '@/features/workbench';
 
 // API 生成类型尚未包含 avatar，在此扩展
 export type SpaceListItem = InternalHandlerSpaceSummary & {

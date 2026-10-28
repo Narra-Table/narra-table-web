@@ -1,10 +1,10 @@
 import { Dices, Smile } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { GithubComNarraTableBackendPkgProtocolMask } from '@/api/model/githubComNarraTableBackendPkgProtocolMask';
+import { useResourceUrl } from '@/features/resources';
 import { RichField, type RichFieldHandle } from './composer/RichField';
 import type { ComposerExport } from './model/richText';
 import type { OutgoingVeil, StagedReply, TextRun } from './model/types';
-import { useResourceUrl } from './tiles/useResourceUrl';
 
 const FACES = ['(´▽`)', '(；′⌒`)', 'Σ(°△°', '(￣▽￣)', '（＞人＜）', '(｀・ω・´)'];
 const DICE = [

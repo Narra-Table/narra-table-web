@@ -32,9 +32,13 @@ narra-table-web/
 │   ├── components/
 │   │   └── ui/                # shadcn 复制来的 UI 组件
 │   ├── features/              # 功能模块
-│   │   └── workbench/         # 内置 WM、窗口应用和宿主页
+│   │   ├── resources/         # 资源访问能力
+│   │   └── workbench/         # 空间工作台宿主和业务窗口
 │   ├── lib/                   # 基础设施与工具
+│   │   └── react/             # 与业务无关的共享 React Hook
 │   ├── mocks/                 # MSW mock 数据和请求处理器
+│   ├── modules/               # 可复用的应用级技术模块
+│   │   └── workbench/         # WM 核心、React 适配和结构样式
 │   ├── routes/                # TanStack Router 文件路由
 │   │   └── __root.tsx         # 根布局路由
 │   ├── types/
@@ -52,3 +56,24 @@ narra-table-web/
 ├── vite.config.ts             # Vite+ 配置
 └── vitest.config.ts           # Vitest 配置
 ```
+
+## 模块边界
+
+- `features/<name>` 按业务能力划分，每个 Feature 使用 `index.ts` 声明公共 API。
+- 路由和其他 Feature 只能从 `@/features/<name>` 导入，不得深层引用 Feature 内部文件。
+- Feature 内部按复杂度渐进拆分；小模块保持扁平，大模块使用 `ui`、`model`、`api`、`hooks`、`lib` 等职责目录，不创建空目录占位。
+- `modules/<name>` 放可复用的应用级技术模块，不包含具体业务数据和路由。
+- `lib` 放无业务所有权的基础设施和工具；共享 React Hook 放在 `lib/react`。
+- Hook 默认与所属 Feature 或模块共置，只有跨 Feature 复用且不含业务语义时才进入 `lib/react`。
+- 测试与被测模块共置，跨 Feature 集成测试放在负责组合这些 Feature 的宿主模块中。
+
+依赖方向：
+
+```text
+routes -> features -> modules -> lib
+              \-----------> lib
+```
+
+- `lib` 不依赖 `modules` 或 `features`。
+- `modules` 不依赖具体 `features`。
+- Feature 之间通过公共 API 协作，不共享内部状态实现。

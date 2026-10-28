@@ -1,6 +1,6 @@
 # 空间工作台
 
-> 目标设计见 [WORKSPACE-WM.md](WORKSPACE-WM.md)。当前实现位于 `src/features/workbench`。
+> 目标设计见 [WORKSPACE-WM.md](WORKSPACE-WM.md)。通用 WM 位于 `src/modules/workbench`，业务宿主位于 `src/features/workbench`。
 
 ## 路由
 
@@ -15,26 +15,30 @@
 ## 结构
 
 ```text
-src/features/workbench/
-├─ apps/           # 内置窗口内容、类型和标题
+src/modules/workbench/
 ├─ core/           # 状态、action、selector、快照、store
 ├─ react/          # Provider、列/悬浮/任务栏/启动台/键盘/拖拽
-├─ styles/         # --wm-* 结构样式
+└─ styles.css      # --wm-* 结构样式
+
+src/features/workbench/
+├─ hooks/          # 宿主生命周期和副作用 Hook
+├─ infrastructure/ # 本地持久化和兼容迁移
+├─ model/          # 业务窗口状态
+├─ windows/        # 内置业务窗口内容、类型和标题
 ├─ WorkbenchPage.tsx
-├─ registry.ts
-├─ persistence.ts
-└─ chat-state.ts
+└─ index.ts        # Feature 公共 API
 ```
 
 空间路由懒加载 `WorkbenchPage`；构建再拆分 WM、窗口内容和 TipTap 编辑器代码。
 
 ## 数据流
 
-- `apps/windows.ts`：内置窗口类型和标题。
-- `registry.ts`：把窗口类型映射成 App Registry 声明，`appId` 固定为 `narratable`。
+- `windows/windows.ts`：内置窗口类型和标题。
+- `windows/registry.ts`：把窗口类型映射成 App Registry 声明，`appId` 固定为 `narratable`。
 - `WorkbenchPage.tsx`：组合 Provider、工作台和窗口内容。
-- `chat-state.ts`：聊天房间、场景和搜索存在每个窗口的 `window.state`；多个聊天窗口互相独立。
-- `persistence.ts`：工作区快照与房间偏好存入 `localStorage`。
+- `model/chat-state.ts`：聊天房间、场景和搜索存在每个窗口的 `window.state`；多个聊天窗口互相独立。
+- `infrastructure/persistence.ts`：工作区快照与房间偏好存入 `localStorage`。
+- `hooks/useWorkbenchPersistence.ts`：合并高频状态更新，页面离开时立即刷新快照。
 - 首次进入没有快照时，创建 2/3 聊天列和 1/2 角色列，并聚焦聊天。
 - 「加入焦点容器」会把新窗口插入当前列：普通列变堆叠，分页列增加标签。
 - 稳定宿主/portal 保持窗口内容挂载；换容器、切分页和停靠/悬浮不会卸载。

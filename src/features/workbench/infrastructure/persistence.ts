@@ -1,13 +1,16 @@
-import type { WorkbenchStore } from '@/features/workbench/core';
-import { createWorkbenchStore, selectFocusedWindow } from '@/features/workbench/core';
-import type { WindowKind } from './apps/windows';
-import { mergeChatState, readChatState } from './chat-state';
+import {
+  createWorkbenchStore,
+  selectFocusedWindow,
+  type WorkbenchStore,
+} from '@/modules/workbench';
+import { mergeChatState, readChatState } from '../model/chat-state';
 import {
   isWorkbenchWindowKind,
   WORKBENCH_APP_ID,
   WORKBENCH_REGISTRY,
   workbenchWindowTitle,
-} from './registry';
+} from '../windows/registry';
+import type { WindowKind } from '../windows/windows';
 
 const SNAPSHOT_PREFIX = 'narratable.workbench-next.snapshot';
 const ROOM_PREFIX = 'narratable.workbench-next.room';

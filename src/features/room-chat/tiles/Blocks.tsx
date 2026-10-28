@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { useResourceUrl } from '@/features/resources';
 import { cn } from '@/lib/utils';
 import { paintCustomColor, readableTextColor } from '../model/contrast';
 import {
@@ -11,7 +12,6 @@ import {
 import { sceneId, sceneLabel } from '../model/sceneIndex';
 import type { RoomBlock } from '../model/types';
 import { useThemePalette, type ThemePalette } from '../useThemePalette';
-import { useResourceUrl } from './useResourceUrl';
 
 function directUrl(value: string | undefined): boolean {
   return Boolean(value && /^(https?:|blob:|data:)/.test(value));

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { AdminUsers } from '@/features/admin/AdminUsers';
+import { AdminUsers } from '@/features/admin';
 import type { AdminUserStatus } from '@/lib/adminClient';
 
 const statuses = ['', 'active', 'disabled', 'deleted'] as const;

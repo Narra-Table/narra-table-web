@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { AdminShell } from '@/features/admin/AdminShell';
+import { AdminShell } from '@/features/admin';
 import { getAdminSession } from '@/lib/adminAuth';
 import { initTheme } from '@/lib/theme';
 

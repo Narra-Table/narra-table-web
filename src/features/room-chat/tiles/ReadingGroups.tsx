@@ -3,6 +3,7 @@ import { useRef, useState, type PointerEvent, type ReactNode } from 'react';
 import type { GithubComNarraTableBackendPkgProtocolMask } from '@/api/model/githubComNarraTableBackendPkgProtocolMask';
 import type { GithubComNarraTableBackendPkgProtocolMember } from '@/api/model/githubComNarraTableBackendPkgProtocolMember';
 import type { GithubComNarraTableBackendPkgProtocolMemberRole } from '@/api/model/githubComNarraTableBackendPkgProtocolMemberRole';
+import { useResourceUrl } from '@/features/resources';
 import { cn } from '@/lib/utils';
 import { moreActions } from '../model/moreActions';
 import { collectScenes } from '../model/sceneIndex';
@@ -12,7 +13,6 @@ import { BlockList, ParagraphText } from './Blocks';
 import { ClueCardView } from './ClueCard';
 import { ForwardBody } from './ForwardBody';
 import { MorePanel, type VeilDraft } from './MorePanel';
-import { useResourceUrl } from './useResourceUrl';
 
 interface ReadingGroupsProps {
   groups: ReadingGroup[];

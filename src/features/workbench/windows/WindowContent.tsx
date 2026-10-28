@@ -1,7 +1,12 @@
 import type { GithubComNarraTableBackendPkgProtocolRoom } from '@/api/model/githubComNarraTableBackendPkgProtocolRoom';
-import { RoomChat } from '@/features/room-chat/RoomChat';
+import { RoomChat } from '@/features/room-chat';
 import { CharactersPanel, CluesPanel, CombatPanel, MapPanel, MembersPanel } from './panels';
 import type { WindowKind } from './windows';
+
+export interface WindowSeekRequest {
+  roomId: string;
+  query: string;
+}
 
 function WindowEmpty({ text }: { text: string }) {
   return (
@@ -33,7 +38,7 @@ export function WindowContent({
   onRoomChange: (roomId: string) => void;
   onQueryChange: (value: string) => void;
   onSceneChange: (sceneId: string) => void;
-  onSeek: (text: string) => void;
+  onSeek: (request: WindowSeekRequest) => void;
 }) {
   switch (kind) {
     case 'chat':
@@ -58,7 +63,11 @@ export function WindowContent({
       return <MembersPanel spaceId={spaceId} />;
     case 'clues':
       return roomId ? (
-        <CluesPanel spaceId={spaceId} roomId={roomId} onSeek={onSeek} />
+        <CluesPanel
+          spaceId={spaceId}
+          roomId={roomId}
+          onSeek={(query) => onSeek({ roomId, query })}
+        />
       ) : (
         <WindowEmpty text="选择房间后查看线索" />
       );

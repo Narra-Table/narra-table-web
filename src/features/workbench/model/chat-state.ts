@@ -1,9 +1,19 @@
-import type { WindowInstance } from '@/features/workbench/core';
+import type { WindowInstance } from '@/modules/workbench';
 
 export interface ChatWindowState {
   roomId?: string;
   scene?: string;
   query?: string;
+}
+
+export function findChatWindowForRoom(
+  windows: Iterable<WindowInstance>,
+  roomId: string,
+): WindowInstance | undefined {
+  for (const window of windows) {
+    if (window.windowTypeId === 'chat' && readChatState(window).roomId === roomId) return window;
+  }
+  return undefined;
 }
 
 export function readChatState(window: WindowInstance | undefined): ChatWindowState {

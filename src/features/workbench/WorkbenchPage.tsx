@@ -2,28 +2,35 @@ import { Link } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useGetApiSpacesSpaceId, useGetApiSpacesSpaceIdRooms } from '@/api';
-import { selectFocusedWindow, type WindowInstance } from '@/features/workbench/core';
 import {
+  selectFocusedWindow,
   useWorkbenchStore,
   Workbench,
   WorkbenchProvider,
+  type WindowInstance,
   type WorkbenchMessages,
-} from '@/features/workbench/react';
-import '@/features/workbench/styles/index.css';
+} from '@/modules/workbench';
+import '@/modules/workbench/styles.css';
 import './workbench.css';
-import { mergeChatState, readChatState, type ChatWindowState } from './chat-state';
+import { useWorkbenchPersistence } from './hooks/useWorkbenchPersistence';
 import {
   createWorkbenchStoreForSpace,
   openKind,
   readWorkbenchRoomId,
   resolveRoomId,
   writeWorkbenchRoomId,
-  writeWorkbenchSnapshot,
-} from './persistence';
-import { isWorkbenchWindowKind, WORKBENCH_REGISTRY } from './registry';
+} from './infrastructure/persistence';
+import {
+  findChatWindowForRoom,
+  mergeChatState,
+  readChatState,
+  type ChatWindowState,
+} from './model/chat-state';
+import { isWorkbenchWindowKind, WORKBENCH_REGISTRY } from './windows/registry';
+import type { WindowSeekRequest } from './windows/WindowContent';
 
 const WindowContent = lazy(() =>
-  import('@/features/workbench/apps/WindowContent').then((module) => ({
+  import('./windows/WindowContent').then((module) => ({
     default: module.WindowContent,
   })),
 );
@@ -103,6 +110,8 @@ export function WorkbenchPage({ spaceId }: { spaceId: string }) {
     focusedWindow?.windowTypeId === 'chat' ? readChatState(focusedWindow) : undefined;
   const displayRoomId = focusedChatState?.roomId || activeRoomId;
 
+  useWorkbenchPersistence(spaceId, store);
+
   const updateChatState = useCallback(
     (instanceId: string, patch: ChatWindowState) => {
       const window = store.getState().windows[instanceId];
@@ -139,12 +148,6 @@ export function WorkbenchPage({ spaceId }: { spaceId: string }) {
     }
   }, [activeRoomId, rooms, store, updateChatState]);
 
-  useEffect(() => {
-    const save = () => writeWorkbenchSnapshot(spaceId, store);
-    save();
-    return store.subscribe(save);
-  }, [spaceId, store]);
-
   function changeRoom(next: string) {
     if (!next || next === displayRoomId) return;
     setRoomId(next);
@@ -157,21 +160,17 @@ export function WorkbenchPage({ spaceId }: { spaceId: string }) {
     }
   }
 
-  function seek(text: string) {
+  function seek({ roomId: targetRoomId, query }: WindowSeekRequest) {
     const current = store.getState();
-    const focused = selectFocusedWindow(current);
-    const chat =
-      focused?.windowTypeId === 'chat'
-        ? focused
-        : Object.values(current.windows).find((window) => window.windowTypeId === 'chat');
+    const chat = findChatWindowForRoom(Object.values(current.windows), targetRoomId);
 
     if (chat) {
-      updateChatState(chat.instanceId, { query: text });
+      updateChatState(chat.instanceId, { query });
       store.actions.focus(chat.instanceId);
       return;
     }
     openKind(store, 'chat', {
-      state: { roomId: activeRoomId, scene: undefined, query: text },
+      state: { roomId: targetRoomId, scene: undefined, query },
     });
   }
 

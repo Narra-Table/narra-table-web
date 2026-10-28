@@ -3,10 +3,10 @@ import {
   createSequentialIdFactory,
   createWorkbenchStore,
   selectColumns,
-} from '@/features/workbench/core';
-import { WINDOW_KINDS } from './apps/windows';
-import { openKind } from './persistence';
+} from '@/modules/workbench';
+import { openKind } from '../infrastructure/persistence';
 import { isWorkbenchWindowKind, WORKBENCH_APP_ID, WORKBENCH_REGISTRY } from './registry';
+import { WINDOW_KINDS } from './windows';
 
 describe('workbench registry', () => {
   it('registers every app window kind', () => {

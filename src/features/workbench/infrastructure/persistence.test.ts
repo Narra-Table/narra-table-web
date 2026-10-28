@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { readChatState } from './chat-state';
 import {
   createSequentialIdFactory,
   createWorkbenchStore,
   selectFocusedWindow,
   validateWorkspace,
-} from './core';
+} from '@/modules/workbench';
+import { readChatState } from '../model/chat-state';
 import {
   createWorkbenchStoreForSpace,
   defaultRoomId,

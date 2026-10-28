@@ -2,10 +2,10 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getApiMe, getApiSpacesSpaceId, getApiSpacesSpaceIdMasks } from '@/api';
-import type { RoomMessage } from '@/features/room-chat/model/types';
-import { fetchRoomMessages } from '@/features/room-chat/session/history';
-import { RoomSocket } from '@/features/room-chat/session/roomSocket';
-import { WindowContent } from './WindowContent';
+import type { RoomMessage } from './model/types';
+import { RoomChat } from './RoomChat';
+import { fetchRoomMessages } from './session/history';
+import { RoomSocket } from './session/roomSocket';
 
 vi.mock('@/api', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
@@ -16,7 +16,7 @@ vi.mock('@/api', async (importOriginal) => {
     getApiSpacesSpaceIdMasks: vi.fn(),
   };
 });
-vi.mock('@/features/room-chat/session/history', async (importOriginal) => {
+vi.mock('./session/history', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return { ...actual, fetchRoomMessages: vi.fn() };
 });
@@ -33,7 +33,6 @@ function message(roomId: string, text: string): RoomMessage {
 }
 
 const props = {
-  kind: 'chat' as const,
   spaceId: 'space-1',
   rooms: [
     { roomId: 'room-a', name: '房间 A' },
@@ -43,8 +42,11 @@ const props = {
   onRoomChange: vi.fn(),
   onQueryChange: vi.fn(),
   onSceneChange: vi.fn(),
-  onSeek: vi.fn(),
 };
+
+function ChatWindow({ roomId, query = '' }: { roomId: string; query?: string }) {
+  return <RoomChat key={roomId} {...props} roomId={roomId} query={query} />;
+}
 
 beforeEach(() => {
   vi.resetAllMocks();
@@ -98,17 +100,17 @@ afterEach(() => {
 
 describe('chat window room isolation', () => {
   it('keeps the draft during a search update and clears it when switching rooms', async () => {
-    const view = render(<WindowContent {...props} roomId="room-a" />);
+    const view = render(<ChatWindow roomId="room-a" />);
     await screen.findByText('room-a 的最新发言');
     const field = screen.getByLabelText('发言');
     field.innerHTML = '<p>草稿</p>';
     fireEvent.input(field);
     expect(field.textContent).toBe('草稿');
 
-    view.rerender(<WindowContent {...props} roomId="room-a" query="搜索" />);
+    view.rerender(<ChatWindow roomId="room-a" query="搜索" />);
     expect(screen.getByLabelText('发言').textContent).toBe('草稿');
 
-    view.rerender(<WindowContent {...props} roomId="room-b" />);
+    view.rerender(<ChatWindow roomId="room-b" />);
     await screen.findByText('room-b 的最新发言');
     expect(screen.getByLabelText('发言').textContent).toBe('');
   });
@@ -123,7 +125,7 @@ describe('chat window room isolation', () => {
       if (query?.cursor) return olderHistory;
       return { messages: [message(roomId, `${roomId} 的最新发言`)], hasMore: true };
     });
-    const view = render(<WindowContent {...props} roomId="room-a" />);
+    const view = render(<ChatWindow roomId="room-a" />);
     const latest = await screen.findByText('room-a 的最新发言');
     const scroller = latest.closest('.overflow-y-auto');
     expect(scroller).not.toBeNull();
@@ -139,7 +141,7 @@ describe('chat window room isolation', () => {
       ).toBe(true),
     );
 
-    view.rerender(<WindowContent {...props} roomId="room-b" />);
+    view.rerender(<ChatWindow roomId="room-b" />);
     await screen.findByText('room-b 的最新发言');
     await act(async () => {
       finishHistory({ messages: [message('room-a', '房间 A 的延迟历史')], hasMore: false });

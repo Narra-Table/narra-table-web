@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import type { GithubComNarraTableBackendPkgProtocolMember } from '@/api/model/githubComNarraTableBackendPkgProtocolMember';
 import type { GithubComNarraTableBackendPkgProtocolMemberRole } from '@/api/model/githubComNarraTableBackendPkgProtocolMemberRole';
 import type { GithubComNarraTableBackendPkgProtocolVisibility } from '@/api/model/githubComNarraTableBackendPkgProtocolVisibility';
+import { useMediaQuery } from '@/lib/react';
 import { cn } from '@/lib/utils';
 import { messagePlainText } from '../model/copyText';
 import { newestEditRecords, readPreviousRaw } from '../model/editHistory';
@@ -24,18 +25,6 @@ const VEIL_OPTIONS: { value: VeilDraft['visibility']; label: string }[] = [
   { value: 'custom', label: '指定可见' },
   { value: 'gm_and_custom', label: '主持与指定成员' },
 ];
-
-function useNarrow(): boolean {
-  const [narrow, setNarrow] = useState(false);
-  useEffect(() => {
-    const media = window.matchMedia('(max-width: 640px)');
-    const update = () => setNarrow(media.matches);
-    update();
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
-  return narrow;
-}
 
 export function MorePanel({
   message,
@@ -78,7 +67,7 @@ export function MorePanel({
   });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const narrow = useNarrow();
+  const narrow = useMediaQuery('(max-width: 640px)');
   const [box, setBox] = useState<{ top?: number; bottom?: number; right: number } | null>(null);
 
   const closeRef = useRef<() => void>(() => {});

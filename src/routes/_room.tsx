@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { RoomLayout } from '@/features/room-layout/RoomLayout';
+import { RoomLayout } from '@/features/room-layout';
 import { getAccessToken } from '@/lib/auth';
 import { initTheme } from '@/lib/theme';
 
