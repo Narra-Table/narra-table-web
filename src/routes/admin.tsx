@@ -1,6 +1,6 @@
 import { createFileRoute, lazyRouteComponent, redirect } from '@tanstack/react-router';
-import { getAdminSession } from '@/lib/adminAuth';
-import { initTheme } from '@/lib/theme';
+import { getAdminSession } from '@/lib/adminSession';
+import { initTheme } from '@/lib/appTheme';
 
 export const Route = createFileRoute('/admin')({
   beforeLoad: ({ location }) => {

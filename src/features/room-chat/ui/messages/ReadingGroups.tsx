@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 import { messageExcerpt } from '../../model/text';
 import type { ReadingGroup } from '../../model/types';
 import { BlockList } from './Blocks';

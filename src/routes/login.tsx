@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { LoginForm } from '@/features/auth';
-import { getAccessToken } from '@/lib/auth';
-import { initTheme } from '@/lib/theme';
+import { initTheme } from '@/lib/appTheme';
+import { getAccessToken } from '@/lib/authSession';
 
 export const Route = createFileRoute('/login')({
   beforeLoad: () => {

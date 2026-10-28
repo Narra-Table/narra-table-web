@@ -1,6 +1,6 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useState } from 'react';
-import { setAdminSession } from '@/lib/adminAuth';
+import { setAdminSession } from '@/lib/adminSession';
 import { adminLogin } from '../api/adminClient';
 import { adminErrorMessage } from '../model/copy';
 import { ErrorText, PrimaryButton, TextField } from './primitives';

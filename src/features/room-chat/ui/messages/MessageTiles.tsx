@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 import { collectScenes } from '../../model/sceneIndex';
 import { firstLine, maskLabel, messageExcerpt } from '../../model/text';
 import type { PendingMessage, ReadingGroup, RoomMessage } from '../../model/types';

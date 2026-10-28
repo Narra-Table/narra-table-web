@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useGetApiMe } from '@/api';
 import type { getApiMeResponseSuccess } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { initTheme } from '@/lib/theme';
+import { initTheme } from '@/lib/appTheme';
 import { MobileLink, mobileLinks, navLinks, RailIdentity, RailLink } from './navigation';
 
 export function AppLayout() {

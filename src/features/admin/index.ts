@@ -5,7 +5,7 @@ export { AdminPlugins } from './ui/AdminPlugins';
 export { AdminShell } from './ui/AdminShell';
 export { AdminUserDetail } from './ui/AdminUserDetail';
 export { AdminUsers } from './ui/AdminUsers';
-export { clearAdminSession, getAdminSession, setAdminSession } from '@/lib/adminAuth';
+export { clearAdminSession, getAdminSession, setAdminSession } from '@/lib/adminSession';
 export type {
   AdminPlugin,
   AdminPluginPackageInfo,

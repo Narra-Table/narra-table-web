@@ -1,6 +1,6 @@
 import { useRouter, useSearch } from '@tanstack/react-router';
 import { useState } from 'react';
-import { type AppTheme, getStoredTheme, saveTheme } from '@/lib/theme';
+import { type AppTheme, getStoredTheme, saveTheme } from '@/lib/appTheme';
 import type { SettingsSection } from '../model/types';
 import { SettingsSurface } from './SettingsSurface';
 

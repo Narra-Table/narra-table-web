@@ -1,5 +1,5 @@
 import { Palette, UserRoundKey } from 'lucide-react';
-import type { AppTheme } from '@/lib/theme';
+import type { AppTheme } from '@/lib/appTheme';
 import type { SettingsSection } from '../model/types';
 import { AppearanceSettings } from './AppearanceSettings';
 import { ProfileSettings } from './ProfileSettings';

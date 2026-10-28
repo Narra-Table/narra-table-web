@@ -1,4 +1,4 @@
-import { getAdminSession } from '@/lib/adminAuth';
+import { getAdminSession } from '@/lib/adminSession';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 

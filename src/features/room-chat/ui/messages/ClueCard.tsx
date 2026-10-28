@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { GithubComNarraTableBackendPkgProtocolClueContent } from '@/api/model/githubComNarraTableBackendPkgProtocolClueContent';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 import { MediaImage, ZoomImage } from './Blocks';
 
 function directUrl(value: string | undefined): boolean {

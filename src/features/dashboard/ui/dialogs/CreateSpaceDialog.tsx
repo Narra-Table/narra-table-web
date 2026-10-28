@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useRef, useState, type FormEvent } from 'react';
 import { getGetApiSpacesQueryKey, postApiSpaces } from '@/api';
-import { ApiError } from '@/lib/orvalClient';
+import { ApiError } from '@/lib/apiClient';
 import { DialogShell, ensureDefaultSpaceContent, SpaceFields } from './shared';
 
 export function CreateSpaceDialog({ onClose }: { onClose: () => void }) {

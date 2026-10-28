@@ -2,9 +2,9 @@ import { Link, Outlet, useNavigate, useRouterState } from '@tanstack/react-route
 import { LayoutDashboard, LogOut, Puzzle, Users } from 'lucide-react';
 import { useEffect } from 'react';
 import type { ComponentType } from 'react';
-import { clearAdminSession, getAdminSession } from '@/lib/adminAuth';
+import { clearAdminSession, getAdminSession } from '@/lib/adminSession';
+import { initTheme } from '@/lib/appTheme';
 import { queryClient } from '@/lib/queryClient';
-import { initTheme } from '@/lib/theme';
 import { adminRootQuery, defaultUserSearch } from '../api/adminQueries';
 
 type AdminNavLink = {

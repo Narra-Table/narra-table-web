@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { GithubComNarraTableBackendPkgProtocolRoom } from '@/api/model/githubComNarraTableBackendPkgProtocolRoom';
-import { ApiError } from '@/lib/orvalClient';
+import { ApiError } from '@/lib/apiClient';
 import { useMessageLocator } from '../../hooks/useMessageLocator';
 import { useReadingScroll } from '../../hooks/useReadingScroll';
 import { useRoomChatSession } from '../../hooks/useRoomChatSession';

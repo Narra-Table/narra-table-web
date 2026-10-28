@@ -2,7 +2,7 @@ import { Pin } from 'lucide-react';
 import { useState } from 'react';
 import type { GithubComNarraTableBackendPkgProtocolMask } from '@/api/model/githubComNarraTableBackendPkgProtocolMask';
 import { useResourceUrl } from '@/features/resources';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 import { moreActions } from '../../model/moreActions';
 import { formatSendTime, maskLabel, veilMarks } from '../../model/text';
 import type { RoomMessage } from '../../model/types';

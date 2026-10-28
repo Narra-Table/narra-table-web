@@ -1,5 +1,5 @@
 import type { GithubComNarraTableBackendPkgProtocolPaginatedMessages } from '@/api/model/githubComNarraTableBackendPkgProtocolPaginatedMessages';
-import { orvalFetch } from '@/lib/orvalClient';
+import { orvalFetch } from '@/lib/apiClient';
 import type { RoomMessage } from '../model/types';
 
 export interface HistoryQuery {

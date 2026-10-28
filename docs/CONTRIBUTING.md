@@ -20,8 +20,11 @@ irm https://vite.plus/ps1 | iex
 
 ```bash
 vp install
+cp .env.example .env.development
 vp dev
 ```
+
+未配置本地环境变量且没有启动后端时，开发服务器会提示启用 MSW Mock 的复制命令。
 
 宿主机的 inotify 监听器不足时，用轮询启动：
 

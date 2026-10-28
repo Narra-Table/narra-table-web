@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 
 const MAP_COLS = 8;
 const MAP_ROWS = 6;

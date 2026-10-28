@@ -115,7 +115,7 @@ import type {
   PostAuthSendCode503
 } from './model';
 
-import { orvalFetch } from '../lib/orvalClient';
+import { orvalFetch } from '../lib/apiClient';
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 

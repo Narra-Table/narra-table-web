@@ -5,7 +5,7 @@ import {
   postApiSpacesSpaceIdMasks,
   postApiSpacesSpaceIdRooms,
 } from '@/api';
-import { ApiError } from '@/lib/orvalClient';
+import { ApiError } from '@/lib/apiClient';
 
 export function actionError(caught: unknown, fallback: string) {
   if (!(caught instanceof ApiError)) return fallback;

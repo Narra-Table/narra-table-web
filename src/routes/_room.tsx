@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { getAccessToken } from '@/lib/auth';
-import { initTheme } from '@/lib/theme';
+import { initTheme } from '@/lib/appTheme';
+import { getAccessToken } from '@/lib/authSession';
 import { RoomLayout } from '@/views/layouts/RoomLayout';
 
 export const Route = createFileRoute('/_room')({

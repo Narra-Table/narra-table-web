@@ -1,5 +1,5 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import type { AppTheme } from '@/lib/theme';
+import type { AppTheme } from '@/lib/appTheme';
 import { themeOptions } from '../model/themeOptions';
 
 export function AppearanceSettings({

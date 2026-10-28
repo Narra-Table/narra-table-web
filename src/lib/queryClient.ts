@@ -1,7 +1,7 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
-import { clearAdminSession } from './adminAuth';
-import { clearAuth } from './auth';
-import { ApiError } from './orvalClient';
+import { clearAdminSession } from './adminSession';
+import { ApiError } from './apiClient';
+import { clearAuth } from './authSession';
 
 function handleUnauthorized(error: unknown) {
   if (

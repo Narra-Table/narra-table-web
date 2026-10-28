@@ -2,8 +2,8 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useGetCapabilities, usePostAuthRegister, usePostAuthSendCode } from '@/api';
 import type { postAuthRegisterResponseSuccess } from '@/api';
-import { setAuthSession } from '@/lib/auth';
-import { ApiError } from '@/lib/orvalClient';
+import { ApiError } from '@/lib/apiClient';
+import { setAuthSession } from '@/lib/authSession';
 
 const COOLDOWN = 60;
 

@@ -5,7 +5,7 @@ import {
   getRefreshToken,
   refreshAccessToken,
   setAuthSession,
-} from './auth';
+} from './authSession';
 
 function installStorage() {
   const values = new Map<string, string>();

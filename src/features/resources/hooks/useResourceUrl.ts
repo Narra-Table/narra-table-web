@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAccessToken } from '@/lib/auth';
+import { getAccessToken } from '@/lib/authSession';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 

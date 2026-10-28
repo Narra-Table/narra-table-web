@@ -2,7 +2,7 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { usePostAuthLogin } from '@/api';
 import type { postAuthLoginResponseSuccess } from '@/api';
-import { setAuthSession } from '@/lib/auth';
+import { setAuthSession } from '@/lib/authSession';
 
 export function LoginForm() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { clearAuth, getAccessToken, refreshAccessToken } from './auth';
+import { clearAuth, getAccessToken, refreshAccessToken } from './authSession';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 

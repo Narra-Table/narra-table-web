@@ -8,7 +8,7 @@ import {
 import type { GithubComNarraTableBackendPkgProtocolMask } from '@/api/model/githubComNarraTableBackendPkgProtocolMask';
 import type { GithubComNarraTableBackendPkgProtocolMember } from '@/api/model/githubComNarraTableBackendPkgProtocolMember';
 import type { GithubComNarraTableBackendPkgProtocolMemberRole } from '@/api/model/githubComNarraTableBackendPkgProtocolMemberRole';
-import { getAccessToken } from '@/lib/auth';
+import { getAccessToken } from '@/lib/authSession';
 import { fetchRoomMessages } from '../api/history';
 import {
   RoomSocket,

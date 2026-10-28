@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { clearAdminSession, getAdminSession } from '@/lib/adminAuth';
+import { clearAdminSession, getAdminSession } from '@/lib/adminSession';
 import { queryClient } from '@/lib/queryClient';
 import { adminChangePassword } from '../api/adminClient';
 import { adminErrorMessage } from '../model/copy';

@@ -2,7 +2,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ApiError } from '@/lib/orvalClient';
+import { ApiError } from '@/lib/apiClient';
 import { CreateSpaceDialog } from './CreateSpaceDialog';
 
 const api = vi.hoisted(() => ({

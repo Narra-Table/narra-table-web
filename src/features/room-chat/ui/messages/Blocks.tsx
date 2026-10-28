@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useResourceUrl } from '@/features/resources';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 import { useThemePalette, type ThemePalette } from '../../hooks/useThemePalette';
 import { paintCustomColor, readableTextColor } from '../../model/contrast';
 import {

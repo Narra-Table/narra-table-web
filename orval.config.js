@@ -14,7 +14,7 @@ export default defineConfig({
       },
       override: {
         mutator: {
-          path: './src/lib/orvalClient.ts',
+          path: './src/lib/apiClient.ts',
           name: 'orvalFetch',
         },
       },

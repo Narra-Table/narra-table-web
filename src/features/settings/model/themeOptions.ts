@@ -1,4 +1,4 @@
-import { THEME_LABELS } from '@/lib/theme';
+import { THEME_LABELS } from '@/lib/appTheme';
 
 export const themeOptions = [
   { backgroundTheme: 'kraft-teal', id: 'kraft-teal', label: `${THEME_LABELS['kraft-teal']}主题` },

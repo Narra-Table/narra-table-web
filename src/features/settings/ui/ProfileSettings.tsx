@@ -2,7 +2,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 import { useGetApiMe, usePostAuthLogout, type getApiMeResponseSuccess } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { clearAuth } from '@/lib/auth';
+import { clearAuth } from '@/lib/authSession';
 import { queryClient } from '@/lib/queryClient';
 
 export function ProfileSettings() {

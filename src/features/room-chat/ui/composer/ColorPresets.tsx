@@ -1,5 +1,5 @@
 import { Slash } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 import { THEME_BG_CLASS, THEME_COLORS } from '../../model/richText';
 import { BACKGROUND_PRESETS, COLOR_LABEL } from './colorMenuModel';
 

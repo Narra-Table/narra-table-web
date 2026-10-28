@@ -1,6 +1,6 @@
 import { ChevronDown, Pipette, RotateCcw } from 'lucide-react';
 import { type KeyboardEvent, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/classNames';
 import { useThemePalette } from '../../hooks/useThemePalette';
 import { paintCustomColor, readableTextColor } from '../../model/contrast';
 import { isThemeColor, normalizeColor } from '../../model/richText';
