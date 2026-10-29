@@ -2,10 +2,9 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getApiMe, getApiSpacesSpaceId, getApiSpacesSpaceIdMasks } from '@/api';
-import { fetchRoomMessages } from '../../api/history';
-import { RoomSocket } from '../../api/roomSocket';
-import type { RoomMessage } from '../../model/types';
-import { RoomChat } from './RoomChat';
+import type { GithubComNarraTableBackendPkgProtocolMessage as RoomMessage } from '@/api/model';
+import { orvalFetch } from '@/lib/apiClient';
+import { WindowContent } from './WindowContent';
 
 vi.mock('@/api', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
@@ -16,9 +15,9 @@ vi.mock('@/api', async (importOriginal) => {
     getApiSpacesSpaceIdMasks: vi.fn(),
   };
 });
-vi.mock('../../api/history', async (importOriginal) => {
+vi.mock('@/lib/apiClient', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
-  return { ...actual, fetchRoomMessages: vi.fn() };
+  return { ...actual, orvalFetch: vi.fn() };
 });
 
 function message(roomId: string, text: string): RoomMessage {
@@ -45,7 +44,19 @@ const props = {
 };
 
 function ChatWindow({ roomId, query = '' }: { roomId: string; query?: string }) {
-  return <RoomChat key={roomId} {...props} roomId={roomId} query={query} />;
+  return (
+    <WindowContent
+      kind="chat"
+      spaceId={props.spaceId}
+      roomId={roomId}
+      rooms={props.rooms}
+      query={query}
+      onRoomChange={props.onRoomChange}
+      onQueryChange={props.onQueryChange}
+      onSceneChange={props.onSceneChange}
+      onSeek={vi.fn()}
+    />
+  );
 }
 
 beforeEach(() => {
@@ -58,7 +69,13 @@ beforeEach(() => {
       removeEventListener: vi.fn(),
     })),
   });
-  vi.spyOn(RoomSocket.prototype, 'start').mockImplementation(() => {});
+  vi.stubGlobal(
+    'WebSocket',
+    class {
+      addEventListener() {}
+      close() {}
+    },
+  );
   vi.mocked(getApiMe).mockResolvedValue({
     status: 200,
     data: { id: 'user-1' },
@@ -86,16 +103,20 @@ beforeEach(() => {
     },
     headers: new Headers(),
   });
-  vi.mocked(fetchRoomMessages).mockImplementation(async (_spaceId, roomId, query) =>
-    query?.pinnedOnly
-      ? { messages: [] }
-      : { messages: [message(roomId, `${roomId} 的最新发言`)], hasMore: true },
-  );
+  vi.mocked(orvalFetch).mockImplementation(async (url) => {
+    const roomId = new URL(url, 'http://localhost').pathname.split('/')[5];
+    return {
+      data: url.includes('pinnedOnly=true')
+        ? { messages: [] }
+        : { messages: [message(roomId, `${roomId} 的最新发言`)], hasMore: true },
+    };
+  });
 });
 
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe('chat window room isolation', () => {
@@ -120,10 +141,11 @@ describe('chat window room isolation', () => {
     const olderHistory = new Promise<{ messages: RoomMessage[]; hasMore: boolean }>((resolve) => {
       finishHistory = resolve;
     });
-    vi.mocked(fetchRoomMessages).mockImplementation(async (_spaceId, roomId, query) => {
-      if (query?.pinnedOnly) return { messages: [] };
-      if (query?.cursor) return olderHistory;
-      return { messages: [message(roomId, `${roomId} 的最新发言`)], hasMore: true };
+    vi.mocked(orvalFetch).mockImplementation(async (url) => {
+      const roomId = new URL(url, 'http://localhost').pathname.split('/')[5];
+      if (url.includes('pinnedOnly=true')) return { data: { messages: [] } };
+      if (url.includes('cursor=')) return { data: await olderHistory };
+      return { data: { messages: [message(roomId, `${roomId} 的最新发言`)], hasMore: true } };
     });
     const view = render(<ChatWindow roomId="room-a" />);
     const latest = await screen.findByText('room-a 的最新发言');
@@ -133,10 +155,10 @@ describe('chat window room isolation', () => {
     await waitFor(() =>
       expect(
         vi
-          .mocked(fetchRoomMessages)
+          .mocked(orvalFetch)
           .mock.calls.some(
-            ([space, room, query]) =>
-              space === 'space-1' && room === 'room-a' && typeof query?.cursor === 'string',
+            ([url]) =>
+              url.includes('/spaces/space-1/rooms/room-a/messages') && url.includes('cursor='),
           ),
       ).toBe(true),
     );
