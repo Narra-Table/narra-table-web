@@ -8,5 +8,5 @@
 import type { GithubComNarraTableBackendPkgProtocolPlugin } from './githubComNarraTableBackendPkgProtocolPlugin.ts';
 
 export interface InternalHandlerAdminPluginListResponse {
-  plugins?: GithubComNarraTableBackendPkgProtocolPlugin[];
+  plugins: GithubComNarraTableBackendPkgProtocolPlugin[];
 }

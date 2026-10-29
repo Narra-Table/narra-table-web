@@ -1,45 +1,10 @@
 import { http, HttpResponse } from 'msw';
-
-type AdminUserStatus = 'active' | 'disabled' | 'deleted';
-
-interface AdminUser {
-  id: string;
-  username: string;
-  email?: string;
-  nickname: string;
-  avatar: string;
-  status: AdminUserStatus;
-  mustChangePassword: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface PluginWindow {
-  id: string;
-  title: string;
-  visibility?: string;
-  entry: string;
-}
-
-interface AdminPluginPackageInfo {
-  name: string;
-  displayName: string;
-  version: string;
-  description: string;
-  author: string;
-  characterDataType?: string;
-  depends?: string[];
-  windows?: PluginWindow[];
-}
-
-interface AdminPlugin extends AdminPluginPackageInfo {
-  pluginId: string;
-  source: string;
-  builtIn: boolean;
-  enabled: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import type {
+  AdminPlugin,
+  AdminPluginPackageInfo,
+  AdminUser,
+  AdminUserStatus,
+} from '@/features/admin';
 
 type StoredUser = AdminUser;
 
@@ -49,8 +14,18 @@ const mockPackage: AdminPluginPackageInfo = {
   version: '0.1.0',
   description: '一条示例指令。',
   author: 'NarraTable',
-  depends: ['dice'],
-  windows: [{ id: 'panel', title: '示例', entry: 'windows/panel.html' }],
+  depends: [{ id: 'dice', constraint: '^1.0.0' }],
+  windows: [
+    {
+      id: 'panel',
+      title: '示例',
+      entry: 'windows/panel.html',
+      dismissible: true,
+      embeddable: true,
+      launcher: true,
+      resizable: true,
+    },
+  ],
 };
 
 let password = 'admin';
@@ -83,8 +58,18 @@ let plugins: AdminPlugin[] = [
     description: '自定义记录指令',
     author: '操作员',
     source: 'export function note() { return "noted"; }',
-    depends: ['dice'],
-    windows: [{ id: 'notes', title: '笔记', entry: 'windows/notes.html' }],
+    depends: [{ id: 'dice', constraint: '^1.0.0' }],
+    windows: [
+      {
+        id: 'notes',
+        title: '笔记',
+        entry: 'windows/notes.html',
+        dismissible: true,
+        embeddable: true,
+        launcher: true,
+        resizable: true,
+      },
+    ],
     builtIn: false,
     enabled: true,
     createdAt: '2026-06-01T08:00:00.000Z',

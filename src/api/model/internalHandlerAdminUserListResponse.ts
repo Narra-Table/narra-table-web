@@ -8,9 +8,9 @@
 import type { InternalHandlerAdminUserResponse } from './internalHandlerAdminUserResponse.ts';
 
 export interface InternalHandlerAdminUserListResponse {
-  page?: number;
-  pageSize?: number;
-  total?: number;
-  totalPages?: number;
-  users?: InternalHandlerAdminUserResponse[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+  users: InternalHandlerAdminUserResponse[];
 }

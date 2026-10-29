@@ -164,7 +164,9 @@ export function AdminPlugins() {
               </p>
               {plugin.description && <p className="mt-2 text-sm">{plugin.description}</p>}
               {plugin.depends && plugin.depends.length > 0 && (
-                <p className="mt-1 text-sm text-text-muted">依赖：{plugin.depends.join('、')}</p>
+                <p className="mt-1 text-sm text-text-muted">
+                  依赖：{dependencySummary(plugin.depends)}
+                </p>
               )}
               {plugin.windows && plugin.windows.length > 0 && (
                 <p className="mt-1 text-sm text-text-muted">
@@ -302,6 +304,14 @@ export function AdminPlugins() {
   );
 }
 
+function dependencySummary(depends: AdminPluginPackageInfo['depends']) {
+  return depends
+    ?.map((dependency) =>
+      dependency.constraint ? `${dependency.id} ${dependency.constraint}` : dependency.id,
+    )
+    .join('、');
+}
+
 function commandSummary(result: AdminPluginValidation) {
   const names = result.commands.map((command) => command.name).filter(Boolean);
   return names.length > 0
@@ -318,7 +328,7 @@ function PackageFacts({ info }: { info: AdminPluginPackageInfo }) {
       <Fact label="作者" value={info.author} />
       <Fact label="说明" value={info.description} />
       <Fact label="角色卡" value={info.characterDataType} />
-      <Fact label="依赖" value={info.depends?.join('、')} />
+      <Fact label="依赖" value={dependencySummary(info.depends)} />
       <Fact label="窗口" value={info.windows?.map((window) => window.title).join('、')} />
     </dl>
   );

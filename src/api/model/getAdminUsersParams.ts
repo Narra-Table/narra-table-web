@@ -5,20 +5,21 @@
  * 故桌（NarraTable）实时跑团平台的后台 API
  * OpenAPI spec version: 1.0
  */
+import type { GetAdminUsersStatus } from './getAdminUsersStatus.ts';
 
 export type GetAdminUsersParams = {
 /**
- * Page
+ * Page; invalid values use 1
  */
 page?: number;
 /**
- * Page size
+ * Page size; defaults to 20 and is capped at 100
  */
 pageSize?: number;
 /**
  * Account status
  */
-status?: string;
+status?: GetAdminUsersStatus;
 /**
  * Username, nickname, or email
  */

@@ -32,6 +32,19 @@ vp dev
 VITE_WATCH_POLL=1 vp dev
 ```
 
+## 同步后端接口
+
+从对应后端版本生成 Swagger，再生成前端 API 和 Mock：
+
+```bash
+# backend 目录
+make swagger-gen
+# web 目录
+NARRATABLE_OPENAPI=../backend/docs/swagger.json pnpm generate
+```
+
+`NARRATABLE_OPENAPI` 接受本地文件或 Swagger URL；省略时使用线上文档。管理 API 使用独立的 `adminFetch` 和管理会话，不刷新普通用户 token。
+
 ## 提交前检查
 
 提交前至少执行：

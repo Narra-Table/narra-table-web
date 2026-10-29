@@ -7,12 +7,5 @@
  */
 
 export interface InternalHandlerUpdateAdminPluginRequest {
-  author?: string;
-  characterDataType?: string;
-  configSchema?: string;
-  description?: string;
-  displayName?: string;
   enabled?: boolean;
-  source?: string;
-  version?: string;
 }

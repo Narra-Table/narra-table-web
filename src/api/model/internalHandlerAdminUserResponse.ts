@@ -8,13 +8,13 @@
 import type { GithubComNarraTableBackendInternalModelUserStatus } from './githubComNarraTableBackendInternalModelUserStatus.ts';
 
 export interface InternalHandlerAdminUserResponse {
-  avatar?: string;
-  createdAt?: string;
+  avatar: string;
+  createdAt: string;
   email?: string;
-  id?: string;
-  mustChangePassword?: boolean;
-  nickname?: string;
-  status?: GithubComNarraTableBackendInternalModelUserStatus;
-  updatedAt?: string;
-  username?: string;
+  id: string;
+  mustChangePassword: boolean;
+  nickname: string;
+  status: GithubComNarraTableBackendInternalModelUserStatus;
+  updatedAt: string;
+  username: string;
 }

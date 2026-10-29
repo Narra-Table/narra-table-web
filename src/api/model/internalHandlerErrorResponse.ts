@@ -7,6 +7,6 @@
  */
 
 export interface InternalHandlerErrorResponse {
-  code?: string;
-  message?: string;
+  code: string;
+  message: string;
 }
