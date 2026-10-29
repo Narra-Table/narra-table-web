@@ -107,6 +107,9 @@ export function AdminPlugins() {
     validate.mutate(file);
   }
 
+  const createPending = create.isPending || validate.isPending;
+  const editPending = replace.isPending || remove.isPending || validate.isPending;
+
   const replaceNameMismatch =
     selected && replacePreview ? replacePreview.plugin.name !== selected.name : false;
 
@@ -203,6 +206,7 @@ export function AdminPlugins() {
       {creating && (
         <Dialog
           title="新建插件"
+          closeDisabled={createPending}
           onClose={() => {
             setCreating(false);
             setPreview(null);
@@ -216,7 +220,11 @@ export function AdminPlugins() {
               if (createFile.current) create.mutate(createFile.current);
             }}
           >
-            <PluginFileField fileName={createFileName} onFile={chooseCreateFile} />
+            <PluginFileField
+              fileName={createFileName}
+              onFile={chooseCreateFile}
+              disabled={createPending}
+            />
             {validate.isPending && createFile.current && (
               <p className="text-sm text-text-muted">正在试加载...</p>
             )}
@@ -227,7 +235,7 @@ export function AdminPlugins() {
                 <p className="text-sm text-success">{commandSummary(preview)}</p>
               </>
             )}
-            <Button type="submit" disabled={create.isPending || !preview}>
+            <Button type="submit" disabled={createPending || !preview}>
               创建
             </Button>
           </form>
@@ -236,6 +244,7 @@ export function AdminPlugins() {
       {selected && (
         <Dialog
           title={selected.builtIn ? '查看插件' : '编辑插件'}
+          closeDisabled={editPending}
           onClose={() => {
             setSelected(null);
             setError('');
@@ -248,6 +257,7 @@ export function AdminPlugins() {
                 label="替换插件包"
                 fileName={replaceFileName}
                 onFile={chooseReplaceFile}
+                disabled={editPending}
               />
             )}
             {validate.isPending && replaceFile.current && (
@@ -269,10 +279,7 @@ export function AdminPlugins() {
               <div className="flex flex-wrap gap-3">
                 <Button
                   disabled={
-                    replace.isPending ||
-                    !replacePreview ||
-                    replaceNameMismatch ||
-                    !replaceFile.current
+                    editPending || !replacePreview || replaceNameMismatch || !replaceFile.current
                   }
                   onClick={() => {
                     if (replaceFile.current) replace.mutate(replaceFile.current);
@@ -282,7 +289,7 @@ export function AdminPlugins() {
                 </Button>
                 <Button
                   variant="destructive"
-                  disabled={remove.isPending}
+                  disabled={editPending}
                   onClick={() => {
                     if (
                       window.confirm(
@@ -347,10 +354,12 @@ function PluginFileField({
   fileName,
   label = '插件包',
   onFile,
+  disabled = false,
 }: {
   fileName: string;
   label?: string;
   onFile: (file: File) => void;
+  disabled?: boolean;
 }) {
   return (
     <label className="flex flex-col gap-1.5 text-sm font-medium text-text">
@@ -362,6 +371,7 @@ function PluginFileField({
         <span className="shrink-0 font-medium text-accent">浏览</span>
         <input
           type="file"
+          disabled={disabled}
           accept=".ntp,application/zip"
           className="absolute size-0 opacity-0"
           onChange={(event) => {

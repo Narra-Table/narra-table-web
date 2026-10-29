@@ -138,7 +138,7 @@ export function AdminUserDetail() {
         </div>
       )}
       {confirm === 'disable' && user.data && (
-        <Dialog title="禁用账号" onClose={() => setConfirm(null)}>
+        <Dialog title="禁用账号" closeDisabled={pending} onClose={() => setConfirm(null)}>
           <p className="text-sm text-text-muted">
             禁用 @{user.data.username}{' '}
             会立刻撤销会话并断开连接。恢复后可以重新登录，旧会话不会回来。
@@ -147,14 +147,14 @@ export function AdminUserDetail() {
             <Button variant="destructive" disabled={pending} onClick={() => disable.mutate()}>
               确认禁用
             </Button>
-            <Button variant="secondary" onClick={() => setConfirm(null)}>
+            <Button variant="secondary" disabled={pending} onClick={() => setConfirm(null)}>
               取消
             </Button>
           </div>
         </Dialog>
       )}
       {confirm === 'restore' && user.data && (
-        <Dialog title="恢复账号" onClose={() => setConfirm(null)}>
+        <Dialog title="恢复账号" closeDisabled={pending} onClose={() => setConfirm(null)}>
           <p className="text-sm text-text-muted">
             恢复 @{user.data.username}{' '}
             只重新开放登录。被撤销的会话、被移出的关系和面具权限都不会自动回来。
@@ -163,7 +163,7 @@ export function AdminUserDetail() {
             <Button disabled={pending} onClick={() => restore.mutate()}>
               确认恢复
             </Button>
-            <Button variant="secondary" onClick={() => setConfirm(null)}>
+            <Button variant="secondary" disabled={pending} onClick={() => setConfirm(null)}>
               取消
             </Button>
           </div>
@@ -172,6 +172,7 @@ export function AdminUserDetail() {
       {confirm === 'anonymize' && user.data && (
         <Dialog
           title="匿名化账号"
+          closeDisabled={pending}
           onClose={() => {
             setConfirm(null);
             setTypedName('');
@@ -200,6 +201,7 @@ export function AdminUserDetail() {
             </Button>
             <Button
               variant="secondary"
+              disabled={pending}
               onClick={() => {
                 setConfirm(null);
                 setTypedName('');
