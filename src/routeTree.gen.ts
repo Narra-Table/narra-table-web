@@ -11,17 +11,28 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as RoomRouteImport } from './routes/_room'
 import { Route as AppRouteImport } from './routes/_app'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AdminLoginRouteImport } from './routes/admin_.login'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminPluginsRouteImport } from './routes/admin.plugins'
+import { Route as AdminPasswordRouteImport } from './routes/admin.password'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppModulesRouteImport } from './routes/_app.modules'
 import { Route as AppMessageRouteImport } from './routes/_app.message'
 import { Route as AppCharactersRouteImport } from './routes/_app.characters'
 import { Route as AppAssetsRouteImport } from './routes/_app.assets'
+import { Route as AdminUsersIndexRouteImport } from './routes/admin.users.index'
+import { Route as AdminUsersUserIdRouteImport } from './routes/admin.users.$userId'
+import { Route as RoomSpacesSpaceIdRouteImport } from './routes/_room.spaces.$spaceId'
 import { Route as AppModulesModuleIdRouteImport } from './routes/_app.modules.$moduleId'
 import { Route as AppCharactersCharacterIdRouteImport } from './routes/_app.characters.$characterId'
 import { Route as AppAssetsAssetIdRouteImport } from './routes/_app.assets.$assetId'
+import { Route as RoomSpacesSpaceIdIndexRouteImport } from './routes/_room.spaces.$spaceId.index'
+import { Route as RoomSpacesSpaceIdWorkbenchRouteImport } from './routes/_room.spaces.$spaceId.workbench'
 import { Route as RoomSpacesSpaceIdRoomsRoomIdRouteImport } from './routes/_room.spaces.$spaceId.rooms.$roomId'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -34,6 +45,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoomRoute = RoomRouteImport.update({
   id: '/_room',
   getParentRoute: () => rootRouteImport,
@@ -42,10 +58,35 @@ const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin_/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPluginsRoute = AdminPluginsRouteImport.update({
+  id: '/plugins',
+  path: '/plugins',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPasswordRoute = AdminPasswordRouteImport.update({
+  id: '/password',
+  path: '/password',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
@@ -72,6 +113,21 @@ const AppAssetsRoute = AppAssetsRouteImport.update({
   path: '/assets',
   getParentRoute: () => AppRoute,
 } as any)
+const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminUsersRoute,
+} as any)
+const AdminUsersUserIdRoute = AdminUsersUserIdRouteImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => AdminUsersRoute,
+} as any)
+const RoomSpacesSpaceIdRoute = RoomSpacesSpaceIdRouteImport.update({
+  id: '/spaces/$spaceId',
+  path: '/spaces/$spaceId',
+  getParentRoute: () => RoomRoute,
+} as any)
 const AppModulesModuleIdRoute = AppModulesModuleIdRouteImport.update({
   id: '/$moduleId',
   path: '/$moduleId',
@@ -88,15 +144,27 @@ const AppAssetsAssetIdRoute = AppAssetsAssetIdRouteImport.update({
   path: '/$assetId',
   getParentRoute: () => AppAssetsRoute,
 } as any)
+const RoomSpacesSpaceIdIndexRoute = RoomSpacesSpaceIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RoomSpacesSpaceIdRoute,
+} as any)
+const RoomSpacesSpaceIdWorkbenchRoute =
+  RoomSpacesSpaceIdWorkbenchRouteImport.update({
+    id: '/workbench',
+    path: '/workbench',
+    getParentRoute: () => RoomSpacesSpaceIdRoute,
+  } as any)
 const RoomSpacesSpaceIdRoomsRoomIdRoute =
   RoomSpacesSpaceIdRoomsRoomIdRouteImport.update({
-    id: '/spaces/$spaceId/rooms/$roomId',
-    path: '/spaces/$spaceId/rooms/$roomId',
-    getParentRoute: () => RoomRoute,
+    id: '/rooms/$roomId',
+    path: '/rooms/$roomId',
+    getParentRoute: () => RoomSpacesSpaceIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/assets': typeof AppAssetsRouteWithChildren
@@ -104,9 +172,19 @@ export interface FileRoutesByFullPath {
   '/message': typeof AppMessageRoute
   '/modules': typeof AppModulesRouteWithChildren
   '/settings': typeof AppSettingsRoute
+  '/admin/password': typeof AdminPasswordRoute
+  '/admin/plugins': typeof AdminPluginsRoute
+  '/admin/users': typeof AdminUsersRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/': typeof AdminIndexRoute
   '/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/characters/$characterId': typeof AppCharactersCharacterIdRoute
   '/modules/$moduleId': typeof AppModulesModuleIdRoute
+  '/spaces/$spaceId': typeof RoomSpacesSpaceIdRouteWithChildren
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
+  '/spaces/$spaceId/workbench': typeof RoomSpacesSpaceIdWorkbenchRoute
+  '/spaces/$spaceId/': typeof RoomSpacesSpaceIdIndexRoute
   '/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 export interface FileRoutesByTo {
@@ -118,15 +196,24 @@ export interface FileRoutesByTo {
   '/message': typeof AppMessageRoute
   '/modules': typeof AppModulesRouteWithChildren
   '/settings': typeof AppSettingsRoute
+  '/admin/password': typeof AdminPasswordRoute
+  '/admin/plugins': typeof AdminPluginsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin': typeof AdminIndexRoute
   '/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/characters/$characterId': typeof AppCharactersCharacterIdRoute
   '/modules/$moduleId': typeof AppModulesModuleIdRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/admin/users': typeof AdminUsersIndexRoute
+  '/spaces/$spaceId/workbench': typeof RoomSpacesSpaceIdWorkbenchRoute
+  '/spaces/$spaceId': typeof RoomSpacesSpaceIdIndexRoute
   '/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/_room': typeof RoomRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_app/assets': typeof AppAssetsRouteWithChildren
@@ -134,16 +221,27 @@ export interface FileRoutesById {
   '/_app/message': typeof AppMessageRoute
   '/_app/modules': typeof AppModulesRouteWithChildren
   '/_app/settings': typeof AppSettingsRoute
+  '/admin/password': typeof AdminPasswordRoute
+  '/admin/plugins': typeof AdminPluginsRoute
+  '/admin/users': typeof AdminUsersRouteWithChildren
+  '/admin_/login': typeof AdminLoginRoute
   '/_app/': typeof AppIndexRoute
+  '/admin/': typeof AdminIndexRoute
   '/_app/assets/$assetId': typeof AppAssetsAssetIdRoute
   '/_app/characters/$characterId': typeof AppCharactersCharacterIdRoute
   '/_app/modules/$moduleId': typeof AppModulesModuleIdRoute
+  '/_room/spaces/$spaceId': typeof RoomSpacesSpaceIdRouteWithChildren
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
+  '/_room/spaces/$spaceId/workbench': typeof RoomSpacesSpaceIdWorkbenchRoute
+  '/_room/spaces/$spaceId/': typeof RoomSpacesSpaceIdIndexRoute
   '/_room/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/login'
     | '/register'
     | '/assets'
@@ -151,9 +249,19 @@ export interface FileRouteTypes {
     | '/message'
     | '/modules'
     | '/settings'
+    | '/admin/password'
+    | '/admin/plugins'
+    | '/admin/users'
+    | '/admin/login'
+    | '/admin/'
     | '/assets/$assetId'
     | '/characters/$characterId'
     | '/modules/$moduleId'
+    | '/spaces/$spaceId'
+    | '/admin/users/$userId'
+    | '/admin/users/'
+    | '/spaces/$spaceId/workbench'
+    | '/spaces/$spaceId/'
     | '/spaces/$spaceId/rooms/$roomId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,14 +273,23 @@ export interface FileRouteTypes {
     | '/message'
     | '/modules'
     | '/settings'
+    | '/admin/password'
+    | '/admin/plugins'
+    | '/admin/login'
+    | '/admin'
     | '/assets/$assetId'
     | '/characters/$characterId'
     | '/modules/$moduleId'
+    | '/admin/users/$userId'
+    | '/admin/users'
+    | '/spaces/$spaceId/workbench'
+    | '/spaces/$spaceId'
     | '/spaces/$spaceId/rooms/$roomId'
   id:
     | '__root__'
     | '/_app'
     | '/_room'
+    | '/admin'
     | '/login'
     | '/register'
     | '/_app/assets'
@@ -180,18 +297,30 @@ export interface FileRouteTypes {
     | '/_app/message'
     | '/_app/modules'
     | '/_app/settings'
+    | '/admin/password'
+    | '/admin/plugins'
+    | '/admin/users'
+    | '/admin_/login'
     | '/_app/'
+    | '/admin/'
     | '/_app/assets/$assetId'
     | '/_app/characters/$characterId'
     | '/_app/modules/$moduleId'
+    | '/_room/spaces/$spaceId'
+    | '/admin/users/$userId'
+    | '/admin/users/'
+    | '/_room/spaces/$spaceId/workbench'
+    | '/_room/spaces/$spaceId/'
     | '/_room/spaces/$spaceId/rooms/$roomId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   RoomRoute: typeof RoomRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  AdminLoginRoute: typeof AdminLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -210,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_room': {
       id: '/_room'
       path: ''
@@ -224,12 +360,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_app/': {
       id: '/_app/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/admin_/login': {
+      id: '/admin_/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/plugins': {
+      id: '/admin/plugins'
+      path: '/plugins'
+      fullPath: '/admin/plugins'
+      preLoaderRoute: typeof AdminPluginsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/password': {
+      id: '/admin/password'
+      path: '/password'
+      fullPath: '/admin/password'
+      preLoaderRoute: typeof AdminPasswordRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_app/settings': {
       id: '/_app/settings'
@@ -266,6 +437,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssetsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/admin/users/': {
+      id: '/admin/users/'
+      path: '/'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminUsersIndexRouteImport
+      parentRoute: typeof AdminUsersRoute
+    }
+    '/admin/users/$userId': {
+      id: '/admin/users/$userId'
+      path: '/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AdminUsersUserIdRouteImport
+      parentRoute: typeof AdminUsersRoute
+    }
+    '/_room/spaces/$spaceId': {
+      id: '/_room/spaces/$spaceId'
+      path: '/spaces/$spaceId'
+      fullPath: '/spaces/$spaceId'
+      preLoaderRoute: typeof RoomSpacesSpaceIdRouteImport
+      parentRoute: typeof RoomRoute
+    }
     '/_app/modules/$moduleId': {
       id: '/_app/modules/$moduleId'
       path: '/$moduleId'
@@ -287,12 +479,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssetsAssetIdRouteImport
       parentRoute: typeof AppAssetsRoute
     }
+    '/_room/spaces/$spaceId/': {
+      id: '/_room/spaces/$spaceId/'
+      path: '/'
+      fullPath: '/spaces/$spaceId/'
+      preLoaderRoute: typeof RoomSpacesSpaceIdIndexRouteImport
+      parentRoute: typeof RoomSpacesSpaceIdRoute
+    }
+    '/_room/spaces/$spaceId/workbench': {
+      id: '/_room/spaces/$spaceId/workbench'
+      path: '/workbench'
+      fullPath: '/spaces/$spaceId/workbench'
+      preLoaderRoute: typeof RoomSpacesSpaceIdWorkbenchRouteImport
+      parentRoute: typeof RoomSpacesSpaceIdRoute
+    }
     '/_room/spaces/$spaceId/rooms/$roomId': {
       id: '/_room/spaces/$spaceId/rooms/$roomId'
-      path: '/spaces/$spaceId/rooms/$roomId'
+      path: '/rooms/$roomId'
       fullPath: '/spaces/$spaceId/rooms/$roomId'
       preLoaderRoute: typeof RoomSpacesSpaceIdRoomsRoomIdRouteImport
-      parentRoute: typeof RoomRoute
+      parentRoute: typeof RoomSpacesSpaceIdRoute
     }
   }
 }
@@ -353,21 +559,68 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
-interface RoomRouteChildren {
+interface RoomSpacesSpaceIdRouteChildren {
+  RoomSpacesSpaceIdWorkbenchRoute: typeof RoomSpacesSpaceIdWorkbenchRoute
+  RoomSpacesSpaceIdIndexRoute: typeof RoomSpacesSpaceIdIndexRoute
   RoomSpacesSpaceIdRoomsRoomIdRoute: typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 
-const RoomRouteChildren: RoomRouteChildren = {
+const RoomSpacesSpaceIdRouteChildren: RoomSpacesSpaceIdRouteChildren = {
+  RoomSpacesSpaceIdWorkbenchRoute: RoomSpacesSpaceIdWorkbenchRoute,
+  RoomSpacesSpaceIdIndexRoute: RoomSpacesSpaceIdIndexRoute,
   RoomSpacesSpaceIdRoomsRoomIdRoute: RoomSpacesSpaceIdRoomsRoomIdRoute,
+}
+
+const RoomSpacesSpaceIdRouteWithChildren =
+  RoomSpacesSpaceIdRoute._addFileChildren(RoomSpacesSpaceIdRouteChildren)
+
+interface RoomRouteChildren {
+  RoomSpacesSpaceIdRoute: typeof RoomSpacesSpaceIdRouteWithChildren
+}
+
+const RoomRouteChildren: RoomRouteChildren = {
+  RoomSpacesSpaceIdRoute: RoomSpacesSpaceIdRouteWithChildren,
 }
 
 const RoomRouteWithChildren = RoomRoute._addFileChildren(RoomRouteChildren)
 
+interface AdminUsersRouteChildren {
+  AdminUsersUserIdRoute: typeof AdminUsersUserIdRoute
+  AdminUsersIndexRoute: typeof AdminUsersIndexRoute
+}
+
+const AdminUsersRouteChildren: AdminUsersRouteChildren = {
+  AdminUsersUserIdRoute: AdminUsersUserIdRoute,
+  AdminUsersIndexRoute: AdminUsersIndexRoute,
+}
+
+const AdminUsersRouteWithChildren = AdminUsersRoute._addFileChildren(
+  AdminUsersRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminPasswordRoute: typeof AdminPasswordRoute
+  AdminPluginsRoute: typeof AdminPluginsRoute
+  AdminUsersRoute: typeof AdminUsersRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminPasswordRoute: AdminPasswordRoute,
+  AdminPluginsRoute: AdminPluginsRoute,
+  AdminUsersRoute: AdminUsersRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   RoomRoute: RoomRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  AdminLoginRoute: AdminLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,15 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { primeWorkbenchRoom } from '@/features/workbench';
 
+// 兼容旧房间链接：把指定房间写入工作台偏好，再跳到空间工作台。
 export const Route = createFileRoute('/_room/spaces/$spaceId/rooms/$roomId')({
-  component: RoomWorkspacePage,
-  validateSearch: (search: Record<string, unknown>) => ({
-    focus: typeof search.focus === 'string' ? search.focus : 'chat',
-    panel: typeof search.panel === 'string' ? search.panel : 'chat',
-    right: typeof search.right === 'string' ? search.right : 'characters',
-    scene: typeof search.scene === 'string' ? search.scene : undefined,
-  }),
+  beforeLoad: ({ params }) => {
+    primeWorkbenchRoom(params.spaceId, params.roomId);
+    throw redirect({ to: '/spaces/$spaceId', params: { spaceId: params.spaceId } });
+  },
 });
-
-function RoomWorkspacePage() {
-  return null;
-}

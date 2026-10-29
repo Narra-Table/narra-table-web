@@ -1,6 +1,6 @@
-# Narra Table Web
+# NarraTable Web
 
-TRPG 协作叙事平台「故桌」的 Web 端。
+TRPG 协作叙事平台「故桌（NarraTable）」的 Web 端。
 
 ## 快速开始
 
@@ -56,7 +56,8 @@ Windows：
 copy .env.example .env.development
 ```
 
-默认使用 MSW mock 数据。
+复制完成后，`.env.development` 中的 `VITE_MOCK=true` 会启用 MSW mock 数据。
+如果没有本地环境变量文件，开发服务器会在终端提示复制命令；此时未启动真实后端会出现代理连接失败。
 
 启动开发服务器
 

@@ -20,8 +20,30 @@ irm https://vite.plus/ps1 | iex
 
 ```bash
 vp install
+cp .env.example .env.development
 vp dev
 ```
+
+未配置本地环境变量且没有启动后端时，开发服务器会提示启用 MSW Mock 的复制命令。
+
+宿主机的 inotify 监听器不足时，用轮询启动：
+
+```bash
+VITE_WATCH_POLL=1 vp dev
+```
+
+## 同步后端接口
+
+从对应后端版本生成 Swagger，再生成前端 API 和 Mock：
+
+```bash
+# backend 目录
+make swagger-gen
+# web 目录
+NARRATABLE_OPENAPI=../backend/docs/swagger.json pnpm generate
+```
+
+`NARRATABLE_OPENAPI` 接受本地文件或 Swagger URL；省略时使用线上文档。管理 API 使用独立的 `adminFetch` 和管理会话，不刷新普通用户 token。
 
 ## 提交前检查
 

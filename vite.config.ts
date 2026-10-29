@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import tailwindcss from '@tailwindcss/vite';
@@ -8,11 +9,39 @@ import { defineConfig } from 'vite-plus';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const localEnvFiles = ['.env', '.env.local', '.env.development', '.env.development.local'];
+const hasLocalEnv = localEnvFiles.some((file) => existsSync(resolve(__dirname, file)));
+
+const localEnvHint = {
+  name: 'narratable-local-env-hint',
+  configureServer(server: { config: { logger: { warn: (message: string) => void } } }) {
+    if (hasLocalEnv) return;
+    server.config.logger.warn(
+      [
+        '',
+        '⚠ 未检测到本地环境变量文件，MSW Mock 不会自动启用。',
+        '  如果没有启动后端，请先执行：',
+        '  cp .env.example .env.development',
+        '  然后重新运行 vp dev。',
+        '',
+      ].join('\n'),
+    );
+  },
+};
+
+// Local dev backend. Override when the API runs on another port:
+// VITE_PROXY_TARGET=http://127.0.0.1:5298 pnpm dev
+const apiOrigin = process.env.VITE_PROXY_TARGET?.trim() || 'http://127.0.0.1:5297';
+const wsOrigin = apiOrigin.replace(/^http/, 'ws');
+// 宿主机的 inotify 监听器耗尽时用轮询启动：VITE_WATCH_POLL=1 vp dev
+const watch = process.env.VITE_WATCH_POLL === '1' ? { usePolling: true, interval: 500 } : undefined;
+
 export default defineConfig({
   staged: {
     '*': 'vp check --fix',
   },
   plugins: [
+    localEnvHint,
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
@@ -57,11 +86,58 @@ export default defineConfig({
       '@tanstack/query/stable-query-client': 'error',
       '@tanstack/query/prefer-query-options': 'error',
       '@tanstack/query/no-unstable-deps': 'error',
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/features/*/*'],
+              message: '跨模块请从 Feature 的 index.ts 公共入口导入。',
+            },
+          ],
+        },
+      ],
     },
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const path = id.replaceAll('\\', '/');
+          if (
+            path.includes('/node_modules/@tiptap/') ||
+            path.includes('/node_modules/prosemirror')
+          ) {
+            return 'editor';
+          }
+          if (path.includes('/src/features/workbench/')) {
+            return 'workbench';
+          }
+          return undefined;
+        },
+      },
+    },
+  },
+  server: {
+    watch,
+    proxy: {
+      '/api': { target: apiOrigin, changeOrigin: true },
+      '/admin': {
+        target: apiOrigin,
+        changeOrigin: true,
+        bypass(req) {
+          if (req.headers.accept?.includes('text/html')) return '/index.html';
+        },
+      },
+      '/auth': { target: apiOrigin, changeOrigin: true },
+      '/capabilities': { target: apiOrigin, changeOrigin: true },
+      '/health': { target: apiOrigin, changeOrigin: true },
+      '/ws': { target: wsOrigin, ws: true },
     },
   },
 });
