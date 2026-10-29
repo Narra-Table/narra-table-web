@@ -6,4 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
+/**
+ * ConfigSchema is deprecated; configuration is declared by the plugin script.
+ */
 export type GithubComNarraTableBackendPkgProtocolPluginConfigSchema = {[key: string]: unknown};

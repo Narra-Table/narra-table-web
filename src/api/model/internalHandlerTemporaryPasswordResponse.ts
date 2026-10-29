@@ -8,6 +8,6 @@
 import type { InternalHandlerAdminUserResponse } from './internalHandlerAdminUserResponse.ts';
 
 export interface InternalHandlerTemporaryPasswordResponse {
-  temporaryPassword?: string;
-  user?: InternalHandlerAdminUserResponse;
+  temporaryPassword: string;
+  user: InternalHandlerAdminUserResponse;
 }

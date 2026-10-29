@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { AdminUsers } from '@/features/admin/AdminUsers';
-import type { AdminUserStatus } from '@/lib/adminClient';
+import { createFileRoute, lazyRouteComponent } from '@tanstack/react-router';
+import type { AdminUserStatus } from '@/features/admin';
 
 const statuses = ['', 'active', 'disabled', 'deleted'] as const;
 
@@ -22,5 +21,5 @@ export const Route = createFileRoute('/admin/users/')({
       q: typeof search.q === 'string' ? search.q : '',
     };
   },
-  component: AdminUsers,
+  component: lazyRouteComponent(() => import('@/features/admin'), 'AdminUsers'),
 });

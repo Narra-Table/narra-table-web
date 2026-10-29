@@ -9,4 +9,7 @@
 export interface InternalHandlerCreateSpaceRequest {
   description?: string;
   name: string;
+  ruleConstraint?: string;
+  ruleId?: string;
+  ruleVersion?: string;
 }

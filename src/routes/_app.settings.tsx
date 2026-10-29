@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { SettingsPage } from '@/features/settings/SettingsPage';
+import { SettingsPage } from '@/features/settings';
 
 type SettingsSection = 'appearance' | 'profile';
 const SECTIONS: SettingsSection[] = ['profile', 'appearance'];

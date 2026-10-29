@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { lazy, Suspense } from 'react';
 
 const WorkbenchPage = lazy(() =>
-  import('@/features/workbench/WorkbenchPage').then((module) => ({
+  import('@/features/workbench').then((module) => ({
     default: module.WorkbenchPage,
   })),
 );

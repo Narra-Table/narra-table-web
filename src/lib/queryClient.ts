@@ -1,18 +1,19 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
-import { clearAdminSession } from './adminAuth';
-import { AdminApiError } from './adminClient';
-import { adminRootQuery } from './adminQueries';
-import { clearAuth } from './auth';
-import { ApiError } from './orvalClient';
+import { clearAdminSession } from './adminSession';
+import { clearAuth } from './authSession';
+import { HttpError } from './httpError';
 
 function handleUnauthorized(error: unknown) {
-  if (error instanceof AdminApiError && error.status === 401) {
+  if (!(error instanceof HttpError) || error.status !== 401) return;
+
+  if (error.authScope === 'admin') {
     clearAdminSession();
-    queryClient.removeQueries({ queryKey: adminRootQuery.queryKey });
+    queryClient.removeQueries({ predicate: (query) => query.queryKey[0] === 'admin' });
     window.location.replace('/admin/login');
     return;
   }
-  if (error instanceof ApiError && error.status === 401) {
+
+  if (error.authScope === 'user') {
     clearAuth();
     queryClient.clear();
     window.location.replace('/login');

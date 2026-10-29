@@ -1,12 +1,19 @@
 import type { GithubComNarraTableBackendPkgProtocolBlock } from '@/api/model/githubComNarraTableBackendPkgProtocolBlock';
 import type { GithubComNarraTableBackendPkgProtocolMessage } from '@/api/model/githubComNarraTableBackendPkgProtocolMessage';
 import type { GithubComNarraTableBackendPkgProtocolReplyPreview } from '@/api/model/githubComNarraTableBackendPkgProtocolReplyPreview';
+import type { GithubComNarraTableBackendPkgProtocolVisibility } from '@/api/model/githubComNarraTableBackendPkgProtocolVisibility';
 
 export type RoomMessage = GithubComNarraTableBackendPkgProtocolMessage;
 export type RoomBlock = GithubComNarraTableBackendPkgProtocolBlock;
 export type ReplyPreview = GithubComNarraTableBackendPkgProtocolReplyPreview;
 
 export type OutgoingVeil = 'all' | 'gm_only';
+
+export interface VeilDraft {
+  visibility: GithubComNarraTableBackendPkgProtocolVisibility;
+  visibleTo: string[];
+  revealOnSpaceClose: boolean;
+}
 
 export interface StagedReply {
   messageId: string;
