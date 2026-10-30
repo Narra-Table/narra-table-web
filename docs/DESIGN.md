@@ -68,31 +68,27 @@ MiSans
 
 在根元素上设置 `data-theme` 属性即可切换主题：
 
-| `data-theme`  | 色调        | 强调色         |
-| ------------- | ----------- | -------------- |
-| `kraft-teal`  | 浅色·暖米色 | 青绿 `#0da898` |
-| `kraft-brown` | 浅色·暖米色 | 棕褐 `#8b5a35` |
-| `kraft-pink`  | 浅色·暖米色 | 粉红 `#f28bb8` |
-| `pure-white`  | 浅色·黑白   | 近黑 `#0f0f0f` |
-| `black-green` | 深色·纯黑   | 翠绿 `#22c55e` |
-| `black-blue`  | 深色·纯黑   | 蓝色 `#3b82f6` |
-| `ink-gold`    | 深色·墨绿   | 金色 `#d9d2b0` |
+| `data-theme` | 色调      | 强调色         |
+| ------------ | --------- | -------------- |
+| `cinematic`  | 深色·黑色 | 旧金 `#d6b56f` |
+| `pure-white` | 浅色·白色 | 近黑 `#0f0f0f` |
 
-基础暖米色调色板定义在 `:root`，三个 kraft 变体仅覆盖 `--theme-accent`。
+默认黑色调色板定义在 `:root`。
 
 ## 圆角（`--radius-*`）
 
 使用**语义别名**，不使用数字级别名（`rounded-xl / 2xl / 3xl`）：
 
-| 工具类            | 大小  | 用途                                   |
-| ----------------- | ----- | -------------------------------------- |
-| `rounded-sm`      | 2 px  | 内联 Badge、极小 Chip（Tailwind 内置） |
-| `rounded`         | 4 px  | 最小圆角（Tailwind 内置）              |
-| `rounded-thumb`   | 8 px  | 小缩略图、图标容器                     |
-| `rounded-control` | 12 px | **按钮、输入框、表单控件**             |
-| `rounded-card`    | 16 px | **卡片、导航条目、悬浮按钮（FAB）**    |
-| `rounded-overlay` | 24 px | **遮罩层、抽屉、弹窗、气泡**           |
-| `rounded-full`    | ∞     | 头像、圆形图标                         |
+| 工具类              | 大小  | 用途                                   |
+| ------------------- | ----- | -------------------------------------- |
+| `rounded-home-card` | 0 px  | **主页空间卡片**                       |
+| `rounded-sm`        | 2 px  | 内联 Badge、极小 Chip（Tailwind 内置） |
+| `rounded`           | 4 px  | 最小圆角（Tailwind 内置）              |
+| `rounded-thumb`     | 8 px  | 小缩略图、图标容器                     |
+| `rounded-control`   | 12 px | **按钮、输入框、表单控件**             |
+| `rounded-card`      | 16 px | **卡片、导航条目、悬浮按钮（FAB）**    |
+| `rounded-overlay`   | 24 px | **遮罩层、抽屉、弹窗、气泡**           |
+| `rounded-full`      | ∞     | 头像、圆形图标                         |
 
 **规则**：同一语义元素在全局只选一个圆角值，不允许不同页面对同类控件使用不同圆角。
 

@@ -67,7 +67,7 @@ export function SpaceCard({
           enter();
         }
       }}
-      className="group flex min-h-34.5 cursor-pointer rounded-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted"
+      className="group flex min-h-34.5 cursor-pointer rounded-home-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted"
     >
       {/* Cover */}
       <div className="relative w-34.5 shrink-0 self-stretch overflow-hidden bg-surface-muted">

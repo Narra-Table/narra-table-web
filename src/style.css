@@ -109,11 +109,13 @@
    *  rounded-control  12px  按钮、输入框、表单控件
    *  rounded-card     16px  卡片、导航条目、悬浮按钮
    *  rounded-overlay  24px  抽屉、弹窗、气泡
+   *  rounded-home-card 0px  主页空间卡片
    */
   --radius-thumb: 0.5rem;
   --radius-control: 0.75rem;
   --radius-card: 1rem;
   --radius-overlay: 1.5rem;
+  --radius-home-card: 0rem;
 
   /* 颜色 token（随主题变化，参见下方 :root / [data-theme]） */
   --color-app-bg: var(--theme-app-bg);
@@ -163,45 +165,37 @@
 /* ── 主题调色板 ───────────────────────────────────────────────────────────── */
 
 :root {
-  color-scheme: light;
-  --theme-app-bg: #fff6f1;
-  --theme-surface: #fff8f1;
-  --theme-surface-muted: #f3e5dc;
-  --theme-text: #15110d;
-  --theme-text-muted: #8f8580;
-  --theme-border-subtle: #eadcd2;
-  --theme-border: #d8c6bb;
-  --theme-accent: #0da898;
-  --theme-accent-text: #ffffff;
-  --theme-success: #16a34a;
-  --theme-warning: #d97706;
-  --theme-danger: #dc2626;
-  --theme-info: #0891b2;
+  color-scheme: dark;
+  --theme-app-bg: #0b0d12;
+  --theme-surface: #121620;
+  --theme-surface-muted: #1b2130;
+  --theme-text: #f3efe5;
+  --theme-text-muted: #999ba6;
+  --theme-border-subtle: #252b38;
+  --theme-border: #394252;
+  --theme-accent: #d6b56f;
+  --theme-accent-text: #191207;
+  --theme-success: #7bcf9b;
+  --theme-warning: #e5b96b;
+  --theme-danger: #ef8585;
+  --theme-info: #84b9d8;
 }
 
-[data-theme='kraft-teal'] {
-  color-scheme: light;
-  --theme-app-bg: #fff6f1;
-  --theme-surface: #fff8f1;
-  --theme-surface-muted: #f3e5dc;
-  --theme-text: #15110d;
-  --theme-text-muted: #8f8580;
-  --theme-border-subtle: #eadcd2;
-  --theme-border: #d8c6bb;
-  --theme-accent: #0da898;
-  --theme-accent-text: #ffffff;
-  --theme-success: #16a34a;
-  --theme-warning: #d97706;
-  --theme-danger: #dc2626;
-  --theme-info: #0891b2;
-}
-
-[data-theme='kraft-brown'] {
-  --theme-accent: #8b5a35;
-}
-
-[data-theme='kraft-pink'] {
-  --theme-accent: #f28bb8;
+[data-theme='cinematic'] {
+  color-scheme: dark;
+  --theme-app-bg: #0b0d12;
+  --theme-surface: #121620;
+  --theme-surface-muted: #1b2130;
+  --theme-text: #f3efe5;
+  --theme-text-muted: #999ba6;
+  --theme-border-subtle: #252b38;
+  --theme-border: #394252;
+  --theme-accent: #d6b56f;
+  --theme-accent-text: #191207;
+  --theme-success: #7bcf9b;
+  --theme-warning: #e5b96b;
+  --theme-danger: #ef8585;
+  --theme-info: #84b9d8;
 }
 
 [data-theme='pure-white'] {
@@ -219,57 +213,6 @@
   --theme-warning: #d97706;
   --theme-danger: #dc2626;
   --theme-info: #2563eb;
-}
-
-[data-theme='black-green'] {
-  color-scheme: dark;
-  --theme-app-bg: #171717;
-  --theme-surface: #202020;
-  --theme-surface-muted: #2b2b2b;
-  --theme-text: #f7f7f7;
-  --theme-text-muted: #a3a3a3;
-  --theme-border-subtle: #303030;
-  --theme-border: #454545;
-  --theme-accent: #22c55e;
-  --theme-accent-text: #06130b;
-  --theme-success: #4ade80;
-  --theme-warning: #fbbf24;
-  --theme-danger: #f87171;
-  --theme-info: #38bdf8;
-}
-
-[data-theme='black-blue'] {
-  color-scheme: dark;
-  --theme-app-bg: #171717;
-  --theme-surface: #202020;
-  --theme-surface-muted: #2b2b2b;
-  --theme-text: #f7f7f7;
-  --theme-text-muted: #a3a3a3;
-  --theme-border-subtle: #303030;
-  --theme-border: #454545;
-  --theme-accent: #3b82f6;
-  --theme-accent-text: #f8fbff;
-  --theme-success: #4ade80;
-  --theme-warning: #fbbf24;
-  --theme-danger: #f87171;
-  --theme-info: #60a5fa;
-}
-
-[data-theme='ink-gold'] {
-  color-scheme: dark;
-  --theme-app-bg: #131a1b;
-  --theme-surface: #192223;
-  --theme-surface-muted: #233033;
-  --theme-text: #f1eddf;
-  --theme-text-muted: #aaa594;
-  --theme-border-subtle: #263335;
-  --theme-border: #3b4848;
-  --theme-accent: #d9d2b0;
-  --theme-accent-text: #131a1b;
-  --theme-success: #86efac;
-  --theme-warning: #fcd34d;
-  --theme-danger: #fca5a5;
-  --theme-info: #7dd3fc;
 }
 
 /* ── 工具类 ───────────────────────────────────────────────────────────────── */
