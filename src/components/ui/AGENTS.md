@@ -45,10 +45,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 </Avatar>
 ```
 
-**方形缩略图**（`rounded-thumb` 覆盖默认的 `rounded-full`）
+**方形缩略图**（`rounded-none` 覆盖默认的 `rounded-full`）
 
 ```tsx
-<Avatar className="size-10 rounded-thumb">
+<Avatar className="size-10 rounded-none">
   <AvatarImage src={url} alt="素材缩略图" />
 </Avatar>
 ```

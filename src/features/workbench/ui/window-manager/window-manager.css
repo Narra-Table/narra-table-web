@@ -183,7 +183,7 @@
   height: 16px;
   place-items: center;
   border: 0;
-  border-radius: 50%;
+  border-radius: 0;
   padding: 0;
   color: rgba(0, 0, 0, 0.72);
   line-height: 0;
@@ -496,7 +496,7 @@
   width: 14px;
   height: 14px;
   place-items: center;
-  border-radius: 50%;
+  border-radius: 0;
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
@@ -622,7 +622,7 @@
   min-width: 168px;
   flex-direction: column;
   border: 1px solid var(--wm-border, #d4d4d8);
-  border-radius: 12px;
+  border-radius: 0;
   background: var(--wm-surface, #ffffff);
   padding: 6px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
@@ -637,7 +637,7 @@
 
 .wm-menu-item {
   border: 0;
-  border-radius: 8px;
+  border-radius: 0;
   background: transparent;
   padding: 8px 10px;
   color: var(--wm-text, #18181b);

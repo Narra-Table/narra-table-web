@@ -24,12 +24,12 @@ export function BackgroundPresets({
             aria-label={`底色设为${preset.label}`}
             aria-pressed={background === preset.hex}
             onClick={() => onPick(preset.hex)}
-            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <span
               aria-hidden="true"
               className={cn(
-                'block size-5 rounded-full',
+                'block size-5',
                 background === preset.hex ? 'ring-2 ring-text' : 'ring-1 ring-border',
               )}
               style={{ background: preset.hex }}
@@ -42,16 +42,16 @@ export function BackgroundPresets({
           aria-label="清除底色"
           aria-pressed={!background}
           onClick={onClear}
-          className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
           <span
             aria-hidden="true"
             className={cn(
-              'grid size-5 place-items-center rounded-full border text-text-muted',
+              'grid size-5 place-items-center border text-text-muted',
               !background ? 'border-text ring-2 ring-text' : 'border-border',
             )}
           >
-            <Slash className="size-3" />
+            <Slash className="icon-stroke size-3" />
           </span>
         </button>
       </div>
@@ -80,12 +80,12 @@ export function QuickPresets({
             aria-label={`${label}设为${COLOR_LABEL[theme]}色`}
             aria-pressed={active === theme}
             onClick={() => onPick(theme)}
-            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <span
               aria-hidden="true"
               className={cn(
-                'block size-5 rounded-full',
+                'block size-5',
                 THEME_BG_CLASS[theme],
                 active === theme ? 'ring-2 ring-text' : 'ring-1 ring-border',
               )}
@@ -120,7 +120,7 @@ export function TargetTab({
     >
       <span
         aria-hidden="true"
-        className="size-3 rounded-full border border-border"
+        className="size-3 border border-border"
         style={{ background: fill ?? 'var(--theme-surface)' }}
       />
       {label}

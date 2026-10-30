@@ -40,7 +40,7 @@ export function ChatToolbar({
         )}
       </label>
       <label className="relative min-w-0 flex-1 basis-44">
-        <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-text-muted" />
+        <Search className="icon-stroke pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-text-muted" />
         <input
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
@@ -55,7 +55,7 @@ export function ChatToolbar({
             onClick={() => onQueryChange('')}
             className="absolute top-1/2 right-2 -translate-y-1/2 text-text-muted"
           >
-            <X className="size-3.5" />
+            <X className="icon-stroke size-3.5" />
           </button>
         ) : null}
       </label>

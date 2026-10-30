@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { BookOpen, Home, Images, MessageCircle, Settings, UserRound } from 'lucide-react';
+import { Book, Home, Image, MessageSquare, SlidersHorizontal, User } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
@@ -11,11 +11,11 @@ export type AppNavLink = {
 
 export const navLinks: AppNavLink[] = [
   { icon: Home, label: '主页', to: '/' },
-  { icon: BookOpen, label: '我的模组', to: '/modules' },
-  { icon: UserRound, label: '我的角色', to: '/characters' },
-  { icon: Images, label: '我的素材', to: '/assets' },
-  { icon: MessageCircle, label: '消息', to: '/message' },
-  { icon: Settings, label: '设置', to: '/settings' },
+  { icon: Book, label: '我的模组', to: '/modules' },
+  { icon: User, label: '我的角色', to: '/characters' },
+  { icon: Image, label: '我的素材', to: '/assets' },
+  { icon: MessageSquare, label: '消息', to: '/message' },
+  { icon: SlidersHorizontal, label: '设置', to: '/settings' },
 ];
 
 export const mobileLinks = navLinks.filter(({ to }) =>
@@ -42,7 +42,7 @@ export function RailIdentity({
       title="前往设置"
     >
       <span className="grid size-11 place-items-center">
-        <Avatar className="size-9 border border-border">
+        <Avatar className="size-9 rounded-none border border-border">
           <AvatarImage src={user?.avatar || '/avatar.webp'} alt="用户头像" />
         </Avatar>
       </span>
@@ -77,7 +77,7 @@ export function RailLink({
       title={compact ? label : undefined}
     >
       <span className="grid size-10 place-items-center">
-        <Icon className="size-5 shrink-0" strokeWidth={2.2} aria-hidden="true" />
+        <Icon className="icon-stroke size-5 shrink-0" aria-hidden="true" />
       </span>
       <span
         className={[
@@ -99,7 +99,7 @@ export function MobileLink({ icon: Icon, label, to }: AppNavLink) {
       className="flex min-h-14 flex-col items-center justify-center gap-1 px-1 text-2xs font-medium text-text-muted [&.active]:text-accent"
       aria-label={label}
     >
-      <Icon className="size-4" strokeWidth={2.4} aria-hidden="true" />
+      <Icon className="icon-stroke size-4" aria-hidden="true" />
       <span className="max-w-full truncate">{label}</span>
     </Link>
   );

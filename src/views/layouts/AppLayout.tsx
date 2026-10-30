@@ -38,9 +38,9 @@ export function AppLayout() {
             title={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
           >
             {isCollapsed ? (
-              <ChevronRight className="size-5" strokeWidth={2.2} aria-hidden="true" />
+              <ChevronRight className="icon-stroke size-5" aria-hidden="true" />
             ) : (
-              <ChevronLeft className="size-5" strokeWidth={2.2} aria-hidden="true" />
+              <ChevronLeft className="icon-stroke size-5" aria-hidden="true" />
             )}
           </button>
 

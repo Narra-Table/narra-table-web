@@ -37,7 +37,7 @@ export function ProfileSettings() {
           disabled={isPending}
           className="flex shrink-0 items-center gap-2 rounded-control border border-danger/40 px-4 py-2 text-sm text-danger transition-colors hover:bg-danger/10 disabled:opacity-50"
         >
-          <LogOut className="size-4" aria-hidden="true" />
+          <LogOut className="icon-stroke size-4" aria-hidden="true" />
           登出
         </button>
       </div>
