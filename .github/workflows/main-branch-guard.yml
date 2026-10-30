@@ -1,0 +1,33 @@
+name: Main Branch Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+jobs:
+  require-dev-source:
+    name: Require dev source branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verify source branch
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+        run: |
+          if [[ "$HEAD_BRANCH" != "dev" ]]; then
+            echo "::error::main only accepts pull requests from dev"
+            exit 1
+          fi
+
+          if [[ "$HEAD_REPOSITORY" != "$TARGET_REPOSITORY" ]]; then
+            echo "::error::main only accepts dev from this repository"
+            exit 1
+          fi
