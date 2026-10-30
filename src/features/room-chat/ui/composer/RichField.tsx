@@ -64,7 +64,7 @@ export const RichField = forwardRef<
     editorProps: {
       attributes: {
         class:
-          'min-h-16 w-full rounded-control border border-border bg-surface-muted px-4 py-2 text-base text-text outline-none',
+          'min-h-10 max-h-[25dvh] w-full overflow-y-auto rounded-control border border-border bg-surface-muted px-4 py-2 text-base text-text outline-none',
         'aria-label': '发言',
       },
     },
@@ -351,7 +351,7 @@ export const RichField = forwardRef<
       : null;
 
   return (
-    <div className={cn('relative min-h-16 flex-1', disabled && 'opacity-50')}>
+    <div className={cn('relative min-h-10 flex-1', disabled && 'opacity-50')}>
       {snapshot?.empty ? (
         <p className="pointer-events-none absolute left-4 top-2 text-base text-text-muted">
           {placeholder}
