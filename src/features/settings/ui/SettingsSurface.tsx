@@ -1,5 +1,6 @@
 import { Sun, User } from 'lucide-react';
 import type { AppTheme } from '@/lib/appTheme';
+import type { SpaceCardLayout } from '@/lib/spaceCardLayout';
 import type { SettingsSection } from '../model/types';
 import { AppearanceSettings } from './AppearanceSettings';
 import { ProfileSettings } from './ProfileSettings';
@@ -11,13 +12,17 @@ const navItems: { id: SettingsSection; label: string; icon: typeof Sun }[] = [
 
 export function SettingsSurface({
   onThemeChange,
+  onSpaceCardLayoutChange,
   onSectionChange,
   section,
+  spaceCardLayout,
   theme,
 }: {
   onThemeChange: (theme: AppTheme) => void;
+  onSpaceCardLayoutChange: (layout: SpaceCardLayout) => void;
   onSectionChange: (section: SettingsSection) => void;
   section: SettingsSection;
+  spaceCardLayout: SpaceCardLayout;
   theme: AppTheme;
 }) {
   return (
@@ -29,7 +34,12 @@ export function SettingsSurface({
               <h2 className="mb-6 text-2xl font-bold text-text">{label}</h2>
               {id === 'profile' && <ProfileSettings />}
               {id === 'appearance' && (
-                <AppearanceSettings theme={theme} onThemeChange={onThemeChange} />
+                <AppearanceSettings
+                  theme={theme}
+                  onThemeChange={onThemeChange}
+                  spaceCardLayout={spaceCardLayout}
+                  onSpaceCardLayoutChange={onSpaceCardLayoutChange}
+                />
               )}
             </section>
           ))}
@@ -69,7 +79,12 @@ export function SettingsSurface({
           <div className="scroll-subtle-native-hidden min-h-0 flex-1 overflow-auto">
             <div className="mx-auto max-w-4xl px-20 py-8">
               {section === 'appearance' && (
-                <AppearanceSettings theme={theme} onThemeChange={onThemeChange} />
+                <AppearanceSettings
+                  theme={theme}
+                  onThemeChange={onThemeChange}
+                  spaceCardLayout={spaceCardLayout}
+                  onSpaceCardLayoutChange={onSpaceCardLayoutChange}
+                />
               )}
               {section === 'profile' && <ProfileSettings />}
             </div>
