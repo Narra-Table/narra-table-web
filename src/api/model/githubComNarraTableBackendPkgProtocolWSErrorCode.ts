@@ -18,4 +18,5 @@ export const GithubComNarraTableBackendPkgProtocolWSErrorCode = {
   WSErrorInvalidMessage: 'invalid_message',
   WSErrorPersistence: 'persistence_failed',
   WSErrorConnectionLimit: 'connection_limit',
+  WSErrorSpaceArchived: 'space_archived',
 } as const;

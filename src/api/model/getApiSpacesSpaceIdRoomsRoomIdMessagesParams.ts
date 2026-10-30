@@ -5,10 +5,32 @@
  * 故桌（NarraTable）实时跑团平台的后台 API
  * OpenAPI spec version: 1.0
  */
+import type { GetApiSpacesSpaceIdRoomsRoomIdMessagesOrder } from './getApiSpacesSpaceIdRoomsRoomIdMessagesOrder.ts';
+import type { GetApiSpacesSpaceIdRoomsRoomIdMessagesSort } from './getApiSpacesSpaceIdRoomsRoomIdMessagesSort.ts';
 
 export type GetApiSpacesSpaceIdRoomsRoomIdMessagesParams = {
 /**
  * 每页数量
  */
 limit?: number;
+/**
+ * 消息ID游标
+ */
+cursor?: string;
+/**
+ * 方向
+ */
+sort?: GetApiSpacesSpaceIdRoomsRoomIdMessagesSort;
+/**
+ * 排序依据
+ */
+order?: GetApiSpacesSpaceIdRoomsRoomIdMessagesOrder;
+/**
+ * 仅置顶消息
+ */
+pinnedOnly?: boolean;
+/**
+ * 发送面具ID
+ */
+maskId?: string;
 };
