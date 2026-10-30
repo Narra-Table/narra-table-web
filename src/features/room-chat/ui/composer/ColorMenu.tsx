@@ -159,18 +159,15 @@ export function ColorMenu({
       >
         <span
           aria-hidden="true"
-          className="relative size-4 rounded-full border border-border"
+          className="relative size-4 border border-border"
           style={{ background: backgroundFill ?? 'var(--theme-surface-muted)' }}
         >
-          <span
-            className="absolute inset-1 rounded-full"
-            style={{ background: previewTextColor }}
-          />
+          <span className="absolute inset-1" style={{ background: previewTextColor }} />
         </span>
         颜色
         <ChevronDown
           className={cn(
-            'ml-auto size-4 text-text-muted transition-transform',
+            'icon-stroke ml-auto size-4 text-text-muted transition-transform',
             open && 'rotate-180',
           )}
         />
@@ -236,7 +233,7 @@ export function ColorMenu({
                   {marker ? (
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-surface ring-1 ring-border"
+                      className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 border-2 border-surface ring-1 ring-border"
                       style={{ left: marker.left, top: marker.top }}
                     />
                   ) : null}
@@ -279,14 +276,14 @@ export function ColorMenu({
                 >
                   <div
                     aria-hidden="true"
-                    className="h-2 w-full rounded-full border border-border"
+                    className="h-2 w-full border border-border"
                     style={{
                       background: `linear-gradient(to right, #000000, ${hsvToHex(hsv.h, hsv.s, 1)})`,
                     }}
                   />
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-surface"
+                    className="pointer-events-none absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 border border-border bg-surface"
                     style={{ left: `${hsv.v * 100}%` }}
                   />
                 </div>
@@ -316,7 +313,7 @@ export function ColorMenu({
                     });
                   }}
                 >
-                  <Pipette className="size-3.5" />
+                  <Pipette className="icon-stroke size-3.5" />
                   取色
                 </button>
               </div>
@@ -360,7 +357,7 @@ export function ColorMenu({
                 className="flex shrink-0 items-center gap-1 rounded-control px-2 py-1.5 text-xs text-text-muted transition-colors hover:bg-surface-muted hover:text-text disabled:opacity-40"
                 onClick={onReset}
               >
-                <RotateCcw className="size-3.5" />
+                <RotateCcw className="icon-stroke size-3.5" />
                 恢复默认
               </button>
             </div>

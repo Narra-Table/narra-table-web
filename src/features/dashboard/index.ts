@@ -1,2 +1,2 @@
-export { DashboardRightPanel } from './ui/DashboardRightPanel';
+export { NotificationPanel } from './ui/NotificationPanel';
 export { SpacesContent } from './ui/SpacesContent';

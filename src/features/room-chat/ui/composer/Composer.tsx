@@ -1,4 +1,4 @@
-import { Dices, Smile } from 'lucide-react';
+import { Dice5, Smile } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { GithubComNarraTableBackendPkgProtocolMask } from '@/api/model/githubComNarraTableBackendPkgProtocolMask';
 import { useResourceUrl } from '@/features/resources';
@@ -163,7 +163,7 @@ export function Composer({
               disabled={disabled}
               onClick={() => setMenu((current) => (current === 'face' ? null : 'face'))}
             >
-              <Smile className="size-5" />
+              <Smile className="icon-stroke size-5" />
             </IconButton>
             <IconButton
               label="骰点"
@@ -171,7 +171,7 @@ export function Composer({
               disabled={disabled || Boolean(editing)}
               onClick={() => setMenu((current) => (current === 'dice' ? null : 'dice'))}
             >
-              <Dices className="size-5" />
+              <Dice5 className="icon-stroke size-5" />
             </IconButton>
             {menu === 'face' ? (
               <div className="absolute bottom-full left-0 z-30 mb-2 grid w-56 grid-cols-2 gap-1 rounded-overlay border border-border-subtle bg-surface p-2">

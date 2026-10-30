@@ -81,7 +81,7 @@ function WorkbenchToolbar({ spaceName }: { spaceName: string }) {
         title="返回空间列表"
         className="grid size-8 shrink-0 place-items-center rounded-control text-text-muted hover:bg-surface-muted hover:text-text"
       >
-        <ArrowLeft className="size-4" />
+        <ArrowLeft className="icon-stroke size-4" />
       </Link>
       <h1 className="min-w-0 truncate text-sm font-semibold text-text">{spaceName}</h1>
     </div>

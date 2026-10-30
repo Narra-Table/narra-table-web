@@ -192,7 +192,7 @@ export function WorkbenchMenuItem({
 }
 
 function LightGlyph({ icon: Icon }: { icon: LucideIcon }) {
-  return <Icon className="wm-light-icon" strokeWidth={2.5} aria-hidden="true" />;
+  return <Icon className="icon-stroke wm-light-icon" aria-hidden="true" />;
 }
 
 /**
