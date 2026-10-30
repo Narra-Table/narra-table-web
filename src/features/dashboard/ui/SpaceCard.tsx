@@ -50,7 +50,7 @@ export function SpaceCard({
   const cardAspect = (
     isLandscape
       ? ['aspect-[16/9]', 'aspect-[3/2]', 'aspect-[4/3]']
-      : ['aspect-[2/3]', 'aspect-[3/5]', 'aspect-[4/5]']
+      : ['aspect-[2/3]', 'aspect-[3/5]', 'aspect-[5/8]']
   )[Math.floor(layoutHash / 2) % 3];
   const cardWidth = isLandscape
     ? 'w-full min-[600px]:w-[calc((200%_-_24px)/3)] min-[720px]:w-[calc((200%_-_48px)/4)] min-[900px]:w-[calc((200%_-_72px)/5)]'
