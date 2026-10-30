@@ -91,7 +91,7 @@ export function Composer({
   }
 
   return (
-    <div className="shrink-0 border-t border-border-subtle bg-surface px-3 py-3">
+    <div className="shrink-0 border-t border-border-subtle bg-surface px-3 pt-1.5 pb-3">
       <div ref={barRef} className="mx-auto flex w-full max-w-2xl flex-col gap-2">
         {editing ? (
           <div className="flex items-center justify-between gap-3 rounded-control bg-surface-muted px-4 py-2">
@@ -120,7 +120,7 @@ export function Composer({
             </button>
           </div>
         ) : null}
-        <div className="flex items-center gap-2 border-b border-border-subtle pb-2">
+        <div className="flex items-center gap-2 border-b border-border-subtle pb-1.5">
           <div className="relative">
             <button
               type="button"
@@ -128,7 +128,7 @@ export function Composer({
               aria-expanded={menu === 'mask'}
               disabled={disabled || Boolean(editing) || masks.length === 0}
               onClick={() => setMenu((current) => (current === 'mask' ? null : 'mask'))}
-              className="grid size-8 place-items-center overflow-hidden rounded-full bg-surface-muted text-xs font-semibold text-text disabled:opacity-50"
+              className="grid size-7 place-items-center overflow-hidden rounded-full bg-surface-muted text-xs font-semibold text-text disabled:opacity-50"
             >
               <MaskFace spaceId={spaceId} mask={mask} />
             </button>
@@ -156,18 +156,7 @@ export function Composer({
           <p className="min-w-0 truncate text-sm font-medium text-text">
             {mask?.name ?? '没有可用面具'}
           </p>
-          {canUseGmVeil && !editing ? (
-            <button
-              type="button"
-              className="ml-auto shrink-0 rounded-control border border-border px-3 py-1.5 text-sm text-text"
-              onClick={() => onVeil(veil === 'all' ? 'gm_only' : 'all')}
-            >
-              {veil === 'all' ? '全员可见' : '仅 GM'}
-            </button>
-          ) : null}
-        </div>
-        <div className="flex items-end gap-2">
-          <div className="relative flex items-center gap-1 pb-1">
+          <div className="relative flex items-center gap-1">
             <IconButton
               label="表情"
               pressed={menu === 'face'}
@@ -213,6 +202,17 @@ export function Composer({
               </div>
             ) : null}
           </div>
+          {canUseGmVeil && !editing ? (
+            <button
+              type="button"
+              className="ml-auto shrink-0 rounded-control border border-border px-3 py-1.5 text-sm text-text"
+              onClick={() => onVeil(veil === 'all' ? 'gm_only' : 'all')}
+            >
+              {veil === 'all' ? '全员可见' : '仅 GM'}
+            </button>
+          ) : null}
+        </div>
+        <div className="flex items-end gap-2">
           <RichField
             ref={fieldRef}
             disabled={disabled}
@@ -256,7 +256,7 @@ function IconButton({
       aria-pressed={pressed}
       disabled={disabled}
       onClick={onClick}
-      className="grid size-8 place-items-center rounded-control text-text-muted hover:bg-surface-muted hover:text-text disabled:opacity-40"
+      className="grid size-7 place-items-center rounded-control text-text-muted hover:bg-surface-muted hover:text-text disabled:opacity-40"
     >
       {children}
     </button>

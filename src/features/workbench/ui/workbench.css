@@ -1,7 +1,7 @@
 /* Map NarraTable theme tokens onto the WM's public surface. */
 .narra-workbench {
   --wm-gap: 8px;
-  --wm-toolbar-height: 48px;
+  --wm-toolbar-height: 24px;
   --wm-taskbar-height: 48px;
   --wm-radius: 0;
   --wm-surface: var(--theme-surface);
