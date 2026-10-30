@@ -1,16 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useGetApiSpaces } from '@/api';
-import { DashboardRightPanel, SpacesContent } from '@/features/dashboard';
+import { NotificationPanel, SpacesContent } from '@/features/dashboard';
 
 function DashboardPage() {
-  const { data: spaces = [] } = useGetApiSpaces({
-    query: { select: (response) => response.data.spaces ?? [] },
-  });
-
   return (
     <div className="flex h-full bg-app-bg">
       <SpacesContent />
-      <DashboardRightPanel spaceId={spaces[0]?.spaceId} />
+      <NotificationPanel />
     </div>
   );
 }

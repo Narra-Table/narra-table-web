@@ -104,17 +104,20 @@
   --text-2xl: 1.375rem;
   --text-3xl: 1.75rem;
 
-  /* 语义圆角别名（不覆盖 Tailwind 内置数字 scale）
-   *  rounded-thumb    8px   小缩略图、图标容器
-   *  rounded-control  12px  按钮、输入框、表单控件
-   *  rounded-card     16px  卡片、导航条目、悬浮按钮
-   *  rounded-overlay  24px  抽屉、弹窗、气泡
-   *  rounded-home-card 0px  主页空间卡片
+  /* 直角介面：保留语义别名，所有组件类型统一为 0px。
    */
-  --radius-thumb: 0.5rem;
-  --radius-control: 0.75rem;
-  --radius-card: 1rem;
-  --radius-overlay: 1.5rem;
+  --radius-xs: 0rem;
+  --radius-sm: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
+  --radius-xl: 0rem;
+  --radius-2xl: 0rem;
+  --radius-3xl: 0rem;
+  --radius-4xl: 0rem;
+  --radius-thumb: 0rem;
+  --radius-control: 0rem;
+  --radius-card: 0rem;
+  --radius-overlay: 0rem;
   --radius-home-card: 0rem;
 
   /* 颜色 token（随主题变化，参见下方 :root / [data-theme]） */
@@ -225,6 +228,12 @@
   height: 0;
 }
 
+.icon-stroke {
+  stroke-width: 1.5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
 .composer-ruby {
   @apply inline-flex flex-col items-center align-bottom;
 }
@@ -256,7 +265,7 @@
   --border: var(--theme-border);
   --input: var(--theme-border);
   --ring: var(--theme-accent);
-  --radius: 0.625rem;
+  --radius: 0rem;
   --sidebar: var(--theme-surface);
   --sidebar-foreground: var(--theme-text);
   --sidebar-primary: var(--theme-accent);

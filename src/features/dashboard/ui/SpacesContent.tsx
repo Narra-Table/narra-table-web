@@ -36,7 +36,7 @@ export function SpacesContent() {
             onClick={() => setCreating(true)}
             className="flex cursor-pointer items-center gap-1.5 rounded-card bg-accent px-5 py-2.5 text-sm font-semibold text-accent-text shadow-lg transition-all hover:opacity-90 active:scale-95"
           >
-            <Plus className="size-4" strokeWidth={2.5} />
+            <Plus className="icon-stroke size-4" />
             创建空间
           </button>
         </div>

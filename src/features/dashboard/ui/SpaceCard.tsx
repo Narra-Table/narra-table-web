@@ -6,8 +6,8 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { primeWorkbenchRoom } from '@/features/workbench';
 import type { SpaceListItem } from '../model/types';
 
-function picsum(seed: string, size = 40) {
-  return `https://picsum.photos/seed/${seed}/${size}`;
+function picsum(seed: string, width = 40, height = width) {
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
 }
 
 export function SpaceCard({
@@ -67,22 +67,23 @@ export function SpaceCard({
           enter();
         }
       }}
-      className="group flex min-h-34.5 cursor-pointer rounded-home-card border border-border-subtle bg-surface transition-colors duration-200 hover:bg-surface-muted"
+      className="group flex min-h-40 cursor-pointer rounded-home-card border border-border-subtle bg-surface transition-colors duration-200 hover:border-border"
     >
-      {/* Cover */}
-      <div className="relative w-34.5 shrink-0 self-stretch overflow-hidden bg-surface-muted">
+      <div className="size-40 shrink-0 overflow-hidden bg-surface-muted">
         <img
-          src={space.avatar ?? picsum(space.spaceId ?? 'space', 200)}
+          src={space.avatar ?? picsum(space.spaceId ?? 'space', 320)}
           alt={space.name ?? '空间封面'}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
 
       {/* Body */}
-      <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-3 py-2">
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-4 py-3">
         {/* Title row */}
         <div className="flex items-center gap-1.5">
-          {pinned ? <Pin className="size-3.5 shrink-0 text-accent" aria-label="已置顶" /> : null}
+          {pinned ? (
+            <Pin className="icon-stroke size-3.5 shrink-0 text-accent" aria-label="已置顶" />
+          ) : null}
           <span className="min-w-0 truncate text-lg font-semibold text-text">
             {space.name ?? '未命名空间'}
           </span>
@@ -99,7 +100,7 @@ export function SpaceCard({
                 menuOpen ? 'opacity-100' : 'opacity-100 sm:opacity-0 sm:group-hover:opacity-100'
               }`}
             >
-              <MoreHorizontal className="size-4" />
+              <MoreHorizontal className="icon-stroke size-4" />
             </button>
             {menuOpen ? (
               <div

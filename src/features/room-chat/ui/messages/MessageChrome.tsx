@@ -57,7 +57,7 @@ export function MetaLine({
       {edited ? <span>已编辑</span> : null}
       {message.pinned ? (
         <span className="inline-flex items-center gap-1">
-          <Pin className="size-3" />
+          <Pin className="icon-stroke size-3" />
           置顶
         </span>
       ) : null}

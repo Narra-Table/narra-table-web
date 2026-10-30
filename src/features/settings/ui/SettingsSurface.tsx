@@ -1,12 +1,12 @@
-import { Palette, UserRoundKey } from 'lucide-react';
+import { Sun, User } from 'lucide-react';
 import type { AppTheme } from '@/lib/appTheme';
 import type { SettingsSection } from '../model/types';
 import { AppearanceSettings } from './AppearanceSettings';
 import { ProfileSettings } from './ProfileSettings';
 
-const navItems: { id: SettingsSection; label: string; icon: typeof Palette }[] = [
-  { id: 'profile', label: '个人中心', icon: UserRoundKey },
-  { id: 'appearance', label: '外观', icon: Palette },
+const navItems: { id: SettingsSection; label: string; icon: typeof Sun }[] = [
+  { id: 'profile', label: '个人中心', icon: User },
+  { id: 'appearance', label: '外观', icon: Sun },
 ];
 
 export function SettingsSurface({
@@ -37,7 +37,7 @@ export function SettingsSurface({
       </div>
 
       <section className="hidden h-full min-h-0 lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
-        <aside className="border-r border-border-subtle bg-surface-muted/30 p-4">
+        <aside className="border-r border-border-subtle bg-app-bg p-4">
           <h1 className="px-2 text-sm font-semibold text-text-muted">设置</h1>
           <nav className="mt-4 grid gap-1" aria-label="设置目录">
             {navItems.map(({ id, label, icon: Icon }) => (
@@ -52,7 +52,7 @@ export function SettingsSurface({
                 ].join(' ')}
               >
                 <span className="grid size-10 place-items-center">
-                  <Icon className="size-5 shrink-0" strokeWidth={2.2} aria-hidden="true" />
+                  <Icon className="icon-stroke size-5 shrink-0" aria-hidden="true" />
                 </span>
                 <span className="overflow-hidden whitespace-nowrap">{label}</span>
               </button>

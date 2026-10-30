@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
-import { LayoutDashboard, LogOut, Puzzle, Users } from 'lucide-react';
+import { Box, LayoutGrid, LogOut, Users } from 'lucide-react';
 import { useEffect } from 'react';
 import type { ComponentType } from 'react';
 import { clearAdminSession, getAdminSession } from '@/lib/adminSession';
@@ -14,9 +14,9 @@ type AdminNavLink = {
 };
 
 const navLinks: AdminNavLink[] = [
-  { icon: LayoutDashboard, label: '概览', to: '/admin' },
+  { icon: LayoutGrid, label: '概览', to: '/admin' },
   { icon: Users, label: '用户', to: '/admin/users' },
-  { icon: Puzzle, label: '插件', to: '/admin/plugins' },
+  { icon: Box, label: '插件', to: '/admin/plugins' },
 ];
 
 export function AdminShell() {
@@ -56,7 +56,7 @@ export function AdminShell() {
               ].join(' ')}
               aria-label={link.label}
             >
-              <link.icon className="size-5 shrink-0" strokeWidth={2.2} aria-hidden="true" />
+              <link.icon className="icon-stroke size-5 shrink-0" aria-hidden="true" />
               <span className="whitespace-nowrap">{link.label}</span>
             </Link>
           ))}
@@ -66,7 +66,7 @@ export function AdminShell() {
           onClick={logout}
           className="mt-3 flex h-10 items-center gap-2 rounded-card px-3 text-base text-text hover:bg-surface-muted lg:mt-auto"
         >
-          <LogOut className="size-5" strokeWidth={2.2} aria-hidden="true" />
+          <LogOut className="icon-stroke size-5" aria-hidden="true" />
           退出
         </button>
       </aside>
