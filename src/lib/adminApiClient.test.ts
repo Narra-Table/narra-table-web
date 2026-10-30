@@ -3,12 +3,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   getAdminDashboard,
   postAdminChangePassword,
+  postAdminLogin,
   postAdminPlugins,
   postAdminPluginsValidate,
 } from '@/api';
 import type { AdminApiError } from './adminApiClient';
-import { setAdminSession } from './adminSession';
+import { clearAdminSession, getAdminSession, setAdminSession } from './adminSession';
 import { getAccessToken, getRefreshToken, setAuthSession } from './authSession';
+import { subscribeSessionExpiry } from './sessionExpiry';
 
 const fetchMock = vi.fn<typeof fetch>();
 
@@ -32,7 +34,9 @@ describe('generated administrator API transport', () => {
     expect(new Headers(options?.headers).get('Authorization')).toBe('Bearer operator-token');
   });
 
-  it('does not refresh or clear the player session after an administrator 401', async () => {
+  it('expires only the administrator session after an authenticated administrator 401', async () => {
+    const listener = vi.fn();
+    const unsubscribe = subscribeSessionExpiry(listener);
     fetchMock.mockResolvedValue(
       Response.json({ code: 'unauthorized', message: 'expired' }, { status: 401 }),
     );
@@ -43,8 +47,29 @@ describe('generated administrator API transport', () => {
       authScope: 'admin',
     } satisfies Partial<AdminApiError>);
     expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(getAdminSession()).toBeNull();
     expect(getAccessToken()).toBe('player-token');
     expect(getRefreshToken()).toBe('player-refresh');
+    expect(listener).toHaveBeenCalledOnce();
+    expect(listener).toHaveBeenCalledWith('admin');
+    unsubscribe();
+  });
+
+  it('keeps an administrator login 401 as a form error', async () => {
+    clearAdminSession();
+    const listener = vi.fn();
+    const unsubscribe = subscribeSessionExpiry(listener);
+    fetchMock.mockResolvedValue(
+      Response.json({ code: 'unauthorized', message: 'invalid credentials' }, { status: 401 }),
+    );
+
+    await expect(postAdminLogin({ username: 'admin', password: 'wrong' })).rejects.toMatchObject({
+      status: 401,
+      authScope: 'admin',
+    });
+
+    expect(listener).not.toHaveBeenCalled();
+    unsubscribe();
   });
 
   it('sends the password request body declared by the backend', async () => {

@@ -1,5 +1,6 @@
 import { clearAuth, getAccessToken, refreshAccessToken } from './authSession';
 import { HttpError } from './httpError';
+import { notifySessionExpired } from './sessionExpiry';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
@@ -26,7 +27,10 @@ export const orvalFetch = async <T>(url: string, options: RequestInit): Promise<
   if (response.status === 401 && !url.startsWith('/auth/')) {
     const refreshed = await refreshAccessToken();
     if (refreshed) response = await request(refreshed);
-    else clearAuth();
+    else {
+      clearAuth();
+      notifySessionExpired('user');
+    }
   }
 
   if (response.status === 204 || response.status === 205) {

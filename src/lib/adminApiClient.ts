@@ -1,5 +1,6 @@
-import { getAdminSession } from './adminSession';
+import { clearAdminSession, getAdminSession } from './adminSession';
 import { HttpError } from './httpError';
+import { notifySessionExpired } from './sessionExpiry';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
@@ -41,6 +42,10 @@ export async function adminFetch<T>(path: string, init?: RequestInit): Promise<T
       typeof body === 'object' && body !== null && 'code' in body && typeof body.code === 'string'
         ? body.code
         : '';
+    if (response.status === 401 && token && path !== '/admin/login') {
+      clearAdminSession();
+      notifySessionExpired('admin');
+    }
     throw new AdminApiError(message, response.status, code, body);
   }
 

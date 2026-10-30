@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import type { ComponentType } from 'react';
 import { clearAdminSession, getAdminSession } from '@/lib/adminSession';
 import { initTheme } from '@/lib/appTheme';
-import { queryClient } from '@/lib/queryClient';
-import { adminRootQuery, defaultUserSearch } from '../api/adminQueries';
+import { clearSessionQueries } from '@/lib/queryClient';
+import { defaultUserSearch } from '../api/adminQueries';
 
 type AdminNavLink = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
@@ -30,7 +30,7 @@ export function AdminShell() {
 
   function logout() {
     clearAdminSession();
-    queryClient.removeQueries({ queryKey: adminRootQuery.queryKey });
+    clearSessionQueries('admin');
     void navigate({ to: '/admin/login', search: { changed: false } });
   }
 

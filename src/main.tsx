@@ -2,10 +2,16 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { queryClient } from './lib/queryClient';
+import { clearSessionQueries, queryClient } from './lib/queryClient';
+import { subscribeSessionExpiry } from './lib/sessionExpiry';
 import { routeTree } from './routeTree.gen';
 
 const router = createRouter({ routeTree });
+
+subscribeSessionExpiry((scope) => {
+  clearSessionQueries(scope);
+  void router.invalidate();
+});
 
 declare module '@tanstack/react-router' {
   interface Register {

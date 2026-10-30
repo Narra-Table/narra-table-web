@@ -3,7 +3,7 @@ import { LogOut } from 'lucide-react';
 import { useGetApiMe, usePostAuthLogout, type getApiMeResponseSuccess } from '@/api';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { clearAuth } from '@/lib/authSession';
-import { queryClient } from '@/lib/queryClient';
+import { clearSessionQueries } from '@/lib/queryClient';
 
 export function ProfileSettings() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export function ProfileSettings() {
     mutation: {
       onSettled: () => {
         clearAuth();
-        queryClient.clear();
+        clearSessionQueries('user');
         void navigate({ to: '/login' });
       },
     },

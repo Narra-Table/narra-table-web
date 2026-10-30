@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FieldError, TextField } from '@/components/ui/field';
 import { clearAdminSession, getAdminSession } from '@/lib/adminSession';
-import { queryClient } from '@/lib/queryClient';
+import { clearSessionQueries } from '@/lib/queryClient';
 import { adminChangePassword } from '../api/adminClient';
 import { adminErrorMessage } from '../model/copy';
 
@@ -22,7 +22,7 @@ export function AdminPassword() {
     try {
       await adminChangePassword(oldPassword, newPassword);
       clearAdminSession();
-      queryClient.removeQueries({ queryKey: ['admin'] });
+      clearSessionQueries('admin');
       await navigate({ to: '/admin/login', search: { changed: true } });
     } catch (caught) {
       setError(adminErrorMessage(caught));
