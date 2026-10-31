@@ -11,6 +11,7 @@ import type { GithubComNarraTableBackendPkgProtocolModuleSource } from './github
 export interface InternalHandlerSpaceDetail {
   createdAt?: string;
   description?: string;
+  diceLogRoomId?: string;
   members?: GithubComNarraTableBackendPkgProtocolMember[];
   moduleSource?: GithubComNarraTableBackendPkgProtocolModuleSource;
   name?: string;
@@ -18,4 +19,5 @@ export interface InternalHandlerSpaceDetail {
   spaceId?: string;
   status?: string;
   updatedAt?: string;
+  warnings?: string[];
 }

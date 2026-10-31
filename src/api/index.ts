@@ -25,27 +25,63 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  DeleteApiBotInvocationsIdStorageKeyParams,
   DeleteApiFriendsUserId404,
   GetAdminUsersParams,
+  GetApiBotInvocationsIdCardsCardId200,
+  GetApiBotInvocationsIdConfigAppIdKey200,
+  GetApiBotInvocationsIdConfigAppIdKeyParams,
+  GetApiBotInvocationsIdDataAppIdKey200,
+  GetApiBotInvocationsIdDataAppIdKeyParams,
+  GetApiBotInvocationsIdReport200,
+  GetApiBotInvocationsIdStorageKeyParams,
+  GetApiBotInvocationsIdStorageParams,
   GetApiFriendRequests200,
   GetApiFriendRequestsParams,
   GetApiFriends200,
+  GetApiSpacesSpaceIdAppsAppIdDataParams,
+  GetApiSpacesSpaceIdCluesParams,
   GetApiSpacesSpaceIdConfigAppIdKeyRawParams,
+  GetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions200,
+  GetApiSpacesSpaceIdPluginAssetsNamePathParams,
+  GetApiSpacesSpaceIdRoomsRoomIdLogParams,
   GetApiSpacesSpaceIdRoomsRoomIdMessagesParams,
   GetHealth200,
   GetHubStatus200,
   GetReady200,
   GetReady503,
+  GithubComNarraTableBackendInternalModelRuleDerivation,
+  GithubComNarraTableBackendPkgProtocolAppDataRead,
+  GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest,
+  GithubComNarraTableBackendPkgProtocolBotDataResponse,
+  GithubComNarraTableBackendPkgProtocolBotDataWriteRequest,
+  GithubComNarraTableBackendPkgProtocolBotExportRequest,
+  GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest,
   GithubComNarraTableBackendPkgProtocolCapabilities,
+  GithubComNarraTableBackendPkgProtocolCardExport,
+  GithubComNarraTableBackendPkgProtocolCharacterCard,
   GithubComNarraTableBackendPkgProtocolCharacterDescriptor,
+  GithubComNarraTableBackendPkgProtocolCloseReport,
+  GithubComNarraTableBackendPkgProtocolCluePage,
   GithubComNarraTableBackendPkgProtocolConfigDescription,
+  GithubComNarraTableBackendPkgProtocolExport,
+  GithubComNarraTableBackendPkgProtocolInvokeRequest,
+  GithubComNarraTableBackendPkgProtocolInvokeResponse,
   GithubComNarraTableBackendPkgProtocolMask,
+  GithubComNarraTableBackendPkgProtocolMember,
   GithubComNarraTableBackendPkgProtocolMessage,
+  GithubComNarraTableBackendPkgProtocolNPCBatchRequest,
+  GithubComNarraTableBackendPkgProtocolNPCBatchResponse,
   GithubComNarraTableBackendPkgProtocolPaginatedMessages,
   GithubComNarraTableBackendPkgProtocolPlugin,
   GithubComNarraTableBackendPkgProtocolPluginRule,
   GithubComNarraTableBackendPkgProtocolResource,
+  GithubComNarraTableBackendPkgProtocolSceneList,
+  GithubComNarraTableBackendPkgProtocolSpaceAppList,
+  GithubComNarraTableBackendPkgProtocolSpacePluginLock,
   GithubComNarraTableBackendPkgProtocolSpaceRuntime,
+  GithubComNarraTableBackendPkgProtocolUpgradePluginRequest,
+  GithubComNarraTableBackendPkgProtocolWorkspaceDocument,
   InternalHandlerAdminAnonymizeUserRequest,
   InternalHandlerAdminDashboardResponse,
   InternalHandlerAdminErrorResponse,
@@ -61,28 +97,47 @@ import type {
   InternalHandlerAuthResponse,
   InternalHandlerChangePasswordRequest,
   InternalHandlerChangePasswordResponse,
+  InternalHandlerCharacterCardListResponse,
+  InternalHandlerCharacterErrorResponse,
+  InternalHandlerCloseSpaceResponse,
   InternalHandlerConfigListResponse,
+  InternalHandlerCreateCharacterCardRequest,
   InternalHandlerCreateFriendRequestRequest,
   InternalHandlerCreateMaskRequest,
   InternalHandlerCreateResourceRequest,
   InternalHandlerCreateRoomRequest,
   InternalHandlerCreateRoomResponse,
+  InternalHandlerCreateSpaceInviteRequest,
   InternalHandlerCreateSpaceRequest,
+  InternalHandlerDeriveRuleRequest,
+  InternalHandlerDirectMessageListResponse,
+  InternalHandlerDirectMessageResponse,
   InternalHandlerEditMessageRequest,
   InternalHandlerErrorResponse,
   InternalHandlerFoldMessageRequest,
   InternalHandlerFriendshipResponse,
+  InternalHandlerGlobalConfigDescription,
+  InternalHandlerInviteMemberRequest,
   InternalHandlerJoinRoomResponse,
+  InternalHandlerJoinSpaceRequest,
   InternalHandlerLeaveRoomResponse,
   InternalHandlerLoginRequest,
+  InternalHandlerMarkReadRequest,
+  InternalHandlerMarkReadResponse,
   InternalHandlerMaskListResponse,
+  InternalHandlerMoveMessageRequest,
+  InternalHandlerPersonalConfigDescription,
+  InternalHandlerPersonalConfigListResponse,
   InternalHandlerPinMessageRequest,
   InternalHandlerPluginListResponse,
+  InternalHandlerPluginUpgradeVersions,
   InternalHandlerRawConfigResponse,
   InternalHandlerRefreshRequest,
   InternalHandlerRegisterRequest,
+  InternalHandlerReopenSpaceResponse,
   InternalHandlerResetPasswordRequest,
   InternalHandlerResourceListResponse,
+  InternalHandlerResourceReferencesResponse,
   InternalHandlerRevealAllVeilsResponse,
   InternalHandlerRoomsListResponse,
   InternalHandlerRuleCatalogResponse,
@@ -90,9 +145,13 @@ import type {
   InternalHandlerSendCodeRequest,
   InternalHandlerSetConfigRequest,
   InternalHandlerSpaceDetail,
+  InternalHandlerSpaceInviteAccepted,
+  InternalHandlerSpaceInviteCreated,
+  InternalHandlerSpaceInviteListResponse,
   InternalHandlerSpacesListResponse,
   InternalHandlerTemporaryPasswordResponse,
   InternalHandlerUpdateAdminPluginRequest,
+  InternalHandlerUpdateCharacterCardRequest,
   InternalHandlerUpdateMaskRequest,
   InternalHandlerUpdateMemberRoleRequest,
   InternalHandlerUpdateMessageVeilRequest,
@@ -104,6 +163,7 @@ import type {
   PostAdminPluginsBody,
   PostAdminPluginsPluginIdPackageBody,
   PostAdminPluginsValidateBody,
+  PostApiBotInvocationsIdExportsAppIdExportName200,
   PostApiFriendRequests400,
   PostApiFriendRequests403,
   PostApiFriendRequests404,
@@ -125,11 +185,14 @@ import type {
   PostAuthResetPassword503,
   PostAuthSendCode200,
   PostAuthSendCode429,
-  PostAuthSendCode503
+  PostAuthSendCode503,
+  PutApiBotInvocationsIdCardsCardId200
 } from './model';
 
 import { adminFetch } from '../lib/adminApiClient';
+import { invocationFetch } from '../lib/invocationApiClient';
 import { orvalFetch } from '../lib/apiClient';
+import { orvalBlobFetch } from '../lib/apiClient';
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
@@ -203,6 +266,252 @@ export const usePostAdminChangePassword = <TError = InternalHandlerErrorResponse
         TContext
       > => {
       return useMutation(getPostAdminChangePasswordMutationOptions(options), queryClient);
+    }
+
+export const getGetAdminConfigAppIdUrl = (appId: string,) => {
+
+
+
+
+  return `/admin/config/${appId}`
+}
+
+/**
+ * @summary 全局插件配置
+ */
+export const getAdminConfigAppId = async (appId: string, options?: RequestInit): Promise<InternalHandlerConfigListResponse> => {
+
+  return adminFetch<InternalHandlerConfigListResponse>(getGetAdminConfigAppIdUrl(appId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminConfigAppIdQueryKey = (appId: string,) => {
+    return [
+    `/admin/config/${appId}`
+    ] as const;
+    }
+
+
+export const getGetAdminConfigAppIdQueryOptions = <TData = Awaited<ReturnType<typeof getAdminConfigAppId>>, TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse>(appId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfigAppId>>, TError, TData>>, request?: SecondParameter<typeof adminFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminConfigAppIdQueryKey(appId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminConfigAppId>>> = ({ signal }) => getAdminConfigAppId(appId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: appId !== null && appId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminConfigAppId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminConfigAppIdQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminConfigAppId>>>
+export type GetAdminConfigAppIdQueryError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse
+
+
+export function useGetAdminConfigAppId<TData = Awaited<ReturnType<typeof getAdminConfigAppId>>, TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse>(
+ appId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfigAppId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminConfigAppId>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminConfigAppId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminConfigAppId<TData = Awaited<ReturnType<typeof getAdminConfigAppId>>, TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse>(
+ appId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfigAppId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminConfigAppId>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminConfigAppId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminConfigAppId<TData = Awaited<ReturnType<typeof getAdminConfigAppId>>, TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse>(
+ appId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfigAppId>>, TError, TData>>, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 全局插件配置
+ */
+
+export function useGetAdminConfigAppId<TData = Awaited<ReturnType<typeof getAdminConfigAppId>>, TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse>(
+ appId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfigAppId>>, TError, TData>>, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminConfigAppIdQueryOptions(appId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutAdminConfigAppIdKeyUrl = (appId: string,
+    key: string,) => {
+
+
+
+
+  return `/admin/config/${appId}/${key}`
+}
+
+/**
+ * @summary 修改全局插件配置
+ */
+export const putAdminConfigAppIdKey = async (appId: string,
+    key: string,
+    internalHandlerSetConfigRequest: InternalHandlerSetConfigRequest, options?: RequestInit): Promise<InternalHandlerGlobalConfigDescription> => {
+
+  return adminFetch<InternalHandlerGlobalConfigDescription>(getPutAdminConfigAppIdKeyUrl(appId,key),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerSetConfigRequest)
+  }
+);}
+
+
+
+
+export const getPutAdminConfigAppIdKeyMutationOptions = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putAdminConfigAppIdKey>>, TError,{appId: string;key: string;data: InternalHandlerSetConfigRequest}, TContext>, request?: SecondParameter<typeof adminFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putAdminConfigAppIdKey>>, TError,{appId: string;key: string;data: InternalHandlerSetConfigRequest}, TContext> => {
+
+const mutationKey = ['putAdminConfigAppIdKey'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putAdminConfigAppIdKey>>, {appId: string;key: string;data: InternalHandlerSetConfigRequest}> = (props) => {
+          const {appId,key,data} = props ?? {};
+
+          return  putAdminConfigAppIdKey(appId,key,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutAdminConfigAppIdKeyMutationResult = NonNullable<Awaited<ReturnType<typeof putAdminConfigAppIdKey>>>
+    export type PutAdminConfigAppIdKeyMutationBody = InternalHandlerSetConfigRequest
+    export type PutAdminConfigAppIdKeyMutationError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse
+
+    /**
+ * @summary 修改全局插件配置
+ */
+export const usePutAdminConfigAppIdKey = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putAdminConfigAppIdKey>>, TError,{appId: string;key: string;data: InternalHandlerSetConfigRequest}, TContext>, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putAdminConfigAppIdKey>>,
+        TError,
+        {appId: string;key: string;data: InternalHandlerSetConfigRequest},
+        TContext
+      > => {
+      return useMutation(getPutAdminConfigAppIdKeyMutationOptions(options), queryClient);
+    }
+
+export const getDeleteAdminConfigAppIdKeyUrl = (appId: string,
+    key: string,) => {
+
+
+
+
+  return `/admin/config/${appId}/${key}`
+}
+
+/**
+ * @summary 重置全局插件配置
+ */
+export const deleteAdminConfigAppIdKey = async (appId: string,
+    key: string, options?: RequestInit): Promise<void> => {
+
+  return adminFetch<void>(getDeleteAdminConfigAppIdKeyUrl(appId,key),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteAdminConfigAppIdKeyMutationOptions = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminConfigAppIdKey>>, TError,{appId: string;key: string}, TContext>, request?: SecondParameter<typeof adminFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminConfigAppIdKey>>, TError,{appId: string;key: string}, TContext> => {
+
+const mutationKey = ['deleteAdminConfigAppIdKey'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminConfigAppIdKey>>, {appId: string;key: string}> = (props) => {
+          const {appId,key} = props ?? {};
+
+          return  deleteAdminConfigAppIdKey(appId,key,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminConfigAppIdKeyMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminConfigAppIdKey>>>
+
+    export type DeleteAdminConfigAppIdKeyMutationError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse
+
+    /**
+ * @summary 重置全局插件配置
+ */
+export const useDeleteAdminConfigAppIdKey = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminConfigAppIdKey>>, TError,{appId: string;key: string}, TContext>, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminConfigAppIdKey>>,
+        TError,
+        {appId: string;key: string},
+        TContext
+      > => {
+      return useMutation(getDeleteAdminConfigAppIdKeyMutationOptions(options), queryClient);
     }
 
 export const getGetAdminDashboardUrl = () => {
@@ -852,6 +1161,79 @@ export const usePostAdminPluginsPluginIdPackage = <TError = InternalHandlerError
       return useMutation(getPostAdminPluginsPluginIdPackageMutationOptions(options), queryClient);
     }
 
+export const getPostAdminPluginsPluginIdVersionsVersionYankUrl = (pluginId: string,
+    version: string,) => {
+
+
+
+
+  return `/admin/plugins/${pluginId}/versions/${version}/yank`
+}
+
+/**
+ * 被空间锁引用的版本不能删除，只能作废。作废后新的锁定解析不到它，已有空间标为不兼容。
+ * @summary 作废插件版本
+ */
+export const postAdminPluginsPluginIdVersionsVersionYank = async (pluginId: string,
+    version: string, options?: RequestInit): Promise<void> => {
+
+  return adminFetch<void>(getPostAdminPluginsPluginIdVersionsVersionYankUrl(pluginId,version),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getPostAdminPluginsPluginIdVersionsVersionYankMutationOptions = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAdminPluginsPluginIdVersionsVersionYank>>, TError,{pluginId: string;version: string}, TContext>, request?: SecondParameter<typeof adminFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postAdminPluginsPluginIdVersionsVersionYank>>, TError,{pluginId: string;version: string}, TContext> => {
+
+const mutationKey = ['postAdminPluginsPluginIdVersionsVersionYank'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAdminPluginsPluginIdVersionsVersionYank>>, {pluginId: string;version: string}> = (props) => {
+          const {pluginId,version} = props ?? {};
+
+          return  postAdminPluginsPluginIdVersionsVersionYank(pluginId,version,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostAdminPluginsPluginIdVersionsVersionYankMutationResult = NonNullable<Awaited<ReturnType<typeof postAdminPluginsPluginIdVersionsVersionYank>>>
+
+    export type PostAdminPluginsPluginIdVersionsVersionYankMutationError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse
+
+    /**
+ * @summary 作废插件版本
+ */
+export const usePostAdminPluginsPluginIdVersionsVersionYank = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAdminPluginsPluginIdVersionsVersionYank>>, TError,{pluginId: string;version: string}, TContext>, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postAdminPluginsPluginIdVersionsVersionYank>>,
+        TError,
+        {pluginId: string;version: string},
+        TContext
+      > => {
+      return useMutation(getPostAdminPluginsPluginIdVersionsVersionYankMutationOptions(options), queryClient);
+    }
+
 export const getGetAdminRulesUrl = () => {
 
 
@@ -952,6 +1334,77 @@ export function useGetAdminRules<TData = Awaited<ReturnType<typeof getAdminRules
 
 
 
+
+export const getPostAdminRulesDeriveUrl = () => {
+
+
+
+
+  return `/admin/rules/derive`
+}
+
+/**
+ * 复制基座规则的精确版本和内容。基座之后的新版本不会改写这份快照。
+ * @summary 派生规则快照
+ */
+export const postAdminRulesDerive = async (internalHandlerDeriveRuleRequest: InternalHandlerDeriveRuleRequest, options?: RequestInit): Promise<GithubComNarraTableBackendInternalModelRuleDerivation> => {
+
+  return adminFetch<GithubComNarraTableBackendInternalModelRuleDerivation>(getPostAdminRulesDeriveUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerDeriveRuleRequest)
+  }
+);}
+
+
+
+
+export const getPostAdminRulesDeriveMutationOptions = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAdminRulesDerive>>, TError,{data: InternalHandlerDeriveRuleRequest}, TContext>, request?: SecondParameter<typeof adminFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postAdminRulesDerive>>, TError,{data: InternalHandlerDeriveRuleRequest}, TContext> => {
+
+const mutationKey = ['postAdminRulesDerive'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAdminRulesDerive>>, {data: InternalHandlerDeriveRuleRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postAdminRulesDerive(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostAdminRulesDeriveMutationResult = NonNullable<Awaited<ReturnType<typeof postAdminRulesDerive>>>
+    export type PostAdminRulesDeriveMutationBody = InternalHandlerDeriveRuleRequest
+    export type PostAdminRulesDeriveMutationError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse
+
+    /**
+ * @summary 派生规则快照
+ */
+export const usePostAdminRulesDerive = <TError = InternalHandlerErrorResponse | InternalHandlerAdminErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAdminRulesDerive>>, TError,{data: InternalHandlerDeriveRuleRequest}, TContext>, request?: SecondParameter<typeof adminFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postAdminRulesDerive>>,
+        TError,
+        {data: InternalHandlerDeriveRuleRequest},
+        TContext
+      > => {
+      return useMutation(getPostAdminRulesDeriveMutationOptions(options), queryClient);
+    }
 
 export const getPatchAdminRulesRuleIdVersionsVersionUrl = (ruleId: string,
     version: string,) => {
@@ -1516,6 +1969,1916 @@ export const usePostAdminUsersUserIdTemporaryPassword = <TError = InternalHandle
       > => {
       return useMutation(getPostAdminUsersUserIdTemporaryPasswordMutationOptions(options), queryClient);
     }
+
+export type getApiBotInvocationsIdCardsCardIdResponse200 = {
+  data: GetApiBotInvocationsIdCardsCardId200
+  status: 200
+}
+
+export type getApiBotInvocationsIdCardsCardIdResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type getApiBotInvocationsIdCardsCardIdResponseSuccess = (getApiBotInvocationsIdCardsCardIdResponse200) & {
+  headers: Headers;
+};
+export type getApiBotInvocationsIdCardsCardIdResponseError = (getApiBotInvocationsIdCardsCardIdResponse401) & {
+  headers: Headers;
+};
+
+export type getApiBotInvocationsIdCardsCardIdResponse = (getApiBotInvocationsIdCardsCardIdResponseSuccess | getApiBotInvocationsIdCardsCardIdResponseError)
+
+export const getGetApiBotInvocationsIdCardsCardIdUrl = (id: string,
+    cardId: string,) => {
+
+
+
+
+  return `/api/bot-invocations/${id}/cards/${cardId}`
+}
+
+/**
+ * @summary Bot 读取角色卡
+ */
+export const getApiBotInvocationsIdCardsCardId = async (id: string,
+    cardId: string, options?: RequestInit): Promise<getApiBotInvocationsIdCardsCardIdResponse> => {
+
+  return invocationFetch<getApiBotInvocationsIdCardsCardIdResponse>(getGetApiBotInvocationsIdCardsCardIdUrl(id,cardId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBotInvocationsIdCardsCardIdQueryKey = (id: string,
+    cardId: string,) => {
+    return [
+    `/api/bot-invocations/${id}/cards/${cardId}`
+    ] as const;
+    }
+
+
+export const getGetApiBotInvocationsIdCardsCardIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(id: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBotInvocationsIdCardsCardIdQueryKey(id,cardId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>> = ({ signal }) => getApiBotInvocationsIdCardsCardId(id,cardId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined && cardId !== null && cardId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBotInvocationsIdCardsCardIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>>
+export type GetApiBotInvocationsIdCardsCardIdQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    cardId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Bot 读取角色卡
+ */
+
+export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBotInvocationsIdCardsCardIdQueryOptions(id,cardId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type putApiBotInvocationsIdCardsCardIdResponse200 = {
+  data: PutApiBotInvocationsIdCardsCardId200
+  status: 200
+}
+
+export type putApiBotInvocationsIdCardsCardIdResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type putApiBotInvocationsIdCardsCardIdResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type putApiBotInvocationsIdCardsCardIdResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type putApiBotInvocationsIdCardsCardIdResponseSuccess = (putApiBotInvocationsIdCardsCardIdResponse200) & {
+  headers: Headers;
+};
+export type putApiBotInvocationsIdCardsCardIdResponseError = (putApiBotInvocationsIdCardsCardIdResponse400 | putApiBotInvocationsIdCardsCardIdResponse401 | putApiBotInvocationsIdCardsCardIdResponse403) & {
+  headers: Headers;
+};
+
+export type putApiBotInvocationsIdCardsCardIdResponse = (putApiBotInvocationsIdCardsCardIdResponseSuccess | putApiBotInvocationsIdCardsCardIdResponseError)
+
+export const getPutApiBotInvocationsIdCardsCardIdUrl = (id: string,
+    cardId: string,) => {
+
+
+
+
+  return `/api/bot-invocations/${id}/cards/${cardId}`
+}
+
+/**
+ * @summary Bot 写入角色卡
+ */
+export const putApiBotInvocationsIdCardsCardId = async (id: string,
+    cardId: string,
+    githubComNarraTableBackendPkgProtocolBotCharacterWriteRequest: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest, options?: RequestInit): Promise<putApiBotInvocationsIdCardsCardIdResponse> => {
+
+  return invocationFetch<putApiBotInvocationsIdCardsCardIdResponse>(getPutApiBotInvocationsIdCardsCardIdUrl(id,cardId),
+  {
+    ...options,
+    method: 'PUT'
+    ,
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotCharacterWriteRequest)
+  }
+);}
+
+
+
+
+export const getPutApiBotInvocationsIdCardsCardIdMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext> => {
+
+const mutationKey = ['putApiBotInvocationsIdCardsCardId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, {id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}> = (props) => {
+          const {id,cardId,data} = props ?? {};
+
+          return  putApiBotInvocationsIdCardsCardId(id,cardId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiBotInvocationsIdCardsCardIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>>
+    export type PutApiBotInvocationsIdCardsCardIdMutationBody = GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest
+    export type PutApiBotInvocationsIdCardsCardIdMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary Bot 写入角色卡
+ */
+export const usePutApiBotInvocationsIdCardsCardId = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>,
+        TError,
+        {id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest},
+        TContext
+      > => {
+      return useMutation(getPutApiBotInvocationsIdCardsCardIdMutationOptions(options), queryClient);
+    }
+
+export type getApiBotInvocationsIdConfigAppIdKeyResponse200 = {
+  data: GetApiBotInvocationsIdConfigAppIdKey200
+  status: 200
+}
+
+export type getApiBotInvocationsIdConfigAppIdKeyResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type getApiBotInvocationsIdConfigAppIdKeyResponseSuccess = (getApiBotInvocationsIdConfigAppIdKeyResponse200) & {
+  headers: Headers;
+};
+export type getApiBotInvocationsIdConfigAppIdKeyResponseError = (getApiBotInvocationsIdConfigAppIdKeyResponse401) & {
+  headers: Headers;
+};
+
+export type getApiBotInvocationsIdConfigAppIdKeyResponse = (getApiBotInvocationsIdConfigAppIdKeyResponseSuccess | getApiBotInvocationsIdConfigAppIdKeyResponseError)
+
+export const getGetApiBotInvocationsIdConfigAppIdKeyUrl = (id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/bot-invocations/${id}/config/${appId}/${key}?${stringifiedParams}` : `/api/bot-invocations/${id}/config/${appId}/${key}`
+}
+
+/**
+ * @summary Bot 读取配置
+ */
+export const getApiBotInvocationsIdConfigAppIdKey = async (id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: RequestInit): Promise<getApiBotInvocationsIdConfigAppIdKeyResponse> => {
+
+  return invocationFetch<getApiBotInvocationsIdConfigAppIdKeyResponse>(getGetApiBotInvocationsIdConfigAppIdKeyUrl(id,appId,key,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBotInvocationsIdConfigAppIdKeyQueryKey = (id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams,) => {
+    return [
+    `/api/bot-invocations/${id}/config/${appId}/${key}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiBotInvocationsIdConfigAppIdKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBotInvocationsIdConfigAppIdKeyQueryKey(id,appId,key,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>> = ({ signal }) => getApiBotInvocationsIdConfigAppIdKey(id,appId,key,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined && appId !== null && appId !== undefined && key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBotInvocationsIdConfigAppIdKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>>
+export type GetApiBotInvocationsIdConfigAppIdKeyQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params: undefined |  GetApiBotInvocationsIdConfigAppIdKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Bot 读取配置
+ */
+
+export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBotInvocationsIdConfigAppIdKeyQueryOptions(id,appId,key,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiBotInvocationsIdDataAppIdKeyResponse200 = {
+  data: GetApiBotInvocationsIdDataAppIdKey200
+  status: 200
+}
+
+export type getApiBotInvocationsIdDataAppIdKeyResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type getApiBotInvocationsIdDataAppIdKeyResponseSuccess = (getApiBotInvocationsIdDataAppIdKeyResponse200) & {
+  headers: Headers;
+};
+export type getApiBotInvocationsIdDataAppIdKeyResponseError = (getApiBotInvocationsIdDataAppIdKeyResponse401) & {
+  headers: Headers;
+};
+
+export type getApiBotInvocationsIdDataAppIdKeyResponse = (getApiBotInvocationsIdDataAppIdKeyResponseSuccess | getApiBotInvocationsIdDataAppIdKeyResponseError)
+
+export const getGetApiBotInvocationsIdDataAppIdKeyUrl = (id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/bot-invocations/${id}/data/${appId}/${key}?${stringifiedParams}` : `/api/bot-invocations/${id}/data/${appId}/${key}`
+}
+
+/**
+ * @summary Bot 读取插件数据
+ */
+export const getApiBotInvocationsIdDataAppIdKey = async (id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: RequestInit): Promise<getApiBotInvocationsIdDataAppIdKeyResponse> => {
+
+  return invocationFetch<getApiBotInvocationsIdDataAppIdKeyResponse>(getGetApiBotInvocationsIdDataAppIdKeyUrl(id,appId,key,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBotInvocationsIdDataAppIdKeyQueryKey = (id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams,) => {
+    return [
+    `/api/bot-invocations/${id}/data/${appId}/${key}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiBotInvocationsIdDataAppIdKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBotInvocationsIdDataAppIdKeyQueryKey(id,appId,key,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>> = ({ signal }) => getApiBotInvocationsIdDataAppIdKey(id,appId,key,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined && appId !== null && appId !== undefined && key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBotInvocationsIdDataAppIdKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>>
+export type GetApiBotInvocationsIdDataAppIdKeyQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params: undefined |  GetApiBotInvocationsIdDataAppIdKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Bot 读取插件数据
+ */
+
+export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    appId: string,
+    key: string,
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBotInvocationsIdDataAppIdKeyQueryOptions(id,appId,key,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type postApiBotInvocationsIdExportsAppIdExportNameResponse200 = {
+  data: PostApiBotInvocationsIdExportsAppIdExportName200
+  status: 200
+}
+
+export type postApiBotInvocationsIdExportsAppIdExportNameResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiBotInvocationsIdExportsAppIdExportNameResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type postApiBotInvocationsIdExportsAppIdExportNameResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiBotInvocationsIdExportsAppIdExportNameResponseSuccess = (postApiBotInvocationsIdExportsAppIdExportNameResponse200) & {
+  headers: Headers;
+};
+export type postApiBotInvocationsIdExportsAppIdExportNameResponseError = (postApiBotInvocationsIdExportsAppIdExportNameResponse400 | postApiBotInvocationsIdExportsAppIdExportNameResponse401 | postApiBotInvocationsIdExportsAppIdExportNameResponse403) & {
+  headers: Headers;
+};
+
+export type postApiBotInvocationsIdExportsAppIdExportNameResponse = (postApiBotInvocationsIdExportsAppIdExportNameResponseSuccess | postApiBotInvocationsIdExportsAppIdExportNameResponseError)
+
+export const getPostApiBotInvocationsIdExportsAppIdExportNameUrl = (id: string,
+    appId: string,
+    exportName: string,) => {
+
+
+
+
+  return `/api/bot-invocations/${id}/exports/${appId}/${exportName}`
+}
+
+/**
+ * @summary Bot 调用已锁定插件的导出函数
+ */
+export const postApiBotInvocationsIdExportsAppIdExportName = async (id: string,
+    appId: string,
+    exportName: string,
+    githubComNarraTableBackendPkgProtocolBotExportRequest: GithubComNarraTableBackendPkgProtocolBotExportRequest, options?: RequestInit): Promise<postApiBotInvocationsIdExportsAppIdExportNameResponse> => {
+
+  return invocationFetch<postApiBotInvocationsIdExportsAppIdExportNameResponse>(getPostApiBotInvocationsIdExportsAppIdExportNameUrl(id,appId,exportName),
+  {
+    ...options,
+    method: 'POST'
+    ,
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotExportRequest)
+  }
+);}
+
+
+
+
+export const getPostApiBotInvocationsIdExportsAppIdExportNameMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext> => {
+
+const mutationKey = ['postApiBotInvocationsIdExportsAppIdExportName'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, {id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}> = (props) => {
+          const {id,appId,exportName,data} = props ?? {};
+
+          return  postApiBotInvocationsIdExportsAppIdExportName(id,appId,exportName,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiBotInvocationsIdExportsAppIdExportNameMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>>
+    export type PostApiBotInvocationsIdExportsAppIdExportNameMutationBody = GithubComNarraTableBackendPkgProtocolBotExportRequest
+    export type PostApiBotInvocationsIdExportsAppIdExportNameMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary Bot 调用已锁定插件的导出函数
+ */
+export const usePostApiBotInvocationsIdExportsAppIdExportName = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>,
+        TError,
+        {id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiBotInvocationsIdExportsAppIdExportNameMutationOptions(options), queryClient);
+    }
+
+export type getApiBotInvocationsIdReportResponse200 = {
+  data: GetApiBotInvocationsIdReport200
+  status: 200
+}
+
+export type getApiBotInvocationsIdReportResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type getApiBotInvocationsIdReportResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type getApiBotInvocationsIdReportResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiBotInvocationsIdReportResponseSuccess = (getApiBotInvocationsIdReportResponse200) & {
+  headers: Headers;
+};
+export type getApiBotInvocationsIdReportResponseError = (getApiBotInvocationsIdReportResponse400 | getApiBotInvocationsIdReportResponse401 | getApiBotInvocationsIdReportResponse403) & {
+  headers: Headers;
+};
+
+export type getApiBotInvocationsIdReportResponse = (getApiBotInvocationsIdReportResponseSuccess | getApiBotInvocationsIdReportResponseError)
+
+export const getGetApiBotInvocationsIdReportUrl = (id: string,) => {
+
+
+
+
+  return `/api/bot-invocations/${id}/report`
+}
+
+/**
+ * @summary Bot 读取报告数据
+ */
+export const getApiBotInvocationsIdReport = async (id: string, options?: RequestInit): Promise<getApiBotInvocationsIdReportResponse> => {
+
+  return invocationFetch<getApiBotInvocationsIdReportResponse>(getGetApiBotInvocationsIdReportUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBotInvocationsIdReportQueryKey = (id: string,) => {
+    return [
+    `/api/bot-invocations/${id}/report`
+    ] as const;
+    }
+
+
+export const getGetApiBotInvocationsIdReportQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBotInvocationsIdReportQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>> = ({ signal }) => getApiBotInvocationsIdReport(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBotInvocationsIdReportQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>>
+export type GetApiBotInvocationsIdReportQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Bot 读取报告数据
+ */
+
+export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBotInvocationsIdReportQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiBotInvocationsIdStorageResponse200 = {
+  data: string[]
+  status: 200
+}
+
+export type getApiBotInvocationsIdStorageResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type getApiBotInvocationsIdStorageResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type getApiBotInvocationsIdStorageResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiBotInvocationsIdStorageResponseSuccess = (getApiBotInvocationsIdStorageResponse200) & {
+  headers: Headers;
+};
+export type getApiBotInvocationsIdStorageResponseError = (getApiBotInvocationsIdStorageResponse400 | getApiBotInvocationsIdStorageResponse401 | getApiBotInvocationsIdStorageResponse403) & {
+  headers: Headers;
+};
+
+export type getApiBotInvocationsIdStorageResponse = (getApiBotInvocationsIdStorageResponseSuccess | getApiBotInvocationsIdStorageResponseError)
+
+export const getGetApiBotInvocationsIdStorageUrl = (id: string,
+    params?: GetApiBotInvocationsIdStorageParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/bot-invocations/${id}/storage?${stringifiedParams}` : `/api/bot-invocations/${id}/storage`
+}
+
+/**
+ * @summary Bot 列出自身存储键
+ */
+export const getApiBotInvocationsIdStorage = async (id: string,
+    params?: GetApiBotInvocationsIdStorageParams, options?: RequestInit): Promise<getApiBotInvocationsIdStorageResponse> => {
+
+  return invocationFetch<getApiBotInvocationsIdStorageResponse>(getGetApiBotInvocationsIdStorageUrl(id,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBotInvocationsIdStorageQueryKey = (id: string,
+    params?: GetApiBotInvocationsIdStorageParams,) => {
+    return [
+    `/api/bot-invocations/${id}/storage`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiBotInvocationsIdStorageQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(id: string,
+    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBotInvocationsIdStorageQueryKey(id,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>> = ({ signal }) => getApiBotInvocationsIdStorage(id,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBotInvocationsIdStorageQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>>
+export type GetApiBotInvocationsIdStorageQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    params: undefined |  GetApiBotInvocationsIdStorageParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Bot 列出自身存储键
+ */
+
+export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBotInvocationsIdStorageQueryOptions(id,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiBotInvocationsIdStorageKeyResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolBotDataResponse
+  status: 200
+}
+
+export type getApiBotInvocationsIdStorageKeyResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type getApiBotInvocationsIdStorageKeyResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type getApiBotInvocationsIdStorageKeyResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiBotInvocationsIdStorageKeyResponseSuccess = (getApiBotInvocationsIdStorageKeyResponse200) & {
+  headers: Headers;
+};
+export type getApiBotInvocationsIdStorageKeyResponseError = (getApiBotInvocationsIdStorageKeyResponse400 | getApiBotInvocationsIdStorageKeyResponse401 | getApiBotInvocationsIdStorageKeyResponse403) & {
+  headers: Headers;
+};
+
+export type getApiBotInvocationsIdStorageKeyResponse = (getApiBotInvocationsIdStorageKeyResponseSuccess | getApiBotInvocationsIdStorageKeyResponseError)
+
+export const getGetApiBotInvocationsIdStorageKeyUrl = (id: string,
+    key: string,
+    params?: GetApiBotInvocationsIdStorageKeyParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/bot-invocations/${id}/storage/${key}?${stringifiedParams}` : `/api/bot-invocations/${id}/storage/${key}`
+}
+
+/**
+ * @summary Bot 读取自身存储
+ */
+export const getApiBotInvocationsIdStorageKey = async (id: string,
+    key: string,
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: RequestInit): Promise<getApiBotInvocationsIdStorageKeyResponse> => {
+
+  return invocationFetch<getApiBotInvocationsIdStorageKeyResponse>(getGetApiBotInvocationsIdStorageKeyUrl(id,key,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBotInvocationsIdStorageKeyQueryKey = (id: string,
+    key: string,
+    params?: GetApiBotInvocationsIdStorageKeyParams,) => {
+    return [
+    `/api/bot-invocations/${id}/storage/${key}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiBotInvocationsIdStorageKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(id: string,
+    key: string,
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBotInvocationsIdStorageKeyQueryKey(id,key,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>> = ({ signal }) => getApiBotInvocationsIdStorageKey(id,key,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined && key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBotInvocationsIdStorageKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>>
+export type GetApiBotInvocationsIdStorageKeyQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    key: string,
+    params: undefined |  GetApiBotInvocationsIdStorageKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    key: string,
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    key: string,
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Bot 读取自身存储
+ */
+
+export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(
+ id: string,
+    key: string,
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBotInvocationsIdStorageKeyQueryOptions(id,key,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type putApiBotInvocationsIdStorageKeyResponse204 = {
+  data: void
+  status: 204
+}
+
+export type putApiBotInvocationsIdStorageKeyResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type putApiBotInvocationsIdStorageKeyResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type putApiBotInvocationsIdStorageKeyResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type putApiBotInvocationsIdStorageKeyResponseSuccess = (putApiBotInvocationsIdStorageKeyResponse204) & {
+  headers: Headers;
+};
+export type putApiBotInvocationsIdStorageKeyResponseError = (putApiBotInvocationsIdStorageKeyResponse400 | putApiBotInvocationsIdStorageKeyResponse401 | putApiBotInvocationsIdStorageKeyResponse403) & {
+  headers: Headers;
+};
+
+export type putApiBotInvocationsIdStorageKeyResponse = (putApiBotInvocationsIdStorageKeyResponseSuccess | putApiBotInvocationsIdStorageKeyResponseError)
+
+export const getPutApiBotInvocationsIdStorageKeyUrl = (id: string,
+    key: string,) => {
+
+
+
+
+  return `/api/bot-invocations/${id}/storage/${key}`
+}
+
+/**
+ * @summary Bot 写入自身存储
+ */
+export const putApiBotInvocationsIdStorageKey = async (id: string,
+    key: string,
+    githubComNarraTableBackendPkgProtocolBotDataWriteRequest: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest, options?: RequestInit): Promise<putApiBotInvocationsIdStorageKeyResponse> => {
+
+  return invocationFetch<putApiBotInvocationsIdStorageKeyResponse>(getPutApiBotInvocationsIdStorageKeyUrl(id,key),
+  {
+    ...options,
+    method: 'PUT'
+    ,
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotDataWriteRequest)
+  }
+);}
+
+
+
+
+export const getPutApiBotInvocationsIdStorageKeyMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext> => {
+
+const mutationKey = ['putApiBotInvocationsIdStorageKey'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, {id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}> = (props) => {
+          const {id,key,data} = props ?? {};
+
+          return  putApiBotInvocationsIdStorageKey(id,key,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiBotInvocationsIdStorageKeyMutationResult = NonNullable<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>>
+    export type PutApiBotInvocationsIdStorageKeyMutationBody = GithubComNarraTableBackendPkgProtocolBotDataWriteRequest
+    export type PutApiBotInvocationsIdStorageKeyMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary Bot 写入自身存储
+ */
+export const usePutApiBotInvocationsIdStorageKey = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>,
+        TError,
+        {id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest},
+        TContext
+      > => {
+      return useMutation(getPutApiBotInvocationsIdStorageKeyMutationOptions(options), queryClient);
+    }
+
+export type deleteApiBotInvocationsIdStorageKeyResponse204 = {
+  data: void
+  status: 204
+}
+
+export type deleteApiBotInvocationsIdStorageKeyResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type deleteApiBotInvocationsIdStorageKeyResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type deleteApiBotInvocationsIdStorageKeyResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type deleteApiBotInvocationsIdStorageKeyResponseSuccess = (deleteApiBotInvocationsIdStorageKeyResponse204) & {
+  headers: Headers;
+};
+export type deleteApiBotInvocationsIdStorageKeyResponseError = (deleteApiBotInvocationsIdStorageKeyResponse400 | deleteApiBotInvocationsIdStorageKeyResponse401 | deleteApiBotInvocationsIdStorageKeyResponse403) & {
+  headers: Headers;
+};
+
+export type deleteApiBotInvocationsIdStorageKeyResponse = (deleteApiBotInvocationsIdStorageKeyResponseSuccess | deleteApiBotInvocationsIdStorageKeyResponseError)
+
+export const getDeleteApiBotInvocationsIdStorageKeyUrl = (id: string,
+    key: string,
+    params?: DeleteApiBotInvocationsIdStorageKeyParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/bot-invocations/${id}/storage/${key}?${stringifiedParams}` : `/api/bot-invocations/${id}/storage/${key}`
+}
+
+/**
+ * @summary Bot 删除自身存储
+ */
+export const deleteApiBotInvocationsIdStorageKey = async (id: string,
+    key: string,
+    params?: DeleteApiBotInvocationsIdStorageKeyParams, options?: RequestInit): Promise<deleteApiBotInvocationsIdStorageKeyResponse> => {
+
+  return invocationFetch<deleteApiBotInvocationsIdStorageKeyResponse>(getDeleteApiBotInvocationsIdStorageKeyUrl(id,key,params),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiBotInvocationsIdStorageKeyMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext> => {
+
+const mutationKey = ['deleteApiBotInvocationsIdStorageKey'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, {id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}> = (props) => {
+          const {id,key,params} = props ?? {};
+
+          return  deleteApiBotInvocationsIdStorageKey(id,key,params,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiBotInvocationsIdStorageKeyMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>>
+
+    export type DeleteApiBotInvocationsIdStorageKeyMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary Bot 删除自身存储
+ */
+export const useDeleteApiBotInvocationsIdStorageKey = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>,
+        TError,
+        {id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams},
+        TContext
+      > => {
+      return useMutation(getDeleteApiBotInvocationsIdStorageKeyMutationOptions(options), queryClient);
+    }
+
+export type postApiBotInvocationsIdWindowsResponse204 = {
+  data: void
+  status: 204
+}
+
+export type postApiBotInvocationsIdWindowsResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiBotInvocationsIdWindowsResponse401 = {
+  data: InternalHandlerErrorResponse
+  status: 401
+}
+
+export type postApiBotInvocationsIdWindowsResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiBotInvocationsIdWindowsResponseSuccess = (postApiBotInvocationsIdWindowsResponse204) & {
+  headers: Headers;
+};
+export type postApiBotInvocationsIdWindowsResponseError = (postApiBotInvocationsIdWindowsResponse400 | postApiBotInvocationsIdWindowsResponse401 | postApiBotInvocationsIdWindowsResponse403) & {
+  headers: Headers;
+};
+
+export type postApiBotInvocationsIdWindowsResponse = (postApiBotInvocationsIdWindowsResponseSuccess | postApiBotInvocationsIdWindowsResponseError)
+
+export const getPostApiBotInvocationsIdWindowsUrl = (id: string,) => {
+
+
+
+
+  return `/api/bot-invocations/${id}/windows`
+}
+
+/**
+ * @summary Bot 打开已锁定插件的窗口
+ */
+export const postApiBotInvocationsIdWindows = async (id: string,
+    githubComNarraTableBackendPkgProtocolBotOpenWindowRequest: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest, options?: RequestInit): Promise<postApiBotInvocationsIdWindowsResponse> => {
+
+  return invocationFetch<postApiBotInvocationsIdWindowsResponse>(getPostApiBotInvocationsIdWindowsUrl(id),
+  {
+    ...options,
+    method: 'POST'
+    ,
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotOpenWindowRequest)
+  }
+);}
+
+
+
+
+export const getPostApiBotInvocationsIdWindowsMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext> => {
+
+const mutationKey = ['postApiBotInvocationsIdWindows'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, {id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  postApiBotInvocationsIdWindows(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiBotInvocationsIdWindowsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>>
+    export type PostApiBotInvocationsIdWindowsMutationBody = GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest
+    export type PostApiBotInvocationsIdWindowsMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary Bot 打开已锁定插件的窗口
+ */
+export const usePostApiBotInvocationsIdWindows = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>,
+        TError,
+        {id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiBotInvocationsIdWindowsMutationOptions(options), queryClient);
+    }
+
+export type getApiConfigResponse200 = {
+  data: InternalHandlerPersonalConfigListResponse
+  status: 200
+}
+
+export type getApiConfigResponseSuccess = (getApiConfigResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiConfigResponse = (getApiConfigResponseSuccess)
+
+export const getGetApiConfigUrl = () => {
+
+
+
+
+  return `/api/config`
+}
+
+/**
+ * @summary 个人插件偏好
+ */
+export const getApiConfig = async ( options?: RequestInit): Promise<getApiConfigResponse> => {
+
+  return orvalFetch<getApiConfigResponse>(getGetApiConfigUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiConfigQueryKey = () => {
+    return [
+    `/api/config`
+    ] as const;
+    }
+
+
+export const getGetApiConfigQueryOptions = <TData = Awaited<ReturnType<typeof getApiConfig>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConfig>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiConfigQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiConfig>>> = ({ signal }) => getApiConfig({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiConfig>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiConfigQueryResult = NonNullable<Awaited<ReturnType<typeof getApiConfig>>>
+export type GetApiConfigQueryError = unknown
+
+
+export function useGetApiConfig<TData = Awaited<ReturnType<typeof getApiConfig>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConfig>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiConfig>>,
+          TError,
+          Awaited<ReturnType<typeof getApiConfig>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiConfig<TData = Awaited<ReturnType<typeof getApiConfig>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConfig>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiConfig>>,
+          TError,
+          Awaited<ReturnType<typeof getApiConfig>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiConfig<TData = Awaited<ReturnType<typeof getApiConfig>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConfig>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 个人插件偏好
+ */
+
+export function useGetApiConfig<TData = Awaited<ReturnType<typeof getApiConfig>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConfig>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiConfigQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type putApiConfigAppIdKeyResponse200 = {
+  data: InternalHandlerPersonalConfigDescription
+  status: 200
+}
+
+export type putApiConfigAppIdKeyResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type putApiConfigAppIdKeyResponseSuccess = (putApiConfigAppIdKeyResponse200) & {
+  headers: Headers;
+};
+export type putApiConfigAppIdKeyResponseError = (putApiConfigAppIdKeyResponse403) & {
+  headers: Headers;
+};
+
+export type putApiConfigAppIdKeyResponse = (putApiConfigAppIdKeyResponseSuccess | putApiConfigAppIdKeyResponseError)
+
+export const getPutApiConfigAppIdKeyUrl = (appId: string,
+    key: string,) => {
+
+
+
+
+  return `/api/config/${appId}/${key}`
+}
+
+/**
+ * @summary 修改个人插件偏好
+ */
+export const putApiConfigAppIdKey = async (appId: string,
+    key: string,
+    internalHandlerSetConfigRequest: InternalHandlerSetConfigRequest, options?: RequestInit): Promise<putApiConfigAppIdKeyResponse> => {
+
+  return orvalFetch<putApiConfigAppIdKeyResponse>(getPutApiConfigAppIdKeyUrl(appId,key),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerSetConfigRequest)
+  }
+);}
+
+
+
+
+export const getPutApiConfigAppIdKeyMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiConfigAppIdKey>>, TError,{appId: string;key: string;data: InternalHandlerSetConfigRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiConfigAppIdKey>>, TError,{appId: string;key: string;data: InternalHandlerSetConfigRequest}, TContext> => {
+
+const mutationKey = ['putApiConfigAppIdKey'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiConfigAppIdKey>>, {appId: string;key: string;data: InternalHandlerSetConfigRequest}> = (props) => {
+          const {appId,key,data} = props ?? {};
+
+          return  putApiConfigAppIdKey(appId,key,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiConfigAppIdKeyMutationResult = NonNullable<Awaited<ReturnType<typeof putApiConfigAppIdKey>>>
+    export type PutApiConfigAppIdKeyMutationBody = InternalHandlerSetConfigRequest
+    export type PutApiConfigAppIdKeyMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 修改个人插件偏好
+ */
+export const usePutApiConfigAppIdKey = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiConfigAppIdKey>>, TError,{appId: string;key: string;data: InternalHandlerSetConfigRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putApiConfigAppIdKey>>,
+        TError,
+        {appId: string;key: string;data: InternalHandlerSetConfigRequest},
+        TContext
+      > => {
+      return useMutation(getPutApiConfigAppIdKeyMutationOptions(options), queryClient);
+    }
+
+export type deleteApiConfigAppIdKeyResponse204 = {
+  data: void
+  status: 204
+}
+
+export type deleteApiConfigAppIdKeyResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type deleteApiConfigAppIdKeyResponseSuccess = (deleteApiConfigAppIdKeyResponse204) & {
+  headers: Headers;
+};
+export type deleteApiConfigAppIdKeyResponseError = (deleteApiConfigAppIdKeyResponse403) & {
+  headers: Headers;
+};
+
+export type deleteApiConfigAppIdKeyResponse = (deleteApiConfigAppIdKeyResponseSuccess | deleteApiConfigAppIdKeyResponseError)
+
+export const getDeleteApiConfigAppIdKeyUrl = (appId: string,
+    key: string,) => {
+
+
+
+
+  return `/api/config/${appId}/${key}`
+}
+
+/**
+ * @summary 重置个人插件偏好
+ */
+export const deleteApiConfigAppIdKey = async (appId: string,
+    key: string, options?: RequestInit): Promise<deleteApiConfigAppIdKeyResponse> => {
+
+  return orvalFetch<deleteApiConfigAppIdKeyResponse>(getDeleteApiConfigAppIdKeyUrl(appId,key),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiConfigAppIdKeyMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiConfigAppIdKey>>, TError,{appId: string;key: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiConfigAppIdKey>>, TError,{appId: string;key: string}, TContext> => {
+
+const mutationKey = ['deleteApiConfigAppIdKey'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiConfigAppIdKey>>, {appId: string;key: string}> = (props) => {
+          const {appId,key} = props ?? {};
+
+          return  deleteApiConfigAppIdKey(appId,key,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiConfigAppIdKeyMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiConfigAppIdKey>>>
+
+    export type DeleteApiConfigAppIdKeyMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 重置个人插件偏好
+ */
+export const useDeleteApiConfigAppIdKey = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiConfigAppIdKey>>, TError,{appId: string;key: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiConfigAppIdKey>>,
+        TError,
+        {appId: string;key: string},
+        TContext
+      > => {
+      return useMutation(getDeleteApiConfigAppIdKeyMutationOptions(options), queryClient);
+    }
+
+export type getApiDmResponse200 = {
+  data: InternalHandlerDirectMessageListResponse
+  status: 200
+}
+
+export type getApiDmResponseSuccess = (getApiDmResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiDmResponse = (getApiDmResponseSuccess)
+
+export const getGetApiDmUrl = () => {
+
+
+
+
+  return `/api/dm`
+}
+
+/**
+ * @summary 私聊列表
+ */
+export const getApiDm = async ( options?: RequestInit): Promise<getApiDmResponse> => {
+
+  return orvalFetch<getApiDmResponse>(getGetApiDmUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiDmQueryKey = () => {
+    return [
+    `/api/dm`
+    ] as const;
+    }
+
+
+export const getGetApiDmQueryOptions = <TData = Awaited<ReturnType<typeof getApiDm>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDm>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiDmQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiDm>>> = ({ signal }) => getApiDm({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiDm>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiDmQueryResult = NonNullable<Awaited<ReturnType<typeof getApiDm>>>
+export type GetApiDmQueryError = unknown
+
+
+export function useGetApiDm<TData = Awaited<ReturnType<typeof getApiDm>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDm>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiDm>>,
+          TError,
+          Awaited<ReturnType<typeof getApiDm>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiDm<TData = Awaited<ReturnType<typeof getApiDm>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDm>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiDm>>,
+          TError,
+          Awaited<ReturnType<typeof getApiDm>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiDm<TData = Awaited<ReturnType<typeof getApiDm>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDm>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 私聊列表
+ */
+
+export function useGetApiDm<TData = Awaited<ReturnType<typeof getApiDm>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDm>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiDmQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiDmTargetUserIDResponse200 = {
+  data: InternalHandlerDirectMessageResponse
+  status: 200
+}
+
+export type getApiDmTargetUserIDResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type getApiDmTargetUserIDResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type getApiDmTargetUserIDResponseSuccess = (getApiDmTargetUserIDResponse200) & {
+  headers: Headers;
+};
+export type getApiDmTargetUserIDResponseError = (getApiDmTargetUserIDResponse400 | getApiDmTargetUserIDResponse404) & {
+  headers: Headers;
+};
+
+export type getApiDmTargetUserIDResponse = (getApiDmTargetUserIDResponseSuccess | getApiDmTargetUserIDResponseError)
+
+export const getGetApiDmTargetUserIDUrl = (targetUserID: string,) => {
+
+
+
+
+  return `/api/dm/${targetUserID}`
+}
+
+/**
+ * @summary 打开私聊
+ */
+export const getApiDmTargetUserID = async (targetUserID: string, options?: RequestInit): Promise<getApiDmTargetUserIDResponse> => {
+
+  return orvalFetch<getApiDmTargetUserIDResponse>(getGetApiDmTargetUserIDUrl(targetUserID),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiDmTargetUserIDQueryKey = (targetUserID: string,) => {
+    return [
+    `/api/dm/${targetUserID}`
+    ] as const;
+    }
+
+
+export const getGetApiDmTargetUserIDQueryOptions = <TData = Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError = InternalHandlerErrorResponse>(targetUserID: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiDmTargetUserIDQueryKey(targetUserID);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiDmTargetUserID>>> = ({ signal }) => getApiDmTargetUserID(targetUserID, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: targetUserID !== null && targetUserID !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiDmTargetUserIDQueryResult = NonNullable<Awaited<ReturnType<typeof getApiDmTargetUserID>>>
+export type GetApiDmTargetUserIDQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiDmTargetUserID<TData = Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError = InternalHandlerErrorResponse>(
+ targetUserID: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiDmTargetUserID>>,
+          TError,
+          Awaited<ReturnType<typeof getApiDmTargetUserID>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiDmTargetUserID<TData = Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError = InternalHandlerErrorResponse>(
+ targetUserID: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiDmTargetUserID>>,
+          TError,
+          Awaited<ReturnType<typeof getApiDmTargetUserID>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiDmTargetUserID<TData = Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError = InternalHandlerErrorResponse>(
+ targetUserID: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 打开私聊
+ */
+
+export function useGetApiDmTargetUserID<TData = Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError = InternalHandlerErrorResponse>(
+ targetUserID: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDmTargetUserID>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiDmTargetUserIDQueryOptions(targetUserID,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export type getApiFriendRequestsResponse200 = {
   data: GetApiFriendRequests200
@@ -2107,6 +4470,115 @@ export const useDeleteApiFriendsUserId = <TError = DeleteApiFriendsUserId404,
       return useMutation(getDeleteApiFriendsUserIdMutationOptions(options), queryClient);
     }
 
+export type postApiInvitesTokenAcceptResponse201 = {
+  data: InternalHandlerSpaceInviteAccepted
+  status: 201
+}
+
+export type postApiInvitesTokenAcceptResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiInvitesTokenAcceptResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiInvitesTokenAcceptResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type postApiInvitesTokenAcceptResponse409 = {
+  data: InternalHandlerErrorResponse
+  status: 409
+}
+
+export type postApiInvitesTokenAcceptResponse429 = {
+  data: InternalHandlerErrorResponse
+  status: 429
+}
+
+export type postApiInvitesTokenAcceptResponseSuccess = (postApiInvitesTokenAcceptResponse201) & {
+  headers: Headers;
+};
+export type postApiInvitesTokenAcceptResponseError = (postApiInvitesTokenAcceptResponse400 | postApiInvitesTokenAcceptResponse403 | postApiInvitesTokenAcceptResponse404 | postApiInvitesTokenAcceptResponse409 | postApiInvitesTokenAcceptResponse429) & {
+  headers: Headers;
+};
+
+export type postApiInvitesTokenAcceptResponse = (postApiInvitesTokenAcceptResponseSuccess | postApiInvitesTokenAcceptResponseError)
+
+export const getPostApiInvitesTokenAcceptUrl = (token: string,) => {
+
+
+
+
+  return `/api/invites/${token}/accept`
+}
+
+/**
+ * @summary 接受空间邀请
+ */
+export const postApiInvitesTokenAccept = async (token: string, options?: RequestInit): Promise<postApiInvitesTokenAcceptResponse> => {
+
+  return orvalFetch<postApiInvitesTokenAcceptResponse>(getPostApiInvitesTokenAcceptUrl(token),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getPostApiInvitesTokenAcceptMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiInvitesTokenAccept>>, TError,{token: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiInvitesTokenAccept>>, TError,{token: string}, TContext> => {
+
+const mutationKey = ['postApiInvitesTokenAccept'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiInvitesTokenAccept>>, {token: string}> = (props) => {
+          const {token} = props ?? {};
+
+          return  postApiInvitesTokenAccept(token,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiInvitesTokenAcceptMutationResult = NonNullable<Awaited<ReturnType<typeof postApiInvitesTokenAccept>>>
+
+    export type PostApiInvitesTokenAcceptMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 接受空间邀请
+ */
+export const usePostApiInvitesTokenAccept = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiInvitesTokenAccept>>, TError,{token: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiInvitesTokenAccept>>,
+        TError,
+        {token: string},
+        TContext
+      > => {
+      return useMutation(getPostApiInvitesTokenAcceptMutationOptions(options), queryClient);
+    }
+
 export type getApiMeResponse200 = {
   data: InternalHandlerUserResponse
   status: 200
@@ -2483,6 +4955,106 @@ export const usePostApiMessagesMessageIdFold = <TError = InternalHandlerErrorRes
         TContext
       > => {
       return useMutation(getPostApiMessagesMessageIdFoldMutationOptions(options), queryClient);
+    }
+
+export type postApiMessagesMessageIdMoveResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolMessage
+  status: 200
+}
+
+export type postApiMessagesMessageIdMoveResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiMessagesMessageIdMoveResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiMessagesMessageIdMoveResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type postApiMessagesMessageIdMoveResponseSuccess = (postApiMessagesMessageIdMoveResponse200) & {
+  headers: Headers;
+};
+export type postApiMessagesMessageIdMoveResponseError = (postApiMessagesMessageIdMoveResponse400 | postApiMessagesMessageIdMoveResponse403 | postApiMessagesMessageIdMoveResponse404) & {
+  headers: Headers;
+};
+
+export type postApiMessagesMessageIdMoveResponse = (postApiMessagesMessageIdMoveResponseSuccess | postApiMessagesMessageIdMoveResponseError)
+
+export const getPostApiMessagesMessageIdMoveUrl = (messageId: string,) => {
+
+
+
+
+  return `/api/messages/${messageId}/move`
+}
+
+/**
+ * @summary 移动消息
+ */
+export const postApiMessagesMessageIdMove = async (messageId: string,
+    internalHandlerMoveMessageRequest: InternalHandlerMoveMessageRequest, options?: RequestInit): Promise<postApiMessagesMessageIdMoveResponse> => {
+
+  return orvalFetch<postApiMessagesMessageIdMoveResponse>(getPostApiMessagesMessageIdMoveUrl(messageId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerMoveMessageRequest)
+  }
+);}
+
+
+
+
+export const getPostApiMessagesMessageIdMoveMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiMessagesMessageIdMove>>, TError,{messageId: string;data: InternalHandlerMoveMessageRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiMessagesMessageIdMove>>, TError,{messageId: string;data: InternalHandlerMoveMessageRequest}, TContext> => {
+
+const mutationKey = ['postApiMessagesMessageIdMove'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiMessagesMessageIdMove>>, {messageId: string;data: InternalHandlerMoveMessageRequest}> = (props) => {
+          const {messageId,data} = props ?? {};
+
+          return  postApiMessagesMessageIdMove(messageId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiMessagesMessageIdMoveMutationResult = NonNullable<Awaited<ReturnType<typeof postApiMessagesMessageIdMove>>>
+    export type PostApiMessagesMessageIdMoveMutationBody = InternalHandlerMoveMessageRequest
+    export type PostApiMessagesMessageIdMoveMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 移动消息
+ */
+export const usePostApiMessagesMessageIdMove = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiMessagesMessageIdMove>>, TError,{messageId: string;data: InternalHandlerMoveMessageRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiMessagesMessageIdMove>>,
+        TError,
+        {messageId: string;data: InternalHandlerMoveMessageRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiMessagesMessageIdMoveMutationOptions(options), queryClient);
     }
 
 export type postApiMessagesMessageIdPinResponse200 = {
@@ -2927,6 +5499,260 @@ export function useGetApiPluginsDefaults<TData = Awaited<ReturnType<typeof getAp
 
 
 
+export type getApiPluginsNameVersionWindowsIdResponse200 = {
+  data: string
+  status: 200
+}
+
+export type getApiPluginsNameVersionWindowsIdResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiPluginsNameVersionWindowsIdResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type getApiPluginsNameVersionWindowsIdResponseSuccess = (getApiPluginsNameVersionWindowsIdResponse200) & {
+  headers: Headers;
+};
+export type getApiPluginsNameVersionWindowsIdResponseError = (getApiPluginsNameVersionWindowsIdResponse403 | getApiPluginsNameVersionWindowsIdResponse404) & {
+  headers: Headers;
+};
+
+export type getApiPluginsNameVersionWindowsIdResponse = (getApiPluginsNameVersionWindowsIdResponseSuccess | getApiPluginsNameVersionWindowsIdResponseError)
+
+export const getGetApiPluginsNameVersionWindowsIdUrl = (name: string,
+    version: string,
+    id: string,) => {
+
+
+
+
+  return `/api/plugins/${name}/${version}/windows/${id}`
+}
+
+/**
+ * @summary 插件窗口 HTML
+ */
+export const getApiPluginsNameVersionWindowsId = async (name: string,
+    version: string,
+    id: string, options?: RequestInit): Promise<getApiPluginsNameVersionWindowsIdResponse> => {
+
+  return orvalFetch<getApiPluginsNameVersionWindowsIdResponse>(getGetApiPluginsNameVersionWindowsIdUrl(name,version,id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiPluginsNameVersionWindowsIdQueryKey = (name: string,
+    version: string,
+    id: string,) => {
+    return [
+    `/api/plugins/${name}/${version}/windows/${id}`
+    ] as const;
+    }
+
+
+export const getGetApiPluginsNameVersionWindowsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError = InternalHandlerErrorResponse>(name: string,
+    version: string,
+    id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiPluginsNameVersionWindowsIdQueryKey(name,version,id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>> = ({ signal }) => getApiPluginsNameVersionWindowsId(name,version,id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: name !== null && name !== undefined && version !== null && version !== undefined && id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiPluginsNameVersionWindowsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>>
+export type GetApiPluginsNameVersionWindowsIdQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiPluginsNameVersionWindowsId<TData = Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError = InternalHandlerErrorResponse>(
+ name: string,
+    version: string,
+    id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiPluginsNameVersionWindowsId<TData = Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError = InternalHandlerErrorResponse>(
+ name: string,
+    version: string,
+    id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiPluginsNameVersionWindowsId<TData = Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError = InternalHandlerErrorResponse>(
+ name: string,
+    version: string,
+    id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 插件窗口 HTML
+ */
+
+export function useGetApiPluginsNameVersionWindowsId<TData = Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError = InternalHandlerErrorResponse>(
+ name: string,
+    version: string,
+    id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPluginsNameVersionWindowsId>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiPluginsNameVersionWindowsIdQueryOptions(name,version,id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiResourcesResponse200 = {
+  data: InternalHandlerResourceListResponse
+  status: 200
+}
+
+export type getApiResourcesResponseSuccess = (getApiResourcesResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiResourcesResponse = (getApiResourcesResponseSuccess)
+
+export const getGetApiResourcesUrl = () => {
+
+
+
+
+  return `/api/resources`
+}
+
+/**
+ * @summary 我的全局资源
+ */
+export const getApiResources = async ( options?: RequestInit): Promise<getApiResourcesResponse> => {
+
+  return orvalFetch<getApiResourcesResponse>(getGetApiResourcesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiResourcesQueryKey = () => {
+    return [
+    `/api/resources`
+    ] as const;
+    }
+
+
+export const getGetApiResourcesQueryOptions = <TData = Awaited<ReturnType<typeof getApiResources>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResources>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiResourcesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiResources>>> = ({ signal }) => getApiResources({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiResources>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiResourcesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiResources>>>
+export type GetApiResourcesQueryError = unknown
+
+
+export function useGetApiResources<TData = Awaited<ReturnType<typeof getApiResources>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResources>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiResources>>,
+          TError,
+          Awaited<ReturnType<typeof getApiResources>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiResources<TData = Awaited<ReturnType<typeof getApiResources>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResources>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiResources>>,
+          TError,
+          Awaited<ReturnType<typeof getApiResources>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiResources<TData = Awaited<ReturnType<typeof getApiResources>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResources>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 我的全局资源
+ */
+
+export function useGetApiResources<TData = Awaited<ReturnType<typeof getApiResources>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResources>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiResourcesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export type postApiResourcesUploadResponse201 = {
   data: GithubComNarraTableBackendPkgProtocolResource
   status: 201
@@ -2947,10 +5773,15 @@ export type postApiResourcesUploadResponse413 = {
   status: 413
 }
 
+export type postApiResourcesUploadResponse429 = {
+  data: InternalHandlerErrorResponse
+  status: 429
+}
+
 export type postApiResourcesUploadResponseSuccess = (postApiResourcesUploadResponse201) & {
   headers: Headers;
 };
-export type postApiResourcesUploadResponseError = (postApiResourcesUploadResponse400 | postApiResourcesUploadResponse403 | postApiResourcesUploadResponse413) & {
+export type postApiResourcesUploadResponseError = (postApiResourcesUploadResponse400 | postApiResourcesUploadResponse403 | postApiResourcesUploadResponse413 | postApiResourcesUploadResponse429) & {
   headers: Headers;
 };
 
@@ -3169,6 +6000,100 @@ export function useGetApiResourcesId<TData = Awaited<ReturnType<typeof getApiRes
 
 
 
+export type deleteApiResourcesIdResponse204 = {
+  data: void
+  status: 204
+}
+
+export type deleteApiResourcesIdResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type deleteApiResourcesIdResponse409 = {
+  data: InternalHandlerErrorResponse
+  status: 409
+}
+
+export type deleteApiResourcesIdResponseSuccess = (deleteApiResourcesIdResponse204) & {
+  headers: Headers;
+};
+export type deleteApiResourcesIdResponseError = (deleteApiResourcesIdResponse404 | deleteApiResourcesIdResponse409) & {
+  headers: Headers;
+};
+
+export type deleteApiResourcesIdResponse = (deleteApiResourcesIdResponseSuccess | deleteApiResourcesIdResponseError)
+
+export const getDeleteApiResourcesIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/resources/${id}`
+}
+
+/**
+ * @summary 删除我的全局资源
+ */
+export const deleteApiResourcesId = async (id: string, options?: RequestInit): Promise<deleteApiResourcesIdResponse> => {
+
+  return orvalFetch<deleteApiResourcesIdResponse>(getDeleteApiResourcesIdUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiResourcesIdMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiResourcesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiResourcesId>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['deleteApiResourcesId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiResourcesId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteApiResourcesId(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiResourcesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiResourcesId>>>
+
+    export type DeleteApiResourcesIdMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 删除我的全局资源
+ */
+export const useDeleteApiResourcesId = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiResourcesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiResourcesId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getDeleteApiResourcesIdMutationOptions(options), queryClient);
+    }
+
 export type getApiResourcesIdFileResponse200 = {
   data: Blob
   status: 200
@@ -3207,7 +6132,7 @@ export const getGetApiResourcesIdFileUrl = (id: string,) => {
  */
 export const getApiResourcesIdFile = async (id: string, options?: RequestInit): Promise<getApiResourcesIdFileResponse> => {
 
-  return orvalFetch<getApiResourcesIdFileResponse>(getGetApiResourcesIdFileUrl(id),
+  return orvalBlobFetch<getApiResourcesIdFileResponse>(getGetApiResourcesIdFileUrl(id),
   {
     ...options,
     method: 'GET'
@@ -3227,7 +6152,7 @@ export const getGetApiResourcesIdFileQueryKey = (id: string,) => {
     }
 
 
-export const getGetApiResourcesIdFileQueryOptions = <TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+export const getGetApiResourcesIdFileQueryOptions = <TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -3256,7 +6181,7 @@ export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getAp
           TError,
           Awaited<ReturnType<typeof getApiResourcesIdFile>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(
@@ -3266,11 +6191,11 @@ export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getAp
           TError,
           Awaited<ReturnType<typeof getApiResourcesIdFile>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -3278,11 +6203,131 @@ export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getAp
  */
 
 export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiResourcesIdFileQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiResourcesIdReferencesResponse200 = {
+  data: InternalHandlerResourceReferencesResponse
+  status: 200
+}
+
+export type getApiResourcesIdReferencesResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type getApiResourcesIdReferencesResponseSuccess = (getApiResourcesIdReferencesResponse200) & {
+  headers: Headers;
+};
+export type getApiResourcesIdReferencesResponseError = (getApiResourcesIdReferencesResponse404) & {
+  headers: Headers;
+};
+
+export type getApiResourcesIdReferencesResponse = (getApiResourcesIdReferencesResponseSuccess | getApiResourcesIdReferencesResponseError)
+
+export const getGetApiResourcesIdReferencesUrl = (id: string,) => {
+
+
+
+
+  return `/api/resources/${id}/references`
+}
+
+/**
+ * @summary 全局资源引用统计
+ */
+export const getApiResourcesIdReferences = async (id: string, options?: RequestInit): Promise<getApiResourcesIdReferencesResponse> => {
+
+  return orvalFetch<getApiResourcesIdReferencesResponse>(getGetApiResourcesIdReferencesUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiResourcesIdReferencesQueryKey = (id: string,) => {
+    return [
+    `/api/resources/${id}/references`
+    ] as const;
+    }
+
+
+export const getGetApiResourcesIdReferencesQueryOptions = <TData = Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError = InternalHandlerErrorResponse>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiResourcesIdReferencesQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiResourcesIdReferences>>> = ({ signal }) => getApiResourcesIdReferences(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiResourcesIdReferencesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiResourcesIdReferences>>>
+export type GetApiResourcesIdReferencesQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiResourcesIdReferences<TData = Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError = InternalHandlerErrorResponse>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiResourcesIdReferences>>,
+          TError,
+          Awaited<ReturnType<typeof getApiResourcesIdReferences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiResourcesIdReferences<TData = Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError = InternalHandlerErrorResponse>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiResourcesIdReferences>>,
+          TError,
+          Awaited<ReturnType<typeof getApiResourcesIdReferences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiResourcesIdReferences<TData = Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError = InternalHandlerErrorResponse>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 全局资源引用统计
+ */
+
+export function useGetApiResourcesIdReferences<TData = Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError = InternalHandlerErrorResponse>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdReferences>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiResourcesIdReferencesQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -3611,6 +6656,105 @@ export const usePostApiSpaces = <TError = InternalHandlerErrorResponse,
       return useMutation(getPostApiSpacesMutationOptions(options), queryClient);
     }
 
+export type postApiSpacesImportResponse201 = {
+  data: InternalHandlerSpaceDetail
+  status: 201
+}
+
+export type postApiSpacesImportResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiSpacesImportResponse413 = {
+  data: InternalHandlerErrorResponse
+  status: 413
+}
+
+export type postApiSpacesImportResponse429 = {
+  data: InternalHandlerErrorResponse
+  status: 429
+}
+
+export type postApiSpacesImportResponseSuccess = (postApiSpacesImportResponse201) & {
+  headers: Headers;
+};
+export type postApiSpacesImportResponseError = (postApiSpacesImportResponse400 | postApiSpacesImportResponse413 | postApiSpacesImportResponse429) & {
+  headers: Headers;
+};
+
+export type postApiSpacesImportResponse = (postApiSpacesImportResponseSuccess | postApiSpacesImportResponseError)
+
+export const getPostApiSpacesImportUrl = () => {
+
+
+
+
+  return `/api/spaces/import`
+}
+
+/**
+ * @summary Import space
+ */
+export const postApiSpacesImport = async (githubComNarraTableBackendPkgProtocolExport: GithubComNarraTableBackendPkgProtocolExport, options?: RequestInit): Promise<postApiSpacesImportResponse> => {
+
+  return orvalFetch<postApiSpacesImportResponse>(getPostApiSpacesImportUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolExport)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesImportMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesImport>>, TError,{data: GithubComNarraTableBackendPkgProtocolExport}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesImport>>, TError,{data: GithubComNarraTableBackendPkgProtocolExport}, TContext> => {
+
+const mutationKey = ['postApiSpacesImport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesImport>>, {data: GithubComNarraTableBackendPkgProtocolExport}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiSpacesImport(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesImportMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesImport>>>
+    export type PostApiSpacesImportMutationBody = GithubComNarraTableBackendPkgProtocolExport
+    export type PostApiSpacesImportMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary Import space
+ */
+export const usePostApiSpacesImport = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesImport>>, TError,{data: GithubComNarraTableBackendPkgProtocolExport}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesImport>>,
+        TError,
+        {data: GithubComNarraTableBackendPkgProtocolExport},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesImportMutationOptions(options), queryClient);
+    }
+
 export type getApiSpacesSpaceIdResponse200 = {
   data: InternalHandlerSpaceDetail
   status: 200
@@ -3807,6 +6951,376 @@ export const usePatchApiSpacesSpaceId = <TError = unknown,
       return useMutation(getPatchApiSpacesSpaceIdMutationOptions(options), queryClient);
     }
 
+export type getApiSpacesSpaceIdAppsResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolSpaceAppList
+  status: 200
+}
+
+export type getApiSpacesSpaceIdAppsResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdAppsResponseSuccess = (getApiSpacesSpaceIdAppsResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdAppsResponseError = (getApiSpacesSpaceIdAppsResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdAppsResponse = (getApiSpacesSpaceIdAppsResponseSuccess | getApiSpacesSpaceIdAppsResponseError)
+
+export const getGetApiSpacesSpaceIdAppsUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/apps`
+}
+
+/**
+ * @summary 空间应用注册表
+ */
+export const getApiSpacesSpaceIdApps = async (spaceId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdAppsResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdAppsResponse>(getGetApiSpacesSpaceIdAppsUrl(spaceId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdAppsQueryKey = (spaceId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/apps`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdAppsQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError = InternalHandlerErrorResponse>(spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdAppsQueryKey(spaceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>> = ({ signal }) => getApiSpacesSpaceIdApps(spaceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdAppsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>>
+export type GetApiSpacesSpaceIdAppsQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdApps<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdApps<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdApps<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 空间应用注册表
+ */
+
+export function useGetApiSpacesSpaceIdApps<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdApps>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdAppsQueryOptions(spaceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiSpacesSpaceIdAppsAppIdDataResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolAppDataRead
+  status: 200
+}
+
+export type getApiSpacesSpaceIdAppsAppIdDataResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdAppsAppIdDataResponseSuccess = (getApiSpacesSpaceIdAppsAppIdDataResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdAppsAppIdDataResponseError = (getApiSpacesSpaceIdAppsAppIdDataResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdAppsAppIdDataResponse = (getApiSpacesSpaceIdAppsAppIdDataResponseSuccess | getApiSpacesSpaceIdAppsAppIdDataResponseError)
+
+export const getGetApiSpacesSpaceIdAppsAppIdDataUrl = (spaceId: string,
+    appId: string,
+    params?: GetApiSpacesSpaceIdAppsAppIdDataParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/spaces/${spaceId}/apps/${appId}/data?${stringifiedParams}` : `/api/spaces/${spaceId}/apps/${appId}/data`
+}
+
+/**
+ * @summary Read plugin data
+ */
+export const getApiSpacesSpaceIdAppsAppIdData = async (spaceId: string,
+    appId: string,
+    params?: GetApiSpacesSpaceIdAppsAppIdDataParams, options?: RequestInit): Promise<getApiSpacesSpaceIdAppsAppIdDataResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdAppsAppIdDataResponse>(getGetApiSpacesSpaceIdAppsAppIdDataUrl(spaceId,appId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdAppsAppIdDataQueryKey = (spaceId: string,
+    appId: string,
+    params?: GetApiSpacesSpaceIdAppsAppIdDataParams,) => {
+    return [
+    `/api/spaces/${spaceId}/apps/${appId}/data`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdAppsAppIdDataQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError = InternalHandlerErrorResponse>(spaceId: string,
+    appId: string,
+    params?: GetApiSpacesSpaceIdAppsAppIdDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdAppsAppIdDataQueryKey(spaceId,appId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>> = ({ signal }) => getApiSpacesSpaceIdAppsAppIdData(spaceId,appId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && appId !== null && appId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdAppsAppIdDataQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>>
+export type GetApiSpacesSpaceIdAppsAppIdDataQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdAppsAppIdData<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    appId: string,
+    params: undefined |  GetApiSpacesSpaceIdAppsAppIdDataParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdAppsAppIdData<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    appId: string,
+    params?: GetApiSpacesSpaceIdAppsAppIdDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdAppsAppIdData<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    appId: string,
+    params?: GetApiSpacesSpaceIdAppsAppIdDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Read plugin data
+ */
+
+export function useGetApiSpacesSpaceIdAppsAppIdData<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    appId: string,
+    params?: GetApiSpacesSpaceIdAppsAppIdDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdAppsAppIdData>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdAppsAppIdDataQueryOptions(spaceId,appId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolInvokeResponse
+  status: 200
+}
+
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponse409 = {
+  data: InternalHandlerErrorResponse
+  status: 409
+}
+
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponse429 = {
+  data: InternalHandlerErrorResponse
+  status: 429
+}
+
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponseSuccess = (postApiSpacesSpaceIdAppsAppIdInvokeResponse200) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponseError = (postApiSpacesSpaceIdAppsAppIdInvokeResponse400 | postApiSpacesSpaceIdAppsAppIdInvokeResponse404 | postApiSpacesSpaceIdAppsAppIdInvokeResponse409 | postApiSpacesSpaceIdAppsAppIdInvokeResponse429) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdAppsAppIdInvokeResponse = (postApiSpacesSpaceIdAppsAppIdInvokeResponseSuccess | postApiSpacesSpaceIdAppsAppIdInvokeResponseError)
+
+export const getPostApiSpacesSpaceIdAppsAppIdInvokeUrl = (spaceId: string,
+    appId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/apps/${appId}/invoke`
+}
+
+/**
+ * @summary 调用插件导出函数
+ */
+export const postApiSpacesSpaceIdAppsAppIdInvoke = async (spaceId: string,
+    appId: string,
+    githubComNarraTableBackendPkgProtocolInvokeRequest: GithubComNarraTableBackendPkgProtocolInvokeRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdAppsAppIdInvokeResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdAppsAppIdInvokeResponse>(getPostApiSpacesSpaceIdAppsAppIdInvokeUrl(spaceId,appId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolInvokeRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdAppsAppIdInvokeMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdAppsAppIdInvoke>>, TError,{spaceId: string;appId: string;data: GithubComNarraTableBackendPkgProtocolInvokeRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdAppsAppIdInvoke>>, TError,{spaceId: string;appId: string;data: GithubComNarraTableBackendPkgProtocolInvokeRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdAppsAppIdInvoke'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdAppsAppIdInvoke>>, {spaceId: string;appId: string;data: GithubComNarraTableBackendPkgProtocolInvokeRequest}> = (props) => {
+          const {spaceId,appId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdAppsAppIdInvoke(spaceId,appId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdAppsAppIdInvokeMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdAppsAppIdInvoke>>>
+    export type PostApiSpacesSpaceIdAppsAppIdInvokeMutationBody = GithubComNarraTableBackendPkgProtocolInvokeRequest
+    export type PostApiSpacesSpaceIdAppsAppIdInvokeMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 调用插件导出函数
+ */
+export const usePostApiSpacesSpaceIdAppsAppIdInvoke = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdAppsAppIdInvoke>>, TError,{spaceId: string;appId: string;data: GithubComNarraTableBackendPkgProtocolInvokeRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdAppsAppIdInvoke>>,
+        TError,
+        {spaceId: string;appId: string;data: GithubComNarraTableBackendPkgProtocolInvokeRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdAppsAppIdInvokeMutationOptions(options), queryClient);
+    }
+
 export type getApiSpacesSpaceIdCharacterDescriptorResponse200 = {
   data: GithubComNarraTableBackendPkgProtocolCharacterDescriptor
   status: 200
@@ -3921,6 +7435,348 @@ export function useGetApiSpacesSpaceIdCharacterDescriptor<TData = Awaited<Return
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiSpacesSpaceIdCharacterDescriptorQueryOptions(spaceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type postApiSpacesSpaceIdCloseResponse200 = {
+  data: InternalHandlerCloseSpaceResponse
+  status: 200
+}
+
+export type postApiSpacesSpaceIdCloseResponseSuccess = (postApiSpacesSpaceIdCloseResponse200) & {
+  headers: Headers;
+};
+;
+
+export type postApiSpacesSpaceIdCloseResponse = (postApiSpacesSpaceIdCloseResponseSuccess)
+
+export const getPostApiSpacesSpaceIdCloseUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/close`
+}
+
+/**
+ * @summary 结团
+ */
+export const postApiSpacesSpaceIdClose = async (spaceId: string, options?: RequestInit): Promise<postApiSpacesSpaceIdCloseResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdCloseResponse>(getPostApiSpacesSpaceIdCloseUrl(spaceId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdCloseMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdClose>>, TError,{spaceId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdClose>>, TError,{spaceId: string}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdClose'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdClose>>, {spaceId: string}> = (props) => {
+          const {spaceId} = props ?? {};
+
+          return  postApiSpacesSpaceIdClose(spaceId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdCloseMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdClose>>>
+
+    export type PostApiSpacesSpaceIdCloseMutationError = unknown
+
+    /**
+ * @summary 结团
+ */
+export const usePostApiSpacesSpaceIdClose = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdClose>>, TError,{spaceId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdClose>>,
+        TError,
+        {spaceId: string},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdCloseMutationOptions(options), queryClient);
+    }
+
+export type getApiSpacesSpaceIdCloseReportResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolCloseReport
+  status: 200
+}
+
+export type getApiSpacesSpaceIdCloseReportResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdCloseReportResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type getApiSpacesSpaceIdCloseReportResponseSuccess = (getApiSpacesSpaceIdCloseReportResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdCloseReportResponseError = (getApiSpacesSpaceIdCloseReportResponse403 | getApiSpacesSpaceIdCloseReportResponse404) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdCloseReportResponse = (getApiSpacesSpaceIdCloseReportResponseSuccess | getApiSpacesSpaceIdCloseReportResponseError)
+
+export const getGetApiSpacesSpaceIdCloseReportUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/close-report`
+}
+
+/**
+ * @summary 结团报告
+ */
+export const getApiSpacesSpaceIdCloseReport = async (spaceId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdCloseReportResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdCloseReportResponse>(getGetApiSpacesSpaceIdCloseReportUrl(spaceId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdCloseReportQueryKey = (spaceId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/close-report`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdCloseReportQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError = InternalHandlerErrorResponse>(spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdCloseReportQueryKey(spaceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>> = ({ signal }) => getApiSpacesSpaceIdCloseReport(spaceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdCloseReportQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>>
+export type GetApiSpacesSpaceIdCloseReportQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdCloseReport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdCloseReport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdCloseReport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 结团报告
+ */
+
+export function useGetApiSpacesSpaceIdCloseReport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdCloseReport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdCloseReportQueryOptions(spaceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiSpacesSpaceIdCluesResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolCluePage
+  status: 200
+}
+
+export type getApiSpacesSpaceIdCluesResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdCluesResponseSuccess = (getApiSpacesSpaceIdCluesResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdCluesResponseError = (getApiSpacesSpaceIdCluesResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdCluesResponse = (getApiSpacesSpaceIdCluesResponseSuccess | getApiSpacesSpaceIdCluesResponseError)
+
+export const getGetApiSpacesSpaceIdCluesUrl = (spaceId: string,
+    params?: GetApiSpacesSpaceIdCluesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/spaces/${spaceId}/clues?${stringifiedParams}` : `/api/spaces/${spaceId}/clues`
+}
+
+/**
+ * @summary 线索索引
+ */
+export const getApiSpacesSpaceIdClues = async (spaceId: string,
+    params?: GetApiSpacesSpaceIdCluesParams, options?: RequestInit): Promise<getApiSpacesSpaceIdCluesResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdCluesResponse>(getGetApiSpacesSpaceIdCluesUrl(spaceId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdCluesQueryKey = (spaceId: string,
+    params?: GetApiSpacesSpaceIdCluesParams,) => {
+    return [
+    `/api/spaces/${spaceId}/clues`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdCluesQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError = InternalHandlerErrorResponse>(spaceId: string,
+    params?: GetApiSpacesSpaceIdCluesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdCluesQueryKey(spaceId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>> = ({ signal }) => getApiSpacesSpaceIdClues(spaceId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdCluesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>>
+export type GetApiSpacesSpaceIdCluesQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdClues<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    params: undefined |  GetApiSpacesSpaceIdCluesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdClues<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    params?: GetApiSpacesSpaceIdCluesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdClues<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    params?: GetApiSpacesSpaceIdCluesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 线索索引
+ */
+
+export function useGetApiSpacesSpaceIdClues<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    params?: GetApiSpacesSpaceIdCluesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdClues>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdCluesQueryOptions(spaceId,params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -4502,6 +8358,557 @@ export function useGetApiSpacesSpaceIdConfigAppIdKeyRaw<TData = Awaited<ReturnTy
 
 
 
+export type getApiSpacesSpaceIdExportResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolExport
+  status: 200
+}
+
+export type getApiSpacesSpaceIdExportResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdExportResponse413 = {
+  data: InternalHandlerErrorResponse
+  status: 413
+}
+
+export type getApiSpacesSpaceIdExportResponse429 = {
+  data: InternalHandlerErrorResponse
+  status: 429
+}
+
+export type getApiSpacesSpaceIdExportResponseSuccess = (getApiSpacesSpaceIdExportResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdExportResponseError = (getApiSpacesSpaceIdExportResponse403 | getApiSpacesSpaceIdExportResponse413 | getApiSpacesSpaceIdExportResponse429) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdExportResponse = (getApiSpacesSpaceIdExportResponseSuccess | getApiSpacesSpaceIdExportResponseError)
+
+export const getGetApiSpacesSpaceIdExportUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/export`
+}
+
+/**
+ * @summary Export space
+ */
+export const getApiSpacesSpaceIdExport = async (spaceId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdExportResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdExportResponse>(getGetApiSpacesSpaceIdExportUrl(spaceId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdExportQueryKey = (spaceId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/export`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdExportQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError = InternalHandlerErrorResponse>(spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdExportQueryKey(spaceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>> = ({ signal }) => getApiSpacesSpaceIdExport(spaceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdExportQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>>
+export type GetApiSpacesSpaceIdExportQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Export space
+ */
+
+export function useGetApiSpacesSpaceIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdExport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdExportQueryOptions(spaceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiSpacesSpaceIdInvitesResponse200 = {
+  data: InternalHandlerSpaceInviteListResponse
+  status: 200
+}
+
+export type getApiSpacesSpaceIdInvitesResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdInvitesResponseSuccess = (getApiSpacesSpaceIdInvitesResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdInvitesResponseError = (getApiSpacesSpaceIdInvitesResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdInvitesResponse = (getApiSpacesSpaceIdInvitesResponseSuccess | getApiSpacesSpaceIdInvitesResponseError)
+
+export const getGetApiSpacesSpaceIdInvitesUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/invites`
+}
+
+/**
+ * @summary 列出空间邀请
+ */
+export const getApiSpacesSpaceIdInvites = async (spaceId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdInvitesResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdInvitesResponse>(getGetApiSpacesSpaceIdInvitesUrl(spaceId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdInvitesQueryKey = (spaceId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/invites`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdInvitesQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError = InternalHandlerErrorResponse>(spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdInvitesQueryKey(spaceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>> = ({ signal }) => getApiSpacesSpaceIdInvites(spaceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdInvitesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>>
+export type GetApiSpacesSpaceIdInvitesQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdInvites<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdInvites<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdInvites<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 列出空间邀请
+ */
+
+export function useGetApiSpacesSpaceIdInvites<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdInvites>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdInvitesQueryOptions(spaceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type postApiSpacesSpaceIdInvitesResponse201 = {
+  data: InternalHandlerSpaceInviteCreated
+  status: 201
+}
+
+export type postApiSpacesSpaceIdInvitesResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiSpacesSpaceIdInvitesResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiSpacesSpaceIdInvitesResponse429 = {
+  data: InternalHandlerErrorResponse
+  status: 429
+}
+
+export type postApiSpacesSpaceIdInvitesResponseSuccess = (postApiSpacesSpaceIdInvitesResponse201) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdInvitesResponseError = (postApiSpacesSpaceIdInvitesResponse400 | postApiSpacesSpaceIdInvitesResponse403 | postApiSpacesSpaceIdInvitesResponse429) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdInvitesResponse = (postApiSpacesSpaceIdInvitesResponseSuccess | postApiSpacesSpaceIdInvitesResponseError)
+
+export const getPostApiSpacesSpaceIdInvitesUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/invites`
+}
+
+/**
+ * @summary 生成空间邀请链接
+ */
+export const postApiSpacesSpaceIdInvites = async (spaceId: string,
+    internalHandlerCreateSpaceInviteRequest: InternalHandlerCreateSpaceInviteRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdInvitesResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdInvitesResponse>(getPostApiSpacesSpaceIdInvitesUrl(spaceId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerCreateSpaceInviteRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdInvitesMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdInvites>>, TError,{spaceId: string;data: InternalHandlerCreateSpaceInviteRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdInvites>>, TError,{spaceId: string;data: InternalHandlerCreateSpaceInviteRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdInvites'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdInvites>>, {spaceId: string;data: InternalHandlerCreateSpaceInviteRequest}> = (props) => {
+          const {spaceId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdInvites(spaceId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdInvitesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdInvites>>>
+    export type PostApiSpacesSpaceIdInvitesMutationBody = InternalHandlerCreateSpaceInviteRequest
+    export type PostApiSpacesSpaceIdInvitesMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 生成空间邀请链接
+ */
+export const usePostApiSpacesSpaceIdInvites = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdInvites>>, TError,{spaceId: string;data: InternalHandlerCreateSpaceInviteRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdInvites>>,
+        TError,
+        {spaceId: string;data: InternalHandlerCreateSpaceInviteRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdInvitesMutationOptions(options), queryClient);
+    }
+
+export type deleteApiSpacesSpaceIdInvitesInviteIdResponse204 = {
+  data: void
+  status: 204
+}
+
+export type deleteApiSpacesSpaceIdInvitesInviteIdResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type deleteApiSpacesSpaceIdInvitesInviteIdResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type deleteApiSpacesSpaceIdInvitesInviteIdResponseSuccess = (deleteApiSpacesSpaceIdInvitesInviteIdResponse204) & {
+  headers: Headers;
+};
+export type deleteApiSpacesSpaceIdInvitesInviteIdResponseError = (deleteApiSpacesSpaceIdInvitesInviteIdResponse403 | deleteApiSpacesSpaceIdInvitesInviteIdResponse404) & {
+  headers: Headers;
+};
+
+export type deleteApiSpacesSpaceIdInvitesInviteIdResponse = (deleteApiSpacesSpaceIdInvitesInviteIdResponseSuccess | deleteApiSpacesSpaceIdInvitesInviteIdResponseError)
+
+export const getDeleteApiSpacesSpaceIdInvitesInviteIdUrl = (spaceId: string,
+    inviteId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/invites/${inviteId}`
+}
+
+/**
+ * @summary 作废空间邀请
+ */
+export const deleteApiSpacesSpaceIdInvitesInviteId = async (spaceId: string,
+    inviteId: string, options?: RequestInit): Promise<deleteApiSpacesSpaceIdInvitesInviteIdResponse> => {
+
+  return orvalFetch<deleteApiSpacesSpaceIdInvitesInviteIdResponse>(getDeleteApiSpacesSpaceIdInvitesInviteIdUrl(spaceId,inviteId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiSpacesSpaceIdInvitesInviteIdMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdInvitesInviteId>>, TError,{spaceId: string;inviteId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdInvitesInviteId>>, TError,{spaceId: string;inviteId: string}, TContext> => {
+
+const mutationKey = ['deleteApiSpacesSpaceIdInvitesInviteId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdInvitesInviteId>>, {spaceId: string;inviteId: string}> = (props) => {
+          const {spaceId,inviteId} = props ?? {};
+
+          return  deleteApiSpacesSpaceIdInvitesInviteId(spaceId,inviteId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiSpacesSpaceIdInvitesInviteIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdInvitesInviteId>>>
+
+    export type DeleteApiSpacesSpaceIdInvitesInviteIdMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 作废空间邀请
+ */
+export const useDeleteApiSpacesSpaceIdInvitesInviteId = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdInvitesInviteId>>, TError,{spaceId: string;inviteId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiSpacesSpaceIdInvitesInviteId>>,
+        TError,
+        {spaceId: string;inviteId: string},
+        TContext
+      > => {
+      return useMutation(getDeleteApiSpacesSpaceIdInvitesInviteIdMutationOptions(options), queryClient);
+    }
+
+export type postApiSpacesSpaceIdJoinResponse201 = {
+  data: GithubComNarraTableBackendPkgProtocolMember
+  status: 201
+}
+
+export type postApiSpacesSpaceIdJoinResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiSpacesSpaceIdJoinResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiSpacesSpaceIdJoinResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type postApiSpacesSpaceIdJoinResponse409 = {
+  data: InternalHandlerErrorResponse
+  status: 409
+}
+
+export type postApiSpacesSpaceIdJoinResponseSuccess = (postApiSpacesSpaceIdJoinResponse201) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdJoinResponseError = (postApiSpacesSpaceIdJoinResponse400 | postApiSpacesSpaceIdJoinResponse403 | postApiSpacesSpaceIdJoinResponse404 | postApiSpacesSpaceIdJoinResponse409) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdJoinResponse = (postApiSpacesSpaceIdJoinResponseSuccess | postApiSpacesSpaceIdJoinResponseError)
+
+export const getPostApiSpacesSpaceIdJoinUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/join`
+}
+
+/**
+ * @summary 凭邀请码加入空间
+ */
+export const postApiSpacesSpaceIdJoin = async (spaceId: string,
+    internalHandlerJoinSpaceRequest: InternalHandlerJoinSpaceRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdJoinResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdJoinResponse>(getPostApiSpacesSpaceIdJoinUrl(spaceId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerJoinSpaceRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdJoinMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdJoin>>, TError,{spaceId: string;data: InternalHandlerJoinSpaceRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdJoin>>, TError,{spaceId: string;data: InternalHandlerJoinSpaceRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdJoin'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdJoin>>, {spaceId: string;data: InternalHandlerJoinSpaceRequest}> = (props) => {
+          const {spaceId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdJoin(spaceId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdJoinMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdJoin>>>
+    export type PostApiSpacesSpaceIdJoinMutationBody = InternalHandlerJoinSpaceRequest
+    export type PostApiSpacesSpaceIdJoinMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 凭邀请码加入空间
+ */
+export const usePostApiSpacesSpaceIdJoin = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdJoin>>, TError,{spaceId: string;data: InternalHandlerJoinSpaceRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdJoin>>,
+        TError,
+        {spaceId: string;data: InternalHandlerJoinSpaceRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdJoinMutationOptions(options), queryClient);
+    }
+
 export type getApiSpacesSpaceIdMasksResponse200 = {
   data: InternalHandlerMaskListResponse
   status: 200
@@ -5055,6 +9462,797 @@ export const usePatchApiSpacesSpaceIdMasksMaskId = <TError = InternalHandlerErro
       return useMutation(getPatchApiSpacesSpaceIdMasksMaskIdMutationOptions(options), queryClient);
     }
 
+export type getApiSpacesSpaceIdMasksMaskIdCardsResponse200 = {
+  data: InternalHandlerCharacterCardListResponse
+  status: 200
+}
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsResponseSuccess = (getApiSpacesSpaceIdMasksMaskIdCardsResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdMasksMaskIdCardsResponseError = (getApiSpacesSpaceIdMasksMaskIdCardsResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsResponse = (getApiSpacesSpaceIdMasksMaskIdCardsResponseSuccess | getApiSpacesSpaceIdMasksMaskIdCardsResponseError)
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsUrl = (spaceId: string,
+    maskId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/masks/${maskId}/cards`
+}
+
+/**
+ * @summary List character cards
+ */
+export const getApiSpacesSpaceIdMasksMaskIdCards = async (spaceId: string,
+    maskId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdMasksMaskIdCardsResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdMasksMaskIdCardsResponse>(getGetApiSpacesSpaceIdMasksMaskIdCardsUrl(spaceId,maskId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsQueryKey = (spaceId: string,
+    maskId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/masks/${maskId}/cards`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError = InternalHandlerErrorResponse>(spaceId: string,
+    maskId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdMasksMaskIdCardsQueryKey(spaceId,maskId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>> = ({ signal }) => getApiSpacesSpaceIdMasksMaskIdCards(spaceId,maskId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && maskId !== null && maskId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdMasksMaskIdCardsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>>
+export type GetApiSpacesSpaceIdMasksMaskIdCardsQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdMasksMaskIdCards<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdMasksMaskIdCards<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdMasksMaskIdCards<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary List character cards
+ */
+
+export function useGetApiSpacesSpaceIdMasksMaskIdCards<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCards>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdMasksMaskIdCardsQueryOptions(spaceId,maskId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsResponse201 = {
+  data: GithubComNarraTableBackendPkgProtocolCharacterCard
+  status: 201
+}
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsResponse400 = {
+  data: InternalHandlerCharacterErrorResponse
+  status: 400
+}
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsResponseSuccess = (postApiSpacesSpaceIdMasksMaskIdCardsResponse201) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdMasksMaskIdCardsResponseError = (postApiSpacesSpaceIdMasksMaskIdCardsResponse400 | postApiSpacesSpaceIdMasksMaskIdCardsResponse403) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsResponse = (postApiSpacesSpaceIdMasksMaskIdCardsResponseSuccess | postApiSpacesSpaceIdMasksMaskIdCardsResponseError)
+
+export const getPostApiSpacesSpaceIdMasksMaskIdCardsUrl = (spaceId: string,
+    maskId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/masks/${maskId}/cards`
+}
+
+/**
+ * @summary Create a character card
+ */
+export const postApiSpacesSpaceIdMasksMaskIdCards = async (spaceId: string,
+    maskId: string,
+    internalHandlerCreateCharacterCardRequest: InternalHandlerCreateCharacterCardRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdMasksMaskIdCardsResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdMasksMaskIdCardsResponse>(getPostApiSpacesSpaceIdMasksMaskIdCardsUrl(spaceId,maskId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerCreateCharacterCardRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdMasksMaskIdCardsMutationOptions = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCards>>, TError,{spaceId: string;maskId: string;data: InternalHandlerCreateCharacterCardRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCards>>, TError,{spaceId: string;maskId: string;data: InternalHandlerCreateCharacterCardRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdMasksMaskIdCards'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCards>>, {spaceId: string;maskId: string;data: InternalHandlerCreateCharacterCardRequest}> = (props) => {
+          const {spaceId,maskId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdMasksMaskIdCards(spaceId,maskId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdMasksMaskIdCardsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCards>>>
+    export type PostApiSpacesSpaceIdMasksMaskIdCardsMutationBody = InternalHandlerCreateCharacterCardRequest
+    export type PostApiSpacesSpaceIdMasksMaskIdCardsMutationError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse
+
+    /**
+ * @summary Create a character card
+ */
+export const usePostApiSpacesSpaceIdMasksMaskIdCards = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCards>>, TError,{spaceId: string;maskId: string;data: InternalHandlerCreateCharacterCardRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCards>>,
+        TError,
+        {spaceId: string;maskId: string;data: InternalHandlerCreateCharacterCardRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdMasksMaskIdCardsMutationOptions(options), queryClient);
+    }
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsImportResponse201 = {
+  data: GithubComNarraTableBackendPkgProtocolCharacterCard
+  status: 201
+}
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsImportResponse400 = {
+  data: InternalHandlerCharacterErrorResponse
+  status: 400
+}
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsImportResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsImportResponseSuccess = (postApiSpacesSpaceIdMasksMaskIdCardsImportResponse201) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdMasksMaskIdCardsImportResponseError = (postApiSpacesSpaceIdMasksMaskIdCardsImportResponse400 | postApiSpacesSpaceIdMasksMaskIdCardsImportResponse403) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdMasksMaskIdCardsImportResponse = (postApiSpacesSpaceIdMasksMaskIdCardsImportResponseSuccess | postApiSpacesSpaceIdMasksMaskIdCardsImportResponseError)
+
+export const getPostApiSpacesSpaceIdMasksMaskIdCardsImportUrl = (spaceId: string,
+    maskId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/masks/${maskId}/cards/import`
+}
+
+/**
+ * @summary Import a character card
+ */
+export const postApiSpacesSpaceIdMasksMaskIdCardsImport = async (spaceId: string,
+    maskId: string,
+    githubComNarraTableBackendPkgProtocolCardExport: GithubComNarraTableBackendPkgProtocolCardExport, options?: RequestInit): Promise<postApiSpacesSpaceIdMasksMaskIdCardsImportResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdMasksMaskIdCardsImportResponse>(getPostApiSpacesSpaceIdMasksMaskIdCardsImportUrl(spaceId,maskId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolCardExport)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdMasksMaskIdCardsImportMutationOptions = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCardsImport>>, TError,{spaceId: string;maskId: string;data: GithubComNarraTableBackendPkgProtocolCardExport}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCardsImport>>, TError,{spaceId: string;maskId: string;data: GithubComNarraTableBackendPkgProtocolCardExport}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdMasksMaskIdCardsImport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCardsImport>>, {spaceId: string;maskId: string;data: GithubComNarraTableBackendPkgProtocolCardExport}> = (props) => {
+          const {spaceId,maskId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdMasksMaskIdCardsImport(spaceId,maskId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdMasksMaskIdCardsImportMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCardsImport>>>
+    export type PostApiSpacesSpaceIdMasksMaskIdCardsImportMutationBody = GithubComNarraTableBackendPkgProtocolCardExport
+    export type PostApiSpacesSpaceIdMasksMaskIdCardsImportMutationError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse
+
+    /**
+ * @summary Import a character card
+ */
+export const usePostApiSpacesSpaceIdMasksMaskIdCardsImport = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCardsImport>>, TError,{spaceId: string;maskId: string;data: GithubComNarraTableBackendPkgProtocolCardExport}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdMasksMaskIdCardsImport>>,
+        TError,
+        {spaceId: string;maskId: string;data: GithubComNarraTableBackendPkgProtocolCardExport},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdMasksMaskIdCardsImportMutationOptions(options), queryClient);
+    }
+
+export type putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolCharacterCard
+  status: 200
+}
+
+export type putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse400 = {
+  data: InternalHandlerCharacterErrorResponse
+  status: 400
+}
+
+export type putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseSuccess = (putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse200) & {
+  headers: Headers;
+};
+export type putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseError = (putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse400 | putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse403) & {
+  headers: Headers;
+};
+
+export type putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse = (putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseSuccess | putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseError)
+
+export const getPutApiSpacesSpaceIdMasksMaskIdCardsCardIdUrl = (spaceId: string,
+    maskId: string,
+    cardId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/masks/${maskId}/cards/${cardId}`
+}
+
+/**
+ * @summary Update a character card
+ */
+export const putApiSpacesSpaceIdMasksMaskIdCardsCardId = async (spaceId: string,
+    maskId: string,
+    cardId: string,
+    internalHandlerUpdateCharacterCardRequest: InternalHandlerUpdateCharacterCardRequest, options?: RequestInit): Promise<putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse> => {
+
+  return orvalFetch<putApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse>(getPutApiSpacesSpaceIdMasksMaskIdCardsCardIdUrl(spaceId,maskId,cardId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerUpdateCharacterCardRequest)
+  }
+);}
+
+
+
+
+export const getPutApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationOptions = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiSpacesSpaceIdMasksMaskIdCardsCardId>>, TError,{spaceId: string;maskId: string;cardId: string;data: InternalHandlerUpdateCharacterCardRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiSpacesSpaceIdMasksMaskIdCardsCardId>>, TError,{spaceId: string;maskId: string;cardId: string;data: InternalHandlerUpdateCharacterCardRequest}, TContext> => {
+
+const mutationKey = ['putApiSpacesSpaceIdMasksMaskIdCardsCardId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiSpacesSpaceIdMasksMaskIdCardsCardId>>, {spaceId: string;maskId: string;cardId: string;data: InternalHandlerUpdateCharacterCardRequest}> = (props) => {
+          const {spaceId,maskId,cardId,data} = props ?? {};
+
+          return  putApiSpacesSpaceIdMasksMaskIdCardsCardId(spaceId,maskId,cardId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiSpacesSpaceIdMasksMaskIdCardsCardId>>>
+    export type PutApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationBody = InternalHandlerUpdateCharacterCardRequest
+    export type PutApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse
+
+    /**
+ * @summary Update a character card
+ */
+export const usePutApiSpacesSpaceIdMasksMaskIdCardsCardId = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiSpacesSpaceIdMasksMaskIdCardsCardId>>, TError,{spaceId: string;maskId: string;cardId: string;data: InternalHandlerUpdateCharacterCardRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putApiSpacesSpaceIdMasksMaskIdCardsCardId>>,
+        TError,
+        {spaceId: string;maskId: string;cardId: string;data: InternalHandlerUpdateCharacterCardRequest},
+        TContext
+      > => {
+      return useMutation(getPutApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationOptions(options), queryClient);
+    }
+
+export type deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse204 = {
+  data: void
+  status: 204
+}
+
+export type deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseSuccess = (deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse204) & {
+  headers: Headers;
+};
+export type deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseError = (deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse403) & {
+  headers: Headers;
+};
+
+export type deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse = (deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseSuccess | deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponseError)
+
+export const getDeleteApiSpacesSpaceIdMasksMaskIdCardsCardIdUrl = (spaceId: string,
+    maskId: string,
+    cardId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/masks/${maskId}/cards/${cardId}`
+}
+
+/**
+ * @summary Delete a character card
+ */
+export const deleteApiSpacesSpaceIdMasksMaskIdCardsCardId = async (spaceId: string,
+    maskId: string,
+    cardId: string, options?: RequestInit): Promise<deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse> => {
+
+  return orvalFetch<deleteApiSpacesSpaceIdMasksMaskIdCardsCardIdResponse>(getDeleteApiSpacesSpaceIdMasksMaskIdCardsCardIdUrl(spaceId,maskId,cardId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdMasksMaskIdCardsCardId>>, TError,{spaceId: string;maskId: string;cardId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdMasksMaskIdCardsCardId>>, TError,{spaceId: string;maskId: string;cardId: string}, TContext> => {
+
+const mutationKey = ['deleteApiSpacesSpaceIdMasksMaskIdCardsCardId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdMasksMaskIdCardsCardId>>, {spaceId: string;maskId: string;cardId: string}> = (props) => {
+          const {spaceId,maskId,cardId} = props ?? {};
+
+          return  deleteApiSpacesSpaceIdMasksMaskIdCardsCardId(spaceId,maskId,cardId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdMasksMaskIdCardsCardId>>>
+
+    export type DeleteApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary Delete a character card
+ */
+export const useDeleteApiSpacesSpaceIdMasksMaskIdCardsCardId = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiSpacesSpaceIdMasksMaskIdCardsCardId>>, TError,{spaceId: string;maskId: string;cardId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiSpacesSpaceIdMasksMaskIdCardsCardId>>,
+        TError,
+        {spaceId: string;maskId: string;cardId: string},
+        TContext
+      > => {
+      return useMutation(getDeleteApiSpacesSpaceIdMasksMaskIdCardsCardIdMutationOptions(options), queryClient);
+    }
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolCardExport
+  status: 200
+}
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponseSuccess = (getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponseError = (getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponse = (getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponseSuccess | getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponseError)
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportUrl = (spaceId: string,
+    maskId: string,
+    cardId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/masks/${maskId}/cards/${cardId}/export`
+}
+
+/**
+ * @summary Export a character card
+ */
+export const getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport = async (spaceId: string,
+    maskId: string,
+    cardId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdMasksMaskIdCardsCardIdExportResponse>(getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportUrl(spaceId,maskId,cardId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportQueryKey = (spaceId: string,
+    maskId: string,
+    cardId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/masks/${maskId}/cards/${cardId}/export`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError = InternalHandlerErrorResponse>(spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportQueryKey(spaceId,maskId,cardId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>> = ({ signal }) => getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport(spaceId,maskId,cardId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && maskId !== null && maskId !== undefined && cardId !== null && cardId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>>
+export type GetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Export a character card
+ */
+
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExport<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdExport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdExportQueryOptions(spaceId,maskId,cardId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse200 = {
+  data: GetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions200
+  status: 200
+}
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponseSuccess = (getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponseError = (getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse403 | getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse404) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse = (getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponseSuccess | getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponseError)
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsUrl = (spaceId: string,
+    maskId: string,
+    cardId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/masks/${maskId}/cards/${cardId}/revisions`
+}
+
+/**
+ * @summary 角色卡成长记录
+ */
+export const getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions = async (spaceId: string,
+    maskId: string,
+    cardId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsResponse>(getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsUrl(spaceId,maskId,cardId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsQueryKey = (spaceId: string,
+    maskId: string,
+    cardId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/masks/${maskId}/cards/${cardId}/revisions`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError = InternalHandlerErrorResponse>(spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsQueryKey(spaceId,maskId,cardId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>> = ({ signal }) => getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions(spaceId,maskId,cardId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && maskId !== null && maskId !== undefined && cardId !== null && cardId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>>
+export type GetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 角色卡成长记录
+ */
+
+export function useGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    maskId: string,
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisions>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdMasksMaskIdCardsCardIdRevisionsQueryOptions(spaceId,maskId,cardId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export type postApiSpacesSpaceIdMasksMaskIdSetDefaultResponse200 = {
   data: GithubComNarraTableBackendPkgProtocolMask
   status: 200
@@ -5149,6 +10347,101 @@ export const usePostApiSpacesSpaceIdMasksMaskIdSetDefault = <TError = InternalHa
         TContext
       > => {
       return useMutation(getPostApiSpacesSpaceIdMasksMaskIdSetDefaultMutationOptions(options), queryClient);
+    }
+
+export type postApiSpacesSpaceIdMembersResponse201 = {
+  data: GithubComNarraTableBackendPkgProtocolMember
+  status: 201
+}
+
+export type postApiSpacesSpaceIdMembersResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiSpacesSpaceIdMembersResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type postApiSpacesSpaceIdMembersResponseSuccess = (postApiSpacesSpaceIdMembersResponse201) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdMembersResponseError = (postApiSpacesSpaceIdMembersResponse403 | postApiSpacesSpaceIdMembersResponse404) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdMembersResponse = (postApiSpacesSpaceIdMembersResponseSuccess | postApiSpacesSpaceIdMembersResponseError)
+
+export const getPostApiSpacesSpaceIdMembersUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/members`
+}
+
+/**
+ * @summary 直接邀请成员
+ */
+export const postApiSpacesSpaceIdMembers = async (spaceId: string,
+    internalHandlerInviteMemberRequest: InternalHandlerInviteMemberRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdMembersResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdMembersResponse>(getPostApiSpacesSpaceIdMembersUrl(spaceId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerInviteMemberRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdMembersMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMembers>>, TError,{spaceId: string;data: InternalHandlerInviteMemberRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMembers>>, TError,{spaceId: string;data: InternalHandlerInviteMemberRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdMembers'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdMembers>>, {spaceId: string;data: InternalHandlerInviteMemberRequest}> = (props) => {
+          const {spaceId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdMembers(spaceId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdMembersMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdMembers>>>
+    export type PostApiSpacesSpaceIdMembersMutationBody = InternalHandlerInviteMemberRequest
+    export type PostApiSpacesSpaceIdMembersMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 直接邀请成员
+ */
+export const usePostApiSpacesSpaceIdMembers = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdMembers>>, TError,{spaceId: string;data: InternalHandlerInviteMemberRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdMembers>>,
+        TError,
+        {spaceId: string;data: InternalHandlerInviteMemberRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdMembersMutationOptions(options), queryClient);
     }
 
 export type patchApiSpacesSpaceIdMembersUserIdRoleResponse200 = {
@@ -5252,6 +10545,267 @@ export const usePatchApiSpacesSpaceIdMembersUserIdRole = <TError = InternalHandl
       > => {
       return useMutation(getPatchApiSpacesSpaceIdMembersUserIdRoleMutationOptions(options), queryClient);
     }
+
+export type postApiSpacesSpaceIdNpcsResponse201 = {
+  data: GithubComNarraTableBackendPkgProtocolNPCBatchResponse
+  status: 201
+}
+
+export type postApiSpacesSpaceIdNpcsResponse400 = {
+  data: InternalHandlerCharacterErrorResponse
+  status: 400
+}
+
+export type postApiSpacesSpaceIdNpcsResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiSpacesSpaceIdNpcsResponseSuccess = (postApiSpacesSpaceIdNpcsResponse201) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdNpcsResponseError = (postApiSpacesSpaceIdNpcsResponse400 | postApiSpacesSpaceIdNpcsResponse403) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdNpcsResponse = (postApiSpacesSpaceIdNpcsResponseSuccess | postApiSpacesSpaceIdNpcsResponseError)
+
+export const getPostApiSpacesSpaceIdNpcsUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/npcs`
+}
+
+/**
+ * @summary Create NPCs in a batch
+ */
+export const postApiSpacesSpaceIdNpcs = async (spaceId: string,
+    githubComNarraTableBackendPkgProtocolNPCBatchRequest: GithubComNarraTableBackendPkgProtocolNPCBatchRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdNpcsResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdNpcsResponse>(getPostApiSpacesSpaceIdNpcsUrl(spaceId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolNPCBatchRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdNpcsMutationOptions = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdNpcs>>, TError,{spaceId: string;data: GithubComNarraTableBackendPkgProtocolNPCBatchRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdNpcs>>, TError,{spaceId: string;data: GithubComNarraTableBackendPkgProtocolNPCBatchRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdNpcs'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdNpcs>>, {spaceId: string;data: GithubComNarraTableBackendPkgProtocolNPCBatchRequest}> = (props) => {
+          const {spaceId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdNpcs(spaceId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdNpcsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdNpcs>>>
+    export type PostApiSpacesSpaceIdNpcsMutationBody = GithubComNarraTableBackendPkgProtocolNPCBatchRequest
+    export type PostApiSpacesSpaceIdNpcsMutationError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse
+
+    /**
+ * @summary Create NPCs in a batch
+ */
+export const usePostApiSpacesSpaceIdNpcs = <TError = InternalHandlerCharacterErrorResponse | InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdNpcs>>, TError,{spaceId: string;data: GithubComNarraTableBackendPkgProtocolNPCBatchRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdNpcs>>,
+        TError,
+        {spaceId: string;data: GithubComNarraTableBackendPkgProtocolNPCBatchRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdNpcsMutationOptions(options), queryClient);
+    }
+
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponse200 = {
+  data: Blob
+  status: 200
+}
+
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponse302 = {
+  data: void
+  status: 302
+}
+
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponse304 = {
+  data: void
+  status: 304
+}
+
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponse404 = {
+  data: InternalHandlerErrorResponse
+  status: 404
+}
+
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponseSuccess = (getApiSpacesSpaceIdPluginAssetsNamePathResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponseError = (getApiSpacesSpaceIdPluginAssetsNamePathResponse302 | getApiSpacesSpaceIdPluginAssetsNamePathResponse304 | getApiSpacesSpaceIdPluginAssetsNamePathResponse403 | getApiSpacesSpaceIdPluginAssetsNamePathResponse404) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdPluginAssetsNamePathResponse = (getApiSpacesSpaceIdPluginAssetsNamePathResponseSuccess | getApiSpacesSpaceIdPluginAssetsNamePathResponseError)
+
+export const getGetApiSpacesSpaceIdPluginAssetsNamePathUrl = (spaceId: string,
+    name: string,
+    path: string,
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/spaces/${spaceId}/plugin-assets/${name}/${path}?${stringifiedParams}` : `/api/spaces/${spaceId}/plugin-assets/${name}/${path}`
+}
+
+/**
+ * @summary 插件资源
+ */
+export const getApiSpacesSpaceIdPluginAssetsNamePath = async (spaceId: string,
+    name: string,
+    path: string,
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: RequestInit): Promise<getApiSpacesSpaceIdPluginAssetsNamePathResponse> => {
+
+  return orvalBlobFetch<getApiSpacesSpaceIdPluginAssetsNamePathResponse>(getGetApiSpacesSpaceIdPluginAssetsNamePathUrl(spaceId,name,path,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdPluginAssetsNamePathQueryKey = (spaceId: string,
+    name: string,
+    path: string,
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams,) => {
+    return [
+    `/api/spaces/${spaceId}/plugin-assets/${name}/${path}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdPluginAssetsNamePathQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(spaceId: string,
+    name: string,
+    path: string,
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdPluginAssetsNamePathQueryKey(spaceId,name,path,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>> = ({ signal }) => getApiSpacesSpaceIdPluginAssetsNamePath(spaceId,name,path,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && name !== null && name !== undefined && path !== null && path !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdPluginAssetsNamePathQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>>
+export type GetApiSpacesSpaceIdPluginAssetsNamePathQueryError = void | InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
+ spaceId: string,
+    name: string,
+    path: string,
+    params: undefined |  GetApiSpacesSpaceIdPluginAssetsNamePathParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
+ spaceId: string,
+    name: string,
+    path: string,
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
+ spaceId: string,
+    name: string,
+    path: string,
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 插件资源
+ */
+
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
+ spaceId: string,
+    name: string,
+    path: string,
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdPluginAssetsNamePathQueryOptions(spaceId,name,path,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export type getApiSpacesSpaceIdPluginRulesActiveResponse200 = {
   data: GithubComNarraTableBackendPkgProtocolPluginRule
@@ -5762,6 +11316,313 @@ export const usePostApiSpacesSpaceIdPluginsPluginIdEnable = <TError = unknown,
       return useMutation(getPostApiSpacesSpaceIdPluginsPluginIdEnableMutationOptions(options), queryClient);
     }
 
+export type postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolSpacePluginLock
+  status: 200
+}
+
+export type postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type postApiSpacesSpaceIdPluginsPluginIdUpgradeResponseSuccess = (postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse200) & {
+  headers: Headers;
+};
+export type postApiSpacesSpaceIdPluginsPluginIdUpgradeResponseError = (postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse400 | postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse403) & {
+  headers: Headers;
+};
+
+export type postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse = (postApiSpacesSpaceIdPluginsPluginIdUpgradeResponseSuccess | postApiSpacesSpaceIdPluginsPluginIdUpgradeResponseError)
+
+export const getPostApiSpacesSpaceIdPluginsPluginIdUpgradeUrl = (spaceId: string,
+    pluginId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/plugins/${pluginId}/upgrade`
+}
+
+/**
+ * @summary 升级空间插件锁
+ */
+export const postApiSpacesSpaceIdPluginsPluginIdUpgrade = async (spaceId: string,
+    pluginId: string,
+    githubComNarraTableBackendPkgProtocolUpgradePluginRequest: GithubComNarraTableBackendPkgProtocolUpgradePluginRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdPluginsPluginIdUpgradeResponse>(getPostApiSpacesSpaceIdPluginsPluginIdUpgradeUrl(spaceId,pluginId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolUpgradePluginRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdPluginsPluginIdUpgradeMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdPluginsPluginIdUpgrade>>, TError,{spaceId: string;pluginId: string;data: GithubComNarraTableBackendPkgProtocolUpgradePluginRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdPluginsPluginIdUpgrade>>, TError,{spaceId: string;pluginId: string;data: GithubComNarraTableBackendPkgProtocolUpgradePluginRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdPluginsPluginIdUpgrade'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdPluginsPluginIdUpgrade>>, {spaceId: string;pluginId: string;data: GithubComNarraTableBackendPkgProtocolUpgradePluginRequest}> = (props) => {
+          const {spaceId,pluginId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdPluginsPluginIdUpgrade(spaceId,pluginId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdPluginsPluginIdUpgradeMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdPluginsPluginIdUpgrade>>>
+    export type PostApiSpacesSpaceIdPluginsPluginIdUpgradeMutationBody = GithubComNarraTableBackendPkgProtocolUpgradePluginRequest
+    export type PostApiSpacesSpaceIdPluginsPluginIdUpgradeMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 升级空间插件锁
+ */
+export const usePostApiSpacesSpaceIdPluginsPluginIdUpgrade = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdPluginsPluginIdUpgrade>>, TError,{spaceId: string;pluginId: string;data: GithubComNarraTableBackendPkgProtocolUpgradePluginRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdPluginsPluginIdUpgrade>>,
+        TError,
+        {spaceId: string;pluginId: string;data: GithubComNarraTableBackendPkgProtocolUpgradePluginRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdPluginsPluginIdUpgradeMutationOptions(options), queryClient);
+    }
+
+export type getApiSpacesSpaceIdPluginsPluginIdVersionsResponse200 = {
+  data: InternalHandlerPluginUpgradeVersions
+  status: 200
+}
+
+export type getApiSpacesSpaceIdPluginsPluginIdVersionsResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdPluginsPluginIdVersionsResponseSuccess = (getApiSpacesSpaceIdPluginsPluginIdVersionsResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdPluginsPluginIdVersionsResponseError = (getApiSpacesSpaceIdPluginsPluginIdVersionsResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdPluginsPluginIdVersionsResponse = (getApiSpacesSpaceIdPluginsPluginIdVersionsResponseSuccess | getApiSpacesSpaceIdPluginsPluginIdVersionsResponseError)
+
+export const getGetApiSpacesSpaceIdPluginsPluginIdVersionsUrl = (spaceId: string,
+    pluginId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/plugins/${pluginId}/versions`
+}
+
+/**
+ * @summary 空间插件可升级版本
+ */
+export const getApiSpacesSpaceIdPluginsPluginIdVersions = async (spaceId: string,
+    pluginId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdPluginsPluginIdVersionsResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdPluginsPluginIdVersionsResponse>(getGetApiSpacesSpaceIdPluginsPluginIdVersionsUrl(spaceId,pluginId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdPluginsPluginIdVersionsQueryKey = (spaceId: string,
+    pluginId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/plugins/${pluginId}/versions`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdPluginsPluginIdVersionsQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError = InternalHandlerErrorResponse>(spaceId: string,
+    pluginId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdPluginsPluginIdVersionsQueryKey(spaceId,pluginId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>> = ({ signal }) => getApiSpacesSpaceIdPluginsPluginIdVersions(spaceId,pluginId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && pluginId !== null && pluginId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdPluginsPluginIdVersionsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>>
+export type GetApiSpacesSpaceIdPluginsPluginIdVersionsQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdPluginsPluginIdVersions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    pluginId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdPluginsPluginIdVersions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    pluginId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdPluginsPluginIdVersions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    pluginId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 空间插件可升级版本
+ */
+
+export function useGetApiSpacesSpaceIdPluginsPluginIdVersions<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    pluginId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginsPluginIdVersions>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdPluginsPluginIdVersionsQueryOptions(spaceId,pluginId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type postApiSpacesSpaceIdReopenResponse200 = {
+  data: InternalHandlerReopenSpaceResponse
+  status: 200
+}
+
+export type postApiSpacesSpaceIdReopenResponseSuccess = (postApiSpacesSpaceIdReopenResponse200) & {
+  headers: Headers;
+};
+;
+
+export type postApiSpacesSpaceIdReopenResponse = (postApiSpacesSpaceIdReopenResponseSuccess)
+
+export const getPostApiSpacesSpaceIdReopenUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/reopen`
+}
+
+/**
+ * @summary 重开空间
+ */
+export const postApiSpacesSpaceIdReopen = async (spaceId: string, options?: RequestInit): Promise<postApiSpacesSpaceIdReopenResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdReopenResponse>(getPostApiSpacesSpaceIdReopenUrl(spaceId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdReopenMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdReopen>>, TError,{spaceId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdReopen>>, TError,{spaceId: string}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdReopen'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdReopen>>, {spaceId: string}> = (props) => {
+          const {spaceId} = props ?? {};
+
+          return  postApiSpacesSpaceIdReopen(spaceId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdReopenMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdReopen>>>
+
+    export type PostApiSpacesSpaceIdReopenMutationError = unknown
+
+    /**
+ * @summary 重开空间
+ */
+export const usePostApiSpacesSpaceIdReopen = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdReopen>>, TError,{spaceId: string}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdReopen>>,
+        TError,
+        {spaceId: string},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdReopenMutationOptions(options), queryClient);
+    }
+
 export type getApiSpacesSpaceIdResourcesResponse200 = {
   data: InternalHandlerResourceListResponse
   status: 200
@@ -5999,10 +11860,15 @@ export type postApiSpacesSpaceIdResourcesUploadResponse413 = {
   status: 413
 }
 
+export type postApiSpacesSpaceIdResourcesUploadResponse429 = {
+  data: InternalHandlerErrorResponse
+  status: 429
+}
+
 export type postApiSpacesSpaceIdResourcesUploadResponseSuccess = (postApiSpacesSpaceIdResourcesUploadResponse201) & {
   headers: Headers;
 };
-export type postApiSpacesSpaceIdResourcesUploadResponseError = (postApiSpacesSpaceIdResourcesUploadResponse400 | postApiSpacesSpaceIdResourcesUploadResponse403 | postApiSpacesSpaceIdResourcesUploadResponse413) & {
+export type postApiSpacesSpaceIdResourcesUploadResponseError = (postApiSpacesSpaceIdResourcesUploadResponse400 | postApiSpacesSpaceIdResourcesUploadResponse403 | postApiSpacesSpaceIdResourcesUploadResponse413 | postApiSpacesSpaceIdResourcesUploadResponse429) & {
   headers: Headers;
 };
 
@@ -6370,7 +12236,7 @@ export const getGetApiSpacesSpaceIdResourcesResourceIdDownloadUrl = (spaceId: st
 export const getApiSpacesSpaceIdResourcesResourceIdDownload = async (spaceId: string,
     resourceId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdResourcesResourceIdDownloadResponse> => {
 
-  return orvalFetch<getApiSpacesSpaceIdResourcesResourceIdDownloadResponse>(getGetApiSpacesSpaceIdResourcesResourceIdDownloadUrl(spaceId,resourceId),
+  return orvalBlobFetch<getApiSpacesSpaceIdResourcesResourceIdDownloadResponse>(getGetApiSpacesSpaceIdResourcesResourceIdDownloadUrl(spaceId,resourceId),
   {
     ...options,
     method: 'GET'
@@ -6392,7 +12258,7 @@ export const getGetApiSpacesSpaceIdResourcesResourceIdDownloadQueryKey = (spaceI
 
 
 export const getGetApiSpacesSpaceIdResourcesResourceIdDownloadQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(spaceId: string,
-    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -6422,7 +12288,7 @@ export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaite
           TError,
           Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(
@@ -6433,12 +12299,12 @@ export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaite
           TError,
           Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(
  spaceId: string,
-    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -6447,7 +12313,7 @@ export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaite
 
 export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(
  spaceId: string,
-    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -7006,6 +12872,142 @@ export const usePostApiSpacesSpaceIdRoomsRoomIdLeave = <TError = unknown,
       return useMutation(getPostApiSpacesSpaceIdRoomsRoomIdLeaveMutationOptions(options), queryClient);
     }
 
+export type getApiSpacesSpaceIdRoomsRoomIdLogResponse200 = {
+  data: string
+  status: 200
+}
+
+export type getApiSpacesSpaceIdRoomsRoomIdLogResponseSuccess = (getApiSpacesSpaceIdRoomsRoomIdLogResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiSpacesSpaceIdRoomsRoomIdLogResponse = (getApiSpacesSpaceIdRoomsRoomIdLogResponseSuccess)
+
+export const getGetApiSpacesSpaceIdRoomsRoomIdLogUrl = (spaceId: string,
+    roomId: string,
+    params?: GetApiSpacesSpaceIdRoomsRoomIdLogParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/spaces/${spaceId}/rooms/${roomId}/log?${stringifiedParams}` : `/api/spaces/${spaceId}/rooms/${roomId}/log`
+}
+
+/**
+ * @summary 导出房间日志
+ */
+export const getApiSpacesSpaceIdRoomsRoomIdLog = async (spaceId: string,
+    roomId: string,
+    params?: GetApiSpacesSpaceIdRoomsRoomIdLogParams, options?: RequestInit): Promise<getApiSpacesSpaceIdRoomsRoomIdLogResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdRoomsRoomIdLogResponse>(getGetApiSpacesSpaceIdRoomsRoomIdLogUrl(spaceId,roomId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdRoomsRoomIdLogQueryKey = (spaceId: string,
+    roomId: string,
+    params?: GetApiSpacesSpaceIdRoomsRoomIdLogParams,) => {
+    return [
+    `/api/spaces/${spaceId}/rooms/${roomId}/log`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdRoomsRoomIdLogQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError = unknown>(spaceId: string,
+    roomId: string,
+    params?: GetApiSpacesSpaceIdRoomsRoomIdLogParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdRoomsRoomIdLogQueryKey(spaceId,roomId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>> = ({ signal }) => getApiSpacesSpaceIdRoomsRoomIdLog(spaceId,roomId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && roomId !== null && roomId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdRoomsRoomIdLogQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>>
+export type GetApiSpacesSpaceIdRoomsRoomIdLogQueryError = unknown
+
+
+export function useGetApiSpacesSpaceIdRoomsRoomIdLog<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError = unknown>(
+ spaceId: string,
+    roomId: string,
+    params: undefined |  GetApiSpacesSpaceIdRoomsRoomIdLogParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdRoomsRoomIdLog<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError = unknown>(
+ spaceId: string,
+    roomId: string,
+    params?: GetApiSpacesSpaceIdRoomsRoomIdLogParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdRoomsRoomIdLog<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError = unknown>(
+ spaceId: string,
+    roomId: string,
+    params?: GetApiSpacesSpaceIdRoomsRoomIdLogParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 导出房间日志
+ */
+
+export function useGetApiSpacesSpaceIdRoomsRoomIdLog<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError = unknown>(
+ spaceId: string,
+    roomId: string,
+    params?: GetApiSpacesSpaceIdRoomsRoomIdLogParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdLog>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdRoomsRoomIdLogQueryOptions(spaceId,roomId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export type getApiSpacesSpaceIdRoomsRoomIdMessagesResponse200 = {
   data: GithubComNarraTableBackendPkgProtocolPaginatedMessages
   status: 200
@@ -7142,6 +13144,219 @@ export function useGetApiSpacesSpaceIdRoomsRoomIdMessages<TData = Awaited<Return
 
 
 
+export type postApiSpacesSpaceIdRoomsRoomIdReadResponse200 = {
+  data: InternalHandlerMarkReadResponse
+  status: 200
+}
+
+export type postApiSpacesSpaceIdRoomsRoomIdReadResponseSuccess = (postApiSpacesSpaceIdRoomsRoomIdReadResponse200) & {
+  headers: Headers;
+};
+;
+
+export type postApiSpacesSpaceIdRoomsRoomIdReadResponse = (postApiSpacesSpaceIdRoomsRoomIdReadResponseSuccess)
+
+export const getPostApiSpacesSpaceIdRoomsRoomIdReadUrl = (spaceId: string,
+    roomId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/rooms/${roomId}/read`
+}
+
+/**
+ * @summary 标记房间已读
+ */
+export const postApiSpacesSpaceIdRoomsRoomIdRead = async (spaceId: string,
+    roomId: string,
+    internalHandlerMarkReadRequest: InternalHandlerMarkReadRequest, options?: RequestInit): Promise<postApiSpacesSpaceIdRoomsRoomIdReadResponse> => {
+
+  return orvalFetch<postApiSpacesSpaceIdRoomsRoomIdReadResponse>(getPostApiSpacesSpaceIdRoomsRoomIdReadUrl(spaceId,roomId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(internalHandlerMarkReadRequest)
+  }
+);}
+
+
+
+
+export const getPostApiSpacesSpaceIdRoomsRoomIdReadMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdRoomsRoomIdRead>>, TError,{spaceId: string;roomId: string;data: InternalHandlerMarkReadRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdRoomsRoomIdRead>>, TError,{spaceId: string;roomId: string;data: InternalHandlerMarkReadRequest}, TContext> => {
+
+const mutationKey = ['postApiSpacesSpaceIdRoomsRoomIdRead'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSpacesSpaceIdRoomsRoomIdRead>>, {spaceId: string;roomId: string;data: InternalHandlerMarkReadRequest}> = (props) => {
+          const {spaceId,roomId,data} = props ?? {};
+
+          return  postApiSpacesSpaceIdRoomsRoomIdRead(spaceId,roomId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSpacesSpaceIdRoomsRoomIdReadMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSpacesSpaceIdRoomsRoomIdRead>>>
+    export type PostApiSpacesSpaceIdRoomsRoomIdReadMutationBody = InternalHandlerMarkReadRequest
+    export type PostApiSpacesSpaceIdRoomsRoomIdReadMutationError = unknown
+
+    /**
+ * @summary 标记房间已读
+ */
+export const usePostApiSpacesSpaceIdRoomsRoomIdRead = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSpacesSpaceIdRoomsRoomIdRead>>, TError,{spaceId: string;roomId: string;data: InternalHandlerMarkReadRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiSpacesSpaceIdRoomsRoomIdRead>>,
+        TError,
+        {spaceId: string;roomId: string;data: InternalHandlerMarkReadRequest},
+        TContext
+      > => {
+      return useMutation(getPostApiSpacesSpaceIdRoomsRoomIdReadMutationOptions(options), queryClient);
+    }
+
+export type getApiSpacesSpaceIdRoomsRoomIdScenesResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolSceneList
+  status: 200
+}
+
+export type getApiSpacesSpaceIdRoomsRoomIdScenesResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdRoomsRoomIdScenesResponseSuccess = (getApiSpacesSpaceIdRoomsRoomIdScenesResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdRoomsRoomIdScenesResponseError = (getApiSpacesSpaceIdRoomsRoomIdScenesResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdRoomsRoomIdScenesResponse = (getApiSpacesSpaceIdRoomsRoomIdScenesResponseSuccess | getApiSpacesSpaceIdRoomsRoomIdScenesResponseError)
+
+export const getGetApiSpacesSpaceIdRoomsRoomIdScenesUrl = (spaceId: string,
+    roomId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/rooms/${roomId}/scenes`
+}
+
+/**
+ * @summary 幕标
+ */
+export const getApiSpacesSpaceIdRoomsRoomIdScenes = async (spaceId: string,
+    roomId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdRoomsRoomIdScenesResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdRoomsRoomIdScenesResponse>(getGetApiSpacesSpaceIdRoomsRoomIdScenesUrl(spaceId,roomId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdRoomsRoomIdScenesQueryKey = (spaceId: string,
+    roomId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/rooms/${roomId}/scenes`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdRoomsRoomIdScenesQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError = InternalHandlerErrorResponse>(spaceId: string,
+    roomId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdRoomsRoomIdScenesQueryKey(spaceId,roomId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>> = ({ signal }) => getApiSpacesSpaceIdRoomsRoomIdScenes(spaceId,roomId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined && roomId !== null && roomId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdRoomsRoomIdScenesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>>
+export type GetApiSpacesSpaceIdRoomsRoomIdScenesQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdRoomsRoomIdScenes<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    roomId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdRoomsRoomIdScenes<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    roomId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdRoomsRoomIdScenes<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    roomId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 幕标
+ */
+
+export function useGetApiSpacesSpaceIdRoomsRoomIdScenes<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string,
+    roomId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdRoomsRoomIdScenes>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdRoomsRoomIdScenesQueryOptions(spaceId,roomId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export type postApiSpacesSpaceIdRoomsRoomIdSwitchMaskResponse200 = {
   data: GithubComNarraTableBackendPkgProtocolMask
   status: 200
@@ -7238,6 +13453,221 @@ export const usePostApiSpacesSpaceIdRoomsRoomIdSwitchMask = <TError = InternalHa
         TContext
       > => {
       return useMutation(getPostApiSpacesSpaceIdRoomsRoomIdSwitchMaskMutationOptions(options), queryClient);
+    }
+
+export type getApiSpacesSpaceIdWorkspaceResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolWorkspaceDocument
+  status: 200
+}
+
+export type getApiSpacesSpaceIdWorkspaceResponse403 = {
+  data: InternalHandlerErrorResponse
+  status: 403
+}
+
+export type getApiSpacesSpaceIdWorkspaceResponseSuccess = (getApiSpacesSpaceIdWorkspaceResponse200) & {
+  headers: Headers;
+};
+export type getApiSpacesSpaceIdWorkspaceResponseError = (getApiSpacesSpaceIdWorkspaceResponse403) & {
+  headers: Headers;
+};
+
+export type getApiSpacesSpaceIdWorkspaceResponse = (getApiSpacesSpaceIdWorkspaceResponseSuccess | getApiSpacesSpaceIdWorkspaceResponseError)
+
+export const getGetApiSpacesSpaceIdWorkspaceUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/workspace`
+}
+
+/**
+ * @summary 读取工作区快照
+ */
+export const getApiSpacesSpaceIdWorkspace = async (spaceId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdWorkspaceResponse> => {
+
+  return orvalFetch<getApiSpacesSpaceIdWorkspaceResponse>(getGetApiSpacesSpaceIdWorkspaceUrl(spaceId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiSpacesSpaceIdWorkspaceQueryKey = (spaceId: string,) => {
+    return [
+    `/api/spaces/${spaceId}/workspace`
+    ] as const;
+    }
+
+
+export const getGetApiSpacesSpaceIdWorkspaceQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError = InternalHandlerErrorResponse>(spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiSpacesSpaceIdWorkspaceQueryKey(spaceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>> = ({ signal }) => getApiSpacesSpaceIdWorkspace(spaceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: spaceId !== null && spaceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiSpacesSpaceIdWorkspaceQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>>
+export type GetApiSpacesSpaceIdWorkspaceQueryError = InternalHandlerErrorResponse
+
+
+export function useGetApiSpacesSpaceIdWorkspace<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdWorkspace<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSpacesSpaceIdWorkspace<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 读取工作区快照
+ */
+
+export function useGetApiSpacesSpaceIdWorkspace<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError = InternalHandlerErrorResponse>(
+ spaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdWorkspace>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiSpacesSpaceIdWorkspaceQueryOptions(spaceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type putApiSpacesSpaceIdWorkspaceResponse200 = {
+  data: GithubComNarraTableBackendPkgProtocolWorkspaceDocument
+  status: 200
+}
+
+export type putApiSpacesSpaceIdWorkspaceResponse400 = {
+  data: InternalHandlerErrorResponse
+  status: 400
+}
+
+export type putApiSpacesSpaceIdWorkspaceResponse409 = {
+  data: InternalHandlerErrorResponse
+  status: 409
+}
+
+export type putApiSpacesSpaceIdWorkspaceResponseSuccess = (putApiSpacesSpaceIdWorkspaceResponse200) & {
+  headers: Headers;
+};
+export type putApiSpacesSpaceIdWorkspaceResponseError = (putApiSpacesSpaceIdWorkspaceResponse400 | putApiSpacesSpaceIdWorkspaceResponse409) & {
+  headers: Headers;
+};
+
+export type putApiSpacesSpaceIdWorkspaceResponse = (putApiSpacesSpaceIdWorkspaceResponseSuccess | putApiSpacesSpaceIdWorkspaceResponseError)
+
+export const getPutApiSpacesSpaceIdWorkspaceUrl = (spaceId: string,) => {
+
+
+
+
+  return `/api/spaces/${spaceId}/workspace`
+}
+
+/**
+ * @summary 保存工作区快照
+ */
+export const putApiSpacesSpaceIdWorkspace = async (spaceId: string,
+    githubComNarraTableBackendPkgProtocolWorkspaceDocument: GithubComNarraTableBackendPkgProtocolWorkspaceDocument, options?: RequestInit): Promise<putApiSpacesSpaceIdWorkspaceResponse> => {
+
+  return orvalFetch<putApiSpacesSpaceIdWorkspaceResponse>(getPutApiSpacesSpaceIdWorkspaceUrl(spaceId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(githubComNarraTableBackendPkgProtocolWorkspaceDocument)
+  }
+);}
+
+
+
+
+export const getPutApiSpacesSpaceIdWorkspaceMutationOptions = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiSpacesSpaceIdWorkspace>>, TError,{spaceId: string;data: GithubComNarraTableBackendPkgProtocolWorkspaceDocument}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiSpacesSpaceIdWorkspace>>, TError,{spaceId: string;data: GithubComNarraTableBackendPkgProtocolWorkspaceDocument}, TContext> => {
+
+const mutationKey = ['putApiSpacesSpaceIdWorkspace'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiSpacesSpaceIdWorkspace>>, {spaceId: string;data: GithubComNarraTableBackendPkgProtocolWorkspaceDocument}> = (props) => {
+          const {spaceId,data} = props ?? {};
+
+          return  putApiSpacesSpaceIdWorkspace(spaceId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiSpacesSpaceIdWorkspaceMutationResult = NonNullable<Awaited<ReturnType<typeof putApiSpacesSpaceIdWorkspace>>>
+    export type PutApiSpacesSpaceIdWorkspaceMutationBody = GithubComNarraTableBackendPkgProtocolWorkspaceDocument
+    export type PutApiSpacesSpaceIdWorkspaceMutationError = InternalHandlerErrorResponse
+
+    /**
+ * @summary 保存工作区快照
+ */
+export const usePutApiSpacesSpaceIdWorkspace = <TError = InternalHandlerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiSpacesSpaceIdWorkspace>>, TError,{spaceId: string;data: GithubComNarraTableBackendPkgProtocolWorkspaceDocument}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putApiSpacesSpaceIdWorkspace>>,
+        TError,
+        {spaceId: string;data: GithubComNarraTableBackendPkgProtocolWorkspaceDocument},
+        TContext
+      > => {
+      return useMutation(getPutApiSpacesSpaceIdWorkspaceMutationOptions(options), queryClient);
     }
 
 export type postAuthChangePasswordResponse200 = {

@@ -20,6 +20,7 @@ export interface InternalHandlerWSCommandDoc {
   content?: GithubComNarraTableBackendPkgProtocolBlock[];
   eventSeq?: number;
   forward?: GithubComNarraTableBackendPkgProtocolForwardContent;
+  insertAfter?: string;
   instanceId?: string;
   messageType?: GithubComNarraTableBackendPkgProtocolMessageType;
   params?: GithubComNarraTableBackendPkgProtocolParam[];

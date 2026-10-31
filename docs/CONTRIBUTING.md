@@ -43,7 +43,14 @@ make swagger-gen
 NARRATABLE_OPENAPI=../backend/docs/swagger.json pnpm generate
 ```
 
-`NARRATABLE_OPENAPI` 接受本地文件或 Swagger URL；省略时使用线上文档。管理 API 使用独立的 `adminFetch` 和管理会话，不刷新普通用户 token。
+`NARRATABLE_OPENAPI` 接受本地文件或 Swagger URL；省略时使用线上文档。客户端和 Mock 必须从同一份 Swagger 生成，不手工修改生成文件。
+
+- 管理 API 使用独立的 `adminFetch` 和管理会话，不刷新普通用户 token。
+- `BotInvocation` 使用 `invocationFetch`，调用者通过 `Authorization: Bearer <invocationToken>` 传入调用令牌；401 不刷新或清除用户、管理员会话。
+- 文件接口使用 `orvalBlobFetch`，成功响应保留原始字节和 MIME 类型，错误响应按 JSON 解析。插件资源 Mock 支持多级路径。
+- 后端 `.swaggo` 将任意 `json.RawMessage` 映射为无类型约束的 JSON schema，前端生成 `unknown`；显式对象约束继续保留。
+
+同步后运行 `vp test --run`、`pnpm exec tsc --noEmit` 和 `pnpm build`。`src/lib` 的请求测试与 `src/mocks/apiContracts.test.ts` 覆盖认证隔离、二进制响应、任意 JSON 和嵌套资源路径；后端 `go test ./docs ./pkg/protocol` 检查 Swagger 与序列化契约。
 
 ## 提交前检查
 
