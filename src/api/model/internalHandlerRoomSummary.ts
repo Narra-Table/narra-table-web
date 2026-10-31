@@ -15,6 +15,8 @@ export interface InternalHandlerRoomSummary {
      * @maximum 100
      */
   memberCount: number;
+  /** @minimum 0 */
+  mentionCount: number;
   name: string;
   roomId: string;
   /**
@@ -24,4 +26,6 @@ export interface InternalHandlerRoomSummary {
   sortOrder: number;
   spaceId: string;
   type: InternalHandlerRoomSummaryType;
+  /** @minimum 0 */
+  unreadCount: number;
 }

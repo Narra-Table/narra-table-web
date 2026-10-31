@@ -10,7 +10,11 @@ export class ApiError extends HttpError {
   }
 }
 
-export const orvalFetch = async <T>(url: string, options: RequestInit): Promise<T> => {
+async function userFetch<T>(
+  url: string,
+  options: RequestInit,
+  responseType: 'auto' | 'blob',
+): Promise<T> {
   const request = async (token: string | null) => {
     const headers = new Headers(options?.headers);
 
@@ -29,14 +33,21 @@ export const orvalFetch = async <T>(url: string, options: RequestInit): Promise<
     else clearAuth();
   }
 
-  if (response.status === 204 || response.status === 205) {
+  if (
+    response.status === 204 ||
+    response.status === 205 ||
+    (responseType === 'blob' && response.status === 304)
+  ) {
     return { data: undefined, status: response.status, headers: response.headers } as T;
   }
 
   const contentType = response.headers.get('content-type') ?? '';
-  const body = contentType.includes('application/json')
-    ? await response.json()
-    : (await response.text()) || undefined;
+  const body =
+    response.ok && responseType === 'blob'
+      ? await response.blob()
+      : contentType.includes('application/json')
+        ? await response.json()
+        : (await response.text()) || undefined;
 
   if (!response.ok) {
     const message =
@@ -52,4 +63,10 @@ export const orvalFetch = async <T>(url: string, options: RequestInit): Promise<
   }
 
   return { data: body, status: response.status, headers: response.headers } as T;
-};
+}
+
+export const orvalFetch = <T>(url: string, options: RequestInit): Promise<T> =>
+  userFetch<T>(url, options, 'auto');
+
+export const orvalBlobFetch = <T>(url: string, options: RequestInit): Promise<T> =>
+  userFetch<T>(url, options, 'blob');

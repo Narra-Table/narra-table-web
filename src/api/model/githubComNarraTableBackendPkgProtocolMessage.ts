@@ -35,6 +35,7 @@ export interface GithubComNarraTableBackendPkgProtocolMessage {
   params?: GithubComNarraTableBackendPkgProtocolParam[];
   /** 是否置顶 */
   pinned?: boolean;
+  position?: string;
   /** command 类型：原始指令文本（如 ".r 3d6+2 力量检定"） */
   raw?: string;
   /** command 类型：指令响应对应的原始消息 ID */
@@ -46,6 +47,7 @@ export interface GithubComNarraTableBackendPkgProtocolMessage {
   sendTime?: string;
   /** 发送者 */
   sender?: GithubComNarraTableBackendPkgProtocolSender;
+  seq?: number;
   spaceId?: string;
   type?: GithubComNarraTableBackendPkgProtocolMessageType;
   updateTime?: string;

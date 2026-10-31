@@ -5,18 +5,34 @@
  * 故桌（NarraTable）实时跑团平台的后台 API
  * OpenAPI spec version: 1.0
  */
+import type { GithubComNarraTableBackendPkgProtocolAppDataNotice } from './githubComNarraTableBackendPkgProtocolAppDataNotice.ts';
 import type { GithubComNarraTableBackendPkgProtocolAuthResult } from './githubComNarraTableBackendPkgProtocolAuthResult.ts';
+import type { GithubComNarraTableBackendPkgProtocolCharacterNotice } from './githubComNarraTableBackendPkgProtocolCharacterNotice.ts';
+import type { GithubComNarraTableBackendPkgProtocolConfigNotice } from './githubComNarraTableBackendPkgProtocolConfigNotice.ts';
 import type { GithubComNarraTableBackendPkgProtocolEventType } from './githubComNarraTableBackendPkgProtocolEventType.ts';
+import type { GithubComNarraTableBackendPkgProtocolMentionNotice } from './githubComNarraTableBackendPkgProtocolMentionNotice.ts';
 import type { GithubComNarraTableBackendPkgProtocolMessage } from './githubComNarraTableBackendPkgProtocolMessage.ts';
 import type { GithubComNarraTableBackendPkgProtocolPresence } from './githubComNarraTableBackendPkgProtocolPresence.ts';
+import type { GithubComNarraTableBackendPkgProtocolRoomReadNotice } from './githubComNarraTableBackendPkgProtocolRoomReadNotice.ts';
+import type { GithubComNarraTableBackendPkgProtocolRuntimeNotice } from './githubComNarraTableBackendPkgProtocolRuntimeNotice.ts';
+import type { GithubComNarraTableBackendPkgProtocolSpaceNotice } from './githubComNarraTableBackendPkgProtocolSpaceNotice.ts';
+import type { GithubComNarraTableBackendPkgProtocolWindowOpenNotice } from './githubComNarraTableBackendPkgProtocolWindowOpenNotice.ts';
 import type { GithubComNarraTableBackendPkgProtocolWSError } from './githubComNarraTableBackendPkgProtocolWSError.ts';
 
 export interface InternalHandlerWSEventDoc {
+  /** appdata.updated */
+  appData?: GithubComNarraTableBackendPkgProtocolAppDataNotice;
   auth?: GithubComNarraTableBackendPkgProtocolAuthResult;
+  /** character.updated */
+  character?: GithubComNarraTableBackendPkgProtocolCharacterNotice;
+  /** config.updated */
+  config?: GithubComNarraTableBackendPkgProtocolConfigNotice;
   error?: GithubComNarraTableBackendPkgProtocolWSError;
   eventSeq?: number;
   gap?: boolean;
   instanceId?: string;
+  /** mention.created */
+  mention?: GithubComNarraTableBackendPkgProtocolMentionNotice;
   /** message.created / message.updated */
   message?: GithubComNarraTableBackendPkgProtocolMessage;
   /** message.deleted */
@@ -24,12 +40,19 @@ export interface InternalHandlerWSEventDoc {
   /** veil.revealed */
   messageIds?: string[];
   presence?: GithubComNarraTableBackendPkgProtocolPresence;
-  /** "space_closed" */
+  /** room.read */
+  read?: GithubComNarraTableBackendPkgProtocolRoomReadNotice;
+  /** "space_closed" | "reveal_all" */
   reason?: string;
   replay?: boolean;
   requestId?: string;
   roomId?: string;
+  /** runtime.updated */
+  runtime?: GithubComNarraTableBackendPkgProtocolRuntimeNotice;
+  space?: GithubComNarraTableBackendPkgProtocolSpaceNotice;
   spaceId?: string;
   timestamp?: string;
   type?: GithubComNarraTableBackendPkgProtocolEventType;
+  /** window.open */
+  window?: GithubComNarraTableBackendPkgProtocolWindowOpenNotice;
 }

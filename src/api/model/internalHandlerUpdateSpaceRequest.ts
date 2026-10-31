@@ -8,6 +8,7 @@
 
 export interface InternalHandlerUpdateSpaceRequest {
   description?: string;
+  diceLogRoomId?: string;
   name?: string;
   status?: string;
 }
