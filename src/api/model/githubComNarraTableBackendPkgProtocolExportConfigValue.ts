@@ -9,5 +9,5 @@
 export interface GithubComNarraTableBackendPkgProtocolExportConfigValue {
   key?: string;
   plugin?: string;
-  value?: number[];
+  value?: unknown;
 }

@@ -190,7 +190,9 @@ import type {
 } from './model';
 
 import { adminFetch } from '../lib/adminApiClient';
+import { invocationFetch } from '../lib/invocationApiClient';
 import { orvalFetch } from '../lib/apiClient';
+import { orvalBlobFetch } from '../lib/apiClient';
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
@@ -2002,7 +2004,7 @@ export const getGetApiBotInvocationsIdCardsCardIdUrl = (id: string,
 export const getApiBotInvocationsIdCardsCardId = async (id: string,
     cardId: string, options?: RequestInit): Promise<getApiBotInvocationsIdCardsCardIdResponse> => {
 
-  return orvalFetch<getApiBotInvocationsIdCardsCardIdResponse>(getGetApiBotInvocationsIdCardsCardIdUrl(id,cardId),
+  return invocationFetch<getApiBotInvocationsIdCardsCardIdResponse>(getGetApiBotInvocationsIdCardsCardIdUrl(id,cardId),
   {
     ...options,
     method: 'GET'
@@ -2024,7 +2026,7 @@ export const getGetApiBotInvocationsIdCardsCardIdQueryKey = (id: string,
 
 
 export const getGetApiBotInvocationsIdCardsCardIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(id: string,
-    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -2054,7 +2056,7 @@ export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(
@@ -2065,12 +2067,12 @@ export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(
  id: string,
-    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2079,7 +2081,7 @@ export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<
 
 export function useGetApiBotInvocationsIdCardsCardId<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError = InternalHandlerErrorResponse>(
  id: string,
-    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    cardId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdCardsCardId>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2141,11 +2143,11 @@ export const putApiBotInvocationsIdCardsCardId = async (id: string,
     cardId: string,
     githubComNarraTableBackendPkgProtocolBotCharacterWriteRequest: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest, options?: RequestInit): Promise<putApiBotInvocationsIdCardsCardIdResponse> => {
 
-  return orvalFetch<putApiBotInvocationsIdCardsCardIdResponse>(getPutApiBotInvocationsIdCardsCardIdUrl(id,cardId),
+  return invocationFetch<putApiBotInvocationsIdCardsCardIdResponse>(getPutApiBotInvocationsIdCardsCardIdUrl(id,cardId),
   {
     ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    method: 'PUT'
+    ,
     body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotCharacterWriteRequest)
   }
 );}
@@ -2154,7 +2156,7 @@ export const putApiBotInvocationsIdCardsCardId = async (id: string,
 
 
 export const getPutApiBotInvocationsIdCardsCardIdMutationOptions = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext> => {
 
 const mutationKey = ['putApiBotInvocationsIdCardsCardId'];
@@ -2188,7 +2190,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
  * @summary Bot 写入角色卡
  */
 export const usePutApiBotInvocationsIdCardsCardId = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>, TError,{id: string;cardId: string;data: GithubComNarraTableBackendPkgProtocolBotCharacterWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiBotInvocationsIdCardsCardId>>,
         TError,
@@ -2243,7 +2245,7 @@ export const getApiBotInvocationsIdConfigAppIdKey = async (id: string,
     key: string,
     params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: RequestInit): Promise<getApiBotInvocationsIdConfigAppIdKeyResponse> => {
 
-  return orvalFetch<getApiBotInvocationsIdConfigAppIdKeyResponse>(getGetApiBotInvocationsIdConfigAppIdKeyUrl(id,appId,key,params),
+  return invocationFetch<getApiBotInvocationsIdConfigAppIdKeyResponse>(getGetApiBotInvocationsIdConfigAppIdKeyUrl(id,appId,key,params),
   {
     ...options,
     method: 'GET'
@@ -2269,7 +2271,7 @@ export const getGetApiBotInvocationsIdConfigAppIdKeyQueryKey = (id: string,
 export const getGetApiBotInvocationsIdConfigAppIdKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(id: string,
     appId: string,
     key: string,
-    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -2301,7 +2303,7 @@ export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnTy
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(
@@ -2314,14 +2316,14 @@ export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnTy
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError = InternalHandlerErrorResponse>(
  id: string,
     appId: string,
     key: string,
-    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2332,7 +2334,7 @@ export function useGetApiBotInvocationsIdConfigAppIdKey<TData = Awaited<ReturnTy
  id: string,
     appId: string,
     key: string,
-    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdConfigAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdConfigAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2394,7 +2396,7 @@ export const getApiBotInvocationsIdDataAppIdKey = async (id: string,
     key: string,
     params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: RequestInit): Promise<getApiBotInvocationsIdDataAppIdKeyResponse> => {
 
-  return orvalFetch<getApiBotInvocationsIdDataAppIdKeyResponse>(getGetApiBotInvocationsIdDataAppIdKeyUrl(id,appId,key,params),
+  return invocationFetch<getApiBotInvocationsIdDataAppIdKeyResponse>(getGetApiBotInvocationsIdDataAppIdKeyUrl(id,appId,key,params),
   {
     ...options,
     method: 'GET'
@@ -2420,7 +2422,7 @@ export const getGetApiBotInvocationsIdDataAppIdKeyQueryKey = (id: string,
 export const getGetApiBotInvocationsIdDataAppIdKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(id: string,
     appId: string,
     key: string,
-    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -2452,7 +2454,7 @@ export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(
@@ -2465,14 +2467,14 @@ export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError = InternalHandlerErrorResponse>(
  id: string,
     appId: string,
     key: string,
-    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2483,7 +2485,7 @@ export function useGetApiBotInvocationsIdDataAppIdKey<TData = Awaited<ReturnType
  id: string,
     appId: string,
     key: string,
-    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdDataAppIdKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdDataAppIdKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2547,11 +2549,11 @@ export const postApiBotInvocationsIdExportsAppIdExportName = async (id: string,
     exportName: string,
     githubComNarraTableBackendPkgProtocolBotExportRequest: GithubComNarraTableBackendPkgProtocolBotExportRequest, options?: RequestInit): Promise<postApiBotInvocationsIdExportsAppIdExportNameResponse> => {
 
-  return orvalFetch<postApiBotInvocationsIdExportsAppIdExportNameResponse>(getPostApiBotInvocationsIdExportsAppIdExportNameUrl(id,appId,exportName),
+  return invocationFetch<postApiBotInvocationsIdExportsAppIdExportNameResponse>(getPostApiBotInvocationsIdExportsAppIdExportNameUrl(id,appId,exportName),
   {
     ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    method: 'POST'
+    ,
     body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotExportRequest)
   }
 );}
@@ -2560,7 +2562,7 @@ export const postApiBotInvocationsIdExportsAppIdExportName = async (id: string,
 
 
 export const getPostApiBotInvocationsIdExportsAppIdExportNameMutationOptions = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext> => {
 
 const mutationKey = ['postApiBotInvocationsIdExportsAppIdExportName'];
@@ -2594,7 +2596,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
  * @summary Bot 调用已锁定插件的导出函数
  */
 export const usePostApiBotInvocationsIdExportsAppIdExportName = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>, TError,{id: string;appId: string;exportName: string;data: GithubComNarraTableBackendPkgProtocolBotExportRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiBotInvocationsIdExportsAppIdExportName>>,
         TError,
@@ -2646,7 +2648,7 @@ export const getGetApiBotInvocationsIdReportUrl = (id: string,) => {
  */
 export const getApiBotInvocationsIdReport = async (id: string, options?: RequestInit): Promise<getApiBotInvocationsIdReportResponse> => {
 
-  return orvalFetch<getApiBotInvocationsIdReportResponse>(getGetApiBotInvocationsIdReportUrl(id),
+  return invocationFetch<getApiBotInvocationsIdReportResponse>(getGetApiBotInvocationsIdReportUrl(id),
   {
     ...options,
     method: 'GET'
@@ -2666,7 +2668,7 @@ export const getGetApiBotInvocationsIdReportQueryKey = (id: string,) => {
     }
 
 
-export const getGetApiBotInvocationsIdReportQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+export const getGetApiBotInvocationsIdReportQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -2695,7 +2697,7 @@ export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeo
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(
@@ -2705,11 +2707,11 @@ export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeo
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2717,7 +2719,7 @@ export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeo
  */
 
 export function useGetApiBotInvocationsIdReport<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError = InternalHandlerErrorResponse>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdReport>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2785,7 +2787,7 @@ export const getGetApiBotInvocationsIdStorageUrl = (id: string,
 export const getApiBotInvocationsIdStorage = async (id: string,
     params?: GetApiBotInvocationsIdStorageParams, options?: RequestInit): Promise<getApiBotInvocationsIdStorageResponse> => {
 
-  return orvalFetch<getApiBotInvocationsIdStorageResponse>(getGetApiBotInvocationsIdStorageUrl(id,params),
+  return invocationFetch<getApiBotInvocationsIdStorageResponse>(getGetApiBotInvocationsIdStorageUrl(id,params),
   {
     ...options,
     method: 'GET'
@@ -2807,7 +2809,7 @@ export const getGetApiBotInvocationsIdStorageQueryKey = (id: string,
 
 
 export const getGetApiBotInvocationsIdStorageQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(id: string,
-    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -2837,7 +2839,7 @@ export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<type
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(
@@ -2848,12 +2850,12 @@ export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<type
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(
  id: string,
-    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2862,7 +2864,7 @@ export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<type
 
 export function useGetApiBotInvocationsIdStorage<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError = InternalHandlerErrorResponse>(
  id: string,
-    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdStorageParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorage>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2932,7 +2934,7 @@ export const getApiBotInvocationsIdStorageKey = async (id: string,
     key: string,
     params?: GetApiBotInvocationsIdStorageKeyParams, options?: RequestInit): Promise<getApiBotInvocationsIdStorageKeyResponse> => {
 
-  return orvalFetch<getApiBotInvocationsIdStorageKeyResponse>(getGetApiBotInvocationsIdStorageKeyUrl(id,key,params),
+  return invocationFetch<getApiBotInvocationsIdStorageKeyResponse>(getGetApiBotInvocationsIdStorageKeyUrl(id,key,params),
   {
     ...options,
     method: 'GET'
@@ -2956,7 +2958,7 @@ export const getGetApiBotInvocationsIdStorageKeyQueryKey = (id: string,
 
 export const getGetApiBotInvocationsIdStorageKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(id: string,
     key: string,
-    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -2987,7 +2989,7 @@ export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<t
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(
@@ -2999,13 +3001,13 @@ export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<t
           TError,
           Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(
  id: string,
     key: string,
-    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -3015,7 +3017,7 @@ export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<t
 export function useGetApiBotInvocationsIdStorageKey<TData = Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError = InternalHandlerErrorResponse>(
  id: string,
     key: string,
-    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiBotInvocationsIdStorageKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBotInvocationsIdStorageKey>>, TError, TData>>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -3077,11 +3079,11 @@ export const putApiBotInvocationsIdStorageKey = async (id: string,
     key: string,
     githubComNarraTableBackendPkgProtocolBotDataWriteRequest: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest, options?: RequestInit): Promise<putApiBotInvocationsIdStorageKeyResponse> => {
 
-  return orvalFetch<putApiBotInvocationsIdStorageKeyResponse>(getPutApiBotInvocationsIdStorageKeyUrl(id,key),
+  return invocationFetch<putApiBotInvocationsIdStorageKeyResponse>(getPutApiBotInvocationsIdStorageKeyUrl(id,key),
   {
     ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    method: 'PUT'
+    ,
     body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotDataWriteRequest)
   }
 );}
@@ -3090,7 +3092,7 @@ export const putApiBotInvocationsIdStorageKey = async (id: string,
 
 
 export const getPutApiBotInvocationsIdStorageKeyMutationOptions = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext> => {
 
 const mutationKey = ['putApiBotInvocationsIdStorageKey'];
@@ -3124,7 +3126,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
  * @summary Bot 写入自身存储
  */
 export const usePutApiBotInvocationsIdStorageKey = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;data: GithubComNarraTableBackendPkgProtocolBotDataWriteRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiBotInvocationsIdStorageKey>>,
         TError,
@@ -3187,7 +3189,7 @@ export const deleteApiBotInvocationsIdStorageKey = async (id: string,
     key: string,
     params?: DeleteApiBotInvocationsIdStorageKeyParams, options?: RequestInit): Promise<deleteApiBotInvocationsIdStorageKeyResponse> => {
 
-  return orvalFetch<deleteApiBotInvocationsIdStorageKeyResponse>(getDeleteApiBotInvocationsIdStorageKeyUrl(id,key,params),
+  return invocationFetch<deleteApiBotInvocationsIdStorageKeyResponse>(getDeleteApiBotInvocationsIdStorageKeyUrl(id,key,params),
   {
     ...options,
     method: 'DELETE'
@@ -3200,7 +3202,7 @@ export const deleteApiBotInvocationsIdStorageKey = async (id: string,
 
 
 export const getDeleteApiBotInvocationsIdStorageKeyMutationOptions = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext>, request?: SecondParameter<typeof invocationFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext> => {
 
 const mutationKey = ['deleteApiBotInvocationsIdStorageKey'];
@@ -3234,7 +3236,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
  * @summary Bot 删除自身存储
  */
 export const useDeleteApiBotInvocationsIdStorageKey = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>, TError,{id: string;key: string;params?: DeleteApiBotInvocationsIdStorageKeyParams}, TContext>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiBotInvocationsIdStorageKey>>,
         TError,
@@ -3287,11 +3289,11 @@ export const getPostApiBotInvocationsIdWindowsUrl = (id: string,) => {
 export const postApiBotInvocationsIdWindows = async (id: string,
     githubComNarraTableBackendPkgProtocolBotOpenWindowRequest: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest, options?: RequestInit): Promise<postApiBotInvocationsIdWindowsResponse> => {
 
-  return orvalFetch<postApiBotInvocationsIdWindowsResponse>(getPostApiBotInvocationsIdWindowsUrl(id),
+  return invocationFetch<postApiBotInvocationsIdWindowsResponse>(getPostApiBotInvocationsIdWindowsUrl(id),
   {
     ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    method: 'POST'
+    ,
     body: JSON.stringify(githubComNarraTableBackendPkgProtocolBotOpenWindowRequest)
   }
 );}
@@ -3300,7 +3302,7 @@ export const postApiBotInvocationsIdWindows = async (id: string,
 
 
 export const getPostApiBotInvocationsIdWindowsMutationOptions = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext> => {
 
 const mutationKey = ['postApiBotInvocationsIdWindows'];
@@ -3334,7 +3336,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
  * @summary Bot 打开已锁定插件的窗口
  */
 export const usePostApiBotInvocationsIdWindows = <TError = InternalHandlerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext>, request?: SecondParameter<typeof orvalFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>, TError,{id: string;data: GithubComNarraTableBackendPkgProtocolBotOpenWindowRequest}, TContext>, request?: SecondParameter<typeof invocationFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiBotInvocationsIdWindows>>,
         TError,
@@ -6130,7 +6132,7 @@ export const getGetApiResourcesIdFileUrl = (id: string,) => {
  */
 export const getApiResourcesIdFile = async (id: string, options?: RequestInit): Promise<getApiResourcesIdFileResponse> => {
 
-  return orvalFetch<getApiResourcesIdFileResponse>(getGetApiResourcesIdFileUrl(id),
+  return orvalBlobFetch<getApiResourcesIdFileResponse>(getGetApiResourcesIdFileUrl(id),
   {
     ...options,
     method: 'GET'
@@ -6150,7 +6152,7 @@ export const getGetApiResourcesIdFileQueryKey = (id: string,) => {
     }
 
 
-export const getGetApiResourcesIdFileQueryOptions = <TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+export const getGetApiResourcesIdFileQueryOptions = <TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -6179,7 +6181,7 @@ export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getAp
           TError,
           Awaited<ReturnType<typeof getApiResourcesIdFile>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(
@@ -6189,11 +6191,11 @@ export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getAp
           TError,
           Awaited<ReturnType<typeof getApiResourcesIdFile>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -6201,7 +6203,7 @@ export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getAp
  */
 
 export function useGetApiResourcesIdFile<TData = Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError = Blob>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiResourcesIdFile>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -10640,17 +10642,17 @@ export const usePostApiSpacesSpaceIdNpcs = <TError = InternalHandlerCharacterErr
     }
 
 export type getApiSpacesSpaceIdPluginAssetsNamePathResponse200 = {
-  data: string
+  data: Blob
   status: 200
 }
 
 export type getApiSpacesSpaceIdPluginAssetsNamePathResponse302 = {
-  data: string
+  data: void
   status: 302
 }
 
 export type getApiSpacesSpaceIdPluginAssetsNamePathResponse304 = {
-  data: string
+  data: void
   status: 304
 }
 
@@ -10699,7 +10701,7 @@ export const getApiSpacesSpaceIdPluginAssetsNamePath = async (spaceId: string,
     path: string,
     params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: RequestInit): Promise<getApiSpacesSpaceIdPluginAssetsNamePathResponse> => {
 
-  return orvalFetch<getApiSpacesSpaceIdPluginAssetsNamePathResponse>(getGetApiSpacesSpaceIdPluginAssetsNamePathUrl(spaceId,name,path,params),
+  return orvalBlobFetch<getApiSpacesSpaceIdPluginAssetsNamePathResponse>(getGetApiSpacesSpaceIdPluginAssetsNamePathUrl(spaceId,name,path,params),
   {
     ...options,
     method: 'GET'
@@ -10722,10 +10724,10 @@ export const getGetApiSpacesSpaceIdPluginAssetsNamePathQueryKey = (spaceId: stri
     }
 
 
-export const getGetApiSpacesSpaceIdPluginAssetsNamePathQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = string | InternalHandlerErrorResponse>(spaceId: string,
+export const getGetApiSpacesSpaceIdPluginAssetsNamePathQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(spaceId: string,
     name: string,
     path: string,
-    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -10744,10 +10746,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetApiSpacesSpaceIdPluginAssetsNamePathQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>>
-export type GetApiSpacesSpaceIdPluginAssetsNamePathQueryError = string | InternalHandlerErrorResponse
+export type GetApiSpacesSpaceIdPluginAssetsNamePathQueryError = void | InternalHandlerErrorResponse
 
 
-export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = string | InternalHandlerErrorResponse>(
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
  spaceId: string,
     name: string,
     path: string,
@@ -10757,10 +10759,10 @@ export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<Retur
           TError,
           Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = string | InternalHandlerErrorResponse>(
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
  spaceId: string,
     name: string,
     path: string,
@@ -10770,25 +10772,25 @@ export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<Retur
           TError,
           Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = string | InternalHandlerErrorResponse>(
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
  spaceId: string,
     name: string,
     path: string,
-    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 插件资源
  */
 
-export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = string | InternalHandlerErrorResponse>(
+export function useGetApiSpacesSpaceIdPluginAssetsNamePath<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError = void | InternalHandlerErrorResponse>(
  spaceId: string,
     name: string,
     path: string,
-    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    params?: GetApiSpacesSpaceIdPluginAssetsNamePathParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdPluginAssetsNamePath>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -12234,7 +12236,7 @@ export const getGetApiSpacesSpaceIdResourcesResourceIdDownloadUrl = (spaceId: st
 export const getApiSpacesSpaceIdResourcesResourceIdDownload = async (spaceId: string,
     resourceId: string, options?: RequestInit): Promise<getApiSpacesSpaceIdResourcesResourceIdDownloadResponse> => {
 
-  return orvalFetch<getApiSpacesSpaceIdResourcesResourceIdDownloadResponse>(getGetApiSpacesSpaceIdResourcesResourceIdDownloadUrl(spaceId,resourceId),
+  return orvalBlobFetch<getApiSpacesSpaceIdResourcesResourceIdDownloadResponse>(getGetApiSpacesSpaceIdResourcesResourceIdDownloadUrl(spaceId,resourceId),
   {
     ...options,
     method: 'GET'
@@ -12256,7 +12258,7 @@ export const getGetApiSpacesSpaceIdResourcesResourceIdDownloadQueryKey = (spaceI
 
 
 export const getGetApiSpacesSpaceIdResourcesResourceIdDownloadQueryOptions = <TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(spaceId: string,
-    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -12286,7 +12288,7 @@ export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaite
           TError,
           Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(
@@ -12297,12 +12299,12 @@ export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaite
           TError,
           Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>
         > , 'initialData'
-      >, request?: SecondParameter<typeof orvalFetch>}
+      >, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(
  spaceId: string,
-    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -12311,7 +12313,7 @@ export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaite
 
 export function useGetApiSpacesSpaceIdResourcesResourceIdDownload<TData = Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError = Blob>(
  spaceId: string,
-    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalFetch>}
+    resourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSpacesSpaceIdResourcesResourceIdDownload>>, TError, TData>>, request?: SecondParameter<typeof orvalBlobFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

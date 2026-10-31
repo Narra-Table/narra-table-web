@@ -8,6 +8,6 @@
 
 export interface GithubComNarraTableBackendPkgProtocolWindowOpenNotice {
   appId?: string;
-  params?: number[];
+  params?: unknown;
   windowId?: string;
 }

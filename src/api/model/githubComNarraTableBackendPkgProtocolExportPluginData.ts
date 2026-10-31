@@ -10,6 +10,6 @@ export interface GithubComNarraTableBackendPkgProtocolExportPluginData {
   key?: string;
   plugin?: string;
   roomId?: string;
-  value?: number[];
+  value?: unknown;
   visibility?: string;
 }

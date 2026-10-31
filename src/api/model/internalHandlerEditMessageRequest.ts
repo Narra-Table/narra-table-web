@@ -7,6 +7,6 @@
  */
 
 export interface InternalHandlerEditMessageRequest {
-  clue?: number[];
-  content?: number[];
+  clue?: unknown;
+  content?: unknown;
 }

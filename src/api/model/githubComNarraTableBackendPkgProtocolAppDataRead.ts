@@ -9,5 +9,5 @@
 export interface GithubComNarraTableBackendPkgProtocolAppDataRead {
   found?: boolean;
   keys?: string[];
-  value?: number[];
+  value?: unknown;
 }
