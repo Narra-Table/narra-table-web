@@ -440,14 +440,32 @@
   background: var(--wm-surface, #ffffff);
 }
 
-/* Pseudo overlay so the ring paints above the opaque header/body. */
+/* Focus ring painted above the chrome so it wraps the title bar too. */
 .wm-window[data-focused='true']::after {
   position: absolute;
-  z-index: 5;
+  z-index: 7;
   inset: 0;
   border: var(--wm-focus-ring-width, 2px) solid var(--wm-accent, #2563eb);
   content: '';
   pointer-events: none;
+}
+
+/* Tiled standard/paged columns share the chrome as the window's title bar,
+   so the ring wraps the whole column (chrome + body). */
+.wm-column[data-focused='true'][data-state='standard']::after,
+.wm-column[data-focused='true'][data-state='paged']::after {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  border: var(--wm-focus-ring-width, 2px) solid var(--wm-accent, #2563eb);
+  content: '';
+  pointer-events: none;
+}
+
+/* Avoid a second ring on the body inside those columns. */
+.wm-column[data-focused='true'][data-state='standard'] .wm-window::after,
+.wm-column[data-focused='true'][data-state='paged'] .wm-window::after {
+  content: none;
 }
 
 .wm-window-icon {

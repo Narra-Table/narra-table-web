@@ -32,6 +32,7 @@ export interface WorkbenchActions {
   open: (input: OpenWindowInput) => WindowInstanceId;
   close: (instanceId: WindowInstanceId) => void;
   focus: (instanceId: WindowInstanceId, options?: { clearAttention?: boolean }) => void;
+  blur: () => void;
   focusDirection: (direction: Direction) => void;
   focusLayer: (layer: FocusLayer) => void;
   update: (instanceId: WindowInstanceId, patch: WindowPatch) => void;
@@ -103,6 +104,7 @@ export function createWorkbenchStore(options: WorkbenchStoreOptions = {}): Workb
       }),
     focusDirection: (direction) => dispatch({ type: 'window/focus-direction', direction }),
     focusLayer: (layer) => dispatch({ type: 'window/focus-layer', layer }),
+    blur: () => dispatch({ type: 'window/blur' }),
     update: (instanceId, patch) => dispatch({ type: 'window/update', instanceId, patch }),
     setWindowState: (instanceId, appState) =>
       dispatch({ type: 'window/set-state', instanceId, state: appState }),

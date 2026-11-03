@@ -31,7 +31,7 @@ const localEnvHint = {
 
 // Local dev backend. Override when the API runs on another port:
 // VITE_PROXY_TARGET=http://127.0.0.1:5298 pnpm dev
-const apiOrigin = process.env.VITE_PROXY_TARGET?.trim() || 'http://127.0.0.1:5297';
+const apiOrigin = process.env.VITE_PROXY_TARGET?.trim() || 'http://127.0.0.1:5286';
 const wsOrigin = apiOrigin.replace(/^http/, 'ws');
 // 宿主机的 inotify 监听器耗尽时用轮询启动：VITE_WATCH_POLL=1 vp dev
 const watch = process.env.VITE_WATCH_POLL === '1' ? { usePolling: true, interval: 500 } : undefined;
