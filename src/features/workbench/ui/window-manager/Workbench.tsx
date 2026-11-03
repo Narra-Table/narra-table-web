@@ -96,7 +96,23 @@ function WorkbenchBody({
   const floats = selectFloating(state);
 
   return (
-    <div className={cn('wm-root', className)} ref={rootRef}>
+    <div
+      className={cn('wm-root', className)}
+      ref={rootRef}
+      onPointerDown={(event) => {
+        if (event.button !== 0) return;
+        const target = event.target;
+        if (
+          target instanceof Element &&
+          target.closest(
+            '.wm-column, .wm-floating, .wm-taskbar-item, .wm-taskbar-apps, .wm-taskbar-leading',
+          )
+        ) {
+          return;
+        }
+        store.actions.blur();
+      }}
+    >
       {toolbar ? <div className="wm-toolbar">{toolbar}</div> : null}
       <div
         className="wm-stage"

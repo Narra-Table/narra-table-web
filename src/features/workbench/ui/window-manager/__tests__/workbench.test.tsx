@@ -160,6 +160,55 @@ describe('React workbench shell', () => {
     expect(store.getState().focus.focusedWindowId).toBe(chat);
   });
 
+  it('clears focus when clicking the workspace background', () => {
+    const store = createStore();
+    const { sheet } = seedTwoColumns(store);
+    renderWorkbench(store);
+
+    const sheetWindow = [...document.querySelectorAll('.wm-window')].find((window) =>
+      window.textContent?.includes('Sheet body'),
+    ) as Element;
+    fireEvent.pointerDown(sheetWindow);
+    expect(store.getState().focus.focusedWindowId).toBe(sheet);
+
+    const stage = document.querySelector('.wm-stage');
+    expect(stage).toBeDefined();
+    act(() => {
+      dispatchPointer(stage as Element, 'pointerdown', 10, 10);
+    });
+    expect(store.getState().focus.focusedWindowId).toBeNull();
+    expect(document.querySelectorAll('.wm-window[data-focused="true"]')).toHaveLength(0);
+  });
+
+  it('clears focus when clicking the toolbar or taskbar background', () => {
+    const store = createStore();
+    const { sheet } = seedTwoColumns(store);
+    renderWorkbench(store, { toolbar: <span>Host toolbar</span> });
+
+    const sheetWindow = [...document.querySelectorAll('.wm-window')].find((window) =>
+      window.textContent?.includes('Sheet body'),
+    ) as Element;
+    fireEvent.pointerDown(sheetWindow);
+    expect(store.getState().focus.focusedWindowId).toBe(sheet);
+
+    const taskbar = document.querySelector('.wm-taskbar');
+    expect(taskbar).toBeDefined();
+    act(() => {
+      dispatchPointer(taskbar as Element, 'pointerdown', 10, 10);
+    });
+    expect(store.getState().focus.focusedWindowId).toBeNull();
+
+    fireEvent.pointerDown(sheetWindow);
+    expect(store.getState().focus.focusedWindowId).toBe(sheet);
+
+    const toolbar = document.querySelector('.wm-toolbar');
+    expect(toolbar).toBeDefined();
+    act(() => {
+      dispatchPointer(toolbar as Element, 'pointerdown', 10, 10);
+    });
+    expect(store.getState().focus.focusedWindowId).toBeNull();
+  });
+
   it('closes the focused window from its chrome', () => {
     const store = createStore();
     const { chat, sheet } = seedTwoColumns(store);

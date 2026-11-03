@@ -105,6 +105,21 @@ export function focusWindow(
 }
 
 /**
+ * Clear the focused window. Each container still remembers its last focused
+ * window, so keyboard focus or a chrome click can restore it.
+ */
+export function blurWindow(state: WorkspaceState): WorkspaceState {
+  if (!state.focus.focusedWindowId) return state;
+  return {
+    ...state,
+    focus: {
+      ...state.focus,
+      focusedWindowId: null,
+    },
+  };
+}
+
+/**
  * Open a window. The host resolves app defaults into `input`; the core only
  * applies placement, singleton, focus and container rules.
  */
