@@ -24,8 +24,6 @@ import { WindowHosts } from './WindowHosts';
 export interface WorkbenchProps {
   /** Host toolbar content. The WM owns the fixed toolbar container. */
   toolbar?: ReactNode;
-  /** Extra leading content for the taskbar, for example a launcher button. */
-  taskbarLeading?: ReactNode;
   /** Replace the default empty state. */
   empty?: ReactNode;
   showTaskbar?: boolean;
@@ -40,7 +38,6 @@ export interface WorkbenchProps {
 
 function WorkbenchBody({
   toolbar,
-  taskbarLeading,
   empty,
   showTaskbar = true,
   keyboard = true,
@@ -61,7 +58,7 @@ function WorkbenchBody({
   const [narrowContainerId, setNarrowContainerId] = useState<string | null>(null);
   const focusedContainerId = selectFocusedContainer(state)?.id;
 
-  useHorizontalWheel(stageRef, stripRef, !narrow);
+  useHorizontalWheel(stageRef, stripRef, !narrow, state.focus.focusedWindowId === null);
   useWorkbenchKeyboard(store, rootRef, { enabled: keyboard, onEscape });
 
   useEffect(() => {
@@ -104,9 +101,7 @@ function WorkbenchBody({
         const target = event.target;
         if (
           target instanceof Element &&
-          target.closest(
-            '.wm-column, .wm-floating, .wm-taskbar-item, .wm-taskbar-apps, .wm-taskbar-leading',
-          )
+          target.closest('.wm-column, .wm-floating, .wm-taskbar-apps')
         ) {
           return;
         }
@@ -188,7 +183,7 @@ function WorkbenchBody({
       </div>
       <WindowHosts state={state} rootRef={rootRef} />
       {showTaskbar ? (
-        <WorkbenchTaskbar leading={taskbarLeading} onOpenLauncher={() => launcher.open()} />
+        <WorkbenchTaskbar stripRef={stripRef} onOpenLauncher={() => launcher.open()} />
       ) : null}
     </div>
   );

@@ -137,10 +137,12 @@ describe('React workbench shell', () => {
     expect(screen.getByTestId(`content-${chat}`)).toBeTruthy();
     expect(screen.getByTestId(`content-${sheet}`)).toBeTruthy();
     expect(screen.getByLabelText('Taskbar')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Apps' })).toBeTruthy();
+    expect(document.querySelectorAll('.wm-taskbar-item')).toHaveLength(0);
     expect(document.querySelectorAll('.wm-window[data-focused="true"]')).toHaveLength(1);
   });
 
-  it('focuses a window on pointer down and through the taskbar', () => {
+  it('focuses a window on pointer down', () => {
     const store = createStore();
     const { chat, sheet } = seedTwoColumns(store);
     renderWorkbench(store);
@@ -155,8 +157,7 @@ describe('React workbench shell', () => {
     expect(store.getState().focus.focusedWindowId).toBe(sheet);
     expect((sheetWindow as HTMLElement).getAttribute('data-focused')).toBe('true');
 
-    const taskbar = screen.getByLabelText('Taskbar');
-    fireEvent.click(within(taskbar).getByRole('button', { name: 'Chat' }));
+    fireEvent.pointerDown(chatWindow as Element);
     expect(store.getState().focus.focusedWindowId).toBe(chat);
   });
 
@@ -207,6 +208,33 @@ describe('React workbench shell', () => {
       dispatchPointer(toolbar as Element, 'pointerdown', 10, 10);
     });
     expect(store.getState().focus.focusedWindowId).toBeNull();
+  });
+
+  it('shows a scroll progress indicator that tracks the strip', () => {
+    const store = createStore();
+    seedTwoColumns(store);
+    renderWorkbench(store);
+
+    const strip = document.querySelector('.wm-strip');
+    expect(strip).toBeDefined();
+
+    act(() => {
+      mockScroll(strip as HTMLElement, { scrollWidth: 400, clientWidth: 100, scrollLeft: 0 });
+      fireEvent.scroll(strip as Element);
+    });
+
+    let segments = [...document.querySelectorAll('.wm-scroll-progress > span')];
+    expect(segments).toHaveLength(12);
+    expect(segments[0]?.className).toContain('wm-scroll-progress-active');
+
+    act(() => {
+      mockScroll(strip as HTMLElement, { scrollWidth: 400, clientWidth: 100, scrollLeft: 300 });
+      fireEvent.scroll(strip as Element);
+    });
+
+    segments = [...document.querySelectorAll('.wm-scroll-progress > span')];
+    expect(segments[11]?.className).toContain('wm-scroll-progress-active');
+    expect(segments[0]?.className).not.toContain('wm-scroll-progress-active');
   });
 
   it('closes the focused window from its chrome', () => {
