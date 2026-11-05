@@ -13,7 +13,15 @@ import {
   Users,
   X,
 } from 'lucide-react';
-import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type CompositionEvent,
+  type ReactNode,
+  type RefObject,
+} from 'react';
 import { createPortal } from 'react-dom';
 import { useAppToolbarContext } from '../hooks/useAppToolbar';
 import {
@@ -38,6 +46,42 @@ function ToolButton({ label, children }: { label: string; children: ReactNode })
   );
 }
 
+function useComposingTextInput(value: string, onChange: (value: string) => void) {
+  const [draft, setDraft] = useState(value);
+  const composingRef = useRef(false);
+  const committedRef = useRef(value);
+
+  useEffect(() => {
+    if (composingRef.current) return;
+    committedRef.current = value;
+    setDraft(value);
+  }, [value]);
+
+  const commit = (next: string) => {
+    if (committedRef.current === next) return;
+    committedRef.current = next;
+    onChange(next);
+  };
+
+  return {
+    value: draft,
+    onChange: (event: ChangeEvent<HTMLInputElement>) => {
+      const next = event.target.value;
+      setDraft(next);
+      if (!composingRef.current) commit(next);
+    },
+    onCompositionStart: () => {
+      composingRef.current = true;
+    },
+    onCompositionEnd: (event: CompositionEvent<HTMLInputElement>) => {
+      composingRef.current = false;
+      const next = event.currentTarget.value;
+      setDraft(next);
+      commit(next);
+    },
+  };
+}
+
 function SearchField({
   label,
   placeholder,
@@ -51,6 +95,8 @@ function SearchField({
   onChange: (value: string) => void;
   inputRef?: RefObject<HTMLInputElement | null>;
 }) {
+  const input = useComposingTextInput(value, onChange);
+
   return (
     <div className="flex min-w-0 flex-1 items-center gap-2 px-3 transition-colors focus-within:bg-surface-muted">
       <Search className="icon-stroke size-5 shrink-0 text-text-muted" aria-hidden="true" />
@@ -60,11 +106,10 @@ function SearchField({
         role="searchbox"
         aria-label={label}
         placeholder={placeholder}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
+        {...input}
         className="min-w-0 flex-1 bg-transparent py-2 text-base text-text outline-none placeholder:text-text-muted"
       />
-      {value ? (
+      {input.value ? (
         <button
           type="button"
           aria-label={`清空${label}`}
@@ -137,6 +182,7 @@ function ChatSwitcher({ content }: { content: AppToolbarChatContent }) {
   const [mode, setMode] = useState<'message' | 'search'>('message');
   const messageRef = useRef<HTMLInputElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const messageInput = useComposingTextInput(content.message.value, content.message.onChange);
 
   useEffect(() => {
     if (mode === 'message') messageRef.current?.focus();
@@ -165,8 +211,7 @@ function ChatSwitcher({ content }: { content: AppToolbarChatContent }) {
             type="text"
             aria-label={content.message.label}
             placeholder={content.message.placeholder}
-            value={content.message.value}
-            onChange={(event) => content.message.onChange(event.target.value)}
+            {...messageInput}
             onKeyDown={(event) => {
               if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
                 content.message.onSubmit?.();

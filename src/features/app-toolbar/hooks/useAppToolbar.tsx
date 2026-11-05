@@ -21,7 +21,15 @@ interface AppToolbarContextValue {
   unregister: (id: symbol) => void;
 }
 
-const AppToolbarContext = createContext<AppToolbarContextValue | null>(null);
+interface AppToolbarRegistrationContextValue {
+  register: (entry: AppToolbarEntry) => void;
+  unregister: (id: symbol) => void;
+}
+
+const AppToolbarRegistrationContext = createContext<AppToolbarRegistrationContextValue | null>(
+  null,
+);
+const AppToolbarStateContext = createContext<AppToolbarEntry | null | undefined>(undefined);
 
 export function AppToolbarProvider({ children }: { children: ReactNode }) {
   const [entries, setEntries] = useState<AppToolbarEntry[]>([]);
@@ -38,22 +46,31 @@ export function AppToolbarProvider({ children }: { children: ReactNode }) {
   const unregister = useCallback((id: symbol) => {
     setEntries((current) => current.filter((item) => item.id !== id));
   }, []);
-  const value = useMemo<AppToolbarContextValue>(
-    () => ({ activeEntry, register, unregister }),
-    [activeEntry, register, unregister],
+  const registration = useMemo<AppToolbarRegistrationContextValue>(
+    () => ({ register, unregister }),
+    [register, unregister],
   );
 
-  return <AppToolbarContext value={value}>{children}</AppToolbarContext>;
+  return (
+    <AppToolbarRegistrationContext value={registration}>
+      <AppToolbarStateContext value={activeEntry}>{children}</AppToolbarStateContext>
+    </AppToolbarRegistrationContext>
+  );
 }
 
 export function useAppToolbarContext(): AppToolbarContextValue {
-  const context = useContext(AppToolbarContext);
-  if (!context) throw new Error('AppToolbar must be used inside AppToolbarProvider');
-  return context;
+  const registration = useContext(AppToolbarRegistrationContext);
+  const activeEntry = useContext(AppToolbarStateContext);
+  if (!registration || activeEntry === undefined) {
+    throw new Error('AppToolbar must be used inside AppToolbarProvider');
+  }
+  return { activeEntry, ...registration };
 }
 
 export function useAppToolbar(definition: AppToolbarDefinition): void {
-  const { register, unregister } = useAppToolbarContext();
+  const registration = useContext(AppToolbarRegistrationContext);
+  if (!registration) throw new Error('AppToolbar must be used inside AppToolbarProvider');
+  const { register, unregister } = registration;
   const idRef = useRef<symbol | null>(null);
   if (!idRef.current) idRef.current = Symbol('app-toolbar');
   const id = idRef.current;

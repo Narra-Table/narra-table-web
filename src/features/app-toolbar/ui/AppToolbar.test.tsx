@@ -100,7 +100,51 @@ describe('AppToolbarSurface', () => {
     expect(search.getAttribute('value')).toBe('保留的搜索词');
     fireEvent.change(search, { target: { value: '新的搜索词' } });
     expect(onSearchChange).toHaveBeenCalledWith('新的搜索词');
-    expect(screen.getByDisplayValue('保留的草稿')).toBeDefined();
+    expect(screen.getByDisplayValue('新的草稿')).toBeDefined();
+  });
+
+  it('keeps Chinese input composition local until the candidate is committed', () => {
+    const onMessageChange = vi.fn();
+    const onSearchChange = vi.fn();
+    render(
+      <AppToolbarControls
+        definition={{
+          content: {
+            kind: 'chat-switcher',
+            message: {
+              label: '聊天输入',
+              placeholder: '输入消息',
+              value: '',
+              onChange: onMessageChange,
+            },
+            search: {
+              label: '搜索聊天记录',
+              placeholder: '搜索聊天记录',
+              value: '',
+              onChange: onSearchChange,
+            },
+          },
+        }}
+      />,
+    );
+
+    const message = screen.getByRole('textbox', { name: '聊天输入' });
+    fireEvent.compositionStart(message);
+    fireEvent.change(message, { target: { value: 'zhong' } });
+    expect(onMessageChange).not.toHaveBeenCalled();
+    expect(message.getAttribute('value')).toBe('zhong');
+    fireEvent.compositionEnd(message, { data: '中', target: { value: '中' } });
+    expect(onMessageChange).toHaveBeenCalledOnce();
+    expect(onMessageChange).toHaveBeenCalledWith('中');
+
+    fireEvent.click(screen.getByRole('button', { name: '搜索聊天记录' }));
+    const search = screen.getByRole('searchbox', { name: '搜索聊天记录' });
+    fireEvent.compositionStart(search);
+    fireEvent.change(search, { target: { value: 'xian' } });
+    expect(onSearchChange).not.toHaveBeenCalled();
+    fireEvent.compositionEnd(search, { data: '线', target: { value: '线' } });
+    expect(onSearchChange).toHaveBeenCalledOnce();
+    expect(onSearchChange).toHaveBeenCalledWith('线');
   });
 
   it('updates a toolbar definition without reordering its registration', () => {
