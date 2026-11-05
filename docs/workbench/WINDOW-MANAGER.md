@@ -51,7 +51,9 @@ interface WindowManagerState {
 
 ## UI
 
-- 桌面端横向并排列，窄屏纵向排列。
+- 桌面端由 `WindowManager` 横向并排列。
+- 移动端竖屏由 `MobileWindowManager` 独立呈现，使用顶部标签切换，一次显示一个窗口。
+- 移动端切换只改变焦点和可见性，不卸载非活动窗口内容。
 - 窗口只有标题、关闭操作和内容区域。
 - 焦点窗口使用语义强调边框。
 - 样式只使用 Tailwind utility 和项目语义 token。

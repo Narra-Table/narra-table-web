@@ -1,7 +1,9 @@
 import { Component, useSyncExternalStore, type ReactNode } from 'react';
 import { cn } from '@/lib/classNames';
+import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { WindowManagerStore } from '../model/store';
 import type { WindowInstance, WindowManagerState } from '../model/window-manager';
+import { MobileWindowManager } from './MobileWindowManager';
 
 export interface WindowManagerProps {
   store: WindowManagerStore;
@@ -31,9 +33,9 @@ class WindowErrorBoundary extends Component<
 }
 
 function widthClass(width: number): string {
-  if (width >= 0.9) return 'lg:w-full';
-  if (width >= 0.6) return 'lg:w-2/3';
-  return 'lg:w-1/2';
+  if (width >= 0.9) return 'w-full';
+  if (width >= 0.6) return 'w-2/3';
+  return 'w-1/2';
 }
 
 export function useWindowManagerStore(store: WindowManagerStore): WindowManagerState {
@@ -46,6 +48,23 @@ export function useWindowManagerStore(store: WindowManagerStore): WindowManagerS
 
 export function WindowManager({ store, toolbar, renderWindow }: WindowManagerProps) {
   const state = useWindowManagerStore(store);
+  const mobilePortrait = useMediaQuery('(max-width: 1023px) and (orientation: portrait)');
+
+  const renderWindowContent = (window: WindowInstance) => (
+    <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
+  );
+
+  if (mobilePortrait) {
+    return (
+      <MobileWindowManager
+        state={state}
+        toolbar={toolbar}
+        renderWindow={renderWindowContent}
+        onFocus={(instanceId) => store.actions.focus(instanceId)}
+        onClose={(instanceId) => store.actions.close(instanceId)}
+      />
+    );
+  }
 
   return (
     <section className="flex h-full min-h-0 flex-col bg-app-bg text-text">
@@ -55,7 +74,7 @@ export function WindowManager({ store, toolbar, renderWindow }: WindowManagerPro
         </header>
       ) : null}
 
-      <div className="scroll-subtle-native-hidden flex min-h-0 flex-1 flex-col gap-2 overflow-auto p-2 lg:flex-row lg:overflow-x-auto lg:overflow-y-hidden">
+      <div className="scroll-subtle-native-hidden flex min-h-0 flex-1 gap-2 overflow-x-auto p-2">
         {state.windows.length === 0 ? (
           <div className="grid min-h-48 flex-1 place-items-center border border-border-subtle bg-surface p-4 text-sm text-text-muted">
             工作台是空的，请从顶部打开一个窗口。
@@ -67,7 +86,7 @@ export function WindowManager({ store, toolbar, renderWindow }: WindowManagerPro
               <article
                 key={window.instanceId}
                 className={cn(
-                  'flex min-h-80 w-full shrink-0 flex-col overflow-hidden border bg-surface lg:h-full lg:min-h-0',
+                  'flex h-full min-h-0 shrink-0 flex-col overflow-hidden border bg-surface',
                   widthClass(window.width),
                   focused ? 'border-accent' : 'border-border-subtle',
                 )}
@@ -88,9 +107,7 @@ export function WindowManager({ store, toolbar, renderWindow }: WindowManagerPro
                   </button>
                 </header>
                 <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-                  <WindowErrorBoundary title={window.title}>
-                    {renderWindow(window)}
-                  </WindowErrorBoundary>
+                  {renderWindowContent(window)}
                 </div>
               </article>
             );
