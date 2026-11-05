@@ -7,6 +7,7 @@ import {
   useWindowManagerStore,
   type WindowInstance,
 } from '@/features/window-manager';
+import { useWindowEdgeAutoScroll } from '@/lib/useWindowBehaviorSettings';
 import { useSpacePersistence } from '../hooks/useSpacePersistence';
 import { createSpaceRuntime, openKind } from '../lib/persistence';
 import { isSpaceWindowKind, WINDOW_INFO, WINDOW_KINDS, type WindowKind } from '../model/window';
@@ -30,6 +31,7 @@ export function SpacePage({ spaceId }: { spaceId: string }) {
   const [queries, setQueries] = useState<Partial<Record<WindowKind, string>>>({});
   const { manager, workspace } = runtime;
   const managerState = useWindowManagerStore(manager);
+  const edgeAutoScroll = useWindowEdgeAutoScroll();
   const focusedWindow = managerState.windows.find(
     (window) => window.instanceId === managerState.focusedWindowId,
   );
@@ -146,6 +148,7 @@ export function SpacePage({ spaceId }: { spaceId: string }) {
   return (
     <div className="h-full min-h-0 overflow-hidden pb-13">
       <WindowManager
+        edgeAutoScroll={edgeAutoScroll}
         store={manager}
         renderWindow={renderWindow}
         renderWindowHeaderAddon={renderWindowHeaderAddon}

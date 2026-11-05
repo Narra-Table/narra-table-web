@@ -40,18 +40,54 @@ describe('WindowManager', () => {
     const windowElement = handle.parentElement;
     const strip = windowElement?.parentElement;
     Object.defineProperty(strip, 'getBoundingClientRect', {
-      value: () => ({ width: 1000 }),
+      value: () => ({ left: 0, right: 1000, width: 1000 }),
     });
 
     fireEvent(handle, new MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 500 }));
+    expect((strip?.lastElementChild as HTMLElement | null)?.style.width).toBe(
+      '666.6666666666666px',
+    );
     fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 900 }));
     expect(windowElement?.style.width).toBe('90%');
     expect(store.getState().windows[0]?.width).toBe(1 / 2);
+    if (strip) strip.scrollLeft = 200;
+    fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 900 }));
+    expect(windowElement?.style.width).toBe('100%');
     fireEvent(handle, new MouseEvent('pointerup', { bubbles: true, clientX: 900 }));
     expect(store.getState().windows[0]?.width).toBe(1);
 
     fireEvent.keyDown(handle, { key: 'ArrowLeft' });
     expect(store.getState().windows[0]?.width).toBe(1 / 2);
+  });
+
+  it('keeps edge auto-scroll active while the pointer crosses a resize handle', () => {
+    const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
+    store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat' });
+
+    const { container } = render(
+      <WindowManager
+        edgeAutoScroll
+        store={store}
+        renderWindow={(window) => <div>{window.windowTypeId}</div>}
+      />,
+    );
+
+    const handle = screen.getByRole('separator', { name: '调整Chat窗口宽度' });
+    const strip = handle.parentElement?.parentElement;
+    Object.defineProperties(strip, {
+      clientWidth: { value: 1000 },
+      scrollWidth: { value: 2000 },
+      scrollLeft: { value: 500, writable: true },
+      getBoundingClientRect: {
+        value: () => ({ left: 0, right: 1000, width: 1000 }),
+      },
+    });
+
+    fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, buttons: 0, clientX: 999 }));
+
+    expect(container.querySelector('[data-edge-indicator="right"]')?.className).toContain(
+      'opacity-100',
+    );
   });
 
   it('switches mobile windows without unmounting their content', () => {

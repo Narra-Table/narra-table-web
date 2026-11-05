@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { SettingsPage } from '@/features/settings';
 
-type SettingsSection = 'appearance' | 'profile';
-const SECTIONS: SettingsSection[] = ['profile', 'appearance'];
+type SettingsSection = 'appearance' | 'behavior' | 'profile';
+const SECTIONS: SettingsSection[] = ['profile', 'appearance', 'behavior'];
 
 export const Route = createFileRoute('/_app/settings')({
   validateSearch: (search): { section: SettingsSection } => ({

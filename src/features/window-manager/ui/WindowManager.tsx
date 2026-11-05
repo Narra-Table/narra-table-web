@@ -10,8 +10,10 @@ import {
   type WindowWidth,
 } from '../model/window-manager';
 import { MobileWindowManager, WINDOW_HEADER_TONES } from './MobileWindowManager';
+import { useEdgeAutoScroll } from './useEdgeAutoScroll';
 
 export interface WindowManagerProps {
+  edgeAutoScroll?: boolean;
   store: WindowManagerStore;
   toolbar?: ReactNode;
   renderWindow: (window: WindowInstance) => ReactNode;
@@ -58,15 +60,21 @@ function clampPreviewWidth(width: number): number {
 interface WindowResizeHandleProps {
   title: string;
   width: WindowWidth;
-  getContainerWidth: () => number;
+  getContainer: () => HTMLDivElement | null;
+  getTrailingSpace: () => HTMLDivElement | null;
   onFocus: () => void;
   onResize: (width: WindowWidth) => void;
 }
 
+const AUTO_SCROLL_EDGE_SIZE = 48;
+const AUTO_SCROLL_MAX_SPEED = 20;
+const RESIZE_TRAILING_SPACE = 2 / 3;
+
 function WindowResizeHandle({
   title,
   width,
-  getContainerWidth,
+  getContainer,
+  getTrailingSpace,
   onFocus,
   onResize,
 }: WindowResizeHandleProps) {
@@ -77,13 +85,70 @@ function WindowResizeHandle({
     startX: number;
     startWidth: WindowWidth;
     previewWidth: number;
+    pointerX: number;
+    startScrollLeft: number;
+    animationFrame: number | null;
     windowElement: HTMLElement;
+    container: HTMLDivElement;
+    trailingSpace: HTMLDivElement;
   } | null>(null);
+
+  const updatePreview = () => {
+    if (!drag.current) return;
+    const { container, pointerX, startScrollLeft, startWidth, startX, windowElement } =
+      drag.current;
+    const containerWidth = container.getBoundingClientRect().width;
+    if (containerWidth <= 0) return;
+    const previewWidth = clampPreviewWidth(
+      startWidth + (pointerX - startX + container.scrollLeft - startScrollLeft) / containerWidth,
+    );
+    drag.current.previewWidth = previewWidth;
+    windowElement.style.width = `${previewWidth * 100}%`;
+  };
+
+  const continueAutoScroll = () => {
+    if (!drag.current) return;
+    const { container, pointerX, previewWidth } = drag.current;
+    const bounds = container.getBoundingClientRect();
+    const distanceFromLeft = pointerX - bounds.left;
+    const distanceFromRight = bounds.right - pointerX;
+    const direction =
+      distanceFromRight < AUTO_SCROLL_EDGE_SIZE && previewWidth < 1
+        ? 1
+        : distanceFromLeft < AUTO_SCROLL_EDGE_SIZE && previewWidth > 1 / 3
+          ? -1
+          : 0;
+
+    if (direction === 0) {
+      drag.current.animationFrame = null;
+      return;
+    }
+
+    const edgeDistance = direction > 0 ? distanceFromRight : distanceFromLeft;
+    const speed =
+      direction *
+      AUTO_SCROLL_MAX_SPEED *
+      Math.min(1, Math.max(0, (AUTO_SCROLL_EDGE_SIZE - edgeDistance) / AUTO_SCROLL_EDGE_SIZE));
+    const previousScrollLeft = container.scrollLeft;
+    container.scrollLeft += speed;
+    if (container.scrollLeft === previousScrollLeft) {
+      drag.current.animationFrame = null;
+      return;
+    }
+    updatePreview();
+    drag.current.animationFrame = requestAnimationFrame(continueAutoScroll);
+  };
+
+  const startAutoScroll = () => {
+    if (!drag.current || drag.current.animationFrame !== null) return;
+    drag.current.animationFrame = requestAnimationFrame(continueAutoScroll);
+  };
 
   const finishDrag = (pointerId: number) => {
     if (!drag.current || drag.current.pointerId !== pointerId) return;
-    const { previewWidth, windowElement } = drag.current;
+    const { animationFrame, container, previewWidth, trailingSpace, windowElement } = drag.current;
     const finalWidth = snapWindowWidth(previewWidth);
+    if (animationFrame !== null) cancelAnimationFrame(animationFrame);
     drag.current = null;
     setDragging(false);
     windowElement.classList.remove('transition-none');
@@ -91,7 +156,18 @@ function WindowResizeHandle({
     windowElement.style.width = `${finalWidth * 100}%`;
     onResize(finalWidth);
 
-    const clearPreview = () => windowElement.style.removeProperty('width');
+    const clearPreview = () => {
+      windowElement.style.removeProperty('width');
+      const lastWindow = trailingSpace.previousElementSibling;
+      if (!(lastWindow instanceof HTMLElement)) {
+        trailingSpace.style.removeProperty('width');
+        return;
+      }
+      const contentEnd = lastWindow.offsetLeft + lastWindow.offsetWidth;
+      const viewportEnd = container.scrollLeft + container.clientWidth;
+      const requiredSpace = Math.max(0, viewportEnd - contentEnd);
+      trailingSpace.style.width = requiredSpace > 0 ? `${requiredSpace}px` : '0px';
+    };
     if (typeof requestAnimationFrame === 'function') {
       requestAnimationFrame(clearPreview);
     } else {
@@ -119,9 +195,17 @@ function WindowResizeHandle({
       onPointerDown={(event) => {
         if (event.button !== 0) return;
         const windowElement = event.currentTarget.parentElement;
-        if (!windowElement) return;
+        const container = getContainer();
+        const trailingSpace = getTrailingSpace();
+        if (!windowElement || !container || !trailingSpace) return;
         event.preventDefault();
         onFocus();
+        const containerWidth = container.getBoundingClientRect().width;
+        const reservedSpace = Math.max(
+          trailingSpace.getBoundingClientRect().width,
+          containerWidth * RESIZE_TRAILING_SPACE,
+        );
+        trailingSpace.style.width = `${reservedSpace}px`;
         windowElement.classList.add('transition-none');
         setDragging(true);
         drag.current = {
@@ -129,19 +213,20 @@ function WindowResizeHandle({
           startX: event.clientX,
           startWidth: snappedWidth,
           previewWidth: snappedWidth,
+          pointerX: event.clientX,
+          startScrollLeft: container.scrollLeft,
+          animationFrame: null,
           windowElement,
+          container,
+          trailingSpace,
         };
         event.currentTarget.setPointerCapture?.(event.pointerId);
       }}
       onPointerMove={(event) => {
         if (!drag.current || drag.current.pointerId !== event.pointerId) return;
-        const containerWidth = getContainerWidth();
-        if (containerWidth <= 0) return;
-        const previewWidth = clampPreviewWidth(
-          drag.current.startWidth + (event.clientX - drag.current.startX) / containerWidth,
-        );
-        drag.current.previewWidth = previewWidth;
-        drag.current.windowElement.style.width = `${previewWidth * 100}%`;
+        drag.current.pointerX = event.clientX;
+        updatePreview();
+        startAutoScroll();
       }}
       onPointerUp={(event) => {
         if (drag.current?.pointerId !== event.pointerId) return;
@@ -195,6 +280,7 @@ export function useWindowManagerStore(store: WindowManagerStore): WindowManagerS
 }
 
 export function WindowManager({
+  edgeAutoScroll = false,
   store,
   toolbar,
   renderWindow,
@@ -203,6 +289,11 @@ export function WindowManager({
   const state = useWindowManagerStore(store);
   const mobilePortrait = useMediaQuery('(max-width: 1023px) and (orientation: portrait)');
   const windowStripRef = useRef<HTMLDivElement>(null);
+  const trailingSpaceRef = useRef<HTMLDivElement>(null);
+  const edgeAutoScrollDirection = useEdgeAutoScroll(
+    windowStripRef,
+    edgeAutoScroll && !mobilePortrait,
+  );
 
   const renderWindowContent = (window: WindowInstance) => (
     <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
@@ -229,66 +320,90 @@ export function WindowManager({
         </header>
       ) : null}
 
-      <div
-        ref={windowStripRef}
-        className="scroll-subtle-native-hidden flex min-h-0 flex-1 gap-1 overflow-x-auto"
-      >
-        {state.windows.length === 0 ? (
-          <div className="grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted">
-            工作台是空的，请从顶部打开一个窗口。
-          </div>
-        ) : (
-          state.windows.map((window, index) => {
-            const focused = window.instanceId === state.focusedWindowId;
-            return (
-              <div
-                key={window.instanceId}
-                className={cn(
-                  'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
-                  widthClass(window.width),
-                )}
-              >
-                <article
-                  className="flex h-full min-h-0 flex-col overflow-hidden bg-surface"
-                  onPointerDown={() => store.actions.focus(window.instanceId)}
-                  onFocusCapture={() => store.actions.focus(window.instanceId)}
+      <div className="relative min-h-0 flex-1">
+        <div
+          ref={windowStripRef}
+          className="scroll-subtle-native-hidden flex h-full min-h-0 gap-1 overflow-x-auto"
+        >
+          {state.windows.length === 0 ? (
+            <div className="grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted">
+              工作台是空的，请从顶部打开一个窗口。
+            </div>
+          ) : (
+            state.windows.map((window, index) => {
+              const focused = window.instanceId === state.focusedWindowId;
+              return (
+                <div
+                  key={window.instanceId}
+                  className={cn(
+                    'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
+                    widthClass(window.width),
+                  )}
                 >
-                  <header
-                    className={cn(
-                      'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
-                      WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
-                      focused ? 'opacity-100' : 'opacity-75',
-                    )}
+                  <article
+                    className="flex h-full min-h-0 flex-col overflow-hidden bg-surface"
+                    onPointerDown={() => store.actions.focus(window.instanceId)}
+                    onFocusCapture={() => store.actions.focus(window.instanceId)}
                   >
-                    <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
-                    {renderWindowHeaderAddon?.(window)}
-                    <span className="min-w-0 flex-1" />
-                    <button
-                      type="button"
-                      className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"
-                      aria-label={`关闭${window.title}`}
-                      onClick={() => store.actions.close(window.instanceId)}
+                    <header
+                      className={cn(
+                        'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
+                        WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
+                        focused ? 'opacity-100' : 'opacity-75',
+                      )}
                     >
-                      ×
-                    </button>
-                  </header>
-                  <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-                    {renderWindowContent(window)}
-                  </div>
-                </article>
-                <WindowResizeHandle
-                  title={window.title}
-                  width={window.width}
-                  getContainerWidth={() =>
-                    windowStripRef.current?.getBoundingClientRect().width ?? 0
-                  }
-                  onFocus={() => store.actions.focus(window.instanceId)}
-                  onResize={(width) => store.actions.resize(window.instanceId, width)}
-                />
-              </div>
-            );
-          })
-        )}
+                      <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
+                      {renderWindowHeaderAddon?.(window)}
+                      <span className="min-w-0 flex-1" />
+                      <button
+                        type="button"
+                        className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"
+                        aria-label={`关闭${window.title}`}
+                        onClick={() => store.actions.close(window.instanceId)}
+                      >
+                        ×
+                      </button>
+                    </header>
+                    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+                      {renderWindowContent(window)}
+                    </div>
+                  </article>
+                  <WindowResizeHandle
+                    title={window.title}
+                    width={window.width}
+                    getContainer={() => windowStripRef.current}
+                    getTrailingSpace={() => trailingSpaceRef.current}
+                    onFocus={() => store.actions.focus(window.instanceId)}
+                    onResize={(width) => store.actions.resize(window.instanceId, width)}
+                  />
+                </div>
+              );
+            })
+          )}
+          {state.windows.length > 0 ? (
+            <div ref={trailingSpaceRef} aria-hidden="true" className="h-full w-0 shrink-0" />
+          ) : null}
+        </div>
+        <div
+          data-edge-indicator="left"
+          aria-hidden="true"
+          className={cn(
+            'pointer-events-none absolute inset-y-0 left-0 z-30 w-2 bg-info/15 opacity-0 transition-opacity duration-200',
+            edgeAutoScrollDirection === 'left' && 'opacity-100',
+          )}
+        >
+          <span className="absolute inset-y-0 left-0 w-1 bg-info shadow-lg shadow-info/50 motion-safe:animate-pulse" />
+        </div>
+        <div
+          data-edge-indicator="right"
+          aria-hidden="true"
+          className={cn(
+            'pointer-events-none absolute inset-y-0 right-0 z-30 w-2 bg-info/15 opacity-0 transition-opacity duration-200',
+            edgeAutoScrollDirection === 'right' && 'opacity-100',
+          )}
+        >
+          <span className="absolute inset-y-0 right-0 w-1 bg-info shadow-lg shadow-info/50 motion-safe:animate-pulse" />
+        </div>
       </div>
     </section>
   );
