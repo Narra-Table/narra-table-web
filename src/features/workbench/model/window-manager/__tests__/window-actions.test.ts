@@ -149,7 +149,7 @@ describe('closing windows', () => {
     expect(validateWorkspace(closed).ok).toBe(true);
   });
 
-  it('falls back to the neighbouring row in a stacked column', () => {
+  it('clears focus when closing the focused row in a stacked column', () => {
     const state = fresh();
     const first = open(state, { title: 'A' });
     const column = selectColumns(first.state)[0];
@@ -162,10 +162,10 @@ describe('closing windows', () => {
     expect(updated?.heights).toHaveLength(2);
     expect(updated?.heights?.[0]).toBeCloseTo(2 / 3);
     expect(updated?.heights?.[1]).toBeCloseTo(1 / 3);
-    expect(closed.focus.focusedWindowId).toBe(third.instanceId);
+    expect(closed.focus.focusedWindowId).toBeNull();
   });
 
-  it('falls back to the adjacent column when a column disappears', () => {
+  it('clears focus when closing the focused column', () => {
     const state = fresh();
     const first = open(state, { title: 'A' });
     const second = open(first.state, { title: 'B' });
@@ -173,7 +173,7 @@ describe('closing windows', () => {
     const columns = selectColumns(closed);
     expect(columns).toHaveLength(1);
     expect(columns[0]?.windows).toEqual([first.instanceId]);
-    expect(closed.focus.focusedWindowId).toBe(first.instanceId);
+    expect(closed.focus.focusedWindowId).toBeNull();
   });
 
   it('keeps focus when closing a background window', () => {
@@ -184,14 +184,16 @@ describe('closing windows', () => {
     expect(closed.focus.focusedWindowId).toBe(second.instanceId);
   });
 
-  it('returns to the tiling layer after closing the last float', () => {
+  it('clears focus when closing the last float', () => {
     const state = fresh();
     const tiled = open(state, { title: 'A' });
     const floated = open(tiled.state, { title: 'F', floating: true });
     expect(floated.state.focus.layer).toBe('floating');
     const closed = closeWindow(floated.state, floated.instanceId);
-    expect(closed.focus.layer).toBe('tiling');
-    expect(closed.focus.focusedWindowId).toBe(tiled.instanceId);
+    expect(closed.focus.focusedWindowId).toBeNull();
+    expect(closed.focus.blurred).toBe(true);
+    expect(selectFloating(closed)).toHaveLength(0);
+    expect(selectColumns(closed)[0]?.windows).toEqual([tiled.instanceId]);
   });
 });
 

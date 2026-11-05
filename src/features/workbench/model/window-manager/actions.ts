@@ -31,7 +31,6 @@ import type {
   AttentionLevel,
   ColumnContainer,
   ColumnDisplay,
-  Container,
   Direction,
   FloatingContainer,
   FocusLayer,
@@ -109,12 +108,13 @@ export function focusWindow(
  * window, so keyboard focus or a chrome click can restore it.
  */
 export function blurWindow(state: WorkspaceState): WorkspaceState {
-  if (!state.focus.focusedWindowId) return state;
+  if (!state.focus.focusedWindowId && state.focus.blurred) return state;
   return {
     ...state,
     focus: {
       ...state.focus,
       focusedWindowId: null,
+      blurred: true,
     },
   };
 }
@@ -233,61 +233,17 @@ export function closeWindow(state: WorkspaceState, instanceId: WindowInstanceId)
 
   const wasFocused = state.focus.focusedWindowId === instanceId;
   let next = state;
-  let fallbackContainer: Container | undefined;
-  let fallbackWindowId: WindowInstanceId | undefined;
 
   if (container.kind === 'column') {
-    const columns = selectColumns(state);
-    const columnIndex = columns.findIndex((candidate) => candidate.id === container.id);
-    const windowIndex = container.windows.indexOf(instanceId);
-
     if (container.windows.length === 1) {
-      const remainingColumns = columns.filter((candidate) => candidate.id !== container.id);
-      const neighbor =
-        remainingColumns[Math.min(columnIndex, remainingColumns.length - 1)] ??
-        remainingColumns[columnIndex - 1];
-      if (neighbor) {
-        fallbackContainer = neighbor;
-        fallbackWindowId = selectActiveWindowId(state, neighbor) ?? undefined;
-      } else {
-        const floats = selectFloating(state);
-        const top = floats[floats.length - 1];
-        if (top) {
-          fallbackContainer = top;
-          fallbackWindowId = top.window;
-        }
-      }
       next = {
         ...state,
         containers: state.containers.filter((candidate) => candidate.id !== container.id),
       };
     } else {
-      const removed = removeFromColumn(state, container, instanceId);
-      next = removed.state;
-      if (removed.container) {
-        fallbackContainer = removed.container;
-        fallbackWindowId =
-          removed.container.windows[Math.min(windowIndex, removed.container.windows.length - 1)] ??
-          removed.container.windows[removed.container.windows.length - 1];
-      }
+      next = removeFromColumn(state, container, instanceId).state;
     }
   } else {
-    const floats = selectFloating(state).filter((candidate) => candidate.id !== container.id);
-    const top = floats[floats.length - 1];
-    if (top) {
-      fallbackContainer = top;
-      fallbackWindowId = top.window;
-    } else {
-      const columns = selectColumns(state);
-      const column =
-        (state.focus.lastTiledContainerId
-          ? columns.find((candidate) => candidate.id === state.focus.lastTiledContainerId)
-          : undefined) ?? columns[0];
-      if (column) {
-        fallbackContainer = column;
-        fallbackWindowId = selectActiveWindowId(state, column) ?? undefined;
-      }
-    }
     next = {
       ...state,
       containers: state.containers.filter((candidate) => candidate.id !== container.id),
@@ -307,8 +263,8 @@ export function closeWindow(state: WorkspaceState, instanceId: WindowInstanceId)
     };
   }
 
-  if (wasFocused && fallbackWindowId && fallbackContainer) {
-    next = focusWindow(next, fallbackWindowId, { clearAttention: false });
+  if (wasFocused) {
+    next = blurWindow(next);
   }
 
   return commit(next);

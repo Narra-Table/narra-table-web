@@ -239,7 +239,7 @@ describe('React workbench shell', () => {
 
   it('closes the focused window from its chrome', () => {
     const store = createStore();
-    const { chat, sheet } = seedTwoColumns(store);
+    const { sheet } = seedTwoColumns(store);
     renderWorkbench(store);
 
     const sheetColumn = [...document.querySelectorAll('.wm-column')].find(
@@ -248,7 +248,7 @@ describe('React workbench shell', () => {
     expect(sheetColumn).toBeDefined();
     fireEvent.click(within(sheetColumn as HTMLElement).getByLabelText('关闭'));
     expect(store.getState().windows[sheet]).toBeUndefined();
-    expect(store.getState().focus.focusedWindowId).toBe(chat);
+    expect(store.getState().focus.focusedWindowId).toBeNull();
     expect(screen.queryByTestId(`content-${sheet}`)).toBeNull();
   });
 

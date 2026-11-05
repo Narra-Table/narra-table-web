@@ -67,6 +67,8 @@ export interface WorkspaceFocus {
   lastFocusedWindowByContainer: Record<ContainerId, WindowInstanceId>;
   /** Last focused column, used when opening from the floating layer. */
   lastTiledContainerId: ContainerId | null;
+  /** True when focus was intentionally cleared; normalization keeps it cleared. */
+  blurred?: boolean;
 }
 
 /**
