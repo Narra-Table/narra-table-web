@@ -8,7 +8,7 @@ export interface WindowInfo {
 }
 
 export const WINDOW_INFO: Record<WindowKind, WindowInfo> = {
-  chat: { title: '聊天', width: 2 / 3 },
+  chat: { title: '聊天', width: 1 / 2 },
   characters: { title: '角色', width: 1 / 2 },
   members: { title: '成员', width: 1 / 2 },
   clues: { title: '线索', width: 1 / 2 },

@@ -1,7 +1,7 @@
 import {
-  clampWindowWidth,
   createEmptyWindowManagerState,
   parseWindowManagerState,
+  snapWindowWidth,
   type OpenWindowInput,
   type RestoreOptions,
   type WindowInstanceId,
@@ -14,6 +14,7 @@ export interface WindowManagerActions {
   open(input: OpenWindowInput): WindowInstanceId;
   close(instanceId: WindowInstanceId): void;
   focus(instanceId: WindowInstanceId): void;
+  resize(instanceId: WindowInstanceId, width: number): void;
   setWindowState(instanceId: WindowInstanceId, state: unknown): void;
 }
 
@@ -73,7 +74,7 @@ export function createWindowManagerStore(
             appId: input.appId,
             windowTypeId: input.windowTypeId,
             title: input.title,
-            width: clampWindowWidth(input.width),
+            width: snapWindowWidth(input.width),
             ...(input.state === undefined ? {} : { state: input.state }),
           },
         ],
@@ -99,6 +100,16 @@ export function createWindowManagerStore(
         return;
       }
       replace({ ...state, focusedWindowId: instanceId });
+    },
+    resize: (instanceId, width) => {
+      const snappedWidth = snapWindowWidth(width);
+      const windows = state.windows.map((window) =>
+        window.instanceId === instanceId && window.width !== snappedWidth
+          ? { ...window, width: snappedWidth }
+          : window,
+      );
+      if (windows.every((window, index) => window === state.windows[index])) return;
+      replace({ ...state, windows });
     },
     setWindowState: (instanceId, windowState) => {
       const windows = state.windows.map((window) =>

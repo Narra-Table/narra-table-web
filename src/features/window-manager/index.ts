@@ -1,15 +1,16 @@
 export {
   WINDOW_WIDTHS,
-  clampWindowWidth,
   createEmptyWindowManagerState,
   parseWindowManagerState,
   selectFocusedWindow,
+  snapWindowWidth,
   validateWindowManagerState,
   type OpenWindowInput,
   type RestoreOptions,
   type WindowInstance,
   type WindowInstanceId,
   type WindowManagerState,
+  type WindowWidth,
 } from './model/window-manager';
 export {
   createSequentialIdFactory,

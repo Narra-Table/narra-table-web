@@ -1,11 +1,13 @@
 export type WindowInstanceId = string;
+export const WINDOW_WIDTHS = [1 / 3, 1 / 2, 1] as const;
+export type WindowWidth = (typeof WINDOW_WIDTHS)[number];
 
 export interface WindowInstance {
   instanceId: WindowInstanceId;
   appId: string;
   windowTypeId: string;
   title: string;
-  width: number;
+  width: WindowWidth;
   state?: unknown;
 }
 
@@ -27,10 +29,10 @@ export interface RestoreOptions {
   isWindowTypeAvailable?: (window: WindowInstance) => boolean;
 }
 
-export const WINDOW_WIDTHS = [1 / 2, 2 / 3, 1] as const;
-
-export function clampWindowWidth(width = 1 / 2): number {
-  return Math.min(1, Math.max(1 / 3, width));
+export function snapWindowWidth(width = 1 / 2): WindowWidth {
+  return WINDOW_WIDTHS.reduce((nearest, candidate) =>
+    Math.abs(candidate - width) < Math.abs(nearest - width) ? candidate : nearest,
+  );
 }
 
 export function createEmptyWindowManagerState(): WindowManagerState {
@@ -69,7 +71,7 @@ export function parseWindowManagerState(
       appId: window.appId,
       windowTypeId: window.windowTypeId,
       title: window.title,
-      width: clampWindowWidth(window.width),
+      width: snapWindowWidth(window.width),
       ...(window.state === undefined ? {} : { state: window.state }),
     };
     if (options.isWindowTypeAvailable && !options.isWindowTypeAvailable(normalized)) continue;

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   parseWindowManagerState,
   selectFocusedWindow,
+  snapWindowWidth,
   validateWindowManagerState,
 } from './window-manager';
 
@@ -37,5 +38,12 @@ describe('window manager model', () => {
       isWindowTypeAvailable: () => false,
     });
     expect(state).toEqual({ version: 2, windows: [], focusedWindowId: null });
+  });
+
+  it('snaps widths to one third, one half or full width', () => {
+    expect(snapWindowWidth(0.3)).toBe(1 / 3);
+    expect(snapWindowWidth(0.45)).toBe(1 / 2);
+    expect(snapWindowWidth(0.8)).toBe(1);
+    expect(parseWindowManagerState(snapshot)?.windows[0]?.width).toBe(1 / 2);
   });
 });
