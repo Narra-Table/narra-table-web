@@ -16,6 +16,7 @@ export type WorkbenchAction =
   | { type: 'window/open'; input: OpenWindowInput; instanceId: WindowInstanceId }
   | { type: 'window/close'; instanceId: WindowInstanceId }
   | { type: 'window/focus'; instanceId: WindowInstanceId; clearAttention?: boolean }
+  | { type: 'window/blur' }
   | { type: 'window/focus-direction'; direction: Direction }
   | { type: 'window/focus-layer'; layer: FocusLayer }
   | { type: 'window/update'; instanceId: WindowInstanceId; patch: WindowPatch }

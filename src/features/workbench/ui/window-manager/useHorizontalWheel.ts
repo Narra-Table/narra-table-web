@@ -1,16 +1,19 @@
 import { useEffect, type RefObject } from 'react';
 
 /**
- * The tiling strip must not pan on the wheel or on navigation keys. Vertical
- * wheels stay with the window under the pointer. A horizontal wheel (trackpad
- * or Shift+wheel), and Arrow / Home / End / Page Up / Page Down, are cancelled
- * when they would move the strip. A nested scroller such as a tab row, a wide
- * table, or a message list keeps the gesture when it can actually move.
+ * The tiling strip must not pan on the wheel or on navigation keys. A vertical
+ * wheel scrolls only the focused window's content; with no focused window it
+ * pans the strip horizontally with a short eased glide, and with focus
+ * elsewhere it is ignored. A horizontal wheel (trackpad or Shift+wheel), and
+ * Arrow / Home / End / Page Up / Page Down, are cancelled when they would move
+ * the strip. A nested scroller such as a tab row, a wide table, or a message
+ * list keeps the gesture when it can actually move.
  */
 export function useHorizontalWheel(
   stageRef: RefObject<HTMLElement | null>,
   stripRef: RefObject<HTMLElement | null>,
   enabled = true,
+  verticalPansStrip = false,
 ): void {
   useEffect(() => {
     if (!enabled) return;
@@ -18,7 +21,63 @@ export function useHorizontalWheel(
     const strip = stripRef.current;
     if (!stage || !strip) return;
 
+    // Smooth panning state for the vertical-wheel gesture. Lerping the strip
+    // toward a wheel-driven target keeps rapid wheel deltas from stuttering.
+    let targetScroll = strip.scrollLeft;
+    let currentScroll = strip.scrollLeft;
+    let frameId: number | null = null;
+    const reduceMotion =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const tick = () => {
+      frameId = null;
+      currentScroll += (targetScroll - currentScroll) * 0.2;
+      if (Math.abs(targetScroll - currentScroll) < 0.5) currentScroll = targetScroll;
+      strip.scrollLeft = currentScroll;
+      if (currentScroll !== targetScroll) frameId = requestAnimationFrame(tick);
+    };
+
+    const startPan = (delta: number) => {
+      // Re-anchor to the live position: the edge hover gesture may have moved
+      // the strip since the last wheel event, and the eased glide below would
+      // otherwise snap back to the stale target.
+      targetScroll = strip.scrollLeft;
+      currentScroll = strip.scrollLeft;
+      const maxScroll = strip.scrollWidth - strip.clientWidth;
+      targetScroll = Math.max(0, Math.min(maxScroll, targetScroll + delta));
+      if (reduceMotion || maxScroll <= 0) {
+        currentScroll = targetScroll;
+        strip.scrollLeft = targetScroll;
+        return;
+      }
+      if (frameId === null) frameId = requestAnimationFrame(tick);
+    };
+
     const onWheel = (event: WheelEvent) => {
+      const vertical = !event.shiftKey && Math.abs(event.deltaY) > Math.abs(event.deltaX);
+
+      if (vertical) {
+        const delta = event.deltaY;
+        if (delta === 0) return;
+
+        const target = event.target;
+        if (!(target instanceof Element) || !strip.contains(target)) return;
+
+        if (verticalPansStrip) {
+          // No focused window: the wheel pans the strip, never scrolls content.
+          event.preventDefault();
+          startPan(delta);
+          return;
+        }
+
+        // A focused window exists; only its own scrollable content may scroll.
+        if (!target.closest('.wm-window[data-focused="true"]')) {
+          event.preventDefault();
+        }
+        return;
+      }
+
       const horizontal = event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY);
       if (!horizontal) return;
 
@@ -60,8 +119,9 @@ export function useHorizontalWheel(
     return () => {
       stage.removeEventListener('wheel', onWheel);
       stage.removeEventListener('keydown', onKeyDown);
+      if (frameId !== null) cancelAnimationFrame(frameId);
     };
-  }, [stageRef, stripRef, enabled]);
+  }, [stageRef, stripRef, enabled, verticalPansStrip]);
 }
 
 const STRIP_NAV_KEYS = new Set([
