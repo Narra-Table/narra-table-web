@@ -37,7 +37,16 @@ function messageText(message: {
   );
 }
 
-export function ChatWindow({ spaceId, roomId }: SpaceWindowProps & { roomId?: string }) {
+function matchesQuery(query: string, ...values: Array<string | undefined>): boolean {
+  const needle = query.trim().toLocaleLowerCase();
+  return !needle || values.some((value) => value?.toLocaleLowerCase().includes(needle));
+}
+
+export function ChatWindow({
+  spaceId,
+  roomId,
+  query = '',
+}: SpaceWindowProps & { roomId?: string; query?: string }) {
   const {
     data: messages,
     isPending,
@@ -53,10 +62,14 @@ export function ChatWindow({ spaceId, roomId }: SpaceWindowProps & { roomId?: st
   if (isPending) return <WindowState>加载中</WindowState>;
   if (isError) return <WindowState>聊天数据加载失败</WindowState>;
   if (!messages?.length) return <WindowState>暂无消息</WindowState>;
+  const visibleMessages = messages.filter((message) =>
+    matchesQuery(query, message.sender?.maskId, message.sender?.userId, messageText(message)),
+  );
+  if (!visibleMessages.length) return <WindowState>没有匹配的聊天记录</WindowState>;
 
   return (
     <ul className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
-      {messages.map((message, index) => (
+      {visibleMessages.map((message, index) => (
         <li key={message.messageId ?? String(index)}>
           <div className="flex items-center gap-2 text-xs">
             <span className="font-semibold text-accent">
@@ -71,7 +84,7 @@ export function ChatWindow({ spaceId, roomId }: SpaceWindowProps & { roomId?: st
   );
 }
 
-export function CharactersWindow({ spaceId }: SpaceWindowProps) {
+export function CharactersWindow({ spaceId, query = '' }: SpaceWindowProps & { query?: string }) {
   const {
     data: masks,
     isPending,
@@ -83,10 +96,12 @@ export function CharactersWindow({ spaceId }: SpaceWindowProps) {
   if (isPending) return <WindowState>加载中</WindowState>;
   if (isError) return <WindowState>角色数据加载失败</WindowState>;
   if (!masks?.length) return <WindowState>暂无角色</WindowState>;
+  const visibleMasks = masks.filter((mask) => matchesQuery(query, mask.name, mask.type));
+  if (!visibleMasks.length) return <WindowState>没有匹配的空间角色</WindowState>;
 
   return (
     <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
-      {masks.map((mask) => (
+      {visibleMasks.map((mask) => (
         <li key={mask.maskId} className="grid grid-cols-[1fr_auto] gap-3 bg-app-bg px-3 py-3">
           <span className="min-w-0">
             <span className="block truncate text-base font-medium text-text">{mask.name}</span>
@@ -101,7 +116,7 @@ export function CharactersWindow({ spaceId }: SpaceWindowProps) {
   );
 }
 
-export function MembersWindow({ spaceId }: SpaceWindowProps) {
+export function MembersWindow({ spaceId, query = '' }: SpaceWindowProps & { query?: string }) {
   const [ready, setReady] = useState<Record<string, boolean>>({});
   const {
     data: members,
@@ -114,10 +129,14 @@ export function MembersWindow({ spaceId }: SpaceWindowProps) {
   if (isPending) return <WindowState>加载中</WindowState>;
   if (isError) return <WindowState>成员数据加载失败</WindowState>;
   if (!members?.length) return <WindowState>暂无成员</WindowState>;
+  const visibleMembers = members.filter((member) =>
+    matchesQuery(query, member.displayName, member.userId, member.role),
+  );
+  if (!visibleMembers.length) return <WindowState>没有匹配的空间成员</WindowState>;
 
   return (
     <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
-      {members.map((member, index) => {
+      {visibleMembers.map((member, index) => {
         const key = member.userId ?? String(index);
         return (
           <li key={key} className="flex items-center gap-2 bg-app-bg px-3 py-3">
@@ -141,7 +160,7 @@ export function MembersWindow({ spaceId }: SpaceWindowProps) {
   );
 }
 
-export function CluesWindow({ spaceId }: SpaceWindowProps) {
+export function CluesWindow({ spaceId, query = '' }: SpaceWindowProps & { query?: string }) {
   const {
     data: clues,
     isPending,
@@ -153,10 +172,14 @@ export function CluesWindow({ spaceId }: SpaceWindowProps) {
   if (isPending) return <WindowState>加载中</WindowState>;
   if (isError) return <WindowState>线索数据加载失败</WindowState>;
   if (!clues?.length) return <WindowState>暂无线索</WindowState>;
+  const visibleClues = clues.filter((message) =>
+    matchesQuery(query, message.clue?.title, message.clue?.description),
+  );
+  if (!visibleClues.length) return <WindowState>没有匹配的线索</WindowState>;
 
   return (
     <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
-      {clues.map((message, index) => (
+      {visibleClues.map((message, index) => (
         <li key={message.messageId ?? String(index)} className="bg-app-bg px-3 py-3">
           <div className="flex items-center gap-3">
             <span className="min-w-0 flex-1 truncate text-base font-medium text-text">
@@ -175,7 +198,7 @@ export function CluesWindow({ spaceId }: SpaceWindowProps) {
   );
 }
 
-export function CombatWindow({ spaceId }: SpaceWindowProps) {
+export function CombatWindow({ spaceId, query = '' }: SpaceWindowProps & { query?: string }) {
   const {
     data: masks,
     isPending,
@@ -187,10 +210,14 @@ export function CombatWindow({ spaceId }: SpaceWindowProps) {
   if (isPending) return <WindowState>加载中</WindowState>;
   if (isError) return <WindowState>战斗数据加载失败</WindowState>;
   if (!masks?.length) return <WindowState>暂无参战角色</WindowState>;
+  const visibleCombatants = masks
+    .map((mask, index) => ({ mask, index }))
+    .filter(({ mask }) => matchesQuery(query, mask.name, mask.type));
+  if (!visibleCombatants.length) return <WindowState>没有匹配的参战角色</WindowState>;
 
   return (
     <ol className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
-      {masks.map((mask, index) => (
+      {visibleCombatants.map(({ mask, index }) => (
         <li
           key={mask.maskId}
           className="grid grid-cols-[2rem_1fr_auto] items-center gap-2 bg-app-bg px-3 py-3"

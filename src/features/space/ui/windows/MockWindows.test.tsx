@@ -1,10 +1,21 @@
 /** @vitest-environment jsdom */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ChatWindow, CharactersWindow, CluesWindow, CombatWindow, MapWindow } from './MockWindows';
+import {
+  ChatWindow,
+  CharactersWindow,
+  CluesWindow,
+  CombatWindow,
+  MapWindow,
+  MembersWindow,
+} from './MockWindows';
 
 vi.mock('@/api', () => ({
-  useGetApiSpacesSpaceId: vi.fn(),
+  useGetApiSpacesSpaceId: vi.fn(() => ({
+    data: [{ userId: 'user-1', displayName: 'Generated member', role: 'pl' }],
+    isPending: false,
+    isError: false,
+  })),
   useGetApiSpacesSpaceIdClues: vi.fn(() => ({
     data: [
       {
@@ -42,11 +53,17 @@ vi.mock('@/api', () => ({
 
 afterEach(cleanup);
 
-describe('mock workbench windows', () => {
+describe('mock space windows', () => {
   it('shows generated messages for the selected room', () => {
     render(<ChatWindow spaceId="space-1" roomId="room-1" />);
     expect(screen.getByText('Generated sender')).toBeDefined();
     expect(screen.getByText('Generated message')).toBeDefined();
+  });
+
+  it('filters chat records from the contextual toolbar query', () => {
+    render(<ChatWindow spaceId="space-1" roomId="room-1" query="missing" />);
+    expect(screen.getByText('没有匹配的聊天记录')).toBeDefined();
+    expect(screen.queryByText('Generated message')).toBeNull();
   });
 
   it('shows API character data without a local input', () => {
@@ -56,6 +73,12 @@ describe('mock workbench windows', () => {
     expect(screen.queryByRole('textbox')).toBeNull();
   });
 
+  it('filters space characters from the contextual toolbar query', () => {
+    render(<CharactersWindow spaceId="space-1" query="missing" />);
+    expect(screen.getByText('没有匹配的空间角色')).toBeDefined();
+    expect(screen.queryByText('Generated mask')).toBeNull();
+  });
+
   it('shows API clue and combat data', () => {
     render(<CluesWindow spaceId="space-1" />);
     expect(screen.getByText('Generated clue')).toBeDefined();
@@ -63,6 +86,19 @@ describe('mock workbench windows', () => {
     render(<CombatWindow spaceId="space-1" />);
     expect(screen.getByText('Generated mask')).toBeDefined();
     expect(screen.queryByRole('textbox')).toBeNull();
+  });
+
+  it('filters members, clues, and combatants from their toolbar queries', () => {
+    render(<MembersWindow spaceId="space-1" query="missing" />);
+    expect(screen.getByText('没有匹配的空间成员')).toBeDefined();
+    cleanup();
+
+    render(<CluesWindow spaceId="space-1" query="missing" />);
+    expect(screen.getByText('没有匹配的线索')).toBeDefined();
+    cleanup();
+
+    render(<CombatWindow spaceId="space-1" query="missing" />);
+    expect(screen.getByText('没有匹配的参战角色')).toBeDefined();
   });
 
   it('toggles a map cell', () => {

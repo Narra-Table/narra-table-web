@@ -115,8 +115,8 @@ export default defineConfig({
           ) {
             return 'editor';
           }
-          if (path.includes('/src/features/workbench/')) {
-            return 'workbench';
+          if (path.includes('/src/features/space/')) {
+            return 'space';
           }
           return undefined;
         },

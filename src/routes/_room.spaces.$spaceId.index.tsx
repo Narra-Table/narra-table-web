@@ -1,21 +1,21 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { lazy, Suspense } from 'react';
 
-const WorkbenchPage = lazy(() =>
-  import('@/features/workbench').then((module) => ({
-    default: module.WorkbenchPage,
+const SpacePage = lazy(() =>
+  import('@/features/space').then((module) => ({
+    default: module.SpacePage,
   })),
 );
 
 export const Route = createFileRoute('/_room/spaces/$spaceId/')({
-  component: SpaceWorkbenchPage,
+  component: SpaceRoutePage,
 });
 
-function SpaceWorkbenchPage() {
+function SpaceRoutePage() {
   const { spaceId } = Route.useParams();
   return (
     <Suspense fallback={null}>
-      <WorkbenchPage key={spaceId} spaceId={spaceId} />
+      <SpacePage key={spaceId} spaceId={spaceId} />
     </Suspense>
   );
 }

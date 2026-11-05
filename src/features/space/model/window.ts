@@ -16,6 +16,6 @@ export const WINDOW_INFO: Record<WindowKind, WindowInfo> = {
   map: { title: '地图', width: 1 / 2 },
 };
 
-export function isWorkbenchWindowKind(value: string): value is WindowKind {
+export function isSpaceWindowKind(value: string): value is WindowKind {
   return (WINDOW_KINDS as readonly string[]).includes(value);
 }

@@ -41,7 +41,7 @@ function getScenesResponse() {
   return response;
 }
 
-export const workbenchHandlers = [
+export const spaceHandlers = [
   getGetApiSpacesSpaceIdRoomsRoomIdMessagesMockHandler(getMessagesResponse),
   getGetApiSpacesSpaceIdRoomsRoomIdScenesMockHandler(getScenesResponse),
   getGetApiSpacesSpaceIdCluesMockHandler(getCluesResponse),

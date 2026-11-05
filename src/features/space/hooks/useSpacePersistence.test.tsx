@@ -3,14 +3,14 @@ import { act, cleanup, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createWindowManagerStore } from '@/features/window-manager';
 import {
-  createWorkbenchRuntimeForSpace,
+  createSpaceRuntime,
   openKind,
-  readWorkbenchSnapshot,
-  writeWorkbenchSnapshot,
+  readSpaceSnapshot,
+  writeSpaceSnapshot,
 } from '../lib/persistence';
-import { useWorkbenchPersistence } from './useWorkbenchPersistence';
+import { useSpacePersistence } from './useSpacePersistence';
 
-describe('useWorkbenchPersistence', () => {
+describe('useSpacePersistence', () => {
   const setItem = vi.fn();
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('useWorkbenchPersistence', () => {
 
   it('coalesces rapid store updates into one snapshot write', () => {
     const store = createWindowManagerStore();
-    const view = renderHook(() => useWorkbenchPersistence('space-1', store));
+    const view = renderHook(() => useSpacePersistence('space-1', store));
 
     act(() => {
       store.actions.open({ appId: 'narratable', windowTypeId: 'chat', title: '聊天' });
@@ -45,7 +45,7 @@ describe('useWorkbenchPersistence', () => {
 
   it('flushes pending state when the page is hidden', () => {
     const store = createWindowManagerStore();
-    renderHook(() => useWorkbenchPersistence('space-1', store));
+    renderHook(() => useSpacePersistence('space-1', store));
 
     act(() => {
       store.actions.open({ appId: 'narratable', windowTypeId: 'chat', title: '聊天' });
@@ -56,7 +56,7 @@ describe('useWorkbenchPersistence', () => {
   });
 });
 
-describe('useWorkbenchPersistence across tabs', () => {
+describe('useSpacePersistence across tabs', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     localStorage.clear();
@@ -68,22 +68,22 @@ describe('useWorkbenchPersistence across tabs', () => {
   });
 
   function savedByAnotherTab() {
-    const idle = createWorkbenchRuntimeForSpace('shared-space');
-    const view = renderHook(() => useWorkbenchPersistence('shared-space', idle.manager));
+    const idle = createSpaceRuntime('shared-space');
+    const view = renderHook(() => useSpacePersistence('shared-space', idle.manager));
     act(() => {
       vi.advanceTimersByTime(200);
     });
 
-    const editing = createWorkbenchRuntimeForSpace('shared-space');
+    const editing = createSpaceRuntime('shared-space');
     openKind(editing.workspace, 'map');
-    writeWorkbenchSnapshot('shared-space', editing.manager);
-    return { view, latestLayout: readWorkbenchSnapshot('shared-space') };
+    writeSpaceSnapshot('shared-space', editing.manager);
+    return { view, latestLayout: readSpaceSnapshot('shared-space') };
   }
 
   it('keeps the layout saved by another tab when an idle tab unmounts', () => {
     const { view, latestLayout } = savedByAnotherTab();
     view.unmount();
-    expect(readWorkbenchSnapshot('shared-space')).toEqual(latestLayout);
+    expect(readSpaceSnapshot('shared-space')).toEqual(latestLayout);
   });
 
   it('keeps the layout saved by another tab when an idle tab is hidden', () => {
@@ -91,23 +91,23 @@ describe('useWorkbenchPersistence across tabs', () => {
     act(() => {
       window.dispatchEvent(new Event('pagehide'));
     });
-    expect(readWorkbenchSnapshot('shared-space')).toEqual(latestLayout);
+    expect(readSpaceSnapshot('shared-space')).toEqual(latestLayout);
   });
 
   it('still writes a pending local edit when the tab unmounts', () => {
-    const runtime = createWorkbenchRuntimeForSpace('shared-space');
-    const view = renderHook(() => useWorkbenchPersistence('shared-space', runtime.manager));
+    const runtime = createSpaceRuntime('shared-space');
+    const view = renderHook(() => useSpacePersistence('shared-space', runtime.manager));
     act(() => {
       vi.advanceTimersByTime(200);
     });
-    const saved = readWorkbenchSnapshot('shared-space');
+    const saved = readSpaceSnapshot('shared-space');
 
     act(() => {
       openKind(runtime.workspace, 'map');
     });
     view.unmount();
 
-    const next = readWorkbenchSnapshot('shared-space');
+    const next = readSpaceSnapshot('shared-space');
     expect(next).not.toEqual(saved);
     expect(windowCount(next)).toBe(windowCount(saved) + 1);
   });

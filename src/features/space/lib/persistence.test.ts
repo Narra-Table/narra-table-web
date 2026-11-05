@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createWorkbenchRuntimeForSpace, openKind, writeWorkbenchSnapshot } from './persistence';
+import { createSpaceRuntime, openKind, writeSpaceSnapshot } from './persistence';
 
 let values: Map<string, string>;
 
@@ -13,13 +13,13 @@ beforeEach(() => {
 
 afterEach(() => vi.unstubAllGlobals());
 
-describe('workbench persistence', () => {
+describe('space persistence', () => {
   it('restores the minimal window layout', () => {
-    const runtime = createWorkbenchRuntimeForSpace('space-a');
+    const runtime = createSpaceRuntime('space-a');
     openKind(runtime.workspace, 'map');
-    writeWorkbenchSnapshot('space-a', runtime.manager);
+    writeSpaceSnapshot('space-a', runtime.manager);
 
-    const restored = createWorkbenchRuntimeForSpace('space-a');
+    const restored = createSpaceRuntime('space-a');
     expect(restored.workspace.listWindows().map((window) => window.windowTypeId)).toEqual([
       'chat',
       'characters',
@@ -28,8 +28,8 @@ describe('workbench persistence', () => {
   });
 
   it('rebuilds defaults when a snapshot is incompatible', () => {
-    values.set('narratable.workbench-next.snapshot.space-a', JSON.stringify({ version: 1 }));
-    const runtime = createWorkbenchRuntimeForSpace('space-a');
+    values.set('narratable.space.snapshot.space-a', JSON.stringify({ version: 1 }));
+    const runtime = createSpaceRuntime('space-a');
     expect(runtime.workspace.listWindows().map((window) => window.windowTypeId)).toEqual([
       'chat',
       'characters',

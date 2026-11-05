@@ -12,22 +12,24 @@ export function WindowContent({
   kind,
   spaceId,
   activeRoomId,
+  query = '',
 }: {
   kind: WindowKind;
   spaceId: string;
   activeRoomId?: string;
+  query?: string;
 }) {
   switch (kind) {
     case 'chat':
-      return <ChatWindow spaceId={spaceId} roomId={activeRoomId} />;
+      return <ChatWindow spaceId={spaceId} roomId={activeRoomId} query={query} />;
     case 'characters':
-      return <CharactersWindow spaceId={spaceId} />;
+      return <CharactersWindow spaceId={spaceId} query={query} />;
     case 'members':
-      return <MembersWindow spaceId={spaceId} />;
+      return <MembersWindow spaceId={spaceId} query={query} />;
     case 'clues':
-      return <CluesWindow spaceId={spaceId} />;
+      return <CluesWindow spaceId={spaceId} query={query} />;
     case 'combat':
-      return <CombatWindow spaceId={spaceId} />;
+      return <CombatWindow spaceId={spaceId} query={query} />;
     case 'map':
       return <MapWindow spaceId={spaceId} roomId={activeRoomId} />;
   }

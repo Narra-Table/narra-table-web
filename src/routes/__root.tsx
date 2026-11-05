@@ -1,8 +1,8 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { PersistentToolbar, PersistentToolbarProvider } from '@/views/layouts/PersistentToolbar';
+import { AppToolbar, AppToolbarProvider } from '@/features/app-toolbar';
 
 const RootLayout = () => (
-  <PersistentToolbarProvider>
+  <AppToolbarProvider>
     <div className="h-dvh overflow-hidden bg-app-bg text-text">
       <div className="h-full min-h-0 overflow-hidden">
         <Outlet />
@@ -10,9 +10,9 @@ const RootLayout = () => (
       <div id="toolbar-root" />
       <div id="modal-root" />
       <div id="toast-root" />
-      <PersistentToolbar />
+      <AppToolbar />
     </div>
-  </PersistentToolbarProvider>
+  </AppToolbarProvider>
 );
 
 const RootPending = () => (

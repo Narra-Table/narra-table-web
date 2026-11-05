@@ -12,7 +12,7 @@ export interface OpenWorkspaceWindow {
   state?: unknown;
 }
 
-/** Workbench-owned boundary for opening and activating product windows. */
+/** Space-owned boundary for opening and activating product windows. */
 export interface WorkspacePort {
   listWindows: () => readonly WorkspaceWindow[];
   getWindow: (instanceId: string) => WorkspaceWindow | undefined;

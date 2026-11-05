@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { SpacesContent } from '@/features/dashboard';
+import { SpacesContent } from '@/features/space-hub';
 
 function DashboardPage() {
   return (

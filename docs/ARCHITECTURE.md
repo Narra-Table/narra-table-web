@@ -22,10 +22,7 @@ narra-table-web/
 │   ├── ARCHITECTURE.md        # 架构和目录说明
 │   ├── CONTRIBUTING.md        # 贡献和验证流程
 │   ├── CONVENTIONS.md         # 代码约定
-│   ├── DESIGN.md              # 设计和样式规则
-│   └── workbench/
-│       ├── README.md          # 空间工作台的当前实现
-│       └── WINDOW-MANAGER.md  # 工作区容器与 WM 的目标设计
+│   └── DESIGN.md              # 设计和样式规则
 ├── public/
 │   └── mockServiceWorker.js   # MSW 浏览器端 Service Worker
 ├── src/
@@ -33,9 +30,11 @@ narra-table-web/
 │   ├── components/
 │   │   └── ui/                # shadcn 复制来的 UI 组件
 │   ├── features/              # 功能模块
+│   │   ├── app-toolbar/       # 全局工具栏宿主与上下文注册
 │   │   ├── resources/         # 资源访问能力
-│   │   ├── window-manager/    # 窗口列表、焦点、布局和渲染
-│   │   └── workbench/         # 空间工作台产品和业务窗口
+│   │   ├── space/             # 空间工作区和业务窗口
+│   │   ├── space-hub/         # 空间发现与管理入口
+│   │   └── window-manager/    # 窗口列表、焦点、布局和渲染
 │   ├── lib/                   # 平铺的跨 Feature 基础设施与工具
 │   │   ├── apiClient.ts       # 生成 API 使用的请求客户端
 │   │   ├── authSession.ts     # 普通用户会话

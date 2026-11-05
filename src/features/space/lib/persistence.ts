@@ -1,11 +1,11 @@
 import { createWindowManagerStore, type WindowManagerStore } from '@/features/window-manager';
 import type { WorkspacePort } from '../application/workspace';
 import { createWindowManagerWorkspace } from '../infrastructure/window-manager-workspace';
-import { isWorkbenchWindowKind, WINDOW_INFO, type WindowKind } from '../model/window';
+import { isSpaceWindowKind, WINDOW_INFO, type WindowKind } from '../model/window';
 
-const SNAPSHOT_PREFIX = 'narratable.workbench-next.snapshot';
+const SNAPSHOT_PREFIX = 'narratable.space.snapshot';
 
-export interface WorkbenchRuntime {
+export interface SpaceRuntime {
   manager: WindowManagerStore;
   workspace: WorkspacePort;
 }
@@ -14,7 +14,7 @@ function snapshotKey(spaceId: string): string {
   return `${SNAPSHOT_PREFIX}.${spaceId}`;
 }
 
-export function readWorkbenchSnapshot(spaceId: string): unknown {
+export function readSpaceSnapshot(spaceId: string): unknown {
   try {
     const raw = localStorage.getItem(snapshotKey(spaceId));
     return raw ? (JSON.parse(raw) as unknown) : null;
@@ -23,11 +23,11 @@ export function readWorkbenchSnapshot(spaceId: string): unknown {
   }
 }
 
-export function writeWorkbenchSnapshot(spaceId: string, store: WindowManagerStore): void {
+export function writeSpaceSnapshot(spaceId: string, store: WindowManagerStore): void {
   try {
     localStorage.setItem(snapshotKey(spaceId), store.stringify(0));
   } catch {
-    // The workbench continues in memory when storage is unavailable.
+    // The space continues in memory when storage is unavailable.
   }
 }
 
@@ -47,15 +47,15 @@ function seedDefaultLayout(workspace: WorkspacePort): void {
   workspace.focusWindow(chatId);
 }
 
-export function createWorkbenchRuntimeForSpace(spaceId: string): WorkbenchRuntime {
+export function createSpaceRuntime(spaceId: string): SpaceRuntime {
   const manager = createWindowManagerStore();
   const workspace = createWindowManagerWorkspace(manager);
-  const snapshot = readWorkbenchSnapshot(spaceId);
+  const snapshot = readSpaceSnapshot(spaceId);
   if (
     snapshot &&
     manager.restore(snapshot, {
       isWindowTypeAvailable: (window) =>
-        window.appId === 'narratable' && isWorkbenchWindowKind(window.windowTypeId),
+        window.appId === 'narratable' && isSpaceWindowKind(window.windowTypeId),
     })
   ) {
     return { manager, workspace };
