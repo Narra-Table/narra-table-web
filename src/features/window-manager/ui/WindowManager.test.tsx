@@ -2,12 +2,19 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createSequentialIdFactory, createWindowManagerStore } from '../model/store';
-import { MobileWindowManager } from './MobileWindowManager';
+import { MobileWindowManager, resolveWindowHeaderTone } from './MobileWindowManager';
 import { WindowManager } from './WindowManager';
 
 afterEach(cleanup);
 
 describe('WindowManager', () => {
+  it('keeps header colors fixed by window type', () => {
+    expect(resolveWindowHeaderTone('chat')).toBe('bg-accent/15 text-accent');
+    expect(resolveWindowHeaderTone('characters')).toBe('bg-info/15 text-info');
+    expect(resolveWindowHeaderTone('combat')).toBe('bg-danger/15 text-danger');
+    expect(resolveWindowHeaderTone('unknown')).toBe('bg-surface-muted text-text');
+  });
+
   it('renders and closes managed windows', () => {
     const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
     store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat' });

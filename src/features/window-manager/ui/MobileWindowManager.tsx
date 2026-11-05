@@ -2,14 +2,18 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { cn } from '@/lib/classNames';
 import type { WindowInstance, WindowManagerState } from '../model/window-manager';
 
-export const WINDOW_HEADER_TONES = [
-  'bg-accent/15 text-accent',
-  'bg-info/15 text-info',
-  'bg-success/15 text-success',
-  'bg-warning/15 text-warning',
-  'bg-danger/15 text-danger',
-  'bg-surface-muted text-text',
-] as const;
+const WINDOW_HEADER_TONES: Readonly<Record<string, string>> = {
+  chat: 'bg-accent/15 text-accent',
+  characters: 'bg-info/15 text-info',
+  members: 'bg-success/15 text-success',
+  clues: 'bg-warning/15 text-warning',
+  combat: 'bg-danger/15 text-danger',
+  map: 'bg-surface-muted text-text',
+};
+
+export function resolveWindowHeaderTone(windowTypeId: string): string {
+  return WINDOW_HEADER_TONES[windowTypeId] ?? 'bg-surface-muted text-text';
+}
 
 export interface MobileWindowManagerProps {
   state: WindowManagerState;
@@ -78,7 +82,7 @@ export function MobileWindowManager({
             工作台是空的，请从顶部打开一个窗口。
           </div>
         ) : (
-          state.windows.map((window, index) => {
+          state.windows.map((window) => {
             const focused = window.instanceId === state.focusedWindowId;
             return (
               <article
@@ -91,7 +95,7 @@ export function MobileWindowManager({
                 <header
                   className={cn(
                     'flex h-10 shrink-0 items-center gap-2 px-3',
-                    WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
+                    resolveWindowHeaderTone(window.windowTypeId),
                   )}
                 >
                   <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>

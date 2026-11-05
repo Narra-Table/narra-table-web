@@ -9,7 +9,7 @@ import {
   type WindowManagerState,
   type WindowWidth,
 } from '../model/window-manager';
-import { MobileWindowManager, WINDOW_HEADER_TONES } from './MobileWindowManager';
+import { MobileWindowManager, resolveWindowHeaderTone } from './MobileWindowManager';
 import { useEdgeAutoScroll } from './useEdgeAutoScroll';
 
 export interface WindowManagerProps {
@@ -368,7 +368,7 @@ export function WindowManager({
                     <header
                       className={cn(
                         'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
-                        WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
+                        resolveWindowHeaderTone(window.windowTypeId),
                         focused ? 'opacity-100' : 'opacity-75',
                       )}
                     >
