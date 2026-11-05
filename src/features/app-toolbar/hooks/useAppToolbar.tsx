@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -16,7 +17,8 @@ interface AppToolbarEntry {
 
 interface AppToolbarContextValue {
   activeEntry: AppToolbarEntry | null;
-  register: (entry: AppToolbarEntry) => () => void;
+  register: (entry: AppToolbarEntry) => void;
+  unregister: (id: symbol) => void;
 }
 
 const AppToolbarContext = createContext<AppToolbarContextValue | null>(null);
@@ -25,12 +27,20 @@ export function AppToolbarProvider({ children }: { children: ReactNode }) {
   const [entries, setEntries] = useState<AppToolbarEntry[]>([]);
   const activeEntry = entries.at(-1) ?? null;
   const register = useCallback((entry: AppToolbarEntry) => {
-    setEntries((current) => [...current.filter((item) => item.id !== entry.id), entry]);
-    return () => setEntries((current) => current.filter((item) => item.id !== entry.id));
+    setEntries((current) => {
+      const index = current.findIndex((item) => item.id === entry.id);
+      if (index < 0) return [...current, entry];
+      const next = [...current];
+      next[index] = entry;
+      return next;
+    });
+  }, []);
+  const unregister = useCallback((id: symbol) => {
+    setEntries((current) => current.filter((item) => item.id !== id));
   }, []);
   const value = useMemo<AppToolbarContextValue>(
-    () => ({ activeEntry, register }),
-    [activeEntry, register],
+    () => ({ activeEntry, register, unregister }),
+    [activeEntry, register, unregister],
   );
 
   return <AppToolbarContext value={value}>{children}</AppToolbarContext>;
@@ -43,10 +53,14 @@ export function useAppToolbarContext(): AppToolbarContextValue {
 }
 
 export function useAppToolbar(definition: AppToolbarDefinition): void {
-  const { register } = useAppToolbarContext();
+  const { register, unregister } = useAppToolbarContext();
+  const idRef = useRef<symbol | null>(null);
+  if (!idRef.current) idRef.current = Symbol('app-toolbar');
+  const id = idRef.current;
 
   useEffect(() => {
-    const id = Symbol('app-toolbar');
-    return register({ id, definition });
-  }, [definition, register]);
+    register({ id, definition });
+  }, [definition, id, register]);
+
+  useEffect(() => () => unregister(id), [id, unregister]);
 }

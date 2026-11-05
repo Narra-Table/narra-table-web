@@ -1,6 +1,8 @@
 /** @vitest-environment jsdom */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { AppToolbarProvider, useAppToolbar, useAppToolbarContext } from '../hooks/useAppToolbar';
 import { AppToolbarControls, AppToolbarSurface } from './AppToolbar';
 
 afterEach(cleanup);
@@ -99,5 +101,52 @@ describe('AppToolbarSurface', () => {
     fireEvent.change(search, { target: { value: '新的搜索词' } });
     expect(onSearchChange).toHaveBeenCalledWith('新的搜索词');
     expect(screen.getByDisplayValue('保留的草稿')).toBeDefined();
+  });
+
+  it('updates a toolbar definition without reordering its registration', () => {
+    function ChangingToolbar() {
+      const [value, setValue] = useState('变化前');
+      useAppToolbar({
+        content: {
+          kind: 'search',
+          label: '变化中的工具栏',
+          placeholder: '变化中的工具栏',
+          value,
+          onChange: setValue,
+        },
+      });
+      return <button onClick={() => setValue('变化后')}>更新工具栏</button>;
+    }
+
+    function StaticToolbar() {
+      useAppToolbar({
+        content: {
+          kind: 'search',
+          label: '固定工具栏',
+          placeholder: '固定工具栏',
+          value: '固定',
+          onChange: vi.fn(),
+        },
+      });
+      return null;
+    }
+
+    function ActiveToolbarLabel() {
+      const { activeEntry } = useAppToolbarContext();
+      const content = activeEntry?.definition.content;
+      return <output>{content?.kind === 'search' ? content.label : ''}</output>;
+    }
+
+    render(
+      <AppToolbarProvider>
+        <ChangingToolbar />
+        <StaticToolbar />
+        <ActiveToolbarLabel />
+      </AppToolbarProvider>,
+    );
+
+    expect(screen.getByText('固定工具栏')).toBeDefined();
+    fireEvent.click(screen.getByRole('button', { name: '更新工具栏' }));
+    expect(screen.getByText('固定工具栏')).toBeDefined();
   });
 });
