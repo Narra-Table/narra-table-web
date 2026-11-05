@@ -79,13 +79,25 @@ describe('mock space windows', () => {
     expect(screen.queryByText('Generated mask')).toBeNull();
   });
 
-  it('shows API clue and combat data', () => {
+  it('shows API clue data and manages initiative order', () => {
     render(<CluesWindow spaceId="space-1" />);
     expect(screen.getByText('Generated clue')).toBeDefined();
     cleanup();
     render(<CombatWindow spaceId="space-1" />);
-    expect(screen.getByText('Generated mask')).toBeDefined();
-    expect(screen.queryByRole('textbox')).toBeNull();
+    expect(screen.getByText('先攻列表是空的')).toBeDefined();
+
+    fireEvent.change(screen.getByRole('combobox', { name: '战斗单位' }), {
+      target: { value: '调查员' },
+    });
+    fireEvent.change(screen.getByRole('textbox', { name: '先攻' }), {
+      target: { value: '18' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: '加入' }));
+    expect(screen.getByText('调查员')).toBeDefined();
+    expect(screen.getByText('18')).toBeDefined();
+
+    fireEvent.click(screen.getByRole('button', { name: '移除调查员' }));
+    expect(screen.getByText('先攻列表是空的')).toBeDefined();
   });
 
   it('filters members, clues, and combatants from their toolbar queries', () => {
@@ -98,13 +110,24 @@ describe('mock space windows', () => {
     cleanup();
 
     render(<CombatWindow spaceId="space-1" query="missing" />);
+    fireEvent.change(screen.getByRole('combobox', { name: '战斗单位' }), {
+      target: { value: 'Generated mask' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: '加入' }));
     expect(screen.getByText('没有匹配的参战角色')).toBeDefined();
   });
 
-  it('toggles a map cell', () => {
+  it('places the current label on a map cell', () => {
     render(<MapWindow spaceId="space-1" roomId="room-1" />);
     const cell = screen.getByRole('button', { name: '格子 2' });
     fireEvent.click(cell);
-    expect(cell.textContent).toBe('•');
+    expect(cell.textContent).toBe('甲');
+    expect(cell.getAttribute('aria-label')).toBe('格子 2，甲');
+
+    fireEvent.change(screen.getByRole('textbox', { name: '地图标记' }), {
+      target: { value: '乙' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: '格子 3' }));
+    expect(screen.getByRole('button', { name: '格子 3，乙' })).toBeDefined();
   });
 });

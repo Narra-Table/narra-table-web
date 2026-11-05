@@ -1,4 +1,11 @@
-import { Component, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
+import {
+  Component,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from 'react';
 import { cn } from '@/lib/classNames';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { WindowManagerStore } from '../model/store';
@@ -310,11 +317,39 @@ export function WindowManager({
   const state = useWindowManagerStore(store);
   const mobilePortrait = useMediaQuery('(max-width: 1023px) and (orientation: portrait)');
   const windowStripRef = useRef<HTMLDivElement>(null);
+  const windowElementsRef = useRef(new Map<string, HTMLDivElement>());
   const trailingSpaceRef = useRef<HTMLDivElement>(null);
   const edgeAutoScrollDirection = useEdgeAutoScroll(
     windowStripRef,
     edgeAutoScroll && !mobilePortrait,
   );
+
+  useEffect(() => {
+    const strip = windowStripRef.current;
+    const focusedId = state.focusedWindowId;
+    const focusedWindow = focusedId ? windowElementsRef.current.get(focusedId) : undefined;
+    if (!strip || !focusedWindow || mobilePortrait) return;
+
+    const stripBox = strip.getBoundingClientRect();
+    const windowBox = focusedWindow.getBoundingClientRect();
+    let nextScrollLeft = strip.scrollLeft;
+
+    if (windowBox.width >= stripBox.width || windowBox.left < stripBox.left) {
+      nextScrollLeft += windowBox.left - stripBox.left;
+    } else if (windowBox.right > stripBox.right) {
+      nextScrollLeft += windowBox.right - stripBox.right;
+    }
+
+    if (Math.abs(nextScrollLeft - strip.scrollLeft) < 1) return;
+    const behavior = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+      ? 'auto'
+      : 'smooth';
+    if (typeof strip.scrollTo === 'function') {
+      strip.scrollTo({ left: nextScrollLeft, behavior });
+    } else {
+      strip.scrollLeft = nextScrollLeft;
+    }
+  }, [mobilePortrait, state.focusedWindowId, state.windows]);
 
   const renderWindowContent = (window: WindowInstance) => (
     <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
@@ -356,6 +391,10 @@ export function WindowManager({
               return (
                 <div
                   key={window.instanceId}
+                  ref={(element) => {
+                    if (element) windowElementsRef.current.set(window.instanceId, element);
+                    else windowElementsRef.current.delete(window.instanceId);
+                  }}
                   className={cn(
                     'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
                     widthClass(window.width),
