@@ -37,13 +37,16 @@ describe('WindowManager', () => {
     );
 
     const handle = screen.getByRole('separator', { name: '调整Chat窗口宽度' });
-    const strip = handle.closest('article')?.parentElement;
+    const windowElement = handle.parentElement;
+    const strip = windowElement?.parentElement;
     Object.defineProperty(strip, 'getBoundingClientRect', {
       value: () => ({ width: 1000 }),
     });
 
     fireEvent(handle, new MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 500 }));
     fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 900 }));
+    expect(windowElement?.style.width).toBe('90%');
+    expect(store.getState().windows[0]?.width).toBe(1 / 2);
     fireEvent(handle, new MouseEvent('pointerup', { bubbles: true, clientX: 900 }));
     expect(store.getState().windows[0]?.width).toBe(1);
 

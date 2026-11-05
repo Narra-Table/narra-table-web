@@ -1,4 +1,4 @@
-import { Component, useRef, useSyncExternalStore, type ReactNode } from 'react';
+import { Component, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { cn } from '@/lib/classNames';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { WindowManagerStore } from '../model/store';
@@ -51,6 +51,10 @@ function widthLabel(width: WindowWidth): string {
   return '三分之一';
 }
 
+function clampPreviewWidth(width: number): number {
+  return Math.min(1, Math.max(1 / 3, width));
+}
+
 interface WindowResizeHandleProps {
   title: string;
   width: WindowWidth;
@@ -67,7 +71,33 @@ function WindowResizeHandle({
   onResize,
 }: WindowResizeHandleProps) {
   const snappedWidth = snapWindowWidth(width);
-  const drag = useRef<{ pointerId: number; startX: number; startWidth: WindowWidth } | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const drag = useRef<{
+    pointerId: number;
+    startX: number;
+    startWidth: WindowWidth;
+    previewWidth: number;
+    windowElement: HTMLElement;
+  } | null>(null);
+
+  const finishDrag = (pointerId: number) => {
+    if (!drag.current || drag.current.pointerId !== pointerId) return;
+    const { previewWidth, windowElement } = drag.current;
+    const finalWidth = snapWindowWidth(previewWidth);
+    drag.current = null;
+    setDragging(false);
+    windowElement.classList.remove('transition-none');
+    void windowElement.offsetWidth;
+    windowElement.style.width = `${finalWidth * 100}%`;
+    onResize(finalWidth);
+
+    const clearPreview = () => windowElement.style.removeProperty('width');
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(clearPreview);
+    } else {
+      setTimeout(clearPreview, 0);
+    }
+  };
 
   const resizeByStep = (direction: -1 | 1) => {
     const currentIndex = WINDOW_WIDTHS.indexOf(snappedWidth);
@@ -85,15 +115,21 @@ function WindowResizeHandle({
       aria-valuenow={Math.round(snappedWidth * 100)}
       aria-valuetext={widthLabel(snappedWidth)}
       tabIndex={0}
-      className="group absolute inset-y-0 right-0 z-20 w-2 cursor-col-resize touch-none select-none outline-none"
+      className="group absolute inset-y-0 right-0 z-20 w-4 translate-x-1/2 cursor-col-resize touch-none select-none outline-none"
       onPointerDown={(event) => {
         if (event.button !== 0) return;
+        const windowElement = event.currentTarget.parentElement;
+        if (!windowElement) return;
         event.preventDefault();
         onFocus();
+        windowElement.classList.add('transition-none');
+        setDragging(true);
         drag.current = {
           pointerId: event.pointerId,
           startX: event.clientX,
           startWidth: snappedWidth,
+          previewWidth: snappedWidth,
+          windowElement,
         };
         event.currentTarget.setPointerCapture?.(event.pointerId);
       }}
@@ -101,22 +137,22 @@ function WindowResizeHandle({
         if (!drag.current || drag.current.pointerId !== event.pointerId) return;
         const containerWidth = getContainerWidth();
         if (containerWidth <= 0) return;
-        onResize(
-          snapWindowWidth(
-            drag.current.startWidth + (event.clientX - drag.current.startX) / containerWidth,
-          ),
+        const previewWidth = clampPreviewWidth(
+          drag.current.startWidth + (event.clientX - drag.current.startX) / containerWidth,
         );
+        drag.current.previewWidth = previewWidth;
+        drag.current.windowElement.style.width = `${previewWidth * 100}%`;
       }}
       onPointerUp={(event) => {
         if (drag.current?.pointerId !== event.pointerId) return;
-        drag.current = null;
+        finishDrag(event.pointerId);
         event.currentTarget.releasePointerCapture?.(event.pointerId);
       }}
-      onPointerCancel={() => {
-        drag.current = null;
+      onPointerCancel={(event) => {
+        finishDrag(event.pointerId);
       }}
-      onLostPointerCapture={() => {
-        drag.current = null;
+      onLostPointerCapture={(event) => {
+        finishDrag(event.pointerId);
       }}
       onKeyDown={(event) => {
         if (event.key === 'ArrowLeft') {
@@ -138,7 +174,14 @@ function WindowResizeHandle({
         }
       }}
     >
-      <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-border-subtle transition-colors group-hover:bg-accent group-focus-visible:bg-accent" />
+      <span
+        className={cn(
+          'absolute inset-y-0 left-1/2 w-1 -translate-x-1/2 bg-info transition-opacity duration-150',
+          dragging
+            ? 'opacity-100'
+            : 'opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100',
+        )}
+      />
     </div>
   );
 }
@@ -198,37 +241,41 @@ export function WindowManager({
           state.windows.map((window, index) => {
             const focused = window.instanceId === state.focusedWindowId;
             return (
-              <article
+              <div
                 key={window.instanceId}
                 className={cn(
-                  'relative flex h-full min-h-0 shrink-0 flex-col overflow-hidden bg-surface transition-[width] duration-150',
+                  'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
                   widthClass(window.width),
                 )}
-                onPointerDown={() => store.actions.focus(window.instanceId)}
-                onFocusCapture={() => store.actions.focus(window.instanceId)}
               >
-                <header
-                  className={cn(
-                    'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
-                    WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
-                    focused ? 'opacity-100' : 'opacity-75',
-                  )}
+                <article
+                  className="flex h-full min-h-0 flex-col overflow-hidden bg-surface"
+                  onPointerDown={() => store.actions.focus(window.instanceId)}
+                  onFocusCapture={() => store.actions.focus(window.instanceId)}
                 >
-                  <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
-                  {renderWindowHeaderAddon?.(window)}
-                  <span className="min-w-0 flex-1" />
-                  <button
-                    type="button"
-                    className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"
-                    aria-label={`关闭${window.title}`}
-                    onClick={() => store.actions.close(window.instanceId)}
+                  <header
+                    className={cn(
+                      'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
+                      WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
+                      focused ? 'opacity-100' : 'opacity-75',
+                    )}
                   >
-                    ×
-                  </button>
-                </header>
-                <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-                  {renderWindowContent(window)}
-                </div>
+                    <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
+                    {renderWindowHeaderAddon?.(window)}
+                    <span className="min-w-0 flex-1" />
+                    <button
+                      type="button"
+                      className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"
+                      aria-label={`关闭${window.title}`}
+                      onClick={() => store.actions.close(window.instanceId)}
+                    >
+                      ×
+                    </button>
+                  </header>
+                  <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+                    {renderWindowContent(window)}
+                  </div>
+                </article>
                 <WindowResizeHandle
                   title={window.title}
                   width={window.width}
@@ -238,7 +285,7 @@ export function WindowManager({
                   onFocus={() => store.actions.focus(window.instanceId)}
                   onResize={(width) => store.actions.resize(window.instanceId, width)}
                 />
-              </article>
+              </div>
             );
           })
         )}
