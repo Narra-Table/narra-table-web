@@ -1,13 +1,13 @@
 /** @vitest-environment jsdom */
 import { act, cleanup, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { createWindowManagerStore } from '@/features/window-manager';
 import {
-  createWorkbenchStoreForSpace,
+  createWorkbenchRuntimeForSpace,
   openKind,
   readWorkbenchSnapshot,
   writeWorkbenchSnapshot,
 } from '../lib/persistence';
-import { createWorkbenchStore } from '../model/window-manager';
 import { useWorkbenchPersistence } from './useWorkbenchPersistence';
 
 describe('useWorkbenchPersistence', () => {
@@ -25,7 +25,7 @@ describe('useWorkbenchPersistence', () => {
   });
 
   it('coalesces rapid store updates into one snapshot write', () => {
-    const store = createWorkbenchStore();
+    const store = createWindowManagerStore();
     const view = renderHook(() => useWorkbenchPersistence('space-1', store));
 
     act(() => {
@@ -44,7 +44,7 @@ describe('useWorkbenchPersistence', () => {
   });
 
   it('flushes pending state when the page is hidden', () => {
-    const store = createWorkbenchStore();
+    const store = createWindowManagerStore();
     renderHook(() => useWorkbenchPersistence('space-1', store));
 
     act(() => {
@@ -68,15 +68,15 @@ describe('useWorkbenchPersistence across tabs', () => {
   });
 
   function savedByAnotherTab() {
-    const idleStore = createWorkbenchStoreForSpace('shared-space');
-    const view = renderHook(() => useWorkbenchPersistence('shared-space', idleStore));
+    const idle = createWorkbenchRuntimeForSpace('shared-space');
+    const view = renderHook(() => useWorkbenchPersistence('shared-space', idle.manager));
     act(() => {
       vi.advanceTimersByTime(200);
     });
 
-    const editingStore = createWorkbenchStoreForSpace('shared-space');
-    openKind(editingStore, 'map');
-    writeWorkbenchSnapshot('shared-space', editingStore);
+    const editing = createWorkbenchRuntimeForSpace('shared-space');
+    openKind(editing.workspace, 'map');
+    writeWorkbenchSnapshot('shared-space', editing.manager);
     return { view, latestLayout: readWorkbenchSnapshot('shared-space') };
   }
 
@@ -95,15 +95,15 @@ describe('useWorkbenchPersistence across tabs', () => {
   });
 
   it('still writes a pending local edit when the tab unmounts', () => {
-    const store = createWorkbenchStoreForSpace('shared-space');
-    const view = renderHook(() => useWorkbenchPersistence('shared-space', store));
+    const runtime = createWorkbenchRuntimeForSpace('shared-space');
+    const view = renderHook(() => useWorkbenchPersistence('shared-space', runtime.manager));
     act(() => {
       vi.advanceTimersByTime(200);
     });
     const saved = readWorkbenchSnapshot('shared-space');
 
     act(() => {
-      openKind(store, 'map');
+      openKind(runtime.workspace, 'map');
     });
     view.unmount();
 

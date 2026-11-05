@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
+import type { WindowManagerStore } from '@/features/window-manager';
 import { writeWorkbenchSnapshot } from '../lib/persistence';
-import type { WorkbenchStore } from '../model/window-manager';
 
 const SAVE_DELAY_MS = 120;
 
-export function useWorkbenchPersistence(spaceId: string, store: WorkbenchStore): void {
+export function useWorkbenchPersistence(spaceId: string, store: WindowManagerStore): void {
   useEffect(() => {
     let timer: number | undefined;
     let dirty = false;

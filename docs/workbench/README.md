@@ -1,70 +1,69 @@
 # 空间工作台
 
-> 目标设计见 [WINDOW-MANAGER.md](WINDOW-MANAGER.md)。窗口管理是 NarraTable 工作台的内部能力，统一位于 `src/features/workbench`。
+NarraTable 提供以空间为边界的 TRPG 协作工作台，业务窗口通过独立窗口管理能力组织和呈现。
+
+## Language
+
+**Workbench**:
+承载空间和内置业务窗口的产品能力。
+_Avoid_: Window Manager、窗口系统
+
+**Workspace Port**:
+Workbench 用产品语言声明的窗口组织能力边界。
+_Avoid_: Store Actions、Window Manager API
+
+**Window Manager**:
+管理窗口列表、焦点和并排布局的基础能力，不解释业务窗口状态。
+_Avoid_: Workbench、桌面系统
+
+**Business Window**:
+Workbench 中承载聊天、角色、成员、线索、战斗或地图内容的独立视图实例。
+_Avoid_: Container、Panel
 
 ## 路由
 
-| 路径                             | 行为                                         |
-| -------------------------------- | -------------------------------------------- |
-| `/spaces/$spaceId`               | 默认工作台；路由懒加载 `WorkbenchPage`       |
-| `/spaces/$spaceId/workbench`     | 默认工作台的兼容别名                         |
-| `/spaces/$spaceId/rooms/$roomId` | 兼容旧链接；保存房间偏好后重定向到空间工作台 |
-
-空间卡片进入工作台时沿用同一套本地偏好；房间标签只预选房间。
+| 路径                             | 行为                                   |
+| -------------------------------- | -------------------------------------- |
+| `/spaces/$spaceId`               | 默认工作台；路由懒加载 `WorkbenchPage` |
+| `/spaces/$spaceId/workbench`     | 默认工作台的兼容别名                   |
+| `/spaces/$spaceId/rooms/$roomId` | 兼容旧地址，直接重定向到空间工作台     |
 
 ## 结构
 
 ```text
-src/features/workbench/
-├─ hooks/          # 宿主生命周期和副作用 Hook
-├─ lib/            # 本地持久化和兼容迁移
-├─ model/
-│  ├─ chat-state.ts       # 业务窗口状态
-│  └─ window-manager/     # 工作区状态、action、selector、快照、store
-├─ ui/
-│  ├─ window-manager/     # Provider、列、悬浮、任务栏、启动台和拖拽
-│  ├─ windows/     # 内置业务窗口内容、类型和标题
-│  └─ WorkbenchPage.tsx
-└─ index.ts        # Feature 公共 API
+src/features/
+├─ workbench/
+│  ├─ application/     # WorkspacePort
+│  ├─ infrastructure/  # Window Manager adapter
+│  ├─ hooks/           # 持久化生命周期
+│  ├─ lib/             # 本地窗口快照
+│  ├─ model/           # 业务窗口类型和状态
+│  └─ ui/              # 页面和业务窗口内容
+└─ window-manager/
+   ├─ model/           # 窗口状态和 store
+   ├─ ui/              # 窗口管理器渲染组件
+   └─ index.ts         # 公共 API
 ```
-
-空间路由懒加载 `WorkbenchPage`；构建拆分工作台和 TipTap 编辑器代码。
 
 ## 数据流
 
-- `ui/windows/windows.ts`：内置窗口类型和标题。
-- `ui/windows/registry.ts`：把窗口类型映射成 App Registry 声明，`appId` 固定为 `narratable`。
-- `ui/WorkbenchPage.tsx`：组合 Provider、工作台和窗口内容。
-- `model/chat-state.ts`：聊天房间、场景和搜索存在每个窗口的 `window.state`；多个聊天窗口互相独立。
-- `lib/persistence.ts`：工作区快照与房间偏好存入 `localStorage`。
-- `hooks/useWorkbenchPersistence.ts`：合并高频状态更新，页面离开时立即刷新快照。
-- 首次进入没有快照时，创建 2/3 聊天列和 1/2 角色列，并聚焦聊天。
-- 「加入焦点容器」会把新窗口插入当前列：普通列变堆叠，分页列增加标签。
-- 稳定宿主/portal 保持窗口内容挂载；换容器、切分页和停靠/悬浮不会卸载。
-- 键盘方向键、移动、调宽/调高和宿主逃生键已接入。
-- 启动台支持窗口搜索、打开和加入当前容器。
-- 窄屏使用单容器投影、堆叠行标签和悬浮 sheet。
-- 桌面拖拽支持整列重排、合并为标签/堆叠和空白处新建列。
+- Workbench 通过 `WorkspacePort` 打开、关闭、聚焦和更新业务窗口。
+- `window-manager-workspace.ts` 把端口调用映射到 Window Manager store。
+- Window Manager 只保存窗口标识、类型、标题、宽度和不透明业务状态。
+- `WorkbenchPage` 注入业务窗口渲染函数，不把业务组件放入 Window Manager。
+- 聊天、角色、成员、线索、战斗和地图均为极简本地功能 mock。
+- 默认布局打开 2/3 聊天窗口和 1/2 角色窗口。
+- 顶部工具栏打开新的业务窗口；窗口标题栏负责关闭。
 
-## 持久化与兼容
+## 持久化
 
 - 工作区快照 key：`narratable.workbench-next.snapshot.<spaceId>`。
-- 房间偏好 key：`narratable.workbench-next.room.<spaceId>`。
-- 读取旧工作台数据时只迁移选中的房间；旧布局按新默认布局重建。
-- 房间失效时回到会话房或第一间房。
-- 场景和搜索是聊天窗口的会话状态，不进入 URL。
-
-## 当前限制
-
-- 模态和触屏长按拖拽尚未接入。
-- 快照仅存本地，尚无服务端 workspace API。
+- 快照版本不兼容时重建默认布局。
 
 ## 验证
 
 ```bash
 vp check --fix
 vp test
-pnpm build
+vp build
 ```
-
-浏览器中验证打开/关闭/聚焦、加入焦点容器、堆叠/分页、宽度菜单和刷新恢复。

@@ -34,7 +34,8 @@ narra-table-web/
 │   │   └── ui/                # shadcn 复制来的 UI 组件
 │   ├── features/              # 功能模块
 │   │   ├── resources/         # 资源访问能力
-│   │   └── workbench/         # 空间工作台、窗口模型和业务窗口
+│   │   ├── window-manager/    # 窗口列表、焦点、布局和渲染
+│   │   └── workbench/         # 空间工作台产品和业务窗口
 │   ├── lib/                   # 平铺的跨 Feature 基础设施与工具
 │   │   ├── apiClient.ts       # 生成 API 使用的请求客户端
 │   │   ├── authSession.ts     # 普通用户会话
@@ -84,6 +85,8 @@ routes -> features -> lib
 
 - `lib` 不依赖 `features`。
 - Feature 之间通过公共 API 协作，不共享内部状态实现。
+- 产品 Feature 定义输出端口；基础能力通过产品 Feature 内的 adapter 接入。
+- UI 中可独立测试和演进的 Hook、状态与纯计算分别放入 `hooks`、`model` 和 `lib`。
 
 Feature 目录模板：
 
@@ -94,7 +97,8 @@ features/<feature>/
 ├── model/            # 状态、类型和业务规则
 ├── api/              # 请求、Socket 和 Query 定义
 ├── hooks/            # 仅该 Feature 使用的复合 Hook
-└── lib/              # Feature 内部基础设施和工具
+├── infrastructure/   # Feature 输出端口的具体适配器
+└── lib/              # Feature 内部持久化和无状态工具
 ```
 
 - 目录按需创建，不为保持外观一致创建空目录。
