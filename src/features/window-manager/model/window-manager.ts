@@ -1,5 +1,5 @@
 export type WindowInstanceId = string;
-export const WINDOW_WIDTHS = [1 / 3, 1 / 2, 1] as const;
+export const WINDOW_WIDTHS = [1 / 3, 1 / 2, 2 / 3, 1] as const;
 export type WindowWidth = (typeof WINDOW_WIDTHS)[number];
 
 export interface WindowInstance {

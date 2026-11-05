@@ -96,6 +96,11 @@ describe('WindowManager', () => {
     expect(trailingSpace?.className).toContain('hidden');
 
     fireEvent.keyDown(handle, { key: 'ArrowLeft' });
+    expect(store.getState().windows[0]?.width).toBe(2 / 3);
+    expect(windowElement?.className).toContain('w-2/3');
+    expect(handle.getAttribute('aria-valuetext')).toBe('三分之二');
+
+    fireEvent.keyDown(handle, { key: 'ArrowLeft' });
     expect(store.getState().windows[0]?.width).toBe(1 / 2);
   });
 

@@ -43,12 +43,14 @@ class WindowErrorBoundary extends Component<
 
 function widthClass(width: WindowWidth): string {
   if (width === 1) return 'w-full';
+  if (width === 2 / 3) return 'w-2/3';
   if (width === 1 / 2) return 'w-1/2';
   return 'w-1/3';
 }
 
 function widthLabel(width: WindowWidth): string {
   if (width === 1) return '全宽';
+  if (width === 2 / 3) return '三分之二';
   if (width === 1 / 2) return '二分之一';
   return '三分之一';
 }
