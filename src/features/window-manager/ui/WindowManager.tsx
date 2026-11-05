@@ -68,7 +68,6 @@ interface WindowResizeHandleProps {
 
 const AUTO_SCROLL_EDGE_SIZE = 48;
 const AUTO_SCROLL_MAX_SPEED = 20;
-const RESIZE_TRAILING_SPACE = 2 / 3;
 
 function WindowResizeHandle({
   title,
@@ -93,17 +92,29 @@ function WindowResizeHandle({
     trailingSpace: HTMLDivElement;
   } | null>(null);
 
+  const applyPreviewWidth = (previewWidth: number, containerWidth: number) => {
+    if (!drag.current) return;
+    const { startWidth, trailingSpace, windowElement } = drag.current;
+    if (previewWidth < startWidth) {
+      trailingSpace.classList.remove('hidden');
+      trailingSpace.style.width = `${(startWidth - previewWidth) * containerWidth}px`;
+    } else {
+      trailingSpace.style.width = '0px';
+      trailingSpace.classList.add('hidden');
+    }
+    drag.current.previewWidth = previewWidth;
+    windowElement.style.width = `${previewWidth * 100}%`;
+  };
+
   const updatePreview = () => {
     if (!drag.current) return;
-    const { container, pointerX, startScrollLeft, startWidth, startX, windowElement } =
-      drag.current;
+    const { container, pointerX, startScrollLeft, startWidth, startX } = drag.current;
     const containerWidth = container.getBoundingClientRect().width;
     if (containerWidth <= 0) return;
     const previewWidth = clampPreviewWidth(
       startWidth + (pointerX - startX + container.scrollLeft - startScrollLeft) / containerWidth,
     );
-    drag.current.previewWidth = previewWidth;
-    windowElement.style.width = `${previewWidth * 100}%`;
+    applyPreviewWidth(previewWidth, containerWidth);
   };
 
   const continueAutoScroll = () => {
@@ -129,6 +140,25 @@ function WindowResizeHandle({
       direction *
       AUTO_SCROLL_MAX_SPEED *
       Math.min(1, Math.max(0, (AUTO_SCROLL_EDGE_SIZE - edgeDistance) / AUTO_SCROLL_EDGE_SIZE));
+
+    if (direction > 0) {
+      const containerWidth = container.getBoundingClientRect().width;
+      if (containerWidth <= 0) {
+        drag.current.animationFrame = null;
+        return;
+      }
+      const nextPreviewWidth = clampPreviewWidth(previewWidth + speed / containerWidth);
+      const addedWidth = (nextPreviewWidth - previewWidth) * containerWidth;
+      if (addedWidth <= 0) {
+        drag.current.animationFrame = null;
+        return;
+      }
+      applyPreviewWidth(nextPreviewWidth, containerWidth);
+      container.scrollLeft += addedWidth;
+      drag.current.animationFrame = requestAnimationFrame(continueAutoScroll);
+      return;
+    }
+
     const previousScrollLeft = container.scrollLeft;
     container.scrollLeft += speed;
     if (container.scrollLeft === previousScrollLeft) {
@@ -146,7 +176,7 @@ function WindowResizeHandle({
 
   const finishDrag = (pointerId: number) => {
     if (!drag.current || drag.current.pointerId !== pointerId) return;
-    const { animationFrame, container, previewWidth, trailingSpace, windowElement } = drag.current;
+    const { animationFrame, previewWidth, trailingSpace, windowElement } = drag.current;
     const finalWidth = snapWindowWidth(previewWidth);
     if (animationFrame !== null) cancelAnimationFrame(animationFrame);
     drag.current = null;
@@ -158,15 +188,8 @@ function WindowResizeHandle({
 
     const clearPreview = () => {
       windowElement.style.removeProperty('width');
-      const lastWindow = trailingSpace.previousElementSibling;
-      if (!(lastWindow instanceof HTMLElement)) {
-        trailingSpace.style.removeProperty('width');
-        return;
-      }
-      const contentEnd = lastWindow.offsetLeft + lastWindow.offsetWidth;
-      const viewportEnd = container.scrollLeft + container.clientWidth;
-      const requiredSpace = Math.max(0, viewportEnd - contentEnd);
-      trailingSpace.style.width = requiredSpace > 0 ? `${requiredSpace}px` : '0px';
+      trailingSpace.style.width = '0px';
+      trailingSpace.classList.add('hidden');
     };
     if (typeof requestAnimationFrame === 'function') {
       requestAnimationFrame(clearPreview);
@@ -191,7 +214,7 @@ function WindowResizeHandle({
       aria-valuenow={Math.round(snappedWidth * 100)}
       aria-valuetext={widthLabel(snappedWidth)}
       tabIndex={0}
-      className="group absolute inset-y-0 right-0 z-20 w-4 translate-x-1/2 cursor-col-resize touch-none select-none outline-none"
+      className="group absolute inset-y-0 right-0 z-20 w-2 cursor-col-resize touch-none select-none outline-none"
       onPointerDown={(event) => {
         if (event.button !== 0) return;
         const windowElement = event.currentTarget.parentElement;
@@ -200,12 +223,8 @@ function WindowResizeHandle({
         if (!windowElement || !container || !trailingSpace) return;
         event.preventDefault();
         onFocus();
-        const containerWidth = container.getBoundingClientRect().width;
-        const reservedSpace = Math.max(
-          trailingSpace.getBoundingClientRect().width,
-          containerWidth * RESIZE_TRAILING_SPACE,
-        );
-        trailingSpace.style.width = `${reservedSpace}px`;
+        trailingSpace.style.width = '0px';
+        trailingSpace.classList.add('hidden');
         windowElement.classList.add('transition-none');
         setDragging(true);
         drag.current = {
@@ -261,7 +280,7 @@ function WindowResizeHandle({
     >
       <span
         className={cn(
-          'absolute inset-y-0 left-1/2 w-1 -translate-x-1/2 bg-info transition-opacity duration-150',
+          'absolute inset-y-0 right-0 w-1 bg-info transition-opacity duration-150',
           dragging
             ? 'opacity-100'
             : 'opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100',
@@ -323,7 +342,7 @@ export function WindowManager({
       <div className="relative min-h-0 flex-1">
         <div
           ref={windowStripRef}
-          className="scroll-subtle-native-hidden flex h-full min-h-0 gap-1 overflow-x-auto"
+          className="scroll-subtle-native-hidden flex h-full min-h-0 overflow-x-auto"
         >
           {state.windows.length === 0 ? (
             <div className="grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted">
@@ -338,6 +357,7 @@ export function WindowManager({
                   className={cn(
                     'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
                     widthClass(window.width),
+                    index > 0 && 'border-l border-border-subtle',
                   )}
                 >
                   <article
@@ -381,7 +401,7 @@ export function WindowManager({
             })
           )}
           {state.windows.length > 0 ? (
-            <div ref={trailingSpaceRef} aria-hidden="true" className="h-full w-0 shrink-0" />
+            <div ref={trailingSpaceRef} aria-hidden="true" className="hidden h-full w-0 shrink-0" />
           ) : null}
         </div>
         <div

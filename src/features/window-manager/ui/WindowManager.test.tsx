@@ -28,7 +28,32 @@ describe('WindowManager', () => {
     expect(screen.getByText('工作台是空的，请从顶部打开一个窗口。')).toBeDefined();
   });
 
-  it('resizes desktop windows between snapped widths', () => {
+  it('fits fractional windows without extra spacing', () => {
+    const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
+    store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat', width: 1 / 2 });
+    store.actions.open({ appId: 'app', windowTypeId: 'map', title: 'Map', width: 1 / 2 });
+
+    render(
+      <WindowManager store={store} renderWindow={(window) => <div>{window.windowTypeId}</div>} />,
+    );
+
+    const firstWindow = screen
+      .getByRole('heading', { name: 'Chat' })
+      .closest('article')?.parentElement;
+    const secondWindow = screen
+      .getByRole('heading', { name: 'Map' })
+      .closest('article')?.parentElement;
+    const strip = firstWindow?.parentElement;
+
+    expect(strip?.className).not.toContain('gap-1');
+    expect(firstWindow?.className).toContain('w-1/2');
+    expect(secondWindow?.className).toContain('w-1/2');
+    expect(secondWindow?.className).toContain('border-l');
+    expect(secondWindow?.className).toContain('border-border-subtle');
+    expect(strip?.lastElementChild?.className).toContain('hidden');
+  });
+
+  it('resizes desktop windows between snapped widths', async () => {
     const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
     store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat', width: 1 / 2 });
 
@@ -43,18 +68,25 @@ describe('WindowManager', () => {
       value: () => ({ left: 0, right: 1000, width: 1000 }),
     });
 
+    expect(handle.className).not.toContain('translate-x-1/2');
+    expect(handle.firstElementChild?.className).toContain('right-0');
+
     fireEvent(handle, new MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 500 }));
-    expect((strip?.lastElementChild as HTMLElement | null)?.style.width).toBe(
-      '666.6666666666666px',
-    );
+    const trailingSpace = strip?.lastElementChild as HTMLElement | null;
+    expect(trailingSpace?.className).toContain('hidden');
+    expect(trailingSpace?.style.width).toBe('0px');
     fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 900 }));
     expect(windowElement?.style.width).toBe('90%');
+    expect(trailingSpace?.className).toContain('hidden');
     expect(store.getState().windows[0]?.width).toBe(1 / 2);
     if (strip) strip.scrollLeft = 200;
     fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 900 }));
     expect(windowElement?.style.width).toBe('100%');
     fireEvent(handle, new MouseEvent('pointerup', { bubbles: true, clientX: 900 }));
     expect(store.getState().windows[0]?.width).toBe(1);
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    expect(trailingSpace?.style.width).toBe('0px');
+    expect(trailingSpace?.className).toContain('hidden');
 
     fireEvent.keyDown(handle, { key: 'ArrowLeft' });
     expect(store.getState().windows[0]?.width).toBe(1 / 2);
