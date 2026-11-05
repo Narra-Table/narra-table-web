@@ -286,15 +286,17 @@ export function normalizeWorkspace(state: WorkspaceState): WorkspaceState {
   }
 
   let focusedWindowId: WindowInstanceId | null = null;
-  const rememberedFocus = rawFocus.focusedWindowId;
-  if (rememberedFocus && windows[rememberedFocus]) {
-    focusedWindowId = rememberedFocus;
-  } else if (columns.length > 0) {
-    const column =
-      (lastTiledContainerId ? containerById.get(lastTiledContainerId) : undefined) ?? columns[0];
-    focusedWindowId = column ? activeWindowId(column, lastFocusedWindowByContainer) : null;
-  } else if (floats.length > 0) {
-    focusedWindowId = floats[floats.length - 1]?.window ?? null;
+  if (!rawFocus.blurred) {
+    const rememberedFocus = rawFocus.focusedWindowId;
+    if (rememberedFocus && windows[rememberedFocus]) {
+      focusedWindowId = rememberedFocus;
+    } else if (columns.length > 0) {
+      const column =
+        (lastTiledContainerId ? containerById.get(lastTiledContainerId) : undefined) ?? columns[0];
+      focusedWindowId = column ? activeWindowId(column, lastFocusedWindowByContainer) : null;
+    } else if (floats.length > 0) {
+      focusedWindowId = floats[floats.length - 1]?.window ?? null;
+    }
   }
 
   let layer: FocusLayer = 'tiling';
@@ -307,7 +309,9 @@ export function normalizeWorkspace(state: WorkspaceState): WorkspaceState {
     }
   } else {
     focusedWindowId = null;
-    if (rawFocus.layer === 'floating' && floats.length > 0) {
+    if (rawFocus.blurred) {
+      layer = rawFocus.layer === 'floating' ? 'floating' : 'tiling';
+    } else if (rawFocus.layer === 'floating' && floats.length > 0) {
       layer = 'floating';
       focusedWindowId = floats[floats.length - 1]?.window ?? null;
       if (focusedWindowId) {
@@ -346,6 +350,7 @@ export function normalizeWorkspace(state: WorkspaceState): WorkspaceState {
       focusedWindowId,
       lastFocusedWindowByContainer,
       lastTiledContainerId,
+      ...(rawFocus.blurred ? { blurred: true } : {}),
     },
     scrollOffset: clampScrollOffset(state.scrollOffset),
   };
@@ -482,7 +487,9 @@ export function validateWorkspace(state: WorkspaceState): ValidationResult {
     errors.push('focus has invalid layer');
   } else {
     if (focus.focusedWindowId === null) {
-      if (usedWindowIds.size > 0) errors.push('focus is null while windows are open');
+      if (usedWindowIds.size > 0 && !focus.blurred) {
+        errors.push('focus is null while windows are open');
+      }
     } else if (!usedWindowIds.has(focus.focusedWindowId)) {
       errors.push('focused window does not exist');
     }

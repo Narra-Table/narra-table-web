@@ -39,6 +39,11 @@ export function useHorizontalWheel(
     };
 
     const startPan = (delta: number) => {
+      // Re-anchor to the live position: the edge hover gesture may have moved
+      // the strip since the last wheel event, and the eased glide below would
+      // otherwise snap back to the stale target.
+      targetScroll = strip.scrollLeft;
+      currentScroll = strip.scrollLeft;
       const maxScroll = strip.scrollWidth - strip.clientWidth;
       targetScroll = Math.max(0, Math.min(maxScroll, targetScroll + delta));
       if (reduceMotion || maxScroll <= 0) {

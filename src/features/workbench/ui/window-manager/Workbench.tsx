@@ -15,6 +15,7 @@ import { useLauncher, WorkbenchLauncherProvider } from './Launcher';
 import { NarrowLayout } from './NarrowLayout';
 import { alignContainerInStrip } from './scroll-container';
 import { WorkbenchTaskbar } from './Taskbar';
+import { useEdgeAutoScroll } from './useEdgeAutoScroll';
 import { useHorizontalWheel } from './useHorizontalWheel';
 import { useNarrow } from './useNarrow';
 import { useWorkbenchKeyboard } from './useWorkbenchKeyboard';
@@ -59,6 +60,7 @@ function WorkbenchBody({
   const focusedContainerId = selectFocusedContainer(state)?.id;
 
   useHorizontalWheel(stageRef, stripRef, !narrow, state.focus.focusedWindowId === null);
+  useEdgeAutoScroll(stageRef, stripRef, !narrow);
   useWorkbenchKeyboard(store, rootRef, { enabled: keyboard, onEscape });
 
   useEffect(() => {
