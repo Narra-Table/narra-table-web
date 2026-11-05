@@ -8,7 +8,7 @@ afterEach(cleanup);
 describe('WindowContent', () => {
   it('renders the selected local window', () => {
     render(<WindowContent kind="chat" />);
-    expect(screen.getByLabelText('消息')).toBeDefined();
+    expect(screen.queryByLabelText('消息')).toBeNull();
 
     cleanup();
     render(<WindowContent kind="map" />);

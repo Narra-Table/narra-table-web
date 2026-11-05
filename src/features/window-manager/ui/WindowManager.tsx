@@ -3,7 +3,7 @@ import { cn } from '@/lib/classNames';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { WindowManagerStore } from '../model/store';
 import type { WindowInstance, WindowManagerState } from '../model/window-manager';
-import { MobileWindowManager } from './MobileWindowManager';
+import { MobileWindowManager, WINDOW_HEADER_TONES } from './MobileWindowManager';
 
 export interface WindowManagerProps {
   store: WindowManagerStore;
@@ -74,32 +74,35 @@ export function WindowManager({ store, toolbar, renderWindow }: WindowManagerPro
         </header>
       ) : null}
 
-      <div className="scroll-subtle-native-hidden flex min-h-0 flex-1 gap-2 overflow-x-auto p-2">
+      <div className="scroll-subtle-native-hidden flex min-h-0 flex-1 gap-1 overflow-x-auto">
         {state.windows.length === 0 ? (
-          <div className="grid min-h-48 flex-1 place-items-center border border-border-subtle bg-surface p-4 text-sm text-text-muted">
+          <div className="grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted">
             工作台是空的，请从顶部打开一个窗口。
           </div>
         ) : (
-          state.windows.map((window) => {
+          state.windows.map((window, index) => {
             const focused = window.instanceId === state.focusedWindowId;
             return (
               <article
                 key={window.instanceId}
                 className={cn(
-                  'flex h-full min-h-0 shrink-0 flex-col overflow-hidden border bg-surface',
+                  'flex h-full min-h-0 shrink-0 flex-col overflow-hidden bg-surface',
                   widthClass(window.width),
-                  focused ? 'border-accent' : 'border-border-subtle',
                 )}
                 onPointerDown={() => store.actions.focus(window.instanceId)}
                 onFocusCapture={() => store.actions.focus(window.instanceId)}
               >
-                <header className="flex h-10 shrink-0 items-center gap-2 border-b border-border-subtle px-3">
-                  <h2 className="min-w-0 flex-1 truncate text-sm font-semibold text-text">
-                    {window.title}
-                  </h2>
+                <header
+                  className={cn(
+                    'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
+                    WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
+                    focused ? 'opacity-100' : 'opacity-75',
+                  )}
+                >
+                  <h2 className="min-w-0 flex-1 truncate text-sm font-semibold">{window.title}</h2>
                   <button
                     type="button"
-                    className="grid size-8 place-items-center rounded-control text-lg text-text-muted hover:bg-surface-muted hover:text-text"
+                    className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"
                     aria-label={`关闭${window.title}`}
                     onClick={() => store.actions.close(window.instanceId)}
                   >

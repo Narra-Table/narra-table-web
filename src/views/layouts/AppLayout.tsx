@@ -22,7 +22,7 @@ export function AppLayout() {
   }, []);
 
   return (
-    <div className="h-screen overflow-hidden bg-app-bg text-text">
+    <div className="h-full overflow-hidden bg-app-bg text-text">
       <div className="flex h-full">
         <aside
           className={[

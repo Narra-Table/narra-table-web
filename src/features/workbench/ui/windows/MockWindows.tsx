@@ -11,39 +11,9 @@ function Empty() {
 }
 
 export function ChatWindow() {
-  const [draft, setDraft] = useState('');
-  const [messages, setMessages] = useState<string[]>([]);
-
-  function send(event: FormEvent) {
-    event.preventDefault();
-    const value = draft.trim();
-    if (!value) return;
-    setMessages((current) => [...current, value]);
-    setDraft('');
-  }
-
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 p-3">
-      {messages.length === 0 ? <Empty /> : null}
-      <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
-        {messages.map((message, index) => (
-          <li key={`${message}-${index}`} className="rounded-control bg-app-bg px-3 py-2 text-sm">
-            {message}
-          </li>
-        ))}
-      </ul>
-      <form className="flex gap-2" onSubmit={send}>
-        <input
-          aria-label="消息"
-          placeholder="消息"
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          className={inputClass}
-        />
-        <button type="submit" className={buttonClass}>
-          发送
-        </button>
-      </form>
+    <div className="flex min-h-0 flex-1 flex-col p-3">
+      <Empty />
     </div>
   );
 }

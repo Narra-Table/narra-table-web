@@ -1,7 +1,8 @@
 import { Link } from '@tanstack/react-router';
-import { ArrowLeft } from 'lucide-react';
-import { lazy, Suspense, useState } from 'react';
+import { ArrowLeft, Paperclip, Plus, Send, Smile } from 'lucide-react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import { WindowManager, type WindowInstance } from '@/features/window-manager';
+import { usePersistentToolbar } from '@/views/layouts/PersistentToolbar';
 import { useWorkbenchPersistence } from '../hooks/useWorkbenchPersistence';
 import { createWorkbenchRuntimeForSpace, openKind } from '../lib/persistence';
 import { isWorkbenchWindowKind, WINDOW_INFO, WINDOW_KINDS, type WindowKind } from '../model/window';
@@ -10,38 +11,98 @@ const WindowContent = lazy(() =>
   import('./windows/WindowContent').then((module) => ({ default: module.WindowContent })),
 );
 
-function WorkbenchToolbar({ onOpen }: { onOpen: (kind: WindowKind) => void }) {
+function WorkbenchTools({ onOpen }: { onOpen: (kind: WindowKind) => void }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <div className="flex min-w-0 flex-1 items-center gap-3">
+    <>
       <Link
         to="/"
         aria-label="返回空间列表"
         title="返回空间列表"
-        className="grid size-8 shrink-0 place-items-center rounded-control text-text-muted hover:bg-surface-muted hover:text-text"
+        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
       >
-        <ArrowLeft className="icon-stroke size-4" />
+        <ArrowLeft className="icon-stroke size-5" aria-hidden="true" />
       </Link>
-      <h1 className="min-w-24 truncate text-sm font-semibold text-text">工作台</h1>
-      <div className="scroll-subtle-native-hidden flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
-        {WINDOW_KINDS.map((kind) => (
-          <button
-            type="button"
-            key={kind}
-            className="shrink-0 rounded-control px-3 py-1.5 text-xs text-text-muted hover:bg-surface-muted hover:text-text"
-            onClick={() => onOpen(kind)}
+      <button
+        type="button"
+        aria-label="添加附件"
+        title="添加附件"
+        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+      >
+        <Paperclip className="icon-stroke size-5" aria-hidden="true" />
+      </button>
+      <input
+        aria-label="聊天输入"
+        placeholder="输入消息"
+        className="min-w-0 flex-1 bg-surface-muted px-3 py-2 text-base text-text outline-none placeholder:text-text-muted"
+      />
+      <button
+        type="button"
+        aria-label="选择表情"
+        title="选择表情"
+        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+      >
+        <Smile className="icon-stroke size-5" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        aria-label="发送消息"
+        title="发送消息"
+        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+      >
+        <Send className="icon-stroke size-5" aria-hidden="true" />
+      </button>
+      <div className="relative shrink-0">
+        <button
+          type="button"
+          aria-label="添加窗口"
+          title="添加窗口"
+          aria-expanded={menuOpen}
+          aria-haspopup="menu"
+          className="grid size-10 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <Plus className="icon-stroke size-5" aria-hidden="true" />
+        </button>
+        {menuOpen ? (
+          <div
+            role="menu"
+            aria-label="添加工作台窗口"
+            className="absolute right-0 bottom-full mb-3 w-36 border border-border bg-surface p-1 shadow-lg"
           >
-            {WINDOW_INFO[kind].title}
-          </button>
-        ))}
+            {WINDOW_KINDS.map((kind) => (
+              <button
+                type="button"
+                role="menuitem"
+                key={kind}
+                className="block w-full px-3 py-2 text-left text-sm text-text hover:bg-surface-muted"
+                onClick={() => {
+                  onOpen(kind);
+                  setMenuOpen(false);
+                }}
+              >
+                {WINDOW_INFO[kind].title}
+              </button>
+            ))}
+          </div>
+        ) : null}
       </div>
-    </div>
+    </>
   );
+}
+
+function useWorkbenchToolbar(onOpen: (kind: WindowKind) => void) {
+  const toolbar = useMemo(() => <WorkbenchTools onOpen={onOpen} />, [onOpen]);
+  usePersistentToolbar(toolbar, 'docked');
 }
 
 export function WorkbenchPage({ spaceId }: { spaceId: string }) {
   const [runtime] = useState(() => createWorkbenchRuntimeForSpace(spaceId));
   const { manager, workspace } = runtime;
+  const openWindow = useMemo(() => (kind: WindowKind) => openKind(workspace, kind), [workspace]);
 
+  useWorkbenchToolbar(openWindow);
   useWorkbenchPersistence(spaceId, manager);
 
   function renderWindow(window: WindowInstance) {
@@ -54,12 +115,8 @@ export function WorkbenchPage({ spaceId }: { spaceId: string }) {
   }
 
   return (
-    <div className="h-full min-h-0 overflow-hidden">
-      <WindowManager
-        store={manager}
-        toolbar={<WorkbenchToolbar onOpen={(kind) => openKind(workspace, kind)} />}
-        renderWindow={renderWindow}
-      />
+    <div className="h-full min-h-0 overflow-hidden pb-15">
+      <WindowManager store={manager} renderWindow={renderWindow} />
     </div>
   );
 }
