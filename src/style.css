@@ -169,14 +169,14 @@
 
 :root {
   color-scheme: dark;
-  --theme-app-bg: #0b0d12;
-  --theme-surface: #121620;
-  --theme-surface-muted: #1b2130;
-  --theme-text: #f3efe5;
-  --theme-text-muted: #999ba6;
-  --theme-border-subtle: #252b38;
-  --theme-border: #394252;
-  --theme-accent: #d6b56f;
+  --theme-app-bg: #101319;
+  --theme-surface: #1c222d;
+  --theme-surface-muted: #293241;
+  --theme-text: #ffffff;
+  --theme-text-muted: #c5cad4;
+  --theme-border-subtle: #3a4557;
+  --theme-border: #5d6b82;
+  --theme-accent: #e2c47e;
   --theme-accent-text: #191207;
   --theme-success: #7bcf9b;
   --theme-warning: #e5b96b;
@@ -186,14 +186,14 @@
 
 [data-theme='cinematic'] {
   color-scheme: dark;
-  --theme-app-bg: #0b0d12;
-  --theme-surface: #121620;
-  --theme-surface-muted: #1b2130;
-  --theme-text: #f3efe5;
-  --theme-text-muted: #999ba6;
-  --theme-border-subtle: #252b38;
-  --theme-border: #394252;
-  --theme-accent: #d6b56f;
+  --theme-app-bg: #101319;
+  --theme-surface: #1c222d;
+  --theme-surface-muted: #293241;
+  --theme-text: #ffffff;
+  --theme-text-muted: #c5cad4;
+  --theme-border-subtle: #3a4557;
+  --theme-border: #5d6b82;
+  --theme-accent: #e2c47e;
   --theme-accent-text: #191207;
   --theme-success: #7bcf9b;
   --theme-warning: #e5b96b;

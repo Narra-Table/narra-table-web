@@ -105,7 +105,7 @@ export function SpaceCard({
         }}
         className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-app-bg/55" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-app-bg/40" />
 
       <div className="absolute right-3 top-3 z-20" ref={menuRef}>
         <button
@@ -166,7 +166,7 @@ export function SpaceCard({
         ) : null}
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-app-bg via-app-bg/95 to-transparent px-4 pb-4 pt-24">
+      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-app-bg via-app-bg/75 to-transparent px-4 pb-4 pt-24">
         <div className="flex items-center gap-1.5">
           {pinned ? (
             <Pin className="icon-stroke size-3.5 shrink-0 text-accent" aria-label="已置顶" />
