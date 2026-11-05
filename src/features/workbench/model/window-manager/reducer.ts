@@ -1,4 +1,5 @@
 import {
+  blurWindow,
   closeWindow,
   dissolveContainer,
   equalizeRows,
@@ -54,6 +55,8 @@ export function reduce(
       return focusWindow(state, action.instanceId, {
         clearAttention: action.clearAttention,
       });
+    case 'window/blur':
+      return blurWindow(state);
     case 'window/focus-direction':
       return focusDirection(state, action.direction);
     case 'window/focus-layer':

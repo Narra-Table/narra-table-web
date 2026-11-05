@@ -15,6 +15,7 @@ import { useLauncher, WorkbenchLauncherProvider } from './Launcher';
 import { NarrowLayout } from './NarrowLayout';
 import { alignContainerInStrip } from './scroll-container';
 import { WorkbenchTaskbar } from './Taskbar';
+import { useEdgeAutoScroll } from './useEdgeAutoScroll';
 import { useHorizontalWheel } from './useHorizontalWheel';
 import { useNarrow } from './useNarrow';
 import { useWorkbenchKeyboard } from './useWorkbenchKeyboard';
@@ -24,8 +25,6 @@ import { WindowHosts } from './WindowHosts';
 export interface WorkbenchProps {
   /** Host toolbar content. The WM owns the fixed toolbar container. */
   toolbar?: ReactNode;
-  /** Extra leading content for the taskbar, for example a launcher button. */
-  taskbarLeading?: ReactNode;
   /** Replace the default empty state. */
   empty?: ReactNode;
   showTaskbar?: boolean;
@@ -40,7 +39,6 @@ export interface WorkbenchProps {
 
 function WorkbenchBody({
   toolbar,
-  taskbarLeading,
   empty,
   showTaskbar = true,
   keyboard = true,
@@ -61,7 +59,8 @@ function WorkbenchBody({
   const [narrowContainerId, setNarrowContainerId] = useState<string | null>(null);
   const focusedContainerId = selectFocusedContainer(state)?.id;
 
-  useHorizontalWheel(stageRef, stripRef, !narrow);
+  useHorizontalWheel(stageRef, stripRef, !narrow, state.focus.focusedWindowId === null);
+  useEdgeAutoScroll(stageRef, stripRef, !narrow);
   useWorkbenchKeyboard(store, rootRef, { enabled: keyboard, onEscape });
 
   useEffect(() => {
@@ -96,7 +95,21 @@ function WorkbenchBody({
   const floats = selectFloating(state);
 
   return (
-    <div className={cn('wm-root', className)} ref={rootRef}>
+    <div
+      className={cn('wm-root', className)}
+      ref={rootRef}
+      onPointerDown={(event) => {
+        if (event.button !== 0) return;
+        const target = event.target;
+        if (
+          target instanceof Element &&
+          target.closest('.wm-column, .wm-floating, .wm-taskbar-apps')
+        ) {
+          return;
+        }
+        store.actions.blur();
+      }}
+    >
       {toolbar ? <div className="wm-toolbar">{toolbar}</div> : null}
       <div
         className="wm-stage"
@@ -172,7 +185,7 @@ function WorkbenchBody({
       </div>
       <WindowHosts state={state} rootRef={rootRef} />
       {showTaskbar ? (
-        <WorkbenchTaskbar leading={taskbarLeading} onOpenLauncher={() => launcher.open()} />
+        <WorkbenchTaskbar stripRef={stripRef} onOpenLauncher={() => launcher.open()} />
       ) : null}
     </div>
   );

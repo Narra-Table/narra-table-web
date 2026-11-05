@@ -137,10 +137,12 @@ describe('React workbench shell', () => {
     expect(screen.getByTestId(`content-${chat}`)).toBeTruthy();
     expect(screen.getByTestId(`content-${sheet}`)).toBeTruthy();
     expect(screen.getByLabelText('Taskbar')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Apps' })).toBeTruthy();
+    expect(document.querySelectorAll('.wm-taskbar-item')).toHaveLength(0);
     expect(document.querySelectorAll('.wm-window[data-focused="true"]')).toHaveLength(1);
   });
 
-  it('focuses a window on pointer down and through the taskbar', () => {
+  it('focuses a window on pointer down', () => {
     const store = createStore();
     const { chat, sheet } = seedTwoColumns(store);
     renderWorkbench(store);
@@ -155,14 +157,89 @@ describe('React workbench shell', () => {
     expect(store.getState().focus.focusedWindowId).toBe(sheet);
     expect((sheetWindow as HTMLElement).getAttribute('data-focused')).toBe('true');
 
-    const taskbar = screen.getByLabelText('Taskbar');
-    fireEvent.click(within(taskbar).getByRole('button', { name: 'Chat' }));
+    fireEvent.pointerDown(chatWindow as Element);
     expect(store.getState().focus.focusedWindowId).toBe(chat);
+  });
+
+  it('clears focus when clicking the workspace background', () => {
+    const store = createStore();
+    const { sheet } = seedTwoColumns(store);
+    renderWorkbench(store);
+
+    const sheetWindow = [...document.querySelectorAll('.wm-window')].find((window) =>
+      window.textContent?.includes('Sheet body'),
+    ) as Element;
+    fireEvent.pointerDown(sheetWindow);
+    expect(store.getState().focus.focusedWindowId).toBe(sheet);
+
+    const stage = document.querySelector('.wm-stage');
+    expect(stage).toBeDefined();
+    act(() => {
+      dispatchPointer(stage as Element, 'pointerdown', 10, 10);
+    });
+    expect(store.getState().focus.focusedWindowId).toBeNull();
+    expect(document.querySelectorAll('.wm-window[data-focused="true"]')).toHaveLength(0);
+  });
+
+  it('clears focus when clicking the toolbar or taskbar background', () => {
+    const store = createStore();
+    const { sheet } = seedTwoColumns(store);
+    renderWorkbench(store, { toolbar: <span>Host toolbar</span> });
+
+    const sheetWindow = [...document.querySelectorAll('.wm-window')].find((window) =>
+      window.textContent?.includes('Sheet body'),
+    ) as Element;
+    fireEvent.pointerDown(sheetWindow);
+    expect(store.getState().focus.focusedWindowId).toBe(sheet);
+
+    const taskbar = document.querySelector('.wm-taskbar');
+    expect(taskbar).toBeDefined();
+    act(() => {
+      dispatchPointer(taskbar as Element, 'pointerdown', 10, 10);
+    });
+    expect(store.getState().focus.focusedWindowId).toBeNull();
+
+    fireEvent.pointerDown(sheetWindow);
+    expect(store.getState().focus.focusedWindowId).toBe(sheet);
+
+    const toolbar = document.querySelector('.wm-toolbar');
+    expect(toolbar).toBeDefined();
+    act(() => {
+      dispatchPointer(toolbar as Element, 'pointerdown', 10, 10);
+    });
+    expect(store.getState().focus.focusedWindowId).toBeNull();
+  });
+
+  it('shows a scroll progress indicator that tracks the strip', () => {
+    const store = createStore();
+    seedTwoColumns(store);
+    renderWorkbench(store);
+
+    const strip = document.querySelector('.wm-strip');
+    expect(strip).toBeDefined();
+
+    act(() => {
+      mockScroll(strip as HTMLElement, { scrollWidth: 400, clientWidth: 100, scrollLeft: 0 });
+      fireEvent.scroll(strip as Element);
+    });
+
+    let segments = [...document.querySelectorAll('.wm-scroll-progress > span')];
+    expect(segments).toHaveLength(12);
+    expect(segments[0]?.className).toContain('wm-scroll-progress-active');
+
+    act(() => {
+      mockScroll(strip as HTMLElement, { scrollWidth: 400, clientWidth: 100, scrollLeft: 300 });
+      fireEvent.scroll(strip as Element);
+    });
+
+    segments = [...document.querySelectorAll('.wm-scroll-progress > span')];
+    expect(segments[11]?.className).toContain('wm-scroll-progress-active');
+    expect(segments[0]?.className).not.toContain('wm-scroll-progress-active');
   });
 
   it('closes the focused window from its chrome', () => {
     const store = createStore();
-    const { chat, sheet } = seedTwoColumns(store);
+    const { sheet } = seedTwoColumns(store);
     renderWorkbench(store);
 
     const sheetColumn = [...document.querySelectorAll('.wm-column')].find(
@@ -171,7 +248,7 @@ describe('React workbench shell', () => {
     expect(sheetColumn).toBeDefined();
     fireEvent.click(within(sheetColumn as HTMLElement).getByLabelText('关闭'));
     expect(store.getState().windows[sheet]).toBeUndefined();
-    expect(store.getState().focus.focusedWindowId).toBe(chat);
+    expect(store.getState().focus.focusedWindowId).toBeNull();
     expect(screen.queryByTestId(`content-${sheet}`)).toBeNull();
   });
 

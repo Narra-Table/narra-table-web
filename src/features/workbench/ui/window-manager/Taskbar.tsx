@@ -1,18 +1,53 @@
-import type { ReactNode } from 'react';
-import { selectTaskbarGroups } from '../../model/window-manager/selectors';
+import { useEffect, useState, type RefObject } from 'react';
 import { useWorkbenchContext, useWorkbenchState } from './context';
-import { WindowIcon } from './WindowFrame';
+
+const SCROLL_SEGMENTS = 36;
+
+function ScrollIndicator({ stripRef }: { stripRef: RefObject<HTMLElement | null> }) {
+  const state = useWorkbenchState();
+  const [progress, setProgress] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) {
+      setVisible(false);
+      return;
+    }
+    const update = () => {
+      const max = strip.scrollWidth - strip.clientWidth;
+      setVisible(max > 0);
+      setProgress(max > 0 ? strip.scrollLeft / max : 0);
+    };
+    update();
+    strip.addEventListener('scroll', update);
+    return () => strip.removeEventListener('scroll', update);
+  }, [stripRef, state]);
+
+  if (!visible) return null;
+
+  const active = Math.round(progress * (SCROLL_SEGMENTS - 1));
+
+  return (
+    <div className="wm-scroll-progress" aria-hidden="true">
+      {Array.from({ length: SCROLL_SEGMENTS }, (_, index) => (
+        <span
+          key={index}
+          className={index === active ? 'wm-scroll-progress-active' : undefined}
+        />
+      ))}
+    </div>
+  );
+}
 
 export function WorkbenchTaskbar({
-  leading,
+  stripRef,
   onOpenLauncher,
 }: {
-  leading?: ReactNode;
+  stripRef: RefObject<HTMLElement | null>;
   onOpenLauncher?: () => void;
 }) {
-  const { store, registry, messages } = useWorkbenchContext();
-  const state = useWorkbenchState();
-  const groups = selectTaskbarGroups(state);
+  const { messages } = useWorkbenchContext();
 
   return (
     <footer className="wm-taskbar" aria-label={messages.taskbarLabel}>
@@ -21,48 +56,7 @@ export function WorkbenchTaskbar({
           {messages.launcher}
         </button>
       ) : null}
-      {leading ? <div className="wm-taskbar-leading">{leading}</div> : null}
-      <div className="wm-taskbar-groups">
-        {groups.map((group) => (
-          <div
-            className="wm-taskbar-group"
-            key={group.containerId}
-            data-kind={group.kind}
-            data-state={group.state}
-          >
-            {group.items.map((item) => {
-              const window = state.windows[item.instanceId];
-              if (!window) return null;
-              return (
-                <button
-                  type="button"
-                  key={item.instanceId}
-                  className="wm-taskbar-item"
-                  data-focused={item.focused}
-                  title={item.title}
-                  aria-label={item.title}
-                  onClick={() => store.actions.focus(item.instanceId)}
-                >
-                  <WindowIcon
-                    window={window}
-                    descriptor={registry.getWindow(window.appId, window.windowTypeId)}
-                    className="wm-window-icon-small"
-                  />
-                  <span className="wm-taskbar-title">{item.title}</span>
-                  {item.attention ? (
-                    <span
-                      className={`wm-attention wm-attention-${item.attention.level}`}
-                      aria-label={`attention: ${item.attention.level}`}
-                    >
-                      {item.attention.level === 'urgent' ? '!' : '•'}
-                    </span>
-                  ) : null}
-                </button>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+      <ScrollIndicator stripRef={stripRef} />
     </footer>
   );
 }
