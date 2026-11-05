@@ -15,6 +15,7 @@ export interface MobileWindowManagerProps {
   state: WindowManagerState;
   toolbar?: ReactNode;
   renderWindow: (window: WindowInstance) => ReactNode;
+  renderWindowHeaderAddon?: (window: WindowInstance) => ReactNode;
   onFocus: (instanceId: string) => void;
   onClose: (instanceId: string) => void;
 }
@@ -23,6 +24,7 @@ export function MobileWindowManager({
   state,
   toolbar,
   renderWindow,
+  renderWindowHeaderAddon,
   onFocus,
   onClose,
 }: MobileWindowManagerProps) {
@@ -92,7 +94,9 @@ export function MobileWindowManager({
                     WINDOW_HEADER_TONES[index % WINDOW_HEADER_TONES.length],
                   )}
                 >
-                  <h2 className="min-w-0 flex-1 truncate text-sm font-semibold">{window.title}</h2>
+                  <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
+                  {renderWindowHeaderAddon?.(window)}
+                  <span className="min-w-0 flex-1" />
                   <button
                     type="button"
                     className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"

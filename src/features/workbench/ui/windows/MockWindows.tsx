@@ -1,185 +1,228 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type ReactNode } from 'react';
+import {
+  useGetApiSpacesSpaceId,
+  useGetApiSpacesSpaceIdClues,
+  useGetApiSpacesSpaceIdMasks,
+  useGetApiSpacesSpaceIdRoomsRoomIdMessages,
+  useGetApiSpacesSpaceIdRoomsRoomIdScenes,
+} from '@/api';
 import { cn } from '@/lib/classNames';
 
-const inputClass =
-  'min-w-0 flex-1 rounded-control border border-border bg-app-bg px-3 py-2 text-sm text-text outline-none focus:border-accent';
-const buttonClass =
-  'shrink-0 rounded-control bg-accent px-3 py-2 text-sm font-semibold text-accent-text';
-
-function Empty() {
-  return <p className="py-4 text-center text-sm text-text-muted">—</p>;
+interface SpaceWindowProps {
+  spaceId: string;
 }
 
-export function ChatWindow() {
+function WindowState({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-0 flex-1 flex-col p-3">
-      <Empty />
+    <div className="grid min-h-0 flex-1 place-items-center p-4 text-sm text-text-muted">
+      {children}
     </div>
   );
 }
 
-export function CharactersWindow() {
-  const [name, setName] = useState('');
-  const [characters, setCharacters] = useState(['调查员']);
-
-  function add(event: FormEvent) {
-    event.preventDefault();
-    const value = name.trim();
-    if (!value) return;
-    setCharacters((current) => [...current, value]);
-    setName('');
-  }
-
+function messageText(message: {
+  content?: Array<{ children?: Array<{ text?: string; displayText?: string }> }>;
+  raw?: string;
+  command?: string;
+  clue?: { title?: string };
+  messageId?: string;
+}): string {
+  const content = message.content
+    ?.flatMap((block) => block.children ?? [])
+    .map((inline) => inline.text ?? inline.displayText)
+    .filter(Boolean)
+    .join(' ');
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 p-3">
-      <form className="flex gap-2" onSubmit={add}>
-        <input
-          aria-label="角色名"
-          placeholder="角色名"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          className={inputClass}
-        />
-        <button type="submit" className={buttonClass}>
-          添加
-        </button>
-      </form>
-      {characters.length === 0 ? <Empty /> : null}
-      <ul className="flex flex-col gap-1 overflow-y-auto">
-        {characters.map((character, index) => (
-          <li key={`${character}-${index}`} className="flex items-center gap-2 px-3 py-2">
-            <span className="min-w-0 flex-1 truncate text-sm text-text">{character}</span>
-            <button
-              type="button"
-              className="text-xs text-text-muted hover:text-danger"
-              onClick={() =>
-                setCharacters((current) => current.filter((_, item) => item !== index))
-              }
-            >
-              删除
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    content || message.raw || message.command || message.clue?.title || message.messageId || '消息'
   );
 }
 
-export function MembersWindow() {
-  const [ready, setReady] = useState<Record<string, boolean>>({});
-  const members = ['主持人', '玩家一', '玩家二'];
+export function ChatWindow({ spaceId, roomId }: SpaceWindowProps & { roomId?: string }) {
+  const {
+    data: messages,
+    isPending,
+    isError,
+  } = useGetApiSpacesSpaceIdRoomsRoomIdMessages(spaceId, roomId ?? '', undefined, {
+    query: {
+      enabled: Boolean(roomId),
+      select: (response) => response.data.messages ?? [],
+    },
+  });
+
+  if (!roomId) return <WindowState>请选择聊天房间</WindowState>;
+  if (isPending) return <WindowState>加载中</WindowState>;
+  if (isError) return <WindowState>聊天数据加载失败</WindowState>;
+  if (!messages?.length) return <WindowState>暂无消息</WindowState>;
 
   return (
-    <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
-      {members.map((member) => (
-        <li key={member} className="flex items-center gap-2 px-3 py-2">
-          <span className="min-w-0 flex-1 truncate text-sm text-text">{member}</span>
-          <button
-            type="button"
-            className={cn('text-xs', ready[member] ? 'text-success' : 'text-text-muted')}
-            onClick={() => setReady((current) => ({ ...current, [member]: !current[member] }))}
-          >
-            {ready[member] ? '已就绪' : '未就绪'}
-          </button>
+    <ul className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
+      {messages.map((message, index) => (
+        <li key={message.messageId ?? String(index)}>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="font-semibold text-accent">
+              {message.sender?.maskId ?? message.sender?.userId ?? '匿名'}
+            </span>
+            {message.sendTime ? <time className="text-text-muted">{message.sendTime}</time> : null}
+          </div>
+          <p className="mt-1 text-base text-text">{messageText(message)}</p>
         </li>
       ))}
     </ul>
   );
 }
 
-export function CluesWindow() {
-  const [title, setTitle] = useState('');
-  const [clues, setClues] = useState<string[]>([]);
+export function CharactersWindow({ spaceId }: SpaceWindowProps) {
+  const {
+    data: masks,
+    isPending,
+    isError,
+  } = useGetApiSpacesSpaceIdMasks(spaceId, {
+    query: { select: (response) => (response.status === 200 ? response.data.masks : []) },
+  });
 
-  function add(event: FormEvent) {
-    event.preventDefault();
-    const value = title.trim();
-    if (!value) return;
-    setClues((current) => [...current, value]);
-    setTitle('');
-  }
+  if (isPending) return <WindowState>加载中</WindowState>;
+  if (isError) return <WindowState>角色数据加载失败</WindowState>;
+  if (!masks?.length) return <WindowState>暂无角色</WindowState>;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 p-3">
-      <form className="flex gap-2" onSubmit={add}>
-        <input
-          aria-label="线索"
-          placeholder="线索"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          className={inputClass}
-        />
-        <button type="submit" className={buttonClass}>
-          添加
-        </button>
-      </form>
-      {clues.length === 0 ? <Empty /> : null}
-      <ul className="flex flex-col gap-1 overflow-y-auto">
-        {clues.map((clue, index) => (
-          <li key={`${clue}-${index}`} className="flex items-center gap-2 px-3 py-2">
-            <span className="min-w-0 flex-1 truncate text-sm text-text">{clue}</span>
-            <button
-              type="button"
-              className="text-xs text-text-muted hover:text-danger"
-              onClick={() => setClues((current) => current.filter((_, item) => item !== index))}
-            >
-              删除
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
+      {masks.map((mask) => (
+        <li key={mask.maskId} className="grid grid-cols-[1fr_auto] gap-3 bg-app-bg px-3 py-3">
+          <span className="min-w-0">
+            <span className="block truncate text-base font-medium text-text">{mask.name}</span>
+            <span className="mt-1 block text-xs text-text-muted">{mask.type}</span>
+          </span>
+          <span className="text-right text-xs text-text-muted">
+            {mask.characterCards?.length ?? 0} 张角色卡
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
-export function CombatWindow() {
-  const [name, setName] = useState('');
-  const [rows, setRows] = useState<string[]>([]);
+export function MembersWindow({ spaceId }: SpaceWindowProps) {
+  const [ready, setReady] = useState<Record<string, boolean>>({});
+  const {
+    data: members,
+    isPending,
+    isError,
+  } = useGetApiSpacesSpaceId(spaceId, {
+    query: { select: (response) => response.data.members ?? [] },
+  });
 
-  function add(event: FormEvent) {
-    event.preventDefault();
-    const value = name.trim();
-    if (!value) return;
-    setRows((current) => [...current, value]);
-    setName('');
-  }
+  if (isPending) return <WindowState>加载中</WindowState>;
+  if (isError) return <WindowState>成员数据加载失败</WindowState>;
+  if (!members?.length) return <WindowState>暂无成员</WindowState>;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 p-3">
-      <form className="flex gap-2" onSubmit={add}>
-        <input
-          aria-label="战斗单位"
-          placeholder="战斗单位"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          className={inputClass}
-        />
-        <button type="submit" className={buttonClass}>
-          添加
-        </button>
-      </form>
-      {rows.length === 0 ? <Empty /> : null}
-      <ol className="flex flex-col gap-1 overflow-y-auto">
-        {rows.map((row, index) => (
-          <li key={`${row}-${index}`} className="flex items-center gap-3 px-3 py-2">
-            <span className="w-5 text-xs text-text-muted">{index + 1}</span>
-            <span className="min-w-0 flex-1 truncate text-sm text-text">{row}</span>
+    <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
+      {members.map((member, index) => {
+        const key = member.userId ?? String(index);
+        return (
+          <li key={key} className="flex items-center gap-2 bg-app-bg px-3 py-3">
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-base text-text">
+                {member.displayName ?? member.userId}
+              </span>
+              <span className="block text-xs text-text-muted">{member.role ?? 'member'}</span>
+            </span>
             <button
               type="button"
-              className="text-xs text-text-muted hover:text-danger"
-              onClick={() => setRows((current) => current.filter((_, item) => item !== index))}
+              className={cn('text-xs', ready[key] ? 'text-success' : 'text-text-muted')}
+              onClick={() => setReady((current) => ({ ...current, [key]: !current[key] }))}
             >
-              删除
+              {ready[key] ? '已就绪' : '未就绪'}
             </button>
           </li>
-        ))}
-      </ol>
-    </div>
+        );
+      })}
+    </ul>
   );
 }
 
-export function MapWindow() {
-  const [pins, setPins] = useState<Set<number>>(() => new Set());
+export function CluesWindow({ spaceId }: SpaceWindowProps) {
+  const {
+    data: clues,
+    isPending,
+    isError,
+  } = useGetApiSpacesSpaceIdClues(spaceId, undefined, {
+    query: { select: (response) => (response.status === 200 ? (response.data.clues ?? []) : []) },
+  });
+
+  if (isPending) return <WindowState>加载中</WindowState>;
+  if (isError) return <WindowState>线索数据加载失败</WindowState>;
+  if (!clues?.length) return <WindowState>暂无线索</WindowState>;
+
+  return (
+    <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
+      {clues.map((message, index) => (
+        <li key={message.messageId ?? String(index)} className="bg-app-bg px-3 py-3">
+          <div className="flex items-center gap-3">
+            <span className="min-w-0 flex-1 truncate text-base font-medium text-text">
+              {message.clue?.title ?? message.messageId}
+            </span>
+            <span className="text-xs text-info">
+              {message.clue?.isDiscovered ? '已发现' : '未发现'}
+            </span>
+          </div>
+          {message.clue?.description ? (
+            <p className="mt-1 text-sm text-text-muted">{message.clue.description}</p>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function CombatWindow({ spaceId }: SpaceWindowProps) {
+  const {
+    data: masks,
+    isPending,
+    isError,
+  } = useGetApiSpacesSpaceIdMasks(spaceId, {
+    query: { select: (response) => (response.status === 200 ? response.data.masks : []) },
+  });
+
+  if (isPending) return <WindowState>加载中</WindowState>;
+  if (isError) return <WindowState>战斗数据加载失败</WindowState>;
+  if (!masks?.length) return <WindowState>暂无参战角色</WindowState>;
+
+  return (
+    <ol className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
+      {masks.map((mask, index) => (
+        <li
+          key={mask.maskId}
+          className="grid grid-cols-[2rem_1fr_auto] items-center gap-2 bg-app-bg px-3 py-3"
+        >
+          <span className="text-lg font-semibold text-warning">{index + 1}</span>
+          <span className="min-w-0">
+            <span className="block truncate text-base text-text">{mask.name}</span>
+            <span className="block text-xs text-text-muted">{mask.type}</span>
+          </span>
+          <span className="text-xs text-info">{index === 0 ? '行动中' : '等待'}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export function MapWindow({ spaceId, roomId }: SpaceWindowProps & { roomId?: string }) {
+  const [pins, setPins] = useState<Set<number>>(() => new Set([5, 10]));
+  const {
+    data: scenes,
+    isPending,
+    isError,
+  } = useGetApiSpacesSpaceIdRoomsRoomIdScenes(spaceId, roomId ?? '', {
+    query: {
+      enabled: Boolean(roomId),
+      select: (response) => (response.status === 200 ? (response.data.scenes ?? []) : []),
+    },
+  });
+
+  if (!roomId) return <WindowState>请选择房间</WindowState>;
+  if (isPending) return <WindowState>加载中</WindowState>;
+  if (isError) return <WindowState>地图数据加载失败</WindowState>;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 p-3">
@@ -198,7 +241,9 @@ export function MapWindow() {
             aria-label={`格子 ${index + 1}`}
             className={cn(
               'min-h-12 rounded-control border border-border-subtle text-sm',
-              pins.has(index) ? 'bg-accent text-accent-text' : 'bg-app-bg text-text-muted',
+              pins.has(index) || scenes?.[index]
+                ? 'bg-accent text-accent-text'
+                : 'bg-app-bg text-text-muted',
             )}
             onClick={() =>
               setPins((current) => {
@@ -209,7 +254,7 @@ export function MapWindow() {
               })
             }
           >
-            {pins.has(index) ? '•' : ''}
+            {scenes?.[index]?.label ?? (pins.has(index) ? '•' : '')}
           </button>
         ))}
       </div>

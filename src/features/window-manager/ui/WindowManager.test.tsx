@@ -17,11 +17,13 @@ describe('WindowManager', () => {
         store={store}
         toolbar={<span>Toolbar</span>}
         renderWindow={(window) => <div>{window.windowTypeId} body</div>}
+        renderWindowHeaderAddon={() => <span>Room switcher</span>}
       />,
     );
 
     expect(screen.getByText('Toolbar')).toBeDefined();
     expect(screen.getByText('chat body')).toBeDefined();
+    expect(screen.getByText('Room switcher')).toBeDefined();
     fireEvent.click(screen.getByRole('button', { name: '关闭Chat' }));
     expect(screen.getByText('工作台是空的，请从顶部打开一个窗口。')).toBeDefined();
   });

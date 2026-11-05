@@ -9,6 +9,7 @@ export interface WindowManagerProps {
   store: WindowManagerStore;
   toolbar?: ReactNode;
   renderWindow: (window: WindowInstance) => ReactNode;
+  renderWindowHeaderAddon?: (window: WindowInstance) => ReactNode;
 }
 
 class WindowErrorBoundary extends Component<
@@ -46,7 +47,12 @@ export function useWindowManagerStore(store: WindowManagerStore): WindowManagerS
   );
 }
 
-export function WindowManager({ store, toolbar, renderWindow }: WindowManagerProps) {
+export function WindowManager({
+  store,
+  toolbar,
+  renderWindow,
+  renderWindowHeaderAddon,
+}: WindowManagerProps) {
   const state = useWindowManagerStore(store);
   const mobilePortrait = useMediaQuery('(max-width: 1023px) and (orientation: portrait)');
 
@@ -60,6 +66,7 @@ export function WindowManager({ store, toolbar, renderWindow }: WindowManagerPro
         state={state}
         toolbar={toolbar}
         renderWindow={renderWindowContent}
+        renderWindowHeaderAddon={renderWindowHeaderAddon}
         onFocus={(instanceId) => store.actions.focus(instanceId)}
         onClose={(instanceId) => store.actions.close(instanceId)}
       />
@@ -99,7 +106,9 @@ export function WindowManager({ store, toolbar, renderWindow }: WindowManagerPro
                     focused ? 'opacity-100' : 'opacity-75',
                   )}
                 >
-                  <h2 className="min-w-0 flex-1 truncate text-sm font-semibold">{window.title}</h2>
+                  <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
+                  {renderWindowHeaderAddon?.(window)}
+                  <span className="min-w-0 flex-1" />
                   <button
                     type="button"
                     className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"

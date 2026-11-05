@@ -73,7 +73,7 @@ function ToolButton({ label, children }: { label: string; children: ReactNode })
       type="button"
       aria-label={label}
       title={label}
-      className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+      className="grid size-10 shrink-0 place-items-center bg-surface text-text-muted transition-colors hover:text-text"
     >
       {children}
     </button>
@@ -83,7 +83,7 @@ function ToolButton({ label, children }: { label: string; children: ReactNode })
 function HomeTools() {
   return (
     <>
-      <label className="flex min-w-0 flex-1 items-center gap-2 bg-surface-muted px-3">
+      <label className="flex min-w-0 flex-1 items-center gap-2 bg-surface px-3">
         <Search className="icon-stroke size-5 shrink-0 text-text-muted" aria-hidden="true" />
         <input
           type="search"
@@ -114,7 +114,7 @@ function ChatTools() {
       <input
         aria-label="聊天输入"
         placeholder="输入消息"
-        className="min-w-0 flex-1 bg-surface-muted px-3 py-2 text-base text-text outline-none placeholder:text-text-muted"
+        className="min-w-0 flex-1 bg-surface px-3 py-2 text-base text-text outline-none placeholder:text-text-muted"
       />
       <ToolButton label="选择表情">
         <Smile className="icon-stroke size-5" aria-hidden="true" />
@@ -153,7 +153,7 @@ export function PersistentToolbarSurface({
     >
       <div
         className={[
-          'pointer-events-auto w-full border border-border bg-surface p-2 shadow-lg transition-all duration-300 ease-out starting:translate-y-full starting:opacity-0 motion-reduce:transition-none',
+          'pointer-events-auto w-full bg-surface-muted p-2 shadow-lg transition-all duration-300 ease-out starting:translate-y-full starting:opacity-0 motion-reduce:transition-none',
           placement === 'docked' ? 'min-h-15 max-w-none' : 'max-w-3xl',
         ].join(' ')}
       >

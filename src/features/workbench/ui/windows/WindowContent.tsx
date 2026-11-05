@@ -8,19 +8,27 @@ import {
   MembersWindow,
 } from './MockWindows';
 
-export function WindowContent({ kind }: { kind: WindowKind }) {
+export function WindowContent({
+  kind,
+  spaceId,
+  activeRoomId,
+}: {
+  kind: WindowKind;
+  spaceId: string;
+  activeRoomId?: string;
+}) {
   switch (kind) {
     case 'chat':
-      return <ChatWindow />;
+      return <ChatWindow spaceId={spaceId} roomId={activeRoomId} />;
     case 'characters':
-      return <CharactersWindow />;
+      return <CharactersWindow spaceId={spaceId} />;
     case 'members':
-      return <MembersWindow />;
+      return <MembersWindow spaceId={spaceId} />;
     case 'clues':
-      return <CluesWindow />;
+      return <CluesWindow spaceId={spaceId} />;
     case 'combat':
-      return <CombatWindow />;
+      return <CombatWindow spaceId={spaceId} />;
     case 'map':
-      return <MapWindow />;
+      return <MapWindow spaceId={spaceId} roomId={activeRoomId} />;
   }
 }

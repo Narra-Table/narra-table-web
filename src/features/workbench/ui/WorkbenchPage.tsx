@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
-import { ArrowLeft, Paperclip, Plus, Send, Smile } from 'lucide-react';
-import { lazy, Suspense, useMemo, useState } from 'react';
+import { ArrowLeft, MessageSquare, Plus, Search, Send } from 'lucide-react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { useGetApiSpacesSpaceIdRooms } from '@/api';
 import { WindowManager, type WindowInstance } from '@/features/window-manager';
 import { usePersistentToolbar } from '@/views/layouts/PersistentToolbar';
 import { useWorkbenchPersistence } from '../hooks/useWorkbenchPersistence';
@@ -13,6 +14,11 @@ const WindowContent = lazy(() =>
 
 function WorkbenchTools({ onOpen }: { onOpen: (kind: WindowKind) => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [toolMode, setToolMode] = useState<'chat' | 'search'>('chat');
+  const [chatDraft, setChatDraft] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const toolButtonClass =
+    'grid size-10 shrink-0 place-items-center text-text-muted transition-colors hover:text-text';
 
   return (
     <>
@@ -20,39 +26,58 @@ function WorkbenchTools({ onOpen }: { onOpen: (kind: WindowKind) => void }) {
         to="/"
         aria-label="返回空间列表"
         title="返回空间列表"
-        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+        className={`${toolButtonClass} bg-surface`}
       >
         <ArrowLeft className="icon-stroke size-5" aria-hidden="true" />
       </Link>
       <button
         type="button"
-        aria-label="添加附件"
-        title="添加附件"
-        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+        aria-label="聊天"
+        title="聊天"
+        aria-pressed={toolMode === 'chat'}
+        className={`${toolButtonClass} ${toolMode === 'chat' ? 'bg-accent text-accent-text' : 'bg-surface'}`}
+        onClick={() => setToolMode('chat')}
       >
-        <Paperclip className="icon-stroke size-5" aria-hidden="true" />
-      </button>
-      <input
-        aria-label="聊天输入"
-        placeholder="输入消息"
-        className="min-w-0 flex-1 bg-surface-muted px-3 py-2 text-base text-text outline-none placeholder:text-text-muted"
-      />
-      <button
-        type="button"
-        aria-label="选择表情"
-        title="选择表情"
-        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
-      >
-        <Smile className="icon-stroke size-5" aria-hidden="true" />
+        <MessageSquare className="icon-stroke size-5" aria-hidden="true" />
       </button>
       <button
         type="button"
-        aria-label="发送消息"
-        title="发送消息"
-        className="grid size-10 shrink-0 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+        aria-label="搜索"
+        title="搜索"
+        aria-pressed={toolMode === 'search'}
+        className={`${toolButtonClass} ${toolMode === 'search' ? 'bg-accent text-accent-text' : 'bg-surface'}`}
+        onClick={() => setToolMode('search')}
       >
-        <Send className="icon-stroke size-5" aria-hidden="true" />
+        <Search className="icon-stroke size-5" aria-hidden="true" />
       </button>
+      {toolMode === 'chat' ? (
+        <>
+          <input
+            aria-label="聊天输入"
+            placeholder="输入消息"
+            value={chatDraft}
+            onChange={(event) => setChatDraft(event.target.value)}
+            className="min-w-0 flex-1 bg-surface px-3 py-2 text-base text-text outline-none placeholder:text-text-muted"
+          />
+          <button
+            type="button"
+            aria-label="发送消息"
+            title="发送消息"
+            className={`${toolButtonClass} bg-surface`}
+          >
+            <Send className="icon-stroke size-5" aria-hidden="true" />
+          </button>
+        </>
+      ) : (
+        <input
+          type="search"
+          aria-label="搜索工作台"
+          placeholder="搜索当前窗口"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          className="min-w-0 flex-1 bg-surface px-3 py-2 text-base text-text outline-none placeholder:text-text-muted"
+        />
+      )}
       <div className="relative shrink-0">
         <button
           type="button"
@@ -60,7 +85,7 @@ function WorkbenchTools({ onOpen }: { onOpen: (kind: WindowKind) => void }) {
           title="添加窗口"
           aria-expanded={menuOpen}
           aria-haspopup="menu"
-          className="grid size-10 place-items-center bg-surface-muted text-text-muted transition-colors hover:text-text"
+          className={`${toolButtonClass} bg-surface`}
           onClick={() => setMenuOpen((open) => !open)}
         >
           <Plus className="icon-stroke size-5" aria-hidden="true" />
@@ -99,8 +124,22 @@ function useWorkbenchToolbar(onOpen: (kind: WindowKind) => void) {
 
 export function WorkbenchPage({ spaceId }: { spaceId: string }) {
   const [runtime] = useState(() => createWorkbenchRuntimeForSpace(spaceId));
+  const [activeRoomId, setActiveRoomId] = useState<string>();
   const { manager, workspace } = runtime;
   const openWindow = useMemo(() => (kind: WindowKind) => openKind(workspace, kind), [workspace]);
+  const { data: chatRooms = [] } = useGetApiSpacesSpaceIdRooms(spaceId, {
+    query: { select: (response) => response.data.rooms },
+  });
+
+  useEffect(() => {
+    if (!chatRooms.length) {
+      setActiveRoomId(undefined);
+      return;
+    }
+    if (!chatRooms.some((room) => room.roomId === activeRoomId)) {
+      setActiveRoomId(chatRooms[0].roomId);
+    }
+  }, [activeRoomId, chatRooms]);
 
   useWorkbenchToolbar(openWindow);
   useWorkbenchPersistence(spaceId, manager);
@@ -109,14 +148,36 @@ export function WorkbenchPage({ spaceId }: { spaceId: string }) {
     if (!isWorkbenchWindowKind(window.windowTypeId)) return null;
     return (
       <Suspense fallback={<div className="p-4 text-sm text-text-muted">加载中</div>}>
-        <WindowContent kind={window.windowTypeId} />
+        <WindowContent kind={window.windowTypeId} spaceId={spaceId} activeRoomId={activeRoomId} />
       </Suspense>
+    );
+  }
+
+  function renderWindowHeaderAddon(window: WindowInstance) {
+    if (window.windowTypeId !== 'chat' || !chatRooms.length) return null;
+    return (
+      <select
+        aria-label="切换聊天房间"
+        value={activeRoomId}
+        className="min-w-0 max-w-48 bg-surface px-2 py-1 text-xs text-text outline-none"
+        onChange={(event) => setActiveRoomId(event.target.value)}
+      >
+        {chatRooms.map((room) => (
+          <option key={room.roomId} value={room.roomId}>
+            {room.name}
+          </option>
+        ))}
+      </select>
     );
   }
 
   return (
     <div className="h-full min-h-0 overflow-hidden pb-15">
-      <WindowManager store={manager} renderWindow={renderWindow} />
+      <WindowManager
+        store={manager}
+        renderWindow={renderWindow}
+        renderWindowHeaderAddon={renderWindowHeaderAddon}
+      />
     </div>
   );
 }

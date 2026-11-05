@@ -1,32 +1,73 @@
 /** @vitest-environment jsdom */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
-import { CharactersWindow, CluesWindow, MapWindow } from './MockWindows';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { ChatWindow, CharactersWindow, CluesWindow, CombatWindow, MapWindow } from './MockWindows';
+
+vi.mock('@/api', () => ({
+  useGetApiSpacesSpaceId: vi.fn(),
+  useGetApiSpacesSpaceIdClues: vi.fn(() => ({
+    data: [
+      {
+        messageId: 'clue-1',
+        clue: { title: 'Generated clue', description: 'Generated detail', isDiscovered: true },
+      },
+    ],
+    isPending: false,
+    isError: false,
+  })),
+  useGetApiSpacesSpaceIdMasks: vi.fn(() => ({
+    data: [
+      { maskId: 'mask-1', name: 'Generated mask', type: 'character', characterCards: ['card-1'] },
+    ],
+    isPending: false,
+    isError: false,
+  })),
+  useGetApiSpacesSpaceIdRoomsRoomIdMessages: vi.fn(() => ({
+    data: [
+      {
+        messageId: 'message-1',
+        sender: { maskId: 'Generated sender' },
+        content: [{ children: [{ text: 'Generated message' }] }],
+      },
+    ],
+    isPending: false,
+    isError: false,
+  })),
+  useGetApiSpacesSpaceIdRoomsRoomIdScenes: vi.fn(() => ({
+    data: [{ messageId: 'scene-1', label: 'Generated scene' }],
+    isPending: false,
+    isError: false,
+  })),
+}));
 
 afterEach(cleanup);
 
 describe('mock workbench windows', () => {
-  it('adds and removes a character', () => {
-    render(<CharactersWindow />);
-    fireEvent.change(screen.getByLabelText('角色名'), { target: { value: '侦探' } });
-    fireEvent.click(screen.getByRole('button', { name: '添加' }));
-    expect(screen.getByText('侦探')).toBeDefined();
-    fireEvent.click(screen.getAllByRole('button', { name: '删除' })[1]!);
-    expect(screen.queryByText('侦探')).toBeNull();
+  it('shows generated messages for the selected room', () => {
+    render(<ChatWindow spaceId="space-1" roomId="room-1" />);
+    expect(screen.getByText('Generated sender')).toBeDefined();
+    expect(screen.getByText('Generated message')).toBeDefined();
   });
 
-  it('adds and removes a clue', () => {
-    render(<CluesWindow />);
-    fireEvent.change(screen.getByLabelText('线索'), { target: { value: '旧钥匙' } });
-    fireEvent.click(screen.getByRole('button', { name: '添加' }));
-    expect(screen.getByText('旧钥匙')).toBeDefined();
-    fireEvent.click(screen.getByRole('button', { name: '删除' }));
-    expect(screen.queryByText('旧钥匙')).toBeNull();
+  it('shows API character data without a local input', () => {
+    render(<CharactersWindow spaceId="space-1" />);
+    expect(screen.getByText('Generated mask')).toBeDefined();
+    expect(screen.getByText('1 张角色卡')).toBeDefined();
+    expect(screen.queryByRole('textbox')).toBeNull();
+  });
+
+  it('shows API clue and combat data', () => {
+    render(<CluesWindow spaceId="space-1" />);
+    expect(screen.getByText('Generated clue')).toBeDefined();
+    cleanup();
+    render(<CombatWindow spaceId="space-1" />);
+    expect(screen.getByText('Generated mask')).toBeDefined();
+    expect(screen.queryByRole('textbox')).toBeNull();
   });
 
   it('toggles a map cell', () => {
-    render(<MapWindow />);
-    const cell = screen.getByRole('button', { name: '格子 1' });
+    render(<MapWindow spaceId="space-1" roomId="room-1" />);
+    const cell = screen.getByRole('button', { name: '格子 2' });
     fireEvent.click(cell);
     expect(cell.textContent).toBe('•');
   });
