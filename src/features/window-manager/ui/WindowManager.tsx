@@ -17,8 +17,20 @@ import {
   type WindowManagerState,
   type WindowWidth,
 } from '../model/window-manager';
-import { MobileWindowManager, resolveWindowHeaderTone } from './MobileWindowManager';
 import { useEdgeAutoScroll } from './useEdgeAutoScroll';
+
+const WINDOW_HEADER_TONES: Readonly<Record<string, string>> = {
+  chat: 'bg-accent/15 text-accent',
+  characters: 'bg-info/15 text-info',
+  members: 'bg-success/15 text-success',
+  clues: 'bg-warning/15 text-warning',
+  combat: 'bg-danger/15 text-danger',
+  map: 'bg-surface-muted text-text',
+};
+
+export function resolveWindowHeaderTone(windowTypeId: string): string {
+  return WINDOW_HEADER_TONES[windowTypeId] ?? 'bg-surface-muted text-text';
+}
 
 export interface WindowManagerProps {
   edgeAutoScroll?: boolean;
@@ -317,6 +329,7 @@ export function WindowManager({
 }: WindowManagerProps) {
   const state = useWindowManagerStore(store);
   const compactPortrait = useMediaQuery('compactPortrait');
+  const activeTabRef = useRef<HTMLButtonElement>(null);
   const windowStripRef = useRef<HTMLDivElement>(null);
   const windowElementsRef = useRef(new Map<string, HTMLDivElement>());
   const previousFocusedWindowRef = useRef(state.focusedWindowId);
@@ -365,22 +378,15 @@ export function WindowManager({
     }
   }, [compactPortrait, state.focusedWindowId, state.windows]);
 
+  useEffect(() => {
+    if (compactPortrait) {
+      activeTabRef.current?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+    }
+  }, [compactPortrait, state.focusedWindowId]);
+
   const renderWindowContent = (window: WindowInstance) => (
     <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
   );
-
-  if (compactPortrait) {
-    return (
-      <MobileWindowManager
-        state={state}
-        toolbar={toolbar}
-        renderWindow={renderWindowContent}
-        renderWindowHeaderAddon={renderWindowHeaderAddon}
-        onFocus={(instanceId) => store.actions.focus(instanceId)}
-        onClose={(instanceId) => store.actions.close(instanceId)}
-      />
-    );
-  }
 
   return (
     <section className="flex h-full min-h-0 flex-col bg-app-bg text-text">
@@ -390,14 +396,52 @@ export function WindowManager({
         </header>
       ) : null}
 
+      {compactPortrait && state.windows.length > 0 ? (
+        <div
+          role="tablist"
+          aria-label="窗口"
+          className="scroll-subtle-native-hidden flex shrink-0 gap-1 overflow-x-auto bg-app-bg"
+        >
+          {state.windows.map((window) => {
+            const focused = window.instanceId === state.focusedWindowId;
+            return (
+              <button
+                key={window.instanceId}
+                ref={focused ? activeTabRef : undefined}
+                type="button"
+                role="tab"
+                aria-selected={focused}
+                className={cn(
+                  'shrink-0 px-3 py-2 text-sm',
+                  focused
+                    ? 'bg-surface-muted font-semibold text-text'
+                    : 'text-text-muted hover:bg-surface-muted hover:text-text',
+                )}
+                onClick={() => store.actions.focus(window.instanceId)}
+              >
+                {window.title}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+
       <div className="relative min-h-0 flex-1">
         <div
           ref={windowStripRef}
-          className="scroll-subtle-native-hidden flex h-full min-h-0 overflow-x-auto"
+          className={cn(
+            'flex h-full min-h-0',
+            compactPortrait ? 'overflow-hidden' : 'scroll-subtle-native-hidden overflow-x-auto',
+          )}
           onScroll={(event) => store.actions.setScrollLeft(event.currentTarget.scrollLeft)}
         >
           {state.windows.length === 0 ? (
-            <div className="grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted">
+            <div
+              className={cn(
+                'grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted',
+                compactPortrait && 'border border-border-subtle',
+              )}
+            >
               工作台是空的，请从顶部打开一个窗口。
             </div>
           ) : (
@@ -411,8 +455,12 @@ export function WindowManager({
                     else windowElementsRef.current.delete(window.instanceId);
                   }}
                   className={cn(
-                    'relative h-full min-h-0 shrink-0 border-r border-border-subtle transition-[width] duration-150',
-                    widthClass(window.width),
+                    'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
+                    compactPortrait
+                      ? focused
+                        ? 'block w-full'
+                        : 'hidden w-full'
+                      : ['border-r border-border-subtle', widthClass(window.width)],
                   )}
                 >
                   <article
@@ -424,7 +472,7 @@ export function WindowManager({
                       className={cn(
                         'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
                         resolveWindowHeaderTone(window.windowTypeId),
-                        focused ? 'opacity-100' : 'opacity-75',
+                        compactPortrait || focused ? 'opacity-100' : 'opacity-75',
                       )}
                     >
                       <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
@@ -443,19 +491,21 @@ export function WindowManager({
                       {renderWindowContent(window)}
                     </div>
                   </article>
-                  <WindowResizeHandle
-                    title={window.title}
-                    width={window.width}
-                    getContainer={() => windowStripRef.current}
-                    getTrailingSpace={() => trailingSpaceRef.current}
-                    onFocus={() => store.actions.focus(window.instanceId)}
-                    onResize={(width) => store.actions.resize(window.instanceId, width)}
-                  />
+                  {!compactPortrait ? (
+                    <WindowResizeHandle
+                      title={window.title}
+                      width={window.width}
+                      getContainer={() => windowStripRef.current}
+                      getTrailingSpace={() => trailingSpaceRef.current}
+                      onFocus={() => store.actions.focus(window.instanceId)}
+                      onResize={(width) => store.actions.resize(window.instanceId, width)}
+                    />
+                  ) : null}
                 </div>
               );
             })
           )}
-          {state.windows.length > 0 ? (
+          {!compactPortrait && state.windows.length > 0 ? (
             <div ref={trailingSpaceRef} aria-hidden="true" className="hidden h-full w-0 shrink-0" />
           ) : null}
         </div>

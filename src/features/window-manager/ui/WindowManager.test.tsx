@@ -2,10 +2,42 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createSequentialIdFactory, createWindowManagerStore } from '../model/store';
-import { MobileWindowManager, resolveWindowHeaderTone } from './MobileWindowManager';
-import { WindowManager } from './WindowManager';
+import { resolveWindowHeaderTone, WindowManager } from './WindowManager';
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.unstubAllGlobals();
+});
+
+function createOrientationMedia() {
+  let portrait = false;
+  const listeners = new Set<(event: MediaQueryListEvent) => void>();
+
+  return {
+    matchMedia: (query: string) =>
+      ({
+        get matches() {
+          return query.includes('orientation: portrait') ? portrait : false;
+        },
+        media: query,
+        onchange: null,
+        addEventListener: (type: string, listener: (event: MediaQueryListEvent) => void) => {
+          if (type === 'change') listeners.add(listener);
+        },
+        removeEventListener: (type: string, listener: (event: MediaQueryListEvent) => void) => {
+          if (type === 'change') listeners.delete(listener);
+        },
+        addListener: () => {},
+        removeListener: () => {},
+        dispatchEvent: () => true,
+      }) as MediaQueryList,
+    setPortrait: (value: boolean) => {
+      portrait = value;
+      const event = { matches: value } as MediaQueryListEvent;
+      for (const listener of listeners) listener(event);
+    },
+  };
+}
 
 describe('WindowManager', () => {
   it('keeps header colors fixed by window type', () => {
@@ -208,32 +240,34 @@ describe('WindowManager', () => {
     );
   });
 
-  it('switches mobile windows without unmounting their content', () => {
+  it('preserves window state while switching between portrait and landscape', () => {
+    const media = createOrientationMedia();
+    vi.stubGlobal('matchMedia', media.matchMedia);
     const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
     store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat' });
     store.actions.open({ appId: 'app', windowTypeId: 'map', title: 'Map' });
 
-    const view = render(
-      <MobileWindowManager
-        state={store.getState()}
-        renderWindow={(window) => <div>{window.windowTypeId} body</div>}
-        onFocus={(instanceId) => store.actions.focus(instanceId)}
-        onClose={(instanceId) => store.actions.close(instanceId)}
+    render(
+      <WindowManager
+        store={store}
+        renderWindow={(window) => <input aria-label={`${window.title} input`} defaultValue="" />}
       />,
     );
 
+    const chatInput = screen.getByLabelText<HTMLInputElement>('Chat input');
+    fireEvent.change(chatInput, { target: { value: '未提交的用户输入' } });
+
+    act(() => media.setPortrait(true));
     expect(screen.getByRole('tab', { name: 'Map' }).getAttribute('aria-selected')).toBe('true');
+    expect(screen.getByLabelText('Chat input')).toBe(chatInput);
+    expect(chatInput.value).toBe('未提交的用户输入');
+
     fireEvent.click(screen.getByRole('tab', { name: 'Chat' }));
-    view.rerender(
-      <MobileWindowManager
-        state={store.getState()}
-        renderWindow={(window) => <div>{window.windowTypeId} body</div>}
-        onFocus={(instanceId) => store.actions.focus(instanceId)}
-        onClose={(instanceId) => store.actions.close(instanceId)}
-      />,
-    );
     expect(screen.getByRole('tab', { name: 'Chat' }).getAttribute('aria-selected')).toBe('true');
-    expect(screen.getByText('chat body')).toBeDefined();
-    expect(screen.getByText('map body')).toBeDefined();
+
+    act(() => media.setPortrait(false));
+    expect(screen.queryByRole('tablist', { name: '窗口' })).toBeNull();
+    expect(screen.getByLabelText('Chat input')).toBe(chatInput);
+    expect(chatInput.value).toBe('未提交的用户输入');
   });
 });
