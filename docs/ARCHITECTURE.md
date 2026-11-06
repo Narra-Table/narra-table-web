@@ -22,27 +22,31 @@ narra-table-web/
 │   ├── ARCHITECTURE.md        # 架构和目录说明
 │   ├── CONTRIBUTING.md        # 贡献和验证流程
 │   ├── CONVENTIONS.md         # 代码约定
-│   ├── DESIGN.md              # 设计和样式规则
-│   └── workbench/
-│       ├── README.md          # 空间工作台的当前实现
-│       └── WINDOW-MANAGER.md  # 工作区容器与 WM 的目标设计
+│   └── DESIGN.md              # 设计和样式规则
 ├── public/
 │   └── mockServiceWorker.js   # MSW 浏览器端 Service Worker
 ├── src/
 │   ├── api/                   # orval 自动生成的 API（不要手动编辑）
 │   ├── components/
-│   │   └── ui/                # shadcn 复制来的 UI 组件
+│   │   └── ui/                # shadcn UI 组件
 │   ├── features/              # 功能模块
+│   │   ├── admin/             # 管理后台
+│   │   ├── app-toolbar/       # 全局工具栏
+│   │   ├── auth/              # 用户认证
 │   │   ├── resources/         # 资源访问能力
-│   │   └── workbench/         # 空间工作台、窗口模型和业务窗口
-│   ├── lib/                   # 平铺的跨 Feature 基础设施与工具
+│   │   ├── room-chat/         # 房间聊天
+│   │   ├── settings/          # 用户设置
+│   │   ├── space/             # 空间
+│   │   ├── space-hub/         # 主页空间列表
+│   │   └── window-manager/    # 窗口列表、焦点、布局和渲染
+│   ├── lib/                   # 跨 Feature 基础设施与工具
 │   │   ├── apiClient.ts       # 生成 API 使用的请求客户端
 │   │   ├── authSession.ts     # 普通用户会话
 │   │   ├── adminSession.ts    # 管理员会话
 │   │   ├── queryClient.ts     # TanStack Query 全局客户端
-│   │   ├── appTheme.ts        # 全局主题读取与持久化
+│   │   ├── appTheme.ts        # 全局主题
 │   │   ├── classNames.ts      # 样式类名合并工具
-│   │   └── useMediaQuery.ts   # 跨 Feature 的媒体查询 Hook
+│   │   └── responsive.ts      # 统一断点和媒体查询
 │   ├── mocks/                 # MSW mock 数据和请求处理器
 │   ├── routes/                # TanStack Router 文件路由
 │   │   └── __root.tsx         # 根布局路由
@@ -84,6 +88,8 @@ routes -> features -> lib
 
 - `lib` 不依赖 `features`。
 - Feature 之间通过公共 API 协作，不共享内部状态实现。
+- 产品 Feature 定义输出端口；基础能力通过产品 Feature 内的 adapter 接入。
+- UI 中可独立测试和演进的 Hook、状态与纯计算分别放入 `hooks`、`model` 和 `lib`。
 
 Feature 目录模板：
 
@@ -94,7 +100,8 @@ features/<feature>/
 ├── model/            # 状态、类型和业务规则
 ├── api/              # 请求、Socket 和 Query 定义
 ├── hooks/            # 仅该 Feature 使用的复合 Hook
-└── lib/              # Feature 内部基础设施和工具
+├── infrastructure/   # Feature 输出端口的具体适配器
+└── lib/              # Feature 内部持久化和无状态工具
 ```
 
 - 目录按需创建，不为保持外观一致创建空目录。

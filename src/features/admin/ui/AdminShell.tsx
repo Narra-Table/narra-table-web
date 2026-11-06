@@ -36,7 +36,7 @@ export function AdminShell() {
 
   return (
     <div className="flex h-screen flex-col bg-app-bg text-text lg:flex-row">
-      <aside className="flex shrink-0 flex-col border-b border-border-subtle bg-surface px-4 py-4 lg:w-56 lg:border-r lg:border-b-0 lg:px-3 lg:py-6">
+      <aside className="flex shrink-0 flex-col border-b border-border-subtle bg-surface p-4  lg:w-56 lg:border-r lg:border-b-0 lg:px-3 lg:py-6">
         <div className="px-3">
           <p className="text-lg font-semibold">故桌管理</p>
           <p className="text-xs text-text-muted">操作员控制台</p>

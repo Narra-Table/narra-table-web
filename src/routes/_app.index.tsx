@@ -1,11 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { NotificationPanel, SpacesContent } from '@/features/dashboard';
+import { SpacesContent } from '@/features/space-hub';
 
 function DashboardPage() {
   return (
-    <div className="flex h-full bg-app-bg">
+    <div className="h-full bg-app-bg">
       <SpacesContent />
-      <NotificationPanel />
     </div>
   );
 }

@@ -46,7 +46,7 @@ export function ChatToolbar({
           onChange={(event) => onQueryChange(event.target.value)}
           placeholder="搜索已加载的发言"
           aria-label="搜索已加载的发言"
-          className="w-full rounded-control border border-border bg-surface-muted py-1 pr-7 pl-7 text-sm text-text outline-none focus:border-accent"
+          className="w-full rounded-control border border-border bg-surface-muted py-1 px-7  text-sm text-text outline-none focus:border-accent"
         />
         {query ? (
           <button

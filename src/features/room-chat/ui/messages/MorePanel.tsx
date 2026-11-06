@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import type { GithubComNarraTableBackendPkgProtocolMember } from '@/api/model/githubComNarraTableBackendPkgProtocolMember';
 import type { GithubComNarraTableBackendPkgProtocolMemberRole } from '@/api/model/githubComNarraTableBackendPkgProtocolMemberRole';
 import { cn } from '@/lib/classNames';
-import { useMediaQuery } from '@/lib/useMediaQuery';
+import { useMediaQuery } from '@/lib/responsive';
 import { messagePlainText } from '../../model/copyText';
 import { newestEditRecords, readPreviousRaw } from '../../model/editHistory';
 import { moreActions } from '../../model/moreActions';
@@ -60,7 +60,7 @@ export function MorePanel({
   });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const narrow = useMediaQuery('(max-width: 640px)');
+  const narrow = useMediaQuery('mobile');
   const [box, setBox] = useState<{ top?: number; bottom?: number; right: number } | null>(null);
 
   const closeRef = useRef<() => void>(() => {});

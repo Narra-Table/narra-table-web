@@ -1,17 +1,21 @@
-import { Sun, User } from 'lucide-react';
+import { MousePointer2, Sun, User } from 'lucide-react';
 import type { AppTheme } from '@/lib/appTheme';
 import type { SpaceCardLayout } from '@/lib/spaceCardLayout';
 import type { SettingsSection } from '../model/types';
 import { AppearanceSettings } from './AppearanceSettings';
+import { BehaviorSettings } from './BehaviorSettings';
 import { ProfileSettings } from './ProfileSettings';
 
 const navItems: { id: SettingsSection; label: string; icon: typeof Sun }[] = [
   { id: 'profile', label: '个人中心', icon: User },
   { id: 'appearance', label: '外观', icon: Sun },
+  { id: 'behavior', label: '行为', icon: MousePointer2 },
 ];
 
 export function SettingsSurface({
   onThemeChange,
+  edgeAutoScroll,
+  onEdgeAutoScrollChange,
   onSpaceCardLayoutChange,
   onSectionChange,
   section,
@@ -19,6 +23,8 @@ export function SettingsSurface({
   theme,
 }: {
   onThemeChange: (theme: AppTheme) => void;
+  edgeAutoScroll: boolean;
+  onEdgeAutoScrollChange: (enabled: boolean) => void;
   onSpaceCardLayoutChange: (layout: SpaceCardLayout) => void;
   onSectionChange: (section: SettingsSection) => void;
   section: SettingsSection;
@@ -39,6 +45,12 @@ export function SettingsSurface({
                   onThemeChange={onThemeChange}
                   spaceCardLayout={spaceCardLayout}
                   onSpaceCardLayoutChange={onSpaceCardLayoutChange}
+                />
+              )}
+              {id === 'behavior' && (
+                <BehaviorSettings
+                  edgeAutoScroll={edgeAutoScroll}
+                  onEdgeAutoScrollChange={onEdgeAutoScrollChange}
                 />
               )}
             </section>
@@ -87,6 +99,12 @@ export function SettingsSurface({
                 />
               )}
               {section === 'profile' && <ProfileSettings />}
+              {section === 'behavior' && (
+                <BehaviorSettings
+                  edgeAutoScroll={edgeAutoScroll}
+                  onEdgeAutoScrollChange={onEdgeAutoScrollChange}
+                />
+              )}
             </div>
           </div>
         </div>

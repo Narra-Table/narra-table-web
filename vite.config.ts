@@ -77,11 +77,21 @@ export default defineConfig({
         name: '@tanstack/query',
         specifier: '@tanstack/eslint-plugin-query',
       },
+      {
+        name: 'better-tailwindcss',
+        specifier: 'eslint-plugin-better-tailwindcss',
+      },
     ],
+    settings: {
+      'better-tailwindcss': {
+        entryPoint: 'src/style.css',
+      },
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/consistent-type-imports': 'warn',
       'no-console': 'warn',
+      'better-tailwindcss/enforce-canonical-classes': 'error',
       '@tanstack/query/exhaustive-deps': 'error',
       '@tanstack/query/stable-query-client': 'error',
       '@tanstack/query/prefer-query-options': 'error',
@@ -115,8 +125,8 @@ export default defineConfig({
           ) {
             return 'editor';
           }
-          if (path.includes('/src/features/workbench/')) {
-            return 'workbench';
+          if (path.includes('/src/features/space/')) {
+            return 'space';
           }
           return undefined;
         },

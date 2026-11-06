@@ -22,18 +22,18 @@ export function AppLayout() {
   }, []);
 
   return (
-    <div className="h-screen overflow-hidden bg-app-bg text-text">
+    <div className="h-full overflow-hidden bg-app-bg text-text">
       <div className="flex h-full">
         <aside
           className={[
             'hidden shrink-0 overflow-hidden border-r border-border-subtle bg-surface px-3 py-6 text-text transition-[width] duration-300 ease-out lg:flex lg:flex-col',
-            isCollapsed ? 'w-17' : 'w-46',
+            isCollapsed ? 'w-17' : 'w-[16%] min-w-44 max-w-64',
           ].join(' ')}
         >
           <button
             type="button"
             onClick={() => setIsCollapsed((c) => !c)}
-            className="mb-3 grid size-11 shrink-0 place-items-center rounded-card transition-colors duration-200 hover:bg-surface-muted"
+            className="mb-3 grid size-10 shrink-0 cursor-pointer place-items-center rounded-card transition-colors duration-200 hover:bg-surface-muted"
             aria-label={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
             title={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
           >

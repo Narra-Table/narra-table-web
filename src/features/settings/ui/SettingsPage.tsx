@@ -6,6 +6,8 @@ import {
   saveSpaceCardLayout,
   type SpaceCardLayout,
 } from '@/lib/spaceCardLayout';
+import { useWindowEdgeAutoScroll } from '@/lib/useWindowBehaviorSettings';
+import { saveWindowEdgeAutoScroll } from '@/lib/windowBehaviorSettings';
 import type { SettingsSection } from '../model/types';
 import { SettingsSurface } from './SettingsSurface';
 
@@ -14,6 +16,7 @@ export function SettingsPage() {
   const router = useRouter();
   const [theme, setTheme] = useState<AppTheme>(getStoredTheme);
   const [spaceCardLayout, setSpaceCardLayout] = useState<SpaceCardLayout>(getStoredSpaceCardLayout);
+  const edgeAutoScroll = useWindowEdgeAutoScroll();
 
   function handleThemeChange(next: AppTheme) {
     saveTheme(next);
@@ -35,6 +38,8 @@ export function SettingsPage() {
       onThemeChange={handleThemeChange}
       spaceCardLayout={spaceCardLayout}
       onSpaceCardLayoutChange={handleSpaceCardLayoutChange}
+      edgeAutoScroll={edgeAutoScroll}
+      onEdgeAutoScrollChange={saveWindowEdgeAutoScroll}
       section={section}
       onSectionChange={handleSectionChange}
     />

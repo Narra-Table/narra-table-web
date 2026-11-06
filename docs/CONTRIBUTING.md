@@ -26,31 +26,23 @@ vp dev
 
 未配置本地环境变量且没有启动后端时，开发服务器会提示启用 MSW Mock 的复制命令。
 
-宿主机的 inotify 监听器不足时，用轮询启动：
+## 使用本地后端 API
+
+线上后端不可用时，先准备 [backend](https://github.com/Narra-Table/backend) 的 `dev` 分支，再在两个终端分别启动后端和前端。前端当前版本依赖 backend 的 `/capabilities` 接口；后端默认监听 `5286` 端口：
 
 ```bash
-VITE_WATCH_POLL=1 vp dev
+# 终端一：backend 仓库
+cd /path/to/backend
+cp config/config.example.toml config/config.toml
+make dev
+
+# 终端二：本仓库
+cd /path/to/narra-table-web
+cp .env.example .env.development
+VITE_MOCK=false VITE_PROXY_TARGET=http://127.0.0.1:5286 pnpm dev
 ```
 
-## 同步后端接口
-
-从对应后端版本生成 Swagger，再生成前端 API 和 Mock：
-
-```bash
-# backend 目录
-make swagger-gen
-# web 目录
-NARRATABLE_OPENAPI=../backend/docs/swagger.json pnpm generate
-```
-
-`NARRATABLE_OPENAPI` 接受本地文件或 Swagger URL；省略时使用线上文档。客户端和 Mock 必须从同一份 Swagger 生成，不手工修改生成文件。
-
-- 管理 API 使用独立的 `adminFetch` 和管理会话，不刷新普通用户 token。
-- `BotInvocation` 使用 `invocationFetch`，调用者通过 `Authorization: Bearer <invocationToken>` 传入调用令牌；401 不刷新或清除用户、管理员会话。
-- 文件接口使用 `orvalBlobFetch`，成功响应保留原始字节和 MIME 类型，错误响应按 JSON 解析。插件资源 Mock 支持多级路径。
-- 后端 `.swaggo` 将任意 `json.RawMessage` 映射为无类型约束的 JSON schema，前端生成 `unknown`；显式对象约束继续保留。
-
-同步后运行 `vp test --run`、`pnpm exec tsc --noEmit` 和 `pnpm build`。`src/lib` 的请求测试与 `src/mocks/apiContracts.test.ts` 覆盖认证隔离、二进制响应、任意 JSON 和嵌套资源路径；后端 `go test ./docs ./pkg/protocol` 检查 Swagger 与序列化契约。
+前端会通过 Vite 代理访问本地后端，不需要修改 API 请求代码。
 
 ## 提交前检查
 

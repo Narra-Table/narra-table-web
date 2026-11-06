@@ -1,1 +1,1 @@
-export type SettingsSection = 'appearance' | 'profile';
+export type SettingsSection = 'appearance' | 'behavior' | 'profile';

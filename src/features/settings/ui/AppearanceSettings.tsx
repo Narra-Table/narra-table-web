@@ -123,7 +123,7 @@ function ThemeOption({
         >
           <div className="relative h-14 overflow-hidden">
             <div className="absolute inset-0 bg-app-bg" data-theme={backgroundTheme} />
-            <div className="absolute bottom-2 left-2.5 right-2.5 h-1.5 bg-accent" />
+            <div className="absolute bottom-2 inset-x-2.5  h-1.5 bg-accent" />
           </div>
         </button>
       </TooltipTrigger>

@@ -32,7 +32,6 @@ import { Route as AppModulesModuleIdRouteImport } from './routes/_app.modules.$m
 import { Route as AppCharactersCharacterIdRouteImport } from './routes/_app.characters.$characterId'
 import { Route as AppAssetsAssetIdRouteImport } from './routes/_app.assets.$assetId'
 import { Route as RoomSpacesSpaceIdIndexRouteImport } from './routes/_room.spaces.$spaceId.index'
-import { Route as RoomSpacesSpaceIdWorkbenchRouteImport } from './routes/_room.spaces.$spaceId.workbench'
 import { Route as RoomSpacesSpaceIdRoomsRoomIdRouteImport } from './routes/_room.spaces.$spaceId.rooms.$roomId'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -149,12 +148,6 @@ const RoomSpacesSpaceIdIndexRoute = RoomSpacesSpaceIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => RoomSpacesSpaceIdRoute,
 } as any)
-const RoomSpacesSpaceIdWorkbenchRoute =
-  RoomSpacesSpaceIdWorkbenchRouteImport.update({
-    id: '/workbench',
-    path: '/workbench',
-    getParentRoute: () => RoomSpacesSpaceIdRoute,
-  } as any)
 const RoomSpacesSpaceIdRoomsRoomIdRoute =
   RoomSpacesSpaceIdRoomsRoomIdRouteImport.update({
     id: '/rooms/$roomId',
@@ -183,7 +176,6 @@ export interface FileRoutesByFullPath {
   '/spaces/$spaceId': typeof RoomSpacesSpaceIdRouteWithChildren
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/spaces/$spaceId/workbench': typeof RoomSpacesSpaceIdWorkbenchRoute
   '/spaces/$spaceId/': typeof RoomSpacesSpaceIdIndexRoute
   '/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
@@ -205,7 +197,6 @@ export interface FileRoutesByTo {
   '/modules/$moduleId': typeof AppModulesModuleIdRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/admin/users': typeof AdminUsersIndexRoute
-  '/spaces/$spaceId/workbench': typeof RoomSpacesSpaceIdWorkbenchRoute
   '/spaces/$spaceId': typeof RoomSpacesSpaceIdIndexRoute
   '/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
@@ -233,7 +224,6 @@ export interface FileRoutesById {
   '/_room/spaces/$spaceId': typeof RoomSpacesSpaceIdRouteWithChildren
   '/admin/users/$userId': typeof AdminUsersUserIdRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/_room/spaces/$spaceId/workbench': typeof RoomSpacesSpaceIdWorkbenchRoute
   '/_room/spaces/$spaceId/': typeof RoomSpacesSpaceIdIndexRoute
   '/_room/spaces/$spaceId/rooms/$roomId': typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
@@ -260,7 +250,6 @@ export interface FileRouteTypes {
     | '/spaces/$spaceId'
     | '/admin/users/$userId'
     | '/admin/users/'
-    | '/spaces/$spaceId/workbench'
     | '/spaces/$spaceId/'
     | '/spaces/$spaceId/rooms/$roomId'
   fileRoutesByTo: FileRoutesByTo
@@ -282,7 +271,6 @@ export interface FileRouteTypes {
     | '/modules/$moduleId'
     | '/admin/users/$userId'
     | '/admin/users'
-    | '/spaces/$spaceId/workbench'
     | '/spaces/$spaceId'
     | '/spaces/$spaceId/rooms/$roomId'
   id:
@@ -309,7 +297,6 @@ export interface FileRouteTypes {
     | '/_room/spaces/$spaceId'
     | '/admin/users/$userId'
     | '/admin/users/'
-    | '/_room/spaces/$spaceId/workbench'
     | '/_room/spaces/$spaceId/'
     | '/_room/spaces/$spaceId/rooms/$roomId'
   fileRoutesById: FileRoutesById
@@ -486,13 +473,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoomSpacesSpaceIdIndexRouteImport
       parentRoute: typeof RoomSpacesSpaceIdRoute
     }
-    '/_room/spaces/$spaceId/workbench': {
-      id: '/_room/spaces/$spaceId/workbench'
-      path: '/workbench'
-      fullPath: '/spaces/$spaceId/workbench'
-      preLoaderRoute: typeof RoomSpacesSpaceIdWorkbenchRouteImport
-      parentRoute: typeof RoomSpacesSpaceIdRoute
-    }
     '/_room/spaces/$spaceId/rooms/$roomId': {
       id: '/_room/spaces/$spaceId/rooms/$roomId'
       path: '/rooms/$roomId'
@@ -560,13 +540,11 @@ const AppRouteChildren: AppRouteChildren = {
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface RoomSpacesSpaceIdRouteChildren {
-  RoomSpacesSpaceIdWorkbenchRoute: typeof RoomSpacesSpaceIdWorkbenchRoute
   RoomSpacesSpaceIdIndexRoute: typeof RoomSpacesSpaceIdIndexRoute
   RoomSpacesSpaceIdRoomsRoomIdRoute: typeof RoomSpacesSpaceIdRoomsRoomIdRoute
 }
 
 const RoomSpacesSpaceIdRouteChildren: RoomSpacesSpaceIdRouteChildren = {
-  RoomSpacesSpaceIdWorkbenchRoute: RoomSpacesSpaceIdWorkbenchRoute,
   RoomSpacesSpaceIdIndexRoute: RoomSpacesSpaceIdIndexRoute,
   RoomSpacesSpaceIdRoomsRoomIdRoute: RoomSpacesSpaceIdRoomsRoomIdRoute,
 }
