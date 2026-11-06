@@ -36,15 +36,15 @@ export function FeaturedSpaceStage({
       <img
         src={space.avatar ?? picsum(space.spaceId)}
         alt=""
-        className="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        className="absolute inset-0 -z-20 size-full  object-cover transition-transform duration-700 group-hover:scale-105"
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-app-bg via-app-bg/60 to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-linear-to-r from-app-bg via-app-bg/60 to-transparent" />
       <div className="absolute -right-16 -top-20 -z-10 size-72 bg-accent/15 blur-3xl" />
 
       <div className="flex min-h-72 max-w-2xl flex-col justify-end px-6 py-10 sm:px-8 sm:py-12">
-        <h2 className="max-w-xl text-3xl font-bold leading-tight text-text">{space.name}</h2>
+        <h2 className="max-w-xl text-3xl/tight font-bold  text-text">{space.name}</h2>
         {space.description ? (
-          <p className="mt-3 line-clamp-2 max-w-xl text-base leading-relaxed text-text-muted">
+          <p className="mt-3 line-clamp-2 max-w-xl text-base/relaxed  text-text-muted">
             {space.description}
           </p>
         ) : null}

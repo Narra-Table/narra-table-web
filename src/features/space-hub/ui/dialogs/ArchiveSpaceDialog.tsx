@@ -37,9 +37,7 @@ export function ArchiveSpaceDialog({
   return (
     <DialogShell label="归档空间" pending={pending} onClose={onClose}>
       <h2 className="text-xl font-semibold text-text">归档空间</h2>
-      <p className="mt-3 text-sm leading-snug text-text-muted">
-        归档后，「{name}」会从主页列表里消失。
-      </p>
+      <p className="mt-3 text-sm/snug  text-text-muted">归档后，「{name}」会从主页列表里消失。</p>
       {error ? (
         <p role="alert" className="mt-3 text-sm text-danger">
           {error}

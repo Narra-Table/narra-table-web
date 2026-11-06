@@ -345,7 +345,7 @@ function Fact({ label, value }: { label: string; value?: string }) {
   return (
     <div className="flex gap-3">
       <dt className="w-14 shrink-0 text-text-muted">{label}</dt>
-      <dd className="min-w-0 break-words">{value?.trim() ? value : '无'}</dd>
+      <dd className="min-w-0 wrap-break-word">{value?.trim() ? value : '无'}</dd>
     </div>
   );
 }

@@ -81,18 +81,18 @@ export function SpaceCard({
         }}
         className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-app-bg/40" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-app-bg/40" />
 
       <SpaceQuickActionsMenu pinned={pinned} onTogglePin={onTogglePin} />
 
-      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-app-bg via-app-bg/75 to-transparent px-4 pb-4 pt-24">
+      <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-app-bg via-app-bg/75 to-transparent px-4 pb-4 pt-24">
         <div className="flex items-center gap-1.5">
           <h2 className="min-w-0 truncate text-xl font-semibold text-text">
             {space.name ?? '未命名空间'}
           </h2>
         </div>
 
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-muted">
+        <p className="mt-2 line-clamp-2 text-sm/relaxed  text-text-muted">
           {space.description || '暂无简介'}
         </p>
 

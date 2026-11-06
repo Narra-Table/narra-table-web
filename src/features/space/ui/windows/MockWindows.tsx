@@ -109,7 +109,7 @@ export function CharactersWindow({ spaceId, query = '' }: SpaceWindowProps & { q
   return (
     <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-3">
       {visibleMasks.map((mask) => (
-        <li key={mask.maskId} className="flex items-center gap-3 bg-app-bg px-3 py-3">
+        <li key={mask.maskId} className="flex items-center gap-3 bg-app-bg p-3 ">
           <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface-muted text-sm font-semibold text-text">
             {mask.name.slice(0, 1)}
           </span>
@@ -152,7 +152,7 @@ export function MembersWindow({ spaceId, query = '' }: SpaceWindowProps & { quer
       {visibleMembers.map((member, index) => {
         const key = member.userId ?? String(index);
         return (
-          <li key={key} className="flex items-center gap-2 bg-app-bg px-3 py-3">
+          <li key={key} className="flex items-center gap-2 bg-app-bg p-3 ">
             <span className="min-w-0 flex-1">
               <span className="block truncate text-base text-text">
                 {member.displayName ?? member.userId}
@@ -293,7 +293,7 @@ export function CombatWindow({ spaceId, query = '' }: SpaceWindowProps & { query
         {orderedCombatants.map((combatant, index) => (
           <li
             key={combatant.id}
-            className="grid grid-cols-[2rem_1fr_auto_auto] items-center gap-2 bg-app-bg px-3 py-3"
+            className="grid grid-cols-[2rem_1fr_auto_auto] items-center gap-2 bg-app-bg p-3 "
           >
             <span className="text-lg font-semibold text-warning">{index + 1}</span>
             <span className="min-w-0 truncate text-base text-text">{combatant.name}</span>

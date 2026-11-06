@@ -233,7 +233,7 @@ export function ColorMenu({
                   {marker ? (
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 border-2 border-surface ring-1 ring-border"
+                      className="pointer-events-none absolute size-3 -translate-1/2  border-2 border-surface ring-1 ring-border"
                       style={{ left: marker.left, top: marker.top }}
                     />
                   ) : null}
@@ -283,7 +283,7 @@ export function ColorMenu({
                   />
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 border border-border bg-surface"
+                    className="pointer-events-none absolute top-1/2 size-3 -translate-1/2  border border-border bg-surface"
                     style={{ left: `${hsv.v * 100}%` }}
                   />
                 </div>
