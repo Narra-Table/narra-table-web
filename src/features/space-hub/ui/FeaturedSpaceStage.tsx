@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { ArrowUpRight, Clock, Users } from 'lucide-react';
 import type { SpaceListItem } from '../model/types';
+import { SpaceQuickActionsMenu } from './SpaceQuickActionsMenu';
 
 function picsum(seed: string) {
   return `https://picsum.photos/seed/${seed}/1200/720`;
@@ -12,7 +13,15 @@ function formatLastActive(value: string) {
   return new Intl.DateTimeFormat('zh-CN', { month: 'short', day: 'numeric' }).format(date);
 }
 
-export function FeaturedSpaceStage({ space }: { space: SpaceListItem }) {
+export function FeaturedSpaceStage({
+  space,
+  pinned,
+  onTogglePin,
+}: {
+  space: SpaceListItem;
+  pinned: boolean;
+  onTogglePin: () => void;
+}) {
   const navigate = useNavigate();
   const lastActive = formatLastActive(space.lastActiveAt);
 
@@ -23,6 +32,7 @@ export function FeaturedSpaceStage({ space }: { space: SpaceListItem }) {
 
   return (
     <section className="group relative isolate min-h-72 overflow-hidden rounded-home-card border border-border-subtle bg-surface shadow-xl shadow-app-bg/40">
+      <SpaceQuickActionsMenu pinned={pinned} onTogglePin={onTogglePin} />
       <img
         src={space.avatar ?? picsum(space.spaceId)}
         alt=""

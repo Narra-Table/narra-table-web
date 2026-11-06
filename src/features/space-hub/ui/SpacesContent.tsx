@@ -5,7 +5,7 @@ import { useGetApiSpaces } from '@/api';
 import { getStoredSpaceCardLayout } from '@/lib/spaceCardLayout';
 import { sortSpacesByPin, togglePinnedSpace, usePinnedSpaceIds } from '../model/pinnedSpaces';
 import type { SpaceListItem } from '../model/types';
-import { ArchiveSpaceDialog, CreateSpaceDialog, EditSpaceDialog } from './dialogs';
+import { CreateSpaceDialog } from './dialogs';
 import { FeaturedSpaceStage } from './FeaturedSpaceStage';
 import { SpaceCard } from './SpaceCard';
 import { SpacesGridSkeleton } from './SpacesGridSkeleton';
@@ -20,8 +20,6 @@ function hashString(value: string) {
 
 export function SpacesContent() {
   const [creating, setCreating] = useState(false);
-  const [editing, setEditing] = useState<SpaceListItem | null>(null);
-  const [archiving, setArchiving] = useState<SpaceListItem | null>(null);
   const [cardLayout] = useState(getStoredSpaceCardLayout);
   const masonryRef = useRef<HTMLDivElement>(null);
   const pinnedIds = usePinnedSpaceIds();
@@ -86,8 +84,6 @@ export function SpacesContent() {
       onTogglePin={() => {
         if (space.spaceId) togglePinnedSpace(space.spaceId);
       }}
-      onEdit={() => setEditing(space)}
-      onArchive={() => setArchiving(space)}
     />
   ));
 
@@ -116,7 +112,11 @@ export function SpacesContent() {
         <>
           {visibleSpaces[0] ? (
             <div className="mb-8">
-              <FeaturedSpaceStage space={visibleSpaces[0]} />
+              <FeaturedSpaceStage
+                space={visibleSpaces[0]}
+                pinned={pinnedIds.includes(visibleSpaces[0].spaceId)}
+                onTogglePin={() => togglePinnedSpace(visibleSpaces[0].spaceId)}
+              />
             </div>
           ) : null}
 
@@ -140,10 +140,6 @@ export function SpacesContent() {
         </div>
       )}
       {creating ? <CreateSpaceDialog onClose={() => setCreating(false)} /> : null}
-      {editing ? <EditSpaceDialog space={editing} onClose={() => setEditing(null)} /> : null}
-      {archiving ? (
-        <ArchiveSpaceDialog space={archiving} onClose={() => setArchiving(null)} />
-      ) : null}
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import { useNavigate } from '@tanstack/react-router';
-import { MoreHorizontal, Pin } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import type { SpaceCardLayout } from '@/lib/spaceCardLayout';
 import type { SpaceListItem } from '../model/types';
+import { SpaceQuickActionsMenu } from './SpaceQuickActionsMenu';
 
 function picsum(seed: string, width = 40, height = width) {
   return `https://picsum.photos/seed/${seed}/${width}/${height}`;
@@ -16,8 +16,6 @@ export function SpaceCard({
   fallbackLandscape,
   pinned,
   onTogglePin,
-  onEdit,
-  onArchive,
 }: {
   space: SpaceListItem;
   layoutHash: number;
@@ -25,12 +23,8 @@ export function SpaceCard({
   fallbackLandscape: boolean;
   pinned: boolean;
   onTogglePin: () => void;
-  onEdit: () => void;
-  onArchive: () => void;
 }) {
   const navigate = useNavigate();
-  const menuRef = useRef<HTMLDivElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [coverOrientation, setCoverOrientation] = useState<{
     url: string;
     isLandscape: boolean;
@@ -56,26 +50,8 @@ export function SpaceCard({
     ? 'w-full min-[600px]:w-[calc((200%_-_24px)/3)] min-[720px]:w-[calc((200%_-_48px)/4)] min-[900px]:w-[calc((200%_-_72px)/5)]'
     : 'w-full min-[480px]:w-[calc((100%_-_24px)/2)] min-[600px]:w-[calc((100%_-_48px)/3)] min-[720px]:w-[calc((100%_-_72px)/4)] min-[900px]:w-[calc((100%_-_96px)/5)]';
 
-  useEffect(() => {
-    if (!menuOpen) return;
-    function onPointerDown(event: PointerEvent) {
-      if (menuRef.current?.contains(event.target as Node)) return;
-      setMenuOpen(false);
-    }
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setMenuOpen(false);
-    }
-    document.addEventListener('pointerdown', onPointerDown);
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('pointerdown', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [menuOpen]);
-
   function enter() {
     if (!space.spaceId) return;
-    setMenuOpen(false);
     void navigate({ to: '/spaces/$spaceId', params: { spaceId: space.spaceId } });
   }
 
@@ -107,70 +83,10 @@ export function SpaceCard({
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-app-bg/40" />
 
-      <div className="absolute right-3 top-3 z-20" ref={menuRef}>
-        <button
-          type="button"
-          aria-label="更多"
-          aria-expanded={menuOpen}
-          onClick={(event) => {
-            event.stopPropagation();
-            setMenuOpen((open) => !open);
-          }}
-          className={`rounded-thumb border border-border-subtle bg-surface/85 p-1.5 text-text-muted backdrop-blur-sm transition hover:text-text focus-visible:opacity-100 ${
-            menuOpen ? 'opacity-100' : 'opacity-100 sm:opacity-0 sm:group-hover:opacity-100'
-          }`}
-        >
-          <MoreHorizontal className="icon-stroke size-4" />
-        </button>
-        {menuOpen ? (
-          <div
-            role="menu"
-            className="absolute right-0 top-9 z-30 w-44 rounded-overlay border border-border-subtle bg-surface p-1 shadow-xl"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              type="button"
-              role="menuitem"
-              className="block w-full rounded-control px-3 py-2 text-left text-sm text-text hover:bg-surface-muted"
-              onClick={() => {
-                setMenuOpen(false);
-                onEdit();
-              }}
-            >
-              编辑空间信息
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="block w-full rounded-control px-3 py-2 text-left text-sm text-text hover:bg-surface-muted"
-              onClick={() => {
-                setMenuOpen(false);
-                onTogglePin();
-              }}
-            >
-              {pinned ? '取消置顶' : '置顶空间'}
-            </button>
-            <div className="my-1 border-t border-border-subtle" />
-            <button
-              type="button"
-              role="menuitem"
-              className="block w-full rounded-control px-3 py-2 text-left text-sm text-danger hover:bg-surface-muted"
-              onClick={() => {
-                setMenuOpen(false);
-                onArchive();
-              }}
-            >
-              归档空间
-            </button>
-          </div>
-        ) : null}
-      </div>
+      <SpaceQuickActionsMenu pinned={pinned} onTogglePin={onTogglePin} />
 
       <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-app-bg via-app-bg/75 to-transparent px-4 pb-4 pt-24">
         <div className="flex items-center gap-1.5">
-          {pinned ? (
-            <Pin className="icon-stroke size-3.5 shrink-0 text-accent" aria-label="已置顶" />
-          ) : null}
           <h2 className="min-w-0 truncate text-xl font-semibold text-text">
             {space.name ?? '未命名空间'}
           </h2>
