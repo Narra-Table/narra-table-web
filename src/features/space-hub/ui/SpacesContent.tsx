@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react';
 import Masonry from 'masonry-layout';
 import { useEffect, useRef, useState } from 'react';
 import { useGetApiSpaces } from '@/api';
+import { useMediaQuery } from '@/lib/responsive';
 import { getStoredSpaceCardLayout } from '@/lib/spaceCardLayout';
 import { sortSpacesByPin, togglePinnedSpace, usePinnedSpaceIds } from '../model/pinnedSpaces';
 import type { SpaceListItem } from '../model/types';
@@ -22,6 +23,7 @@ export function SpacesContent() {
   const [creating, setCreating] = useState(false);
   const [cardLayout] = useState(getStoredSpaceCardLayout);
   const masonryRef = useRef<HTMLDivElement>(null);
+  const compact = useMediaQuery('compact');
   const pinnedIds = usePinnedSpaceIds();
   const { data: spaces = [], isLoading } = useGetApiSpaces({
     query: {
@@ -32,11 +34,11 @@ export function SpacesContent() {
     spaces.filter((space) => space.status !== 'archived'),
     pinnedIds,
   );
-  const secondarySpaces = visibleSpaces.slice(1);
-  const masonryItemsKey = `${cardLayout}:${secondarySpaces
+  const listedSpaces = compact ? visibleSpaces : visibleSpaces.slice(1);
+  const masonryItemsKey = `${compact ? 'compact' : 'desktop'}:${cardLayout}:${listedSpaces
     .map((space) => space.spaceId ?? '')
     .join('|')}`;
-  const spaceLayouts = secondarySpaces.map((space, index) => {
+  const spaceLayouts = listedSpaces.map((space, index) => {
     const layoutKey = space.spaceId ?? space.name ?? String(index);
     return { space, index, layoutKey, layoutHash: hashString(layoutKey) };
   });
@@ -54,7 +56,7 @@ export function SpacesContent() {
 
   useEffect(() => {
     const container = masonryRef.current;
-    if (!container || secondarySpaces.length === 0) return;
+    if (!container || listedSpaces.length === 0) return;
 
     const masonry = new Masonry(container, {
       itemSelector: '[data-space-card]',
@@ -71,7 +73,7 @@ export function SpacesContent() {
       resizeObserver.disconnect();
       masonry.destroy?.();
     };
-  }, [masonryItemsKey, secondarySpaces.length]);
+  }, [listedSpaces.length, masonryItemsKey]);
 
   const spaceCards = spaceLayouts.map(({ space, index, layoutKey, layoutHash }) => (
     <SpaceCard
@@ -88,7 +90,7 @@ export function SpacesContent() {
   ));
 
   return (
-    <div className="scroll-subtle-native-hidden flex-1 overflow-y-auto px-8 py-8">
+    <div className="scroll-subtle-native-hidden flex-1 overflow-y-auto p-8 ">
       <div className="mb-8 flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-text">空间</h1>
@@ -107,10 +109,10 @@ export function SpacesContent() {
       </div>
 
       {isLoading ? (
-        <SpacesGridSkeleton />
+        <SpacesGridSkeleton showFeatured={!compact} />
       ) : (
         <>
-          {visibleSpaces[0] ? (
+          {!compact && visibleSpaces[0] ? (
             <div className="mb-8">
               <FeaturedSpaceStage
                 space={visibleSpaces[0]}
@@ -120,12 +122,12 @@ export function SpacesContent() {
             </div>
           ) : null}
 
-          {secondarySpaces.length > 0 ? (
+          {listedSpaces.length > 0 ? (
             <div ref={masonryRef} className="relative">
               <div
                 data-space-sizer
                 aria-hidden="true"
-                className="w-full min-[480px]:w-[calc((100%_-_24px)/2)] min-[600px]:w-[calc((100%_-_48px)/3)] min-[720px]:w-[calc((100%_-_72px)/4)] min-[900px]:w-[calc((100%_-_96px)/5)]"
+                className="w-full min-[480px]:w-[calc((100%-24px)/2)] min-[600px]:w-[calc((100%-48px)/3)] min-[720px]:w-[calc((100%-72px)/4)] min-[900px]:w-[calc((100%-96px)/5)]"
               />
               {spaceCards}
             </div>
