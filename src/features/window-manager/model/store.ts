@@ -15,6 +15,7 @@ export interface WindowManagerActions {
   close(instanceId: WindowInstanceId): void;
   focus(instanceId: WindowInstanceId): void;
   resize(instanceId: WindowInstanceId, width: number): void;
+  setScrollLeft(scrollLeft: number): void;
   setWindowState(instanceId: WindowInstanceId, state: unknown): void;
 }
 
@@ -110,6 +111,11 @@ export function createWindowManagerStore(
       );
       if (windows.every((window, index) => window === state.windows[index])) return;
       replace({ ...state, windows });
+    },
+    setScrollLeft: (scrollLeft) => {
+      const normalized = Number.isFinite(scrollLeft) ? Math.max(0, scrollLeft) : 0;
+      if (Math.abs(state.scrollLeft - normalized) < 1) return;
+      replace({ ...state, scrollLeft: normalized });
     },
     setWindowState: (instanceId, windowState) => {
       const windows = state.windows.map((window) =>

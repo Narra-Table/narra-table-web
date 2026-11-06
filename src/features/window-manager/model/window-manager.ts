@@ -15,6 +15,7 @@ export interface WindowManagerState {
   version: 2;
   windows: WindowInstance[];
   focusedWindowId: WindowInstanceId | null;
+  scrollLeft: number;
 }
 
 export interface OpenWindowInput {
@@ -36,7 +37,7 @@ export function snapWindowWidth(width = 1 / 2): WindowWidth {
 }
 
 export function createEmptyWindowManagerState(): WindowManagerState {
-  return { version: 2, windows: [], focusedWindowId: null };
+  return { version: 2, windows: [], focusedWindowId: null, scrollLeft: 0 };
 }
 
 export function selectFocusedWindow(state: WindowManagerState): WindowInstance | undefined {
@@ -48,7 +49,12 @@ export function parseWindowManagerState(
   options: RestoreOptions = {},
 ): WindowManagerState | null {
   if (!value || typeof value !== 'object') return null;
-  const candidate = value as { version?: unknown; windows?: unknown; focusedWindowId?: unknown };
+  const candidate = value as {
+    version?: unknown;
+    windows?: unknown;
+    focusedWindowId?: unknown;
+    scrollLeft?: unknown;
+  };
   if (candidate.version !== 2 || !Array.isArray(candidate.windows)) return null;
 
   const seen = new Set<string>();
@@ -83,7 +89,11 @@ export function parseWindowManagerState(
     typeof candidate.focusedWindowId === 'string' && seen.has(candidate.focusedWindowId)
       ? candidate.focusedWindowId
       : (windows[0]?.instanceId ?? null);
-  return { version: 2, windows, focusedWindowId };
+  const scrollLeft =
+    typeof candidate.scrollLeft === 'number' && Number.isFinite(candidate.scrollLeft)
+      ? Math.max(0, candidate.scrollLeft)
+      : 0;
+  return { version: 2, windows, focusedWindowId, scrollLeft };
 }
 
 export function validateWindowManagerState(state: WindowManagerState): string[] {

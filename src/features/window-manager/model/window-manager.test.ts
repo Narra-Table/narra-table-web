@@ -20,12 +20,19 @@ describe('window manager model', () => {
       },
     ],
     focusedWindowId: 'win-1',
+    scrollLeft: 240.5,
   };
 
   it('parses a minimal snapshot', () => {
     const state = parseWindowManagerState(snapshot)!;
     expect(selectFocusedWindow(state)?.state).toEqual({ roomId: 'room-1' });
+    expect(state.scrollLeft).toBe(240.5);
     expect(validateWindowManagerState(state)).toEqual([]);
+  });
+
+  it('defaults old snapshots to the start position', () => {
+    const { scrollLeft: _, ...oldSnapshot } = snapshot;
+    expect(parseWindowManagerState(oldSnapshot)?.scrollLeft).toBe(0);
   });
 
   it('rejects old and malformed snapshots', () => {
@@ -37,7 +44,7 @@ describe('window manager model', () => {
     const state = parseWindowManagerState(snapshot, {
       isWindowTypeAvailable: () => false,
     });
-    expect(state).toEqual({ version: 2, windows: [], focusedWindowId: null });
+    expect(state).toEqual({ version: 2, windows: [], focusedWindowId: null, scrollLeft: 240.5 });
   });
 
   it('snaps widths to one third, one half, two thirds or full width', () => {

@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { createSequentialIdFactory, createWindowManagerStore } from '../model/store';
 import { MobileWindowManager, resolveWindowHeaderTone } from './MobileWindowManager';
 import { WindowManager } from './WindowManager';
@@ -61,11 +61,12 @@ describe('WindowManager', () => {
     expect(strip?.lastElementChild?.className).toContain('hidden');
   });
 
-  it('smoothly aligns the focused window to the nearest viewport edge', () => {
+  it('restores and tracks the exact horizontal scroll position', () => {
     const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
     store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat', width: 1 / 2 });
     store.actions.open({ appId: 'app', windowTypeId: 'map', title: 'Map', width: 1 / 2 });
     store.actions.open({ appId: 'app', windowTypeId: 'clues', title: 'Clues', width: 1 / 2 });
+    store.actions.setScrollLeft(420);
 
     render(
       <WindowManager store={store} renderWindow={(window) => <div>{window.windowTypeId}</div>} />,
@@ -73,33 +74,15 @@ describe('WindowManager', () => {
 
     const firstWindow = screen.getByRole('heading', { name: 'Chat' }).closest('article')
       ?.parentElement as HTMLDivElement;
-    const lastWindow = screen.getByRole('heading', { name: 'Clues' }).closest('article')
-      ?.parentElement as HTMLDivElement;
     const strip = firstWindow.parentElement as HTMLDivElement;
-    const scrollTo = vi.fn(({ left }: ScrollToOptions) => {
-      strip.scrollLeft = Number(left);
-    });
+    expect(strip.scrollLeft).toBe(420);
 
-    Object.defineProperties(strip, {
-      scrollLeft: { value: 0, writable: true },
-      scrollTo: { value: scrollTo },
-      getBoundingClientRect: {
-        value: () => ({ left: 0, right: 1000, width: 1000 }),
-      },
-    });
-    Object.defineProperty(lastWindow, 'getBoundingClientRect', {
-      value: () => ({ left: 1000, right: 1500, width: 500 }),
-    });
+    strip.scrollLeft = 275;
+    fireEvent.scroll(strip);
+    expect(store.getState().scrollLeft).toBe(275);
 
     fireEvent.pointerDown(firstWindow.firstElementChild as HTMLElement);
-    fireEvent.pointerDown(lastWindow.firstElementChild as HTMLElement);
-    expect(scrollTo).toHaveBeenLastCalledWith({ left: 500, behavior: 'smooth' });
-
-    Object.defineProperty(firstWindow, 'getBoundingClientRect', {
-      value: () => ({ left: -500, right: 0, width: 500 }),
-    });
-    fireEvent.pointerDown(firstWindow.firstElementChild as HTMLElement);
-    expect(scrollTo).toHaveBeenLastCalledWith({ left: 0, behavior: 'smooth' });
+    expect(strip.scrollLeft).toBe(275);
   });
 
   it('resizes desktop windows between snapped widths', async () => {

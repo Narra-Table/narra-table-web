@@ -10,9 +10,11 @@ describe('window manager store', () => {
     expect(store.getState().focusedWindowId).toBe(map);
     store.actions.focus(chat);
     store.actions.resize(chat, 0.9);
+    store.actions.setScrollLeft(320.5);
     store.actions.setWindowState(chat, { roomId: 'room-1' });
     expect(store.getState().windows[0]?.width).toBe(1);
     expect(store.getState().windows[0]?.state).toEqual({ roomId: 'room-1' });
+    expect(store.getState().scrollLeft).toBe(320.5);
 
     store.actions.close(chat);
     expect(store.getState().windows.map((window) => window.instanceId)).toEqual([map]);

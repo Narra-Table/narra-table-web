@@ -17,6 +17,7 @@ describe('space persistence', () => {
   it('restores the minimal window layout', () => {
     const runtime = createSpaceRuntime('space-a');
     openKind(runtime.workspace, 'map');
+    runtime.manager.actions.setScrollLeft(360);
     writeSpaceSnapshot('space-a', runtime.manager);
 
     const restored = createSpaceRuntime('space-a');
@@ -25,6 +26,7 @@ describe('space persistence', () => {
       'characters',
       'map',
     ]);
+    expect(restored.manager.getState().scrollLeft).toBe(360);
   });
 
   it('rebuilds defaults when a snapshot is incompatible', () => {

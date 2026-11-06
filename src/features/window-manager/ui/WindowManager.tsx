@@ -1,13 +1,13 @@
 import {
   Component,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   useSyncExternalStore,
   type ReactNode,
 } from 'react';
 import { cn } from '@/lib/classNames';
-import { matchesMediaQuery, useMediaQuery } from '@/lib/responsive';
+import { useMediaQuery } from '@/lib/responsive';
 import type { WindowManagerStore } from '../model/store';
 import {
   snapWindowWidth,
@@ -317,37 +317,17 @@ export function WindowManager({
   const state = useWindowManagerStore(store);
   const compactPortrait = useMediaQuery('compactPortrait');
   const windowStripRef = useRef<HTMLDivElement>(null);
-  const windowElementsRef = useRef(new Map<string, HTMLDivElement>());
   const trailingSpaceRef = useRef<HTMLDivElement>(null);
   const edgeAutoScrollDirection = useEdgeAutoScroll(
     windowStripRef,
     edgeAutoScroll && !compactPortrait,
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const strip = windowStripRef.current;
-    const focusedId = state.focusedWindowId;
-    const focusedWindow = focusedId ? windowElementsRef.current.get(focusedId) : undefined;
-    if (!strip || !focusedWindow || compactPortrait) return;
-
-    const stripBox = strip.getBoundingClientRect();
-    const windowBox = focusedWindow.getBoundingClientRect();
-    let nextScrollLeft = strip.scrollLeft;
-
-    if (windowBox.width >= stripBox.width || windowBox.left < stripBox.left) {
-      nextScrollLeft += windowBox.left - stripBox.left;
-    } else if (windowBox.right > stripBox.right) {
-      nextScrollLeft += windowBox.right - stripBox.right;
-    }
-
-    if (Math.abs(nextScrollLeft - strip.scrollLeft) < 1) return;
-    const behavior = matchesMediaQuery('reducedMotion') ? 'auto' : 'smooth';
-    if (typeof strip.scrollTo === 'function') {
-      strip.scrollTo({ left: nextScrollLeft, behavior });
-    } else {
-      strip.scrollLeft = nextScrollLeft;
-    }
-  }, [compactPortrait, state.focusedWindowId, state.windows]);
+    if (!strip || compactPortrait || Math.abs(strip.scrollLeft - state.scrollLeft) < 1) return;
+    strip.scrollLeft = state.scrollLeft;
+  }, [compactPortrait, state.scrollLeft]);
 
   const renderWindowContent = (window: WindowInstance) => (
     <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
@@ -378,6 +358,7 @@ export function WindowManager({
         <div
           ref={windowStripRef}
           className="scroll-subtle-native-hidden flex h-full min-h-0 overflow-x-auto"
+          onScroll={(event) => store.actions.setScrollLeft(event.currentTarget.scrollLeft)}
         >
           {state.windows.length === 0 ? (
             <div className="grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted">
@@ -389,10 +370,6 @@ export function WindowManager({
               return (
                 <div
                   key={window.instanceId}
-                  ref={(element) => {
-                    if (element) windowElementsRef.current.set(window.instanceId, element);
-                    else windowElementsRef.current.delete(window.instanceId);
-                  }}
                   className={cn(
                     'relative h-full min-h-0 shrink-0 border-r border-border-subtle transition-[width] duration-150',
                     widthClass(window.width),
