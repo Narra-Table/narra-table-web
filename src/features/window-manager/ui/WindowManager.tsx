@@ -386,7 +386,7 @@ export function WindowManager({
               工作台是空的，请从顶部打开一个窗口。
             </div>
           ) : (
-            state.windows.map((window, index) => {
+            state.windows.map((window) => {
               const focused = window.instanceId === state.focusedWindowId;
               return (
                 <div
@@ -396,9 +396,8 @@ export function WindowManager({
                     else windowElementsRef.current.delete(window.instanceId);
                   }}
                   className={cn(
-                    'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
+                    'relative h-full min-h-0 shrink-0 border-r border-border-subtle transition-[width] duration-150',
                     widthClass(window.width),
-                    index > 0 && 'border-l border-border-subtle',
                   )}
                 >
                   <article

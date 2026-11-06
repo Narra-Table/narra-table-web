@@ -55,7 +55,8 @@ describe('WindowManager', () => {
     expect(strip?.className).not.toContain('gap-1');
     expect(firstWindow?.className).toContain('w-1/2');
     expect(secondWindow?.className).toContain('w-1/2');
-    expect(secondWindow?.className).toContain('border-l');
+    expect(firstWindow?.className).toContain('border-r');
+    expect(secondWindow?.className).toContain('border-r');
     expect(secondWindow?.className).toContain('border-border-subtle');
     expect(strip?.lastElementChild?.className).toContain('hidden');
   });
