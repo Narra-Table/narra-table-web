@@ -27,7 +27,7 @@ export function AppLayout() {
         <aside
           className={[
             'hidden shrink-0 overflow-hidden border-r border-border-subtle bg-surface px-3 py-6 text-text transition-[width] duration-300 ease-out lg:flex lg:flex-col',
-            isCollapsed ? 'w-17' : 'w-46',
+            isCollapsed ? 'w-17' : 'w-[16%] min-w-44 max-w-64',
           ].join(' ')}
         >
           <button

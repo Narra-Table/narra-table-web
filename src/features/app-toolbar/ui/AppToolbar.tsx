@@ -374,12 +374,8 @@ export function AppToolbarSurface({
         mode === 'hidden'
           ? 'hidden'
           : [
-              'pointer-events-none fixed inset-x-0 z-40 flex justify-center transition-all duration-300 ease-out motion-reduce:transition-none',
-              placement === 'docked'
-                ? 'bottom-0 px-0'
-                : mode === 'home'
-                  ? 'bottom-18 px-3 lg:bottom-3'
-                  : 'bottom-3 px-3',
+              'pointer-events-none fixed inset-x-0 z-40 hidden justify-center transition-all duration-300 ease-out motion-reduce:transition-none lg:flex',
+              placement === 'docked' ? 'bottom-0 px-0' : 'bottom-3 px-3',
             ].join(' ')
       }
     >

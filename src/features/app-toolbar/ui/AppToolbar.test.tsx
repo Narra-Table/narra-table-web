@@ -10,7 +10,10 @@ afterEach(cleanup);
 describe('AppToolbarSurface', () => {
   it('renders route defaults and docked contextual content', () => {
     const view = render(<AppToolbarSurface mode="home" />);
-    expect(screen.getByRole('contentinfo', { name: '页面工具栏' }).className).toContain('fixed');
+    const toolbar = screen.getByRole('contentinfo', { name: '页面工具栏' });
+    expect(toolbar.className).toContain('fixed');
+    expect(toolbar.className).toContain('hidden');
+    expect(toolbar.className).toContain('lg:flex');
     expect(screen.getByLabelText('全局搜索')).toBeDefined();
 
     view.rerender(<AppToolbarSurface mode="chat" />);
