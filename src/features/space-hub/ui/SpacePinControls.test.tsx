@@ -60,14 +60,23 @@ describe('space hub pin controls', () => {
 
   it('toggles the featured pin independently from entering the space', () => {
     const onTogglePin = vi.fn();
-    render(<FeaturedSpaceStage space={space} pinned onTogglePin={onTogglePin} />);
+    const view = render(<FeaturedSpaceStage space={space} pinned onTogglePin={onTogglePin} />);
 
-    fireEvent.click(screen.getByRole('button', { name: '更多' }));
-    fireEvent.click(screen.getByRole('menuitem', { name: '取消置顶' }));
+    const more = screen.getByRole('button', { name: '更多' });
+    expect(more.className).toContain('cursor-pointer');
+    fireEvent.click(more);
+    const unpin = screen.getByRole('menuitem', { name: '取消置顶' });
+    expect(unpin.className).toContain('cursor-pointer');
+    fireEvent.click(unpin);
     expect(onTogglePin).toHaveBeenCalledOnce();
     expect(navigate).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole('button', { name: '进入空间' }));
+    const enter = screen.getByRole('button', { name: '进入空间' });
+    expect(enter.className).toContain('cursor-pointer');
+    const details = view.container.querySelector('.translate-y-5');
+    expect(details?.className).toContain('mt-auto');
+    expect(details?.querySelectorAll('.mt-3')).toHaveLength(2);
+    fireEvent.click(enter);
     expect(navigate).toHaveBeenCalledWith({
       to: '/spaces/$spaceId',
       params: { spaceId: 'space-1' },

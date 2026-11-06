@@ -33,7 +33,7 @@ export function AppLayout() {
           <button
             type="button"
             onClick={() => setIsCollapsed((c) => !c)}
-            className="mb-3 grid size-11 shrink-0 place-items-center rounded-card transition-colors duration-200 hover:bg-surface-muted"
+            className="mb-3 grid size-10 shrink-0 cursor-pointer place-items-center rounded-card transition-colors duration-200 hover:bg-surface-muted"
             aria-label={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
             title={isCollapsed ? '展开侧边栏' : '收起侧边栏'}
           >

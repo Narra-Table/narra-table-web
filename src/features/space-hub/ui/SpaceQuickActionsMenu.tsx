@@ -41,7 +41,7 @@ export function SpaceQuickActionsMenu({
         aria-label="更多"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className={`rounded-thumb border border-border-subtle bg-surface/85 p-1.5 text-text-muted backdrop-blur-sm transition hover:text-text focus-visible:opacity-100 ${
+        className={`cursor-pointer rounded-thumb border border-border-subtle bg-surface/85 p-1.5 text-text-muted backdrop-blur-sm transition hover:text-text focus-visible:opacity-100 ${
           open ? 'opacity-100' : 'opacity-100 sm:opacity-0 sm:group-hover:opacity-100'
         }`}
       >
@@ -55,7 +55,7 @@ export function SpaceQuickActionsMenu({
           <button
             type="button"
             role="menuitem"
-            className="block w-full rounded-control px-3 py-2 text-left text-sm text-text hover:bg-surface-muted"
+            className="block w-full cursor-pointer rounded-control px-3 py-2 text-left text-sm text-text hover:bg-surface-muted"
             onClick={() => {
               setOpen(false);
               onTogglePin();

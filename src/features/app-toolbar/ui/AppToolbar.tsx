@@ -39,7 +39,7 @@ function ToolButton({ label, children }: { label: string; children: ReactNode })
       type="button"
       aria-label={label}
       title={label}
-      className="grid size-10 shrink-0 place-items-center text-text-muted transition-colors hover:bg-surface-muted hover:text-text"
+      className="grid size-10 shrink-0 cursor-pointer place-items-center text-text-muted transition-colors hover:bg-surface-muted hover:text-text"
     >
       {children}
     </button>
@@ -114,7 +114,7 @@ function SearchField({
           type="button"
           aria-label={`清空${label}`}
           title="清空"
-          className="grid size-8 shrink-0 place-items-center text-text-muted transition-colors hover:bg-surface hover:text-text"
+          className="grid size-8 shrink-0 cursor-pointer place-items-center text-text-muted transition-colors hover:bg-surface hover:text-text"
           onClick={() => onChange('')}
         >
           <X className="icon-stroke size-4" aria-hidden="true" />
@@ -176,7 +176,7 @@ function ToolbarIcon({ icon }: { icon: AppToolbarIcon }) {
 }
 
 const contextualButtonClass =
-  'grid size-10 shrink-0 place-items-center text-text-muted transition-colors hover:bg-surface-muted hover:text-text';
+  'grid size-10 shrink-0 cursor-pointer place-items-center text-text-muted transition-colors hover:bg-surface-muted hover:text-text';
 
 function ChatSwitcher({ content }: { content: AppToolbarChatContent }) {
   const [mode, setMode] = useState<'message' | 'search'>('message');
@@ -314,7 +314,7 @@ export function AppToolbarControls({ definition }: { definition: AppToolbarDefin
               role="menuitem"
               key={item.id}
               className={[
-                'block w-full px-3 py-2 text-left text-sm hover:bg-surface-muted',
+                'block w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-surface-muted',
                 item.active ? 'text-accent' : 'text-text',
               ].join(' ')}
               onClick={() => {

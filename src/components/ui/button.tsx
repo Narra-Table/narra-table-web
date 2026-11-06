@@ -31,7 +31,7 @@ export function buttonClassName({
   className?: string;
 } = {}) {
   return cn(
-    'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-control outline-none focus-visible:ring-2 focus-visible:ring-accent',
+    'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-control outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed',
     variants[variant],
     sizes[size],
     className,

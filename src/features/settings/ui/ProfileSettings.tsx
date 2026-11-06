@@ -35,7 +35,7 @@ export function ProfileSettings() {
           type="button"
           onClick={() => logout()}
           disabled={isPending}
-          className="flex shrink-0 items-center gap-2 rounded-control border border-danger/40 px-4 py-2 text-sm text-danger transition-colors hover:bg-danger/10 disabled:opacity-50"
+          className="flex shrink-0 cursor-pointer items-center gap-2 rounded-control border border-danger/40 px-4 py-2 text-sm text-danger transition-colors hover:bg-danger/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <LogOut className="icon-stroke size-4" aria-hidden="true" />
           登出

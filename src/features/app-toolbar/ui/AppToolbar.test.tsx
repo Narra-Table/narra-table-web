@@ -15,6 +15,8 @@ describe('AppToolbarSurface', () => {
     expect(toolbar.className).toContain('hidden');
     expect(toolbar.className).toContain('lg:flex');
     expect(screen.getByLabelText('全局搜索')).toBeDefined();
+    expect(screen.getByRole('button', { name: '提醒' }).className).toContain('cursor-pointer');
+    expect(screen.getByRole('button', { name: '快捷方式' }).className).toContain('cursor-pointer');
 
     view.rerender(<AppToolbarSurface mode="chat" />);
     expect(screen.getByLabelText('聊天输入')).toBeDefined();
@@ -54,15 +56,21 @@ describe('AppToolbarSurface', () => {
     fireEvent.change(search, { target: { value: '骰子' } });
     expect(onChange).toHaveBeenCalledWith('骰子');
 
-    fireEvent.click(screen.getByRole('button', { name: '清空搜索聊天记录' }));
+    const clear = screen.getByRole('button', { name: '清空搜索聊天记录' });
+    expect(clear.className).toContain('cursor-pointer');
+    fireEvent.click(clear);
     expect(onChange).toHaveBeenCalledWith('');
 
-    fireEvent.click(screen.getByRole('button', { name: '添加窗口' }));
+    const addWindow = screen.getByRole('button', { name: '添加窗口' });
+    expect(addWindow.className).toContain('cursor-pointer');
+    fireEvent.click(addWindow);
     fireEvent.pointerDown(document.body);
     expect(screen.queryByRole('menu', { name: '添加窗口' })).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: '添加窗口' }));
-    fireEvent.click(screen.getByRole('menuitem', { name: '角色' }));
+    fireEvent.click(addWindow);
+    const characterItem = screen.getByRole('menuitem', { name: '角色' });
+    expect(characterItem.className).toContain('cursor-pointer');
+    fireEvent.click(characterItem);
     expect(onSelect).toHaveBeenCalledOnce();
   });
 
