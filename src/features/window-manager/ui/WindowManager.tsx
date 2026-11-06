@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 import { cn } from '@/lib/classNames';
-import { useMediaQuery } from '@/lib/useMediaQuery';
+import { matchesMediaQuery, useMediaQuery } from '@/lib/responsive';
 import type { WindowManagerStore } from '../model/store';
 import {
   snapWindowWidth,
@@ -315,20 +315,20 @@ export function WindowManager({
   renderWindowHeaderAddon,
 }: WindowManagerProps) {
   const state = useWindowManagerStore(store);
-  const mobilePortrait = useMediaQuery('(max-width: 1023px) and (orientation: portrait)');
+  const compactPortrait = useMediaQuery('compactPortrait');
   const windowStripRef = useRef<HTMLDivElement>(null);
   const windowElementsRef = useRef(new Map<string, HTMLDivElement>());
   const trailingSpaceRef = useRef<HTMLDivElement>(null);
   const edgeAutoScrollDirection = useEdgeAutoScroll(
     windowStripRef,
-    edgeAutoScroll && !mobilePortrait,
+    edgeAutoScroll && !compactPortrait,
   );
 
   useEffect(() => {
     const strip = windowStripRef.current;
     const focusedId = state.focusedWindowId;
     const focusedWindow = focusedId ? windowElementsRef.current.get(focusedId) : undefined;
-    if (!strip || !focusedWindow || mobilePortrait) return;
+    if (!strip || !focusedWindow || compactPortrait) return;
 
     const stripBox = strip.getBoundingClientRect();
     const windowBox = focusedWindow.getBoundingClientRect();
@@ -341,21 +341,19 @@ export function WindowManager({
     }
 
     if (Math.abs(nextScrollLeft - strip.scrollLeft) < 1) return;
-    const behavior = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-      ? 'auto'
-      : 'smooth';
+    const behavior = matchesMediaQuery('reducedMotion') ? 'auto' : 'smooth';
     if (typeof strip.scrollTo === 'function') {
       strip.scrollTo({ left: nextScrollLeft, behavior });
     } else {
       strip.scrollLeft = nextScrollLeft;
     }
-  }, [mobilePortrait, state.focusedWindowId, state.windows]);
+  }, [compactPortrait, state.focusedWindowId, state.windows]);
 
   const renderWindowContent = (window: WindowInstance) => (
     <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
   );
 
-  if (mobilePortrait) {
+  if (compactPortrait) {
     return (
       <MobileWindowManager
         state={state}

@@ -28,21 +28,21 @@ narra-table-web/
 ├── src/
 │   ├── api/                   # orval 自动生成的 API（不要手动编辑）
 │   ├── components/
-│   │   └── ui/                # shadcn 复制来的 UI 组件
+│   │   └── ui/                # shadcn UI 组件
 │   ├── features/              # 功能模块
-│   │   ├── app-toolbar/       # 全局工具栏宿主与上下文注册
+│   │   ├── app-toolbar/       # 全局工具栏
 │   │   ├── resources/         # 资源访问能力
-│   │   ├── space/             # 空间工作区和业务窗口
-│   │   ├── space-hub/         # 空间发现与管理入口
+│   │   ├── space/             # 空间
+│   │   ├── space-hub/         # 主页空间列表
 │   │   └── window-manager/    # 窗口列表、焦点、布局和渲染
-│   ├── lib/                   # 平铺的跨 Feature 基础设施与工具
+│   ├── lib/                   # 跨 Feature 基础设施与工具
 │   │   ├── apiClient.ts       # 生成 API 使用的请求客户端
 │   │   ├── authSession.ts     # 普通用户会话
 │   │   ├── adminSession.ts    # 管理员会话
 │   │   ├── queryClient.ts     # TanStack Query 全局客户端
-│   │   ├── appTheme.ts        # 全局主题读取与持久化
+│   │   ├── appTheme.ts        # 全局主题
 │   │   ├── classNames.ts      # 样式类名合并工具
-│   │   └── useMediaQuery.ts   # 跨 Feature 的媒体查询 Hook
+│   │   └── responsive.ts      # 统一断点和媒体查询
 │   ├── mocks/                 # MSW mock 数据和请求处理器
 │   ├── routes/                # TanStack Router 文件路由
 │   │   └── __root.tsx         # 根布局路由
