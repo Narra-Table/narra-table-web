@@ -80,6 +80,7 @@ function clampPreviewWidth(width: number): number {
 }
 
 interface WindowResizeHandleProps {
+  delayRightEdgeAutoExpand?: boolean;
   title: string;
   width: WindowWidth;
   getContainer: () => HTMLDivElement | null;
@@ -90,8 +91,10 @@ interface WindowResizeHandleProps {
 
 const AUTO_SCROLL_EDGE_SIZE = 48;
 const AUTO_SCROLL_MAX_SPEED = 20;
+const LAST_WINDOW_AUTO_EXPAND_DELAY = 800;
 
 function WindowResizeHandle({
+  delayRightEdgeAutoExpand = false,
   title,
   width,
   getContainer,
@@ -109,6 +112,8 @@ function WindowResizeHandle({
     pointerX: number;
     startScrollLeft: number;
     animationFrame: number | null;
+    rightEdgeAutoExpandReady: boolean;
+    rightEdgeHoldStartedAt: number | null;
     windowElement: HTMLElement;
     container: HTMLDivElement;
     trailingSpace: HTMLDivElement;
@@ -130,16 +135,23 @@ function WindowResizeHandle({
 
   const updatePreview = () => {
     if (!drag.current) return;
-    const { container, pointerX, startScrollLeft, startWidth, startX } = drag.current;
+    const { container, pointerX, rightEdgeAutoExpandReady, startScrollLeft, startWidth, startX } =
+      drag.current;
     const containerWidth = container.getBoundingClientRect().width;
     if (containerWidth <= 0) return;
-    const previewWidth = clampPreviewWidth(
-      startWidth + (pointerX - startX + container.scrollLeft - startScrollLeft) / containerWidth,
-    );
+    const bounds = container.getBoundingClientRect();
+    const pointerWidth = startWidth + (pointerX - startX) / containerWidth;
+    const scrollOffset = (container.scrollLeft - startScrollLeft) / containerWidth;
+    const waitingAtRightEdge =
+      delayRightEdgeAutoExpand &&
+      !rightEdgeAutoExpandReady &&
+      pointerX >= bounds.right - AUTO_SCROLL_EDGE_SIZE &&
+      scrollOffset > 0;
+    const previewWidth = clampPreviewWidth(pointerWidth + (waitingAtRightEdge ? 0 : scrollOffset));
     applyPreviewWidth(previewWidth, containerWidth);
   };
 
-  const continueAutoScroll = () => {
+  const continueAutoScroll = (now: number) => {
     if (!drag.current) return;
     const { container, pointerX, previewWidth } = drag.current;
     const bounds = container.getBoundingClientRect();
@@ -152,9 +164,22 @@ function WindowResizeHandle({
           ? -1
           : 0;
 
+    if (direction !== 1) {
+      drag.current.rightEdgeAutoExpandReady = false;
+      drag.current.rightEdgeHoldStartedAt = null;
+    }
     if (direction === 0) {
       drag.current.animationFrame = null;
       return;
+    }
+
+    if (direction === 1 && delayRightEdgeAutoExpand && !drag.current.rightEdgeAutoExpandReady) {
+      drag.current.rightEdgeHoldStartedAt ??= now;
+      if (now - drag.current.rightEdgeHoldStartedAt < LAST_WINDOW_AUTO_EXPAND_DELAY) {
+        drag.current.animationFrame = requestAnimationFrame(continueAutoScroll);
+        return;
+      }
+      drag.current.rightEdgeAutoExpandReady = true;
     }
 
     const edgeDistance = direction > 0 ? distanceFromRight : distanceFromLeft;
@@ -257,6 +282,8 @@ function WindowResizeHandle({
           pointerX: event.clientX,
           startScrollLeft: container.scrollLeft,
           animationFrame: null,
+          rightEdgeAutoExpandReady: false,
+          rightEdgeHoldStartedAt: null,
           windowElement,
           container,
           trailingSpace,
@@ -266,6 +293,9 @@ function WindowResizeHandle({
       onPointerMove={(event) => {
         if (!drag.current || drag.current.pointerId !== event.pointerId) return;
         drag.current.pointerX = event.clientX;
+        if (delayRightEdgeAutoExpand && !drag.current.rightEdgeAutoExpandReady) {
+          drag.current.rightEdgeHoldStartedAt = null;
+        }
         updatePreview();
         startAutoScroll();
       }}
@@ -445,7 +475,7 @@ export function WindowManager({
               工作台是空的，请从顶部打开一个窗口。
             </div>
           ) : (
-            state.windows.map((window) => {
+            state.windows.map((window, index) => {
               const focused = window.instanceId === state.focusedWindowId;
               return (
                 <div
@@ -493,6 +523,7 @@ export function WindowManager({
                   </article>
                   {!compactPortrait ? (
                     <WindowResizeHandle
+                      delayRightEdgeAutoExpand={index === state.windows.length - 1}
                       title={window.title}
                       width={window.width}
                       getContainer={() => windowStripRef.current}

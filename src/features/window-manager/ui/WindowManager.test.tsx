@@ -6,6 +6,7 @@ import { resolveWindowHeaderTone, WindowManager } from './WindowManager';
 
 afterEach(() => {
   cleanup();
+  vi.useRealTimers();
   vi.unstubAllGlobals();
 });
 
@@ -208,6 +209,48 @@ describe('WindowManager', () => {
 
     fireEvent.keyDown(handle, { key: 'ArrowLeft' });
     expect(store.getState().windows[0]?.width).toBe(1 / 2);
+  });
+
+  it('waits for the last resize handle to stay at the right edge before auto-expanding', async () => {
+    vi.useFakeTimers();
+    const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
+    store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat', width: 1 / 2 });
+
+    render(
+      <WindowManager store={store} renderWindow={(window) => <div>{window.windowTypeId}</div>} />,
+    );
+
+    const handle = screen.getByRole('separator', { name: '调整Chat窗口宽度' });
+    const windowElement = handle.parentElement as HTMLElement;
+    const strip = windowElement.parentElement as HTMLDivElement;
+    Object.defineProperties(strip, {
+      scrollLeft: { value: 0, writable: true },
+      getBoundingClientRect: {
+        value: () => ({ left: 0, right: 1000, width: 1000 }),
+      },
+    });
+
+    fireEvent(handle, new MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 1000 }));
+    fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 990 }));
+    expect(windowElement.style.width).toBe('49%');
+
+    await act(() => vi.advanceTimersByTime(600));
+    expect(windowElement.style.width).toBe('49%');
+
+    fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 980 }));
+    expect(windowElement.style.width).toBe('48%');
+    await act(() => vi.advanceTimersByTime(600));
+    expect(windowElement.style.width).toBe('48%');
+
+    fireEvent(handle, new MouseEvent('pointermove', { bubbles: true, clientX: 1010 }));
+    expect(windowElement.style.width).toBe('51%');
+    await act(() => vi.advanceTimersByTime(700));
+    expect(windowElement.style.width).toBe('51%');
+
+    await act(() => vi.advanceTimersByTime(200));
+    expect(Number.parseFloat(windowElement.style.width)).toBeGreaterThan(51);
+
+    fireEvent(handle, new MouseEvent('pointercancel', { bubbles: true, clientX: 1010 }));
   });
 
   it('keeps edge auto-scroll active while the pointer crosses a resize handle', () => {
