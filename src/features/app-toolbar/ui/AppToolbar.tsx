@@ -367,6 +367,8 @@ export function AppToolbarSurface({
   placement?: AppToolbarPlacement;
   children?: ReactNode;
 }) {
+  const visibility = placement === 'docked' ? 'flex' : 'hidden lg:flex';
+
   return (
     <footer
       aria-label="页面工具栏"
@@ -374,7 +376,8 @@ export function AppToolbarSurface({
         mode === 'hidden'
           ? 'hidden'
           : [
-              'pointer-events-none fixed inset-x-0 z-40 hidden justify-center transition-all duration-300 ease-out motion-reduce:transition-none lg:flex',
+              'pointer-events-none fixed inset-x-0 z-40 justify-center transition-all duration-300 ease-out motion-reduce:transition-none',
+              visibility,
               placement === 'docked' ? 'bottom-0 px-0' : 'bottom-3 px-3',
             ].join(' ')
       }

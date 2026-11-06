@@ -12,8 +12,8 @@ describe('AppToolbarSurface', () => {
     const view = render(<AppToolbarSurface mode="home" />);
     const toolbar = screen.getByRole('contentinfo', { name: '页面工具栏' });
     expect(toolbar.className).toContain('fixed');
-    expect(toolbar.className).toContain('hidden');
-    expect(toolbar.className).toContain('lg:flex');
+    expect(toolbar.classList.contains('hidden')).toBe(true);
+    expect(toolbar.classList.contains('lg:flex')).toBe(true);
     expect(screen.getByLabelText('全局搜索')).toBeDefined();
     expect(screen.getByRole('button', { name: '提醒' }).className).toContain('cursor-pointer');
     expect(screen.getByRole('button', { name: '快捷方式' }).className).toContain('cursor-pointer');
@@ -26,7 +26,9 @@ describe('AppToolbarSurface', () => {
         <span>窗口工具</span>
       </AppToolbarSurface>,
     );
-    expect(screen.getByRole('contentinfo', { name: '页面工具栏' }).className).toContain('bottom-0');
+    expect(toolbar.classList.contains('flex')).toBe(true);
+    expect(toolbar.classList.contains('hidden')).toBe(false);
+    expect(toolbar.classList.contains('bottom-0')).toBe(true);
     expect(screen.getByText('窗口工具')).toBeDefined();
   });
 
