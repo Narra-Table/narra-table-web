@@ -30,8 +30,12 @@ narra-table-web/
 │   ├── components/
 │   │   └── ui/                # shadcn UI 组件
 │   ├── features/              # 功能模块
+│   │   ├── admin/             # 管理后台
 │   │   ├── app-toolbar/       # 全局工具栏
+│   │   ├── auth/              # 用户认证
 │   │   ├── resources/         # 资源访问能力
+│   │   ├── room-chat/         # 房间聊天
+│   │   ├── settings/          # 用户设置
 │   │   ├── space/             # 空间
 │   │   ├── space-hub/         # 主页空间列表
 │   │   └── window-manager/    # 窗口列表、焦点、布局和渲染
