@@ -1,5 +1,6 @@
 import {
   Component,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -7,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { cn } from '@/lib/classNames';
-import { useMediaQuery } from '@/lib/responsive';
+import { matchesMediaQuery, useMediaQuery } from '@/lib/responsive';
 import type { WindowManagerStore } from '../model/store';
 import {
   snapWindowWidth,
@@ -317,6 +318,9 @@ export function WindowManager({
   const state = useWindowManagerStore(store);
   const compactPortrait = useMediaQuery('compactPortrait');
   const windowStripRef = useRef<HTMLDivElement>(null);
+  const windowElementsRef = useRef(new Map<string, HTMLDivElement>());
+  const previousFocusedWindowRef = useRef(state.focusedWindowId);
+  const previousWindowsRef = useRef(state.windows);
   const trailingSpaceRef = useRef<HTMLDivElement>(null);
   const edgeAutoScrollDirection = useEdgeAutoScroll(
     windowStripRef,
@@ -328,6 +332,38 @@ export function WindowManager({
     if (!strip || compactPortrait || Math.abs(strip.scrollLeft - state.scrollLeft) < 1) return;
     strip.scrollLeft = state.scrollLeft;
   }, [compactPortrait, state.scrollLeft]);
+
+  useEffect(() => {
+    const focusChanged = previousFocusedWindowRef.current !== state.focusedWindowId;
+    const windowsChanged = previousWindowsRef.current !== state.windows;
+    previousFocusedWindowRef.current = state.focusedWindowId;
+    previousWindowsRef.current = state.windows;
+    if ((!focusChanged && !windowsChanged) || compactPortrait) return;
+
+    const strip = windowStripRef.current;
+    const focusedWindow = state.focusedWindowId
+      ? windowElementsRef.current.get(state.focusedWindowId)
+      : undefined;
+    if (!strip || !focusedWindow) return;
+
+    const stripBox = strip.getBoundingClientRect();
+    const windowBox = focusedWindow.getBoundingClientRect();
+    let nextScrollLeft = strip.scrollLeft;
+
+    if (windowBox.width >= stripBox.width || windowBox.left < stripBox.left) {
+      nextScrollLeft += windowBox.left - stripBox.left;
+    } else if (windowBox.right > stripBox.right) {
+      nextScrollLeft += windowBox.right - stripBox.right;
+    }
+
+    if (Math.abs(nextScrollLeft - strip.scrollLeft) < 1) return;
+    const behavior = matchesMediaQuery('reducedMotion') ? 'auto' : 'smooth';
+    if (typeof strip.scrollTo === 'function') {
+      strip.scrollTo({ left: nextScrollLeft, behavior });
+    } else {
+      strip.scrollLeft = nextScrollLeft;
+    }
+  }, [compactPortrait, state.focusedWindowId, state.windows]);
 
   const renderWindowContent = (window: WindowInstance) => (
     <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
@@ -370,6 +406,10 @@ export function WindowManager({
               return (
                 <div
                   key={window.instanceId}
+                  ref={(element) => {
+                    if (element) windowElementsRef.current.set(window.instanceId, element);
+                    else windowElementsRef.current.delete(window.instanceId);
+                  }}
                   className={cn(
                     'relative h-full min-h-0 shrink-0 border-r border-border-subtle transition-[width] duration-150',
                     widthClass(window.width),

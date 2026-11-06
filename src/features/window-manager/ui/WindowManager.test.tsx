@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createSequentialIdFactory, createWindowManagerStore } from '../model/store';
 import { MobileWindowManager, resolveWindowHeaderTone } from './MobileWindowManager';
 import { WindowManager } from './WindowManager';
@@ -80,9 +80,58 @@ describe('WindowManager', () => {
     strip.scrollLeft = 275;
     fireEvent.scroll(strip);
     expect(store.getState().scrollLeft).toBe(275);
+  });
 
+  it('moves the focused or newly opened window into view', () => {
+    const store = createWindowManagerStore({ createId: createSequentialIdFactory() });
+    store.actions.open({ appId: 'app', windowTypeId: 'chat', title: 'Chat', width: 1 / 2 });
+
+    render(
+      <WindowManager store={store} renderWindow={(window) => <div>{window.windowTypeId}</div>} />,
+    );
+
+    const firstWindow = screen.getByRole('heading', { name: 'Chat' }).closest('article')
+      ?.parentElement as HTMLDivElement;
+    const strip = firstWindow.parentElement as HTMLDivElement;
+    const scrollTo = vi.fn(({ left }: ScrollToOptions) => {
+      strip.scrollLeft = Number(left);
+    });
+
+    Object.defineProperties(strip, {
+      scrollLeft: { value: 0, writable: true },
+      scrollTo: { value: scrollTo },
+      getBoundingClientRect: {
+        value: () => ({ left: 0, right: 1000, width: 1000 }),
+      },
+    });
+
+    const rectangles = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.textContent?.includes('map')) {
+          return { left: 1000, right: 1500, width: 500 } as DOMRect;
+        }
+        return { left: 0, right: 500, width: 500 } as DOMRect;
+      });
+
+    act(() => {
+      store.actions.open({ appId: 'app', windowTypeId: 'map', title: 'Map', width: 1 / 2 });
+    });
+    expect(store.getState().focusedWindowId).toBe('win-2');
+    expect(scrollTo).toHaveBeenLastCalledWith({ left: 500, behavior: 'smooth' });
+
+    const lastWindow = screen.getByRole('heading', { name: 'Map' }).closest('article')
+      ?.parentElement as HTMLDivElement;
+    rectangles.mockRestore();
+    Object.defineProperty(firstWindow, 'getBoundingClientRect', {
+      value: () => ({ left: -500, right: 0, width: 500 }),
+    });
     fireEvent.pointerDown(firstWindow.firstElementChild as HTMLElement);
-    expect(strip.scrollLeft).toBe(275);
+    expect(store.getState().focusedWindowId).toBe('win-1');
+    expect(scrollTo).toHaveBeenLastCalledWith({ left: 0, behavior: 'smooth' });
+
+    fireEvent.pointerDown(lastWindow.firstElementChild as HTMLElement);
+    expect(store.getState().focusedWindowId).toBe('win-2');
   });
 
   it('resizes desktop windows between snapped widths', async () => {

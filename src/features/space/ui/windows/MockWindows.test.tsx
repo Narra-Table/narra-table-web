@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import {
   ChatWindow,
   CharactersWindow,
@@ -51,6 +51,18 @@ vi.mock('@/api', () => ({
   })),
 }));
 
+beforeAll(() => {
+  vi.stubGlobal(
+    'ResizeObserver',
+    class ResizeObserver {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  );
+});
+
+afterAll(() => vi.unstubAllGlobals());
 afterEach(cleanup);
 
 describe('mock space windows', () => {
