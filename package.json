@@ -5,6 +5,7 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {
+    "prepare": "vp config --no-agent --hooks-dir .vite-hooks",
     "dev": "vp dev",
     "build": "tsc && vp build",
     "preview": "vp preview",
