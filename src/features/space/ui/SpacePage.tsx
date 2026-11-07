@@ -1,7 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useGetApiSpacesSpaceIdRooms } from '@/api';
-import { useAppToolbar, type AppToolbarDefinition } from '@/features/app-toolbar';
 import {
   WindowManager,
   useWindowManagerStore,
@@ -10,95 +9,25 @@ import {
 import { useWindowEdgeAutoScroll } from '@/lib/useWindowBehaviorSettings';
 import { useSpacePersistence } from '../hooks/useSpacePersistence';
 import { createSpaceRuntime, openKind } from '../lib/persistence';
-import { isSpaceWindowKind, WINDOW_INFO, WINDOW_KINDS, type WindowKind } from '../model/window';
+import { isSpaceWindowKind, type WindowKind } from '../model/window';
+import { SpaceTopbar } from './SpaceTopbar';
 
 const WindowContent = lazy(() =>
   import('./windows/WindowContent').then((module) => ({ default: module.WindowContent })),
 );
 
-const WINDOW_SEARCH: Partial<Record<WindowKind, { label: string; placeholder: string }>> = {
-  characters: { label: '搜索空间角色', placeholder: '搜索空间角色' },
-  members: { label: '搜索空间成员', placeholder: '搜索空间成员' },
-  clues: { label: '搜索线索', placeholder: '搜索线索' },
-  combat: { label: '搜索参战角色', placeholder: '搜索参战角色' },
-};
-
 export function SpacePage({ spaceId }: { spaceId: string }) {
   const navigate = useNavigate();
   const [runtime] = useState(() => createSpaceRuntime(spaceId));
   const [activeRoomId, setActiveRoomId] = useState<string>();
-  const [chatDraft, setChatDraft] = useState('');
-  const [queries, setQueries] = useState<Partial<Record<WindowKind, string>>>({});
+  const [visibleWindowIds, setVisibleWindowIds] = useState<readonly string[]>([]);
   const { manager, workspace } = runtime;
   const managerState = useWindowManagerStore(manager);
   const edgeAutoScroll = useWindowEdgeAutoScroll();
-  const focusedWindow = managerState.windows.find(
-    (window) => window.instanceId === managerState.focusedWindowId,
-  );
-  const focusedKind =
-    focusedWindow && isSpaceWindowKind(focusedWindow.windowTypeId)
-      ? focusedWindow.windowTypeId
-      : undefined;
   const openWindow = useCallback((kind: WindowKind) => openKind(workspace, kind), [workspace]);
-  const setFocusedQuery = useCallback(
-    (query: string) => {
-      if (!focusedKind) return;
-      setQueries((current) => ({ ...current, [focusedKind]: query }));
-    },
-    [focusedKind],
-  );
   const { data: chatRooms = [] } = useGetApiSpacesSpaceIdRooms(spaceId, {
     query: { select: (response) => response.data.rooms },
   });
-  const activeRoomName = chatRooms.find((room) => room.roomId === activeRoomId)?.name;
-  const toolbar = useMemo<AppToolbarDefinition>(() => {
-    const search = focusedKind ? WINDOW_SEARCH[focusedKind] : undefined;
-    const content: AppToolbarDefinition['content'] =
-      focusedKind === 'chat'
-        ? {
-            kind: 'chat-switcher',
-            message: {
-              label: '聊天输入',
-              placeholder: '输入消息',
-              value: chatDraft,
-              onChange: setChatDraft,
-            },
-            search: {
-              label: '搜索聊天记录',
-              placeholder: `搜索${activeRoomName ? `「${activeRoomName}」` : '当前房间'}聊天记录`,
-              value: queries.chat ?? '',
-              onChange: setFocusedQuery,
-            },
-          }
-        : focusedKind && search
-          ? {
-              kind: 'search',
-              label: search.label,
-              placeholder: search.placeholder,
-              value: queries[focusedKind] ?? '',
-              onChange: setFocusedQuery,
-            }
-          : undefined;
-
-    return {
-      placement: 'docked',
-      leadingAction: {
-        label: '返回空间列表',
-        icon: 'back',
-        onTrigger: () => void navigate({ to: '/' }),
-      },
-      content,
-      menu: {
-        label: '添加窗口',
-        items: WINDOW_KINDS.map((kind) => ({
-          id: kind,
-          label: WINDOW_INFO[kind].title,
-          active: kind === focusedKind,
-          onSelect: () => openWindow(kind),
-        })),
-      },
-    };
-  }, [activeRoomName, chatDraft, focusedKind, navigate, openWindow, queries, setFocusedQuery]);
 
   useEffect(() => {
     if (!chatRooms.length) {
@@ -110,24 +39,18 @@ export function SpacePage({ spaceId }: { spaceId: string }) {
     }
   }, [activeRoomId, chatRooms]);
 
-  useAppToolbar(toolbar);
   useSpacePersistence(spaceId, manager);
 
   function renderWindow(window: WindowInstance) {
     if (!isSpaceWindowKind(window.windowTypeId)) return null;
     return (
       <Suspense fallback={<div className="p-4 text-sm text-text-muted">加载中</div>}>
-        <WindowContent
-          kind={window.windowTypeId}
-          spaceId={spaceId}
-          activeRoomId={activeRoomId}
-          query={queries[window.windowTypeId] ?? ''}
-        />
+        <WindowContent kind={window.windowTypeId} spaceId={spaceId} activeRoomId={activeRoomId} />
       </Suspense>
     );
   }
 
-  function renderWindowHeaderAddon(window: WindowInstance) {
+  function renderWindowOverlay(window: WindowInstance) {
     if (window.windowTypeId !== 'chat' || !chatRooms.length) return null;
     return (
       <select
@@ -146,12 +69,23 @@ export function SpacePage({ spaceId }: { spaceId: string }) {
   }
 
   return (
-    <div className="h-full min-h-0 overflow-hidden pb-13">
+    <div className="h-full min-h-0 overflow-hidden">
       <WindowManager
         edgeAutoScroll={edgeAutoScroll}
+        onVisibleWindowsChange={setVisibleWindowIds}
         store={manager}
+        topbar={
+          <SpaceTopbar
+            windows={managerState.windows}
+            focusedWindowId={managerState.focusedWindowId}
+            visibleWindowIds={visibleWindowIds}
+            onBack={() => void navigate({ to: '/' })}
+            onAddWindow={openWindow}
+            onFocusWindow={(instanceId) => manager.actions.focus(instanceId)}
+          />
+        }
         renderWindow={renderWindow}
-        renderWindowHeaderAddon={renderWindowHeaderAddon}
+        renderWindowOverlay={renderWindowOverlay}
       />
     </div>
   );

@@ -1,18 +1,13 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { AppToolbar, AppToolbarProvider } from '@/features/app-toolbar';
 
 const RootLayout = () => (
-  <AppToolbarProvider>
-    <div className="h-dvh overflow-hidden bg-app-bg text-text">
-      <div className="h-full min-h-0 overflow-hidden">
-        <Outlet />
-      </div>
-      <div id="toolbar-root" />
-      <div id="modal-root" />
-      <div id="toast-root" />
-      <AppToolbar />
+  <div className="h-dvh overflow-hidden bg-app-bg text-text">
+    <div className="h-full min-h-0 overflow-hidden">
+      <Outlet />
     </div>
-  </AppToolbarProvider>
+    <div id="modal-root" />
+    <div id="toast-root" />
+  </div>
 );
 
 const RootPending = () => (
