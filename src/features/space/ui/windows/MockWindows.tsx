@@ -7,6 +7,7 @@ import {
   useGetApiSpacesSpaceIdRoomsRoomIdScenes,
 } from '@/api';
 import { cn } from '@/lib/classNames';
+import { AutoHideScrollList } from './AutoHideScrollList';
 
 interface SpaceWindowProps {
   spaceId: string;
@@ -75,7 +76,7 @@ export function ChatWindow({
   if (!visibleMessages.length) return <WindowState>没有匹配的聊天记录</WindowState>;
 
   return (
-    <ul className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
+    <AutoHideScrollList className="gap-4 p-4">
       {visibleMessages.map((message, index) => (
         <li key={message.messageId ?? String(index)}>
           <div className="flex items-center gap-2 text-xs">
@@ -87,7 +88,7 @@ export function ChatWindow({
           <p className="mt-1 text-base text-text">{messageText(message)}</p>
         </li>
       ))}
-    </ul>
+    </AutoHideScrollList>
   );
 }
 
@@ -107,7 +108,7 @@ export function CharactersWindow({ spaceId, query = '' }: SpaceWindowProps & { q
   if (!visibleMasks.length) return <WindowState>没有匹配的空间角色</WindowState>;
 
   return (
-    <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-3">
+    <AutoHideScrollList className="gap-2 p-3">
       {visibleMasks.map((mask) => (
         <li key={mask.maskId} className="flex items-center gap-3 bg-app-bg p-3 ">
           <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface-muted text-sm font-semibold text-text">
@@ -125,7 +126,7 @@ export function CharactersWindow({ spaceId, query = '' }: SpaceWindowProps & { q
           </span>
         </li>
       ))}
-    </ul>
+    </AutoHideScrollList>
   );
 }
 
@@ -148,7 +149,7 @@ export function MembersWindow({ spaceId, query = '' }: SpaceWindowProps & { quer
   if (!visibleMembers.length) return <WindowState>没有匹配的空间成员</WindowState>;
 
   return (
-    <ul className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3">
+    <AutoHideScrollList className="gap-1 p-3">
       {visibleMembers.map((member, index) => {
         const key = member.userId ?? String(index);
         return (
@@ -169,7 +170,7 @@ export function MembersWindow({ spaceId, query = '' }: SpaceWindowProps & { quer
           </li>
         );
       })}
-    </ul>
+    </AutoHideScrollList>
   );
 }
 
@@ -191,7 +192,7 @@ export function CluesWindow({ spaceId, query = '' }: SpaceWindowProps & { query?
   if (!visibleClues.length) return <WindowState>没有匹配的线索</WindowState>;
 
   return (
-    <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-3">
+    <AutoHideScrollList className="gap-2 p-3">
       {visibleClues.map((message, index) => (
         <li
           key={message.messageId ?? String(index)}
@@ -213,7 +214,7 @@ export function CluesWindow({ spaceId, query = '' }: SpaceWindowProps & { query?
           ) : null}
         </li>
       ))}
-    </ul>
+    </AutoHideScrollList>
   );
 }
 
@@ -279,7 +280,7 @@ export function CombatWindow({ spaceId, query = '' }: SpaceWindowProps & { query
           加入
         </button>
       </div>
-      <ol className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
+      <AutoHideScrollList as="ol" className="gap-1">
         {!combatants.length ? (
           <li className="grid min-h-20 place-items-center text-sm text-text-muted">
             先攻列表是空的
@@ -312,7 +313,7 @@ export function CombatWindow({ spaceId, query = '' }: SpaceWindowProps & { query
             </button>
           </li>
         ))}
-      </ol>
+      </AutoHideScrollList>
     </form>
   );
 }

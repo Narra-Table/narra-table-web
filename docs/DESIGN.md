@@ -62,6 +62,9 @@ MiSans
 
 `bg-success`、`bg-warning`、`bg-danger`、`bg-info` 同样可用于背景色。
 
+窗口控制使用 `bg-window-control-close`、`bg-window-control-exit`、
+`bg-window-control-fullscreen` 和 `text-window-control-symbol` 复现系统窗口控制色。
+
 **禁止**使用 `dark:` variant。项目通过 `data-theme` 属性切换主题，所有颜色已通过 `--theme-*` 变量自动跟随主题变化，无需也不应手动区分明暗模式。
 
 ### 主题列表

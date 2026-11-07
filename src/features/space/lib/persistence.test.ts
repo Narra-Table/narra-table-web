@@ -24,6 +24,7 @@ describe('space persistence', () => {
     expect(restored.workspace.listWindows().map((window) => window.windowTypeId)).toEqual([
       'chat',
       'characters',
+      'members',
       'map',
     ]);
     expect(restored.manager.getState().scrollLeft).toBe(360);
@@ -35,6 +36,7 @@ describe('space persistence', () => {
     expect(runtime.workspace.listWindows().map((window) => window.windowTypeId)).toEqual([
       'chat',
       'characters',
+      'members',
     ]);
   });
 });

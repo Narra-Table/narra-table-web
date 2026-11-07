@@ -1,5 +1,8 @@
+import { Minus, X } from 'lucide-react';
 import {
   Component,
+  useCallback,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -7,7 +10,7 @@ import {
   type ReactNode,
 } from 'react';
 import { cn } from '@/lib/classNames';
-import { useMediaQuery } from '@/lib/responsive';
+import { matchesMediaQuery, useMediaQuery } from '@/lib/responsive';
 import type { WindowManagerStore } from '../model/store';
 import {
   snapWindowWidth,
@@ -16,15 +19,15 @@ import {
   type WindowManagerState,
   type WindowWidth,
 } from '../model/window-manager';
-import { MobileWindowManager, resolveWindowHeaderTone } from './MobileWindowManager';
 import { useEdgeAutoScroll } from './useEdgeAutoScroll';
 
 export interface WindowManagerProps {
   edgeAutoScroll?: boolean;
+  onVisibleWindowsChange?: (instanceIds: readonly string[]) => void;
   store: WindowManagerStore;
-  toolbar?: ReactNode;
+  topbar?: ReactNode;
   renderWindow: (window: WindowInstance) => ReactNode;
-  renderWindowHeaderAddon?: (window: WindowInstance) => ReactNode;
+  renderWindowOverlay?: (window: WindowInstance) => ReactNode;
 }
 
 class WindowErrorBoundary extends Component<
@@ -67,6 +70,7 @@ function clampPreviewWidth(width: number): number {
 }
 
 interface WindowResizeHandleProps {
+  delayRightEdgeAutoExpand?: boolean;
   title: string;
   width: WindowWidth;
   getContainer: () => HTMLDivElement | null;
@@ -77,8 +81,10 @@ interface WindowResizeHandleProps {
 
 const AUTO_SCROLL_EDGE_SIZE = 48;
 const AUTO_SCROLL_MAX_SPEED = 20;
+const LAST_WINDOW_AUTO_EXPAND_DELAY = 300;
 
 function WindowResizeHandle({
+  delayRightEdgeAutoExpand = false,
   title,
   width,
   getContainer,
@@ -96,6 +102,8 @@ function WindowResizeHandle({
     pointerX: number;
     startScrollLeft: number;
     animationFrame: number | null;
+    rightEdgeAutoExpandReady: boolean;
+    rightEdgeHoldStartedAt: number | null;
     windowElement: HTMLElement;
     container: HTMLDivElement;
     trailingSpace: HTMLDivElement;
@@ -117,16 +125,23 @@ function WindowResizeHandle({
 
   const updatePreview = () => {
     if (!drag.current) return;
-    const { container, pointerX, startScrollLeft, startWidth, startX } = drag.current;
+    const { container, pointerX, rightEdgeAutoExpandReady, startScrollLeft, startWidth, startX } =
+      drag.current;
     const containerWidth = container.getBoundingClientRect().width;
     if (containerWidth <= 0) return;
-    const previewWidth = clampPreviewWidth(
-      startWidth + (pointerX - startX + container.scrollLeft - startScrollLeft) / containerWidth,
-    );
+    const bounds = container.getBoundingClientRect();
+    const pointerWidth = startWidth + (pointerX - startX) / containerWidth;
+    const scrollOffset = (container.scrollLeft - startScrollLeft) / containerWidth;
+    const waitingAtRightEdge =
+      delayRightEdgeAutoExpand &&
+      !rightEdgeAutoExpandReady &&
+      pointerX >= bounds.right - AUTO_SCROLL_EDGE_SIZE &&
+      scrollOffset > 0;
+    const previewWidth = clampPreviewWidth(pointerWidth + (waitingAtRightEdge ? 0 : scrollOffset));
     applyPreviewWidth(previewWidth, containerWidth);
   };
 
-  const continueAutoScroll = () => {
+  const continueAutoScroll = (now: number) => {
     if (!drag.current) return;
     const { container, pointerX, previewWidth } = drag.current;
     const bounds = container.getBoundingClientRect();
@@ -139,9 +154,22 @@ function WindowResizeHandle({
           ? -1
           : 0;
 
+    if (direction !== 1) {
+      drag.current.rightEdgeAutoExpandReady = false;
+      drag.current.rightEdgeHoldStartedAt = null;
+    }
     if (direction === 0) {
       drag.current.animationFrame = null;
       return;
+    }
+
+    if (direction === 1 && delayRightEdgeAutoExpand && !drag.current.rightEdgeAutoExpandReady) {
+      drag.current.rightEdgeHoldStartedAt ??= now;
+      if (now - drag.current.rightEdgeHoldStartedAt < LAST_WINDOW_AUTO_EXPAND_DELAY) {
+        drag.current.animationFrame = requestAnimationFrame(continueAutoScroll);
+        return;
+      }
+      drag.current.rightEdgeAutoExpandReady = true;
     }
 
     const edgeDistance = direction > 0 ? distanceFromRight : distanceFromLeft;
@@ -244,6 +272,8 @@ function WindowResizeHandle({
           pointerX: event.clientX,
           startScrollLeft: container.scrollLeft,
           animationFrame: null,
+          rightEdgeAutoExpandReady: false,
+          rightEdgeHoldStartedAt: null,
           windowElement,
           container,
           trailingSpace,
@@ -253,6 +283,9 @@ function WindowResizeHandle({
       onPointerMove={(event) => {
         if (!drag.current || drag.current.pointerId !== event.pointerId) return;
         drag.current.pointerX = event.clientX;
+        if (delayRightEdgeAutoExpand && !drag.current.rightEdgeAutoExpandReady) {
+          drag.current.rightEdgeHoldStartedAt = null;
+        }
         updatePreview();
         startAutoScroll();
       }}
@@ -309,19 +342,57 @@ export function useWindowManagerStore(store: WindowManagerStore): WindowManagerS
 
 export function WindowManager({
   edgeAutoScroll = false,
+  onVisibleWindowsChange,
   store,
-  toolbar,
+  topbar,
   renderWindow,
-  renderWindowHeaderAddon,
+  renderWindowOverlay,
 }: WindowManagerProps) {
   const state = useWindowManagerStore(store);
   const compactPortrait = useMediaQuery('compactPortrait');
   const windowStripRef = useRef<HTMLDivElement>(null);
+  const windowElementsRef = useRef(new Map<string, HTMLDivElement>());
+  const previousFocusedWindowRef = useRef(state.focusedWindowId);
+  const previousWindowsRef = useRef(state.windows);
   const trailingSpaceRef = useRef<HTMLDivElement>(null);
   const edgeAutoScrollDirection = useEdgeAutoScroll(
     windowStripRef,
     edgeAutoScroll && !compactPortrait,
   );
+  const visibleWindowIdsRef = useRef<readonly string[]>([]);
+  const [fullscreenWindowId, setFullscreenWindowId] = useState<string | null>(null);
+
+  const reportVisibleWindows = useCallback(() => {
+    if (!onVisibleWindowsChange) return;
+    const strip = windowStripRef.current;
+    let instanceIds: string[] = [];
+
+    if (compactPortrait) {
+      if (state.focusedWindowId) instanceIds = [state.focusedWindowId];
+    } else if (strip) {
+      const stripBox = strip.getBoundingClientRect();
+      instanceIds = state.windows
+        .filter((window) => {
+          const element = windowElementsRef.current.get(window.instanceId);
+          if (!element) return false;
+          const windowBox = element.getBoundingClientRect();
+          return (
+            Math.min(stripBox.right, windowBox.right) - Math.max(stripBox.left, windowBox.left) > 1
+          );
+        })
+        .map((window) => window.instanceId);
+    }
+
+    const previous = visibleWindowIdsRef.current;
+    if (
+      previous.length === instanceIds.length &&
+      previous.every((instanceId, index) => instanceId === instanceIds[index])
+    ) {
+      return;
+    }
+    visibleWindowIdsRef.current = instanceIds;
+    onVisibleWindowsChange(instanceIds);
+  }, [compactPortrait, onVisibleWindowsChange, state.focusedWindowId, state.windows]);
 
   useLayoutEffect(() => {
     const strip = windowStripRef.current;
@@ -329,93 +400,223 @@ export function WindowManager({
     strip.scrollLeft = state.scrollLeft;
   }, [compactPortrait, state.scrollLeft]);
 
+  useEffect(() => {
+    const focusChanged = previousFocusedWindowRef.current !== state.focusedWindowId;
+    const windowsChanged = previousWindowsRef.current !== state.windows;
+    previousFocusedWindowRef.current = state.focusedWindowId;
+    previousWindowsRef.current = state.windows;
+    if ((!focusChanged && !windowsChanged) || compactPortrait) return;
+
+    const strip = windowStripRef.current;
+    const focusedWindow = state.focusedWindowId
+      ? windowElementsRef.current.get(state.focusedWindowId)
+      : undefined;
+    if (!strip || !focusedWindow) return;
+
+    const stripBox = strip.getBoundingClientRect();
+    const windowBox = focusedWindow.getBoundingClientRect();
+    let nextScrollLeft = strip.scrollLeft;
+
+    if (windowBox.width >= stripBox.width || windowBox.left < stripBox.left) {
+      nextScrollLeft += windowBox.left - stripBox.left;
+    } else if (windowBox.right > stripBox.right) {
+      nextScrollLeft += windowBox.right - stripBox.right;
+    }
+
+    if (Math.abs(nextScrollLeft - strip.scrollLeft) < 1) return;
+    const behavior = matchesMediaQuery('reducedMotion') ? 'auto' : 'smooth';
+    if (typeof strip.scrollTo === 'function') {
+      strip.scrollTo({ left: nextScrollLeft, behavior });
+    } else {
+      strip.scrollLeft = nextScrollLeft;
+    }
+  }, [compactPortrait, state.focusedWindowId, state.windows]);
+
+  useLayoutEffect(() => {
+    reportVisibleWindows();
+    const strip = windowStripRef.current;
+    if (!strip || !onVisibleWindowsChange) return;
+
+    const observer =
+      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(reportVisibleWindows);
+    observer?.observe(strip);
+    for (const element of windowElementsRef.current.values()) observer?.observe(element);
+    window.addEventListener('resize', reportVisibleWindows);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', reportVisibleWindows);
+    };
+  }, [onVisibleWindowsChange, reportVisibleWindows]);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const fullscreenElement = document.fullscreenElement;
+      setFullscreenWindowId(
+        fullscreenElement instanceof HTMLElement
+          ? (fullscreenElement.dataset.windowInstanceId ?? null)
+          : null,
+      );
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const enterFullscreen = async (instanceId: string) => {
+    const article = windowElementsRef.current.get(instanceId)?.querySelector('article');
+    if (!(article instanceof HTMLElement)) return;
+    try {
+      if (document.fullscreenElement !== article) await article.requestFullscreen?.();
+    } catch {
+      // Browsers can reject fullscreen requests when user activation is unavailable.
+    }
+  };
+
+  const exitFullscreen = async (instanceId: string) => {
+    const article = windowElementsRef.current.get(instanceId)?.querySelector('article');
+    if (!(article instanceof HTMLElement) || document.fullscreenElement !== article) return;
+    try {
+      await document.exitFullscreen?.();
+    } catch {
+      // Browsers can reject fullscreen requests when user activation is unavailable.
+    }
+  };
+
   const renderWindowContent = (window: WindowInstance) => (
     <WindowErrorBoundary title={window.title}>{renderWindow(window)}</WindowErrorBoundary>
   );
-
-  if (compactPortrait) {
-    return (
-      <MobileWindowManager
-        state={state}
-        toolbar={toolbar}
-        renderWindow={renderWindowContent}
-        renderWindowHeaderAddon={renderWindowHeaderAddon}
-        onFocus={(instanceId) => store.actions.focus(instanceId)}
-        onClose={(instanceId) => store.actions.close(instanceId)}
-      />
-    );
-  }
-
   return (
     <section className="flex h-full min-h-0 flex-col bg-app-bg text-text">
-      {toolbar ? (
-        <header className="flex min-h-12 shrink-0 items-center border-b border-border-subtle bg-surface px-3">
-          {toolbar}
+      {topbar ? (
+        <header className="relative z-40 flex h-10 shrink-0 items-center border-b border-border-subtle bg-surface px-1">
+          {topbar}
         </header>
       ) : null}
 
       <div className="relative min-h-0 flex-1">
         <div
           ref={windowStripRef}
-          className="scroll-subtle-native-hidden flex h-full min-h-0 overflow-x-auto"
-          onScroll={(event) => store.actions.setScrollLeft(event.currentTarget.scrollLeft)}
+          className={cn(
+            'flex h-full min-h-0',
+            compactPortrait ? 'overflow-hidden' : 'scroll-subtle-native-hidden overflow-x-auto',
+          )}
+          onScroll={(event) => {
+            store.actions.setScrollLeft(event.currentTarget.scrollLeft);
+            reportVisibleWindows();
+          }}
         >
           {state.windows.length === 0 ? (
-            <div className="grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted">
+            <div
+              className={cn(
+                'grid min-h-48 flex-1 place-items-center bg-surface p-4 text-sm text-text-muted',
+                compactPortrait && 'border border-border-subtle',
+              )}
+            >
               工作台是空的，请从顶部打开一个窗口。
             </div>
           ) : (
-            state.windows.map((window) => {
+            state.windows.map((window, index) => {
               const focused = window.instanceId === state.focusedWindowId;
               return (
                 <div
                   key={window.instanceId}
+                  ref={(element) => {
+                    if (element) windowElementsRef.current.set(window.instanceId, element);
+                    else windowElementsRef.current.delete(window.instanceId);
+                  }}
                   className={cn(
-                    'relative h-full min-h-0 shrink-0 border-r border-border-subtle transition-[width] duration-150',
-                    widthClass(window.width),
+                    'relative h-full min-h-0 shrink-0 transition-[width] duration-150',
+                    compactPortrait
+                      ? focused
+                        ? 'block w-full'
+                        : 'hidden w-full'
+                      : ['border-r border-border-subtle', widthClass(window.width)],
                   )}
                 >
                   <article
-                    className="flex h-full min-h-0 flex-col overflow-hidden bg-surface"
+                    aria-label={window.title}
+                    data-window-instance-id={window.instanceId}
+                    className="relative flex h-full min-h-0 flex-col overflow-hidden bg-surface fullscreen:h-screen fullscreen:w-screen"
                     onPointerDown={() => store.actions.focus(window.instanceId)}
                     onFocusCapture={() => store.actions.focus(window.instanceId)}
                   >
-                    <header
-                      className={cn(
-                        'flex h-10 shrink-0 items-center gap-2 px-3 transition-opacity',
-                        resolveWindowHeaderTone(window.windowTypeId),
-                        focused ? 'opacity-100' : 'opacity-75',
-                      )}
-                    >
-                      <h2 className="shrink-0 text-sm font-semibold">{window.title}</h2>
-                      {renderWindowHeaderAddon?.(window)}
-                      <span className="min-w-0 flex-1" />
-                      <button
-                        type="button"
-                        className="grid size-8 place-items-center rounded-control text-lg text-current hover:bg-surface-muted"
-                        aria-label={`关闭${window.title}`}
-                        onClick={() => store.actions.close(window.instanceId)}
-                      >
-                        ×
-                      </button>
-                    </header>
+                    <div className="relative h-8 shrink-0">
+                      <div className="absolute left-1 top-1 z-30 flex items-center">
+                        <button
+                          type="button"
+                          title={`关闭${window.title}`}
+                          aria-label={`关闭${window.title}`}
+                          className="group grid size-5 place-items-center rounded-full outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-focus"
+                          onClick={() => store.actions.close(window.instanceId)}
+                        >
+                          <span className="grid size-3 place-items-center rounded-full bg-window-control-close">
+                            <X
+                              aria-hidden="true"
+                              className="size-2.5 text-window-control-symbol opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                              strokeWidth={3.5}
+                            />
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          title={`退出${window.title}全屏`}
+                          aria-label={`退出${window.title}全屏`}
+                          aria-disabled={fullscreenWindowId !== window.instanceId}
+                          className="group grid size-5 place-items-center rounded-full outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-focus"
+                          onClick={() => void exitFullscreen(window.instanceId)}
+                        >
+                          <span className="grid size-3 place-items-center rounded-full bg-window-control-exit">
+                            <Minus
+                              aria-hidden="true"
+                              className="size-2.5 text-window-control-symbol opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                              strokeWidth={3.5}
+                            />
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          title={`全屏显示${window.title}`}
+                          aria-label={`全屏显示${window.title}`}
+                          aria-pressed={fullscreenWindowId === window.instanceId}
+                          className="group grid size-5 place-items-center rounded-full outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-focus"
+                          onClick={() => void enterFullscreen(window.instanceId)}
+                        >
+                          <span className="grid size-3 place-items-center rounded-full bg-window-control-fullscreen">
+                            <svg
+                              aria-hidden="true"
+                              viewBox="0 0 12 12"
+                              className="size-2 fill-current text-window-control-symbol opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                            >
+                              <path d="M1.5 1.5H9L1.5 9V1.5ZM10.5 10.5H3L10.5 3v7.5Z" />
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+                      {renderWindowOverlay ? (
+                        <div className="absolute right-1 top-1 z-30">
+                          {renderWindowOverlay(window)}
+                        </div>
+                      ) : null}
+                    </div>
                     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
                       {renderWindowContent(window)}
                     </div>
                   </article>
-                  <WindowResizeHandle
-                    title={window.title}
-                    width={window.width}
-                    getContainer={() => windowStripRef.current}
-                    getTrailingSpace={() => trailingSpaceRef.current}
-                    onFocus={() => store.actions.focus(window.instanceId)}
-                    onResize={(width) => store.actions.resize(window.instanceId, width)}
-                  />
+                  {!compactPortrait ? (
+                    <WindowResizeHandle
+                      delayRightEdgeAutoExpand={index === state.windows.length - 1}
+                      title={window.title}
+                      width={window.width}
+                      getContainer={() => windowStripRef.current}
+                      getTrailingSpace={() => trailingSpaceRef.current}
+                      onFocus={() => store.actions.focus(window.instanceId)}
+                      onResize={(width) => store.actions.resize(window.instanceId, width)}
+                    />
+                  ) : null}
                 </div>
               );
             })
           )}
-          {state.windows.length > 0 ? (
+          {!compactPortrait && state.windows.length > 0 ? (
             <div ref={trailingSpaceRef} aria-hidden="true" className="hidden h-full w-0 shrink-0" />
           ) : null}
         </div>

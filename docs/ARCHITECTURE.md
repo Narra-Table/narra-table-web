@@ -31,7 +31,6 @@ narra-table-web/
 │   │   └── ui/                # shadcn UI 组件
 │   ├── features/              # 功能模块
 │   │   ├── admin/             # 管理后台
-│   │   ├── app-toolbar/       # 全局工具栏
 │   │   ├── auth/              # 用户认证
 │   │   ├── resources/         # 资源访问能力
 │   │   ├── room-chat/         # 房间聊天
