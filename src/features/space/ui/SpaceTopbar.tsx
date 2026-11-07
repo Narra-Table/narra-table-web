@@ -54,31 +54,35 @@ export function SpaceTopbar({
         <ArrowLeft className="size-4.5" strokeWidth={2.5} aria-hidden="true" />
       </button>
 
-      <div role="tablist" aria-label="窗口" className="flex items-center">
-        {windows.map((window) => {
-          const focused = window.instanceId === focusedWindowId;
-          const visible = visibleWindows.has(window.instanceId);
-          return (
-            <button
-              key={window.instanceId}
-              type="button"
-              role="tab"
-              aria-label={window.title}
-              aria-selected={focused}
-              title={window.title}
-              className="group grid h-7 w-3 place-items-center"
-              onClick={() => onFocusWindow(window.instanceId)}
-            >
-              <span
-                className={cn(
-                  'h-2.5 w-0.5 transition-all duration-150 group-hover:h-4 group-hover:bg-text',
-                  visible ? 'bg-text' : 'bg-border',
-                )}
-                aria-hidden="true"
-              />
-            </button>
-          );
-        })}
+      <div className="flex items-center">
+        {windows.length >= 3 ? (
+          <div role="tablist" aria-label="窗口" className="flex items-center">
+            {windows.map((window) => {
+              const focused = window.instanceId === focusedWindowId;
+              const visible = visibleWindows.has(window.instanceId);
+              return (
+                <button
+                  key={window.instanceId}
+                  type="button"
+                  role="tab"
+                  aria-label={window.title}
+                  aria-selected={focused}
+                  title={window.title}
+                  className="group grid h-7 w-3 place-items-center"
+                  onClick={() => onFocusWindow(window.instanceId)}
+                >
+                  <span
+                    className={cn(
+                      'h-2.5 w-0.5 transition-all duration-150 group-hover:h-4 group-hover:bg-text',
+                      visible ? 'bg-text' : 'bg-border',
+                    )}
+                    aria-hidden="true"
+                  />
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
 
       <div ref={menuRef} className="relative justify-self-end">

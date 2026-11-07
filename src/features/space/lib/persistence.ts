@@ -44,6 +44,7 @@ export function openKind(workspace: WorkspacePort, kind: WindowKind, state?: unk
 function seedDefaultLayout(workspace: WorkspacePort): void {
   const chatId = openKind(workspace, 'chat');
   openKind(workspace, 'characters');
+  openKind(workspace, 'members');
   workspace.focusWindow(chatId);
 }
 

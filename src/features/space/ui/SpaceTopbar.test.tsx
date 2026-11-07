@@ -15,6 +15,7 @@ describe('SpaceTopbar', () => {
         windows={[
           { instanceId: 'win-1', title: '聊天' },
           { instanceId: 'win-2', title: '地图' },
+          { instanceId: 'win-3', title: '线索' },
         ]}
         focusedWindowId="win-2"
         visibleWindowIds={['win-1']}
@@ -48,5 +49,25 @@ describe('SpaceTopbar', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: '线索' }));
     expect(onAddWindow).toHaveBeenCalledWith('clues');
     expect(screen.queryByRole('menu', { name: '新增窗口' })).toBeNull();
+  });
+
+  it('hides the window tabs until three windows are open', () => {
+    render(
+      <SpaceTopbar
+        windows={[
+          { instanceId: 'win-1', title: '聊天' },
+          { instanceId: 'win-2', title: '地图' },
+        ]}
+        focusedWindowId="win-1"
+        visibleWindowIds={['win-1', 'win-2']}
+        onBack={vi.fn()}
+        onAddWindow={vi.fn()}
+        onFocusWindow={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByRole('tablist', { name: '窗口' })).toBeNull();
+    expect(screen.getByRole('button', { name: '返回空间列表' })).toBeDefined();
+    expect(screen.getByRole('button', { name: '添加窗口' })).toBeDefined();
   });
 });
